@@ -17,12 +17,35 @@
 
 ```
 复杂/对比类问题
-  → query_decomposer    ← 拆解为子查询
-  → guide_finder        ← 每个子查询定位指南
-  → knowledge_search    ← 定向搜索
-  → kg_search           ← 知识图谱补充
+  → query_decomposer          ← 拆解为子查询
+  → guide_finder              ← 每个子查询定位指南
+  → subagent(parallel mode)   ← 并行派发子 Agent 搜索
+  → knowledge_search          ← 子 Agent 定向搜索
+  → kg_search                 ← 知识图谱补充
+  → wait                      ← 等待子 Agent 完成
   → 融合汇总回答
 ```
+
+### 并行子代理使用规则
+
+当问题涉及**多份指南的对比或综合**时，使用 `subagent` 工具并行搜索：
+
+```
+# 对比两个疾病：并行派发子 Agent
+subagent({
+  mode: "parallel",
+  tasks: [
+    { agent: "医疗Agent", task: "搜索并总结肝癌的治疗方案" },
+    { agent: "医疗Agent", task: "搜索并总结胰腺癌的治疗方案" }
+  ]
+})
+# 等待汇总
+wait()
+```
+
+- `mode: "parallel"` 用于同时搜索多份指南的场景
+- `mode: "single"` 用于将独立的子任务委派出去（如"查一下最新的 FDA 药物批准"）
+- 子 Agent 完成后，主 Agent 负责融合结果、对比分析
 
 ### 查询复杂度判断
 

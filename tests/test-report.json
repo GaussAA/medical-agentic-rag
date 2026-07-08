@@ -1,0 +1,207 @@
+{
+  "timestamp": "2026-07-08T12:44:15.889Z",
+  "summary": {
+    "passed": 31,
+    "failed": 0,
+    "total": 31
+  },
+  "suites": [
+    {
+      "name": "知识图谱测试",
+      "tests": [
+        {
+          "name": "知识图谱文件存在且格式正确",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "实体数量 >= 200 条",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "疾病数 >= 20 种",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "药物数 >= 30 种",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "症状数 >= 30 种",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "检查方法数 >= 50 项",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "实体的 entityType 值均合法",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "实体的 relation 值均合法",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "每个实体都有 source 字段",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 9,
+      "failed": 0
+    },
+    {
+      "name": "指南索引测试",
+      "tests": [
+        {
+          "name": "指南索引文件存在且格式正确",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "所有指南都有 disease 字段",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "肝癌 应映射到 原发性肝癌诊疗指南",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "肺炎 应映射到 肺炎相关指南",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "黑色素瘤 应映射到 黑色素瘤指南",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 5,
+      "failed": 0
+    },
+    {
+      "name": "大纲数据测试",
+      "tests": [
+        {
+          "name": "26 份指南全部解析",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "章节总数 >= 1000",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "关键段落总数 >= 500",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "每份指南都有 hierarchy 结构",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 4,
+      "failed": 0
+    },
+    {
+      "name": "知识库文件完整性",
+      "tests": [
+        {
+          "name": "MD 文件数 = 26",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "所有 MD 文件均可读取且不为空",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "所有文件包含 Markdown 标题",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 3,
+      "failed": 0
+    },
+    {
+      "name": "扩展文件完整性",
+      "tests": [
+        {
+          "name": "扩展文件数 >= 6",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "所有 .ts 文件均可解析（不含语法错误）",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "必需的扩展都存在",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 3,
+      "failed": 0
+    },
+    {
+      "name": "System Prompt 完整性",
+      "tests": [
+        {
+          "name": "包含角色定义",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "包含知识库使用规范",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "包含搜索模式表",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "包含回答规范",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "包含安全护栏",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "包含子代理规则",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "包含查询分解规则",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 7,
+      "failed": 0
+    }
+  ]
+}

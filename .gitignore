@@ -14,9 +14,11 @@ start.ps1
 node_modules/
 .pnpm-store/
 
-# ========== 忽略 Pi 运行时数据 ==========
+# ========== 忽略运行时数据 ==========
 .pi/agent/
 .pi/knowledge/
+logs/
+backups/
 
 # 但保留自定义扩展文件
 !.pi/extensions/

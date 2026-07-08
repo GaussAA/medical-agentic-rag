@@ -1,9 +1,14 @@
 # ========== 忽略 Pi 源码（单独维护） ==========
 pi/
 
-# ========== 忽略 API Key 配置（用 start.example.bat 做模板） ==========
+# ========== 忽略 API Key 配置 ==========
 start.bat
 start.ps1
+.env
+.env.local
+
+# .env.example 需要入仓作为模板，不忽略
+!.env.example
 
 # ========== 忽略 Node 依赖 ==========
 node_modules/
@@ -23,8 +28,6 @@ pi-session-*.html
 .DS_Store
 Thumbs.db
 *.log
-.env
-.env.local
 
 # ========== 忽略 IDE 配置 ==========
 .idea/

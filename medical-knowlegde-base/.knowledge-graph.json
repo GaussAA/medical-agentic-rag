@@ -1,0 +1,1763 @@
+{
+  "generatedAt": "2026-07-08T11:47:43.613Z",
+  "stats": {
+    "totalEntities": 250,
+    "uniqueEntities": 250,
+    "diseaseCount": 23,
+    "drugCount": 39,
+    "symptomCount": 42,
+    "examCount": 89
+  },
+  "entities": [
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "drug",
+      "entityName": "大环内酯类抗菌药物",
+      "relation": "treated_with",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "symptom",
+      "entityName": "持续发热",
+      "relation": "has_symptom",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "symptom",
+      "entityName": "呼吸衰竭",
+      "relation": "has_symptom",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "symptom",
+      "entityName": "肺外并发症",
+      "relation": "has_symptom",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "examination",
+      "entityName": "核酸检测（DNA或RNA检测）",
+      "relation": "diagnosed_by",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "examination",
+      "entityName": "血清抗体IgM检测（颗粒凝集法，单份血清抗体滴度≥1:160）",
+      "relation": "diagnosed_by",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "riskFactor",
+      "entityName": "MP耐药",
+      "relation": "has_risk",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "riskFactor",
+      "entityName": "异常免疫炎症反应",
+      "relation": "has_risk",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "riskFactor",
+      "entityName": "混合感染",
+      "relation": "has_risk",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "treatment",
+      "entityName": "大环内酯类抗菌药物正规治疗",
+      "relation": "treated_by",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "肺炎支原体肺炎",
+      "entityType": "treatment",
+      "entityName": "生命支持治疗",
+      "relation": "treated_by",
+      "source": "儿童肺炎支原体肺炎诊疗指南(2025年版)"
+    },
+    {
+      "disease": "前列腺癌",
+      "entityType": "examination",
+      "entityName": "直肠指诊",
+      "relation": "diagnosed_by",
+      "source": "前列腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "前列腺癌",
+      "entityType": "examination",
+      "entityName": "PSA",
+      "relation": "diagnosed_by",
+      "source": "前列腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "前列腺癌",
+      "entityType": "examination",
+      "entityName": "穿刺活检",
+      "relation": "diagnosed_by",
+      "source": "前列腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "前列腺癌",
+      "entityType": "examination",
+      "entityName": "核素全身骨显像",
+      "relation": "diagnosed_by",
+      "source": "前列腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "前列腺癌",
+      "entityType": "examination",
+      "entityName": "前列腺MRI",
+      "relation": "diagnosed_by",
+      "source": "前列腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "前列腺癌",
+      "entityType": "examination",
+      "entityName": "前列腺CT",
+      "relation": "diagnosed_by",
+      "source": "前列腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "前列腺癌",
+      "entityType": "examination",
+      "entityName": "盆腔淋巴结清扫",
+      "relation": "diagnosed_by",
+      "source": "前列腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "前列腺癌",
+      "entityType": "examination",
+      "entityName": "X线",
+      "relation": "diagnosed_by",
+      "source": "前列腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "前列腺癌",
+      "entityType": "examination",
+      "entityName": "CT",
+      "relation": "diagnosed_by",
+      "source": "前列腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "symptom",
+      "entityName": "下腹不适",
+      "relation": "has_symptom",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "symptom",
+      "entityName": "腹胀",
+      "relation": "has_symptom",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "symptom",
+      "entityName": "食欲下降",
+      "relation": "has_symptom",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "symptom",
+      "entityName": "短期内腹围迅速增大",
+      "relation": "has_symptom",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "symptom",
+      "entityName": "乏力",
+      "relation": "has_symptom",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "symptom",
+      "entityName": "消瘦",
+      "relation": "has_symptom",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "symptom",
+      "entityName": "大小便次数增多",
+      "relation": "has_symptom",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "symptom",
+      "entityName": "气短",
+      "relation": "has_symptom",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "symptom",
+      "entityName": "难以平卧",
+      "relation": "has_symptom",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "examination",
+      "entityName": "糖类抗原125（CA125）",
+      "relation": "diagnosed_by",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "examination",
+      "entityName": "人附睾蛋白4（HE4）",
+      "relation": "diagnosed_by",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "examination",
+      "entityName": "ROMA指数",
+      "relation": "diagnosed_by",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "examination",
+      "entityName": "经阴道超声",
+      "relation": "diagnosed_by",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "卵巢癌",
+      "entityType": "riskFactor",
+      "entityName": "绝经后女性",
+      "relation": "has_risk",
+      "source": "卵巢癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "原发性肝癌",
+      "entityType": "examination",
+      "entityName": "彩色多普勒血流成像",
+      "relation": "diagnosed_by",
+      "source": "原发性肝癌诊疗指南（2024年版）"
+    },
+    {
+      "disease": "原发性肝癌",
+      "entityType": "examination",
+      "entityName": "超声造影检查",
+      "relation": "diagnosed_by",
+      "source": "原发性肝癌诊疗指南（2024年版）"
+    },
+    {
+      "disease": "原发性肝癌",
+      "entityType": "treatment",
+      "entityName": "局部治疗",
+      "relation": "treated_by",
+      "source": "原发性肝癌诊疗指南（2024年版）"
+    },
+    {
+      "disease": "子宫内膜癌",
+      "entityType": "riskFactor",
+      "entityName": "林奇综合征",
+      "relation": "has_risk",
+      "source": "子宫内膜癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫内膜癌",
+      "entityType": "riskFactor",
+      "entityName": "他莫昔芬",
+      "relation": "has_risk",
+      "source": "子宫内膜癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫内膜癌",
+      "entityType": "examination",
+      "entityName": "超声检查",
+      "relation": "diagnosed_by",
+      "source": "子宫内膜癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫内膜癌",
+      "entityType": "examination",
+      "entityName": "子宫内膜活检",
+      "relation": "diagnosed_by",
+      "source": "子宫内膜癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫内膜癌",
+      "entityType": "treatment",
+      "entityName": "手术治疗",
+      "relation": "treated_by",
+      "source": "子宫内膜癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫内膜癌",
+      "entityType": "treatment",
+      "entityName": "预防性全子宫切除术/双侧输卵管卵巢切除术",
+      "relation": "treated_by",
+      "source": "子宫内膜癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫颈癌",
+      "entityType": "examination",
+      "entityName": "宫颈液基薄层细胞学检查",
+      "relation": "diagnosed_by",
+      "source": "宫颈癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫颈癌",
+      "entityType": "examination",
+      "entityName": "HPV检测",
+      "relation": "diagnosed_by",
+      "source": "宫颈癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫颈癌",
+      "entityType": "examination",
+      "entityName": "阴道镜检查",
+      "relation": "diagnosed_by",
+      "source": "宫颈癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫颈癌",
+      "entityType": "examination",
+      "entityName": "宫颈组织学活检",
+      "relation": "diagnosed_by",
+      "source": "宫颈癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫颈癌",
+      "entityType": "examination",
+      "entityName": "宫颈锥形切除病理检查",
+      "relation": "diagnosed_by",
+      "source": "宫颈癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "子宫颈癌",
+      "entityType": "examination",
+      "entityName": "醋酸或碘溶液涂抹后肉眼观察",
+      "relation": "diagnosed_by",
+      "source": "宫颈癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "symptom",
+      "entityName": "进行性肿大的无痛性肿物",
+      "relation": "has_symptom",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "symptom",
+      "entityName": "胃肠道症状",
+      "relation": "has_symptom",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "symptom",
+      "entityName": "中枢神经系统症状",
+      "relation": "has_symptom",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "symptom",
+      "entityName": "骨骼症状",
+      "relation": "has_symptom",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "symptom",
+      "entityName": "肿瘤溶解综合征",
+      "relation": "has_symptom",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "examination",
+      "entityName": "免疫组化",
+      "relation": "diagnosed_by",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "examination",
+      "entityName": "组织病理学分析",
+      "relation": "diagnosed_by",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "examination",
+      "entityName": "免疫表型分析",
+      "relation": "diagnosed_by",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "drug",
+      "entityName": "利妥昔单抗",
+      "relation": "treated_with",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "treatment",
+      "entityName": "R-CHOP方案化疗",
+      "relation": "treated_by",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "弥漫性大B细胞淋巴瘤",
+      "entityType": "treatment",
+      "entityName": "放疗",
+      "relation": "treated_by",
+      "source": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "symptom",
+      "entityName": "淋巴细胞增多",
+      "relation": "has_symptom",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "symptom",
+      "entityName": "进行性淋巴细胞增多",
+      "relation": "has_symptom",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "examination",
+      "entityName": "免疫表型检测",
+      "relation": "diagnosed_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "examination",
+      "entityName": "FISH检测",
+      "relation": "diagnosed_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "examination",
+      "entityName": "G显带核型分析",
+      "relation": "diagnosed_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "examination",
+      "entityName": "基因突变检测",
+      "relation": "diagnosed_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "drug",
+      "entityName": "氟达拉滨",
+      "relation": "treated_with",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "drug",
+      "entityName": "环磷酰胺",
+      "relation": "treated_with",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "drug",
+      "entityName": "利妥昔单抗",
+      "relation": "treated_with",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "drug",
+      "entityName": "伊布替尼",
+      "relation": "treated_with",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "drug",
+      "entityName": "苯达莫司汀",
+      "relation": "treated_with",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "drug",
+      "entityName": "甲泼尼龙",
+      "relation": "treated_with",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "drug",
+      "entityName": "奥妥珠单抗",
+      "relation": "treated_with",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "drug",
+      "entityName": "来那度胺",
+      "relation": "treated_with",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "treatment",
+      "entityName": "氟达拉滨+环磷酰胺+利妥昔单抗",
+      "relation": "treated_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "treatment",
+      "entityName": "氟达拉滨+环磷酰胺+利妥昔单抗+伊布替尼",
+      "relation": "treated_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "treatment",
+      "entityName": "苯达莫司汀+利妥昔单抗",
+      "relation": "treated_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "treatment",
+      "entityName": "苯达莫司汀+利妥昔单抗+伊布替尼",
+      "relation": "treated_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "treatment",
+      "entityName": "大剂量甲泼尼龙+利妥昔单抗",
+      "relation": "treated_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "treatment",
+      "entityName": "奥妥珠单抗",
+      "relation": "treated_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性淋巴细胞白血病",
+      "entityType": "treatment",
+      "entityName": "来那度胺±利妥昔单抗",
+      "relation": "treated_by",
+      "source": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性髓性白血病",
+      "entityType": "drug",
+      "entityName": "甲磺酸伊马替尼",
+      "relation": "treated_with",
+      "source": "慢性髓性白血病诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性髓性白血病",
+      "entityType": "drug",
+      "entityName": "伊马替尼",
+      "relation": "treated_with",
+      "source": "慢性髓性白血病诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性髓性白血病",
+      "entityType": "drug",
+      "entityName": "尼洛替尼",
+      "relation": "treated_with",
+      "source": "慢性髓性白血病诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性髓性白血病",
+      "entityType": "drug",
+      "entityName": "达沙替尼",
+      "relation": "treated_with",
+      "source": "慢性髓性白血病诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性髓性白血病",
+      "entityType": "drug",
+      "entityName": "博舒替尼",
+      "relation": "treated_with",
+      "source": "慢性髓性白血病诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性髓性白血病",
+      "entityType": "drug",
+      "entityName": "拉多替尼",
+      "relation": "treated_with",
+      "source": "慢性髓性白血病诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性髓性白血病",
+      "entityType": "drug",
+      "entityName": "氟马替尼",
+      "relation": "treated_with",
+      "source": "慢性髓性白血病诊疗指南（2022年版）"
+    },
+    {
+      "disease": "慢性髓性白血病",
+      "entityType": "examination",
+      "entityName": "免疫分型",
+      "relation": "diagnosed_by",
+      "source": "慢性髓性白血病诊疗指南（2022年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "drug",
+      "entityName": "扎那米韦",
+      "relation": "treated_with",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "drug",
+      "entityName": "玛巴洛沙韦",
+      "relation": "treated_with",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "drug",
+      "entityName": "法维拉韦",
+      "relation": "treated_with",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "examination",
+      "entityName": "病原学检查",
+      "relation": "diagnosed_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "examination",
+      "entityName": "血流动力学评估",
+      "relation": "diagnosed_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "examination",
+      "entityName": "血压监测",
+      "relation": "diagnosed_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "examination",
+      "entityName": "心率监测",
+      "relation": "diagnosed_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "examination",
+      "entityName": "尿量监测",
+      "relation": "diagnosed_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "examination",
+      "entityName": "动脉血乳酸监测",
+      "relation": "diagnosed_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "examination",
+      "entityName": "心肌损伤标记物检查",
+      "relation": "diagnosed_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "examination",
+      "entityName": "心电图",
+      "relation": "diagnosed_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "examination",
+      "entityName": "超声心动图",
+      "relation": "diagnosed_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "riskFactor",
+      "entityName": "流感重型/危重型高危因素",
+      "relation": "has_risk",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "treatment",
+      "entityName": "抗病毒治疗",
+      "relation": "treated_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "treatment",
+      "entityName": "循环支持",
+      "relation": "treated_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "treatment",
+      "entityName": "液体复苏",
+      "relation": "treated_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "流行性感冒",
+      "entityType": "treatment",
+      "entityName": "血管活性药物使用",
+      "relation": "treated_by",
+      "source": "流行性感冒诊疗方案（2025年版）"
+    },
+    {
+      "disease": "淋巴瘤",
+      "entityType": "examination",
+      "entityName": "超声",
+      "relation": "diagnosed_by",
+      "source": "淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "淋巴瘤",
+      "entityType": "examination",
+      "entityName": "病理学检查",
+      "relation": "diagnosed_by",
+      "source": "淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "淋巴瘤",
+      "entityType": "examination",
+      "entityName": "粗针穿刺",
+      "relation": "diagnosed_by",
+      "source": "淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "淋巴瘤",
+      "entityType": "examination",
+      "entityName": "切除活检",
+      "relation": "diagnosed_by",
+      "source": "淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "淋巴瘤",
+      "entityType": "examination",
+      "entityName": "荧光原位杂交（FISH）",
+      "relation": "diagnosed_by",
+      "source": "淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "淋巴瘤",
+      "entityType": "examination",
+      "entityName": "Ann-Arbor分期",
+      "relation": "diagnosed_by",
+      "source": "淋巴瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "老年髋部骨折",
+      "entityType": "riskFactor",
+      "entityName": "骨质疏松",
+      "relation": "has_risk",
+      "source": "老年髋部骨折诊疗与管理指南（2022年版）"
+    },
+    {
+      "disease": "老年髋部骨折",
+      "entityType": "riskFactor",
+      "entityName": "跌倒",
+      "relation": "has_risk",
+      "source": "老年髋部骨折诊疗与管理指南（2022年版）"
+    },
+    {
+      "disease": "老年髋部骨折",
+      "entityType": "treatment",
+      "entityName": "多学科团队协作治疗",
+      "relation": "treated_by",
+      "source": "老年髋部骨折诊疗与管理指南（2022年版）"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "symptom",
+      "entityName": "体重增加",
+      "relation": "has_symptom",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "symptom",
+      "entityName": "中心性肥胖（腹型肥胖）",
+      "relation": "has_symptom",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "examination",
+      "entityName": "腰围",
+      "relation": "diagnosed_by",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "examination",
+      "entityName": "BMI",
+      "relation": "diagnosed_by",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "riskFactor",
+      "entityName": "库欣综合征",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "drug",
+      "entityName": "泼尼松",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "drug",
+      "entityName": "氢化可的松",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "drug",
+      "entityName": "米氮平",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "drug",
+      "entityName": "曲唑酮",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "drug",
+      "entityName": "度洛西汀",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "drug",
+      "entityName": "阿米替林",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "riskFactor",
+      "entityName": "肠道菌群失调",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "riskFactor",
+      "entityName": "甲状腺功能减退症",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "riskFactor",
+      "entityName": "性腺功能减退症",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "riskFactor",
+      "entityName": "糖皮质激素类药物",
+      "relation": "has_risk",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肥胖症",
+      "entityType": "treatment",
+      "entityName": "去除病因",
+      "relation": "treated_by",
+      "source": "肥胖症诊疗指南 (2024年版)"
+    },
+    {
+      "disease": "肾细胞癌",
+      "entityType": "examination",
+      "entityName": "医学影像学",
+      "relation": "diagnosed_by",
+      "source": "肾细胞癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "肾细胞癌",
+      "entityType": "examination",
+      "entityName": "组织病理学",
+      "relation": "diagnosed_by",
+      "source": "肾细胞癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "肾细胞癌",
+      "entityType": "riskFactor",
+      "entityName": "镰状细胞性血液病",
+      "relation": "has_risk",
+      "source": "肾细胞癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "肾细胞癌",
+      "entityType": "treatment",
+      "entityName": "保留肾单位的肾脏肿瘤切除术",
+      "relation": "treated_by",
+      "source": "肾细胞癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "肾细胞癌",
+      "entityType": "treatment",
+      "entityName": "根治性肾切除术",
+      "relation": "treated_by",
+      "source": "肾细胞癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "肾细胞癌",
+      "entityType": "treatment",
+      "entityName": "靶向治疗",
+      "relation": "treated_by",
+      "source": "肾细胞癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "肾细胞癌",
+      "entityType": "treatment",
+      "entityName": "免疫治疗",
+      "relation": "treated_by",
+      "source": "肾细胞癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胃癌",
+      "entityType": "examination",
+      "entityName": "超声检查",
+      "relation": "diagnosed_by",
+      "source": "胃癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胃癌",
+      "entityType": "examination",
+      "entityName": "CT检查",
+      "relation": "diagnosed_by",
+      "source": "胃癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胃癌",
+      "entityType": "examination",
+      "entityName": "MRI",
+      "relation": "diagnosed_by",
+      "source": "胃癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胃癌",
+      "entityType": "examination",
+      "entityName": "彩色多普勒血流成像",
+      "relation": "diagnosed_by",
+      "source": "胃癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胃癌",
+      "entityType": "examination",
+      "entityName": "超声双重造影",
+      "relation": "diagnosed_by",
+      "source": "胃癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胃癌",
+      "entityType": "treatment",
+      "entityName": "外科为主的综合治疗",
+      "relation": "treated_by",
+      "source": "胃癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "drug",
+      "entityName": "吉西他滨",
+      "relation": "treated_with",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "drug",
+      "entityName": "纳米白蛋白紫杉醇",
+      "relation": "treated_with",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "drug",
+      "entityName": "替吉奥",
+      "relation": "treated_with",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "drug",
+      "entityName": "卡培他滨",
+      "relation": "treated_with",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "drug",
+      "entityName": "伊立替康",
+      "relation": "treated_with",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "drug",
+      "entityName": "奥沙利铂",
+      "relation": "treated_with",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "drug",
+      "entityName": "尼妥珠单抗",
+      "relation": "treated_with",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "examination",
+      "entityName": "超声检查",
+      "relation": "diagnosed_by",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "examination",
+      "entityName": "CT检查",
+      "relation": "diagnosed_by",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "treatment",
+      "entityName": "外科手术",
+      "relation": "treated_by",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "treatment",
+      "entityName": "腹腔镜技术",
+      "relation": "treated_by",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "treatment",
+      "entityName": "机器人手术",
+      "relation": "treated_by",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "treatment",
+      "entityName": "立体定向放射治疗",
+      "relation": "treated_by",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "treatment",
+      "entityName": "纳米刀消融治疗",
+      "relation": "treated_by",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "treatment",
+      "entityName": "粒子源植入",
+      "relation": "treated_by",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "胰腺癌",
+      "entityType": "treatment",
+      "entityName": "药物治疗",
+      "relation": "treated_by",
+      "source": "胰腺癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "symptom",
+      "entityName": "颅内压增高",
+      "relation": "has_symptom",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "symptom",
+      "entityName": "神经功能及认知功能障碍",
+      "relation": "has_symptom",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "symptom",
+      "entityName": "癫痫发作",
+      "relation": "has_symptom",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "examination",
+      "entityName": "CT",
+      "relation": "diagnosed_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "examination",
+      "entityName": "MRI",
+      "relation": "diagnosed_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "examination",
+      "entityName": "弥散加权成像",
+      "relation": "diagnosed_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "examination",
+      "entityName": "弥散张量成像",
+      "relation": "diagnosed_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "examination",
+      "entityName": "灌注加权成像",
+      "relation": "diagnosed_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "examination",
+      "entityName": "磁共振波谱成像",
+      "relation": "diagnosed_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "examination",
+      "entityName": "组织病理和分子病理整合诊断",
+      "relation": "diagnosed_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "examination",
+      "entityName": "分子标志物检测",
+      "relation": "diagnosed_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "riskFactor",
+      "entityName": "高剂量电离辐射",
+      "relation": "has_risk",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "riskFactor",
+      "entityName": "高外显率基因遗传突变",
+      "relation": "has_risk",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "riskFactor",
+      "entityName": "亚硝酸盐食品",
+      "relation": "has_risk",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "riskFactor",
+      "entityName": "病毒或细菌感染",
+      "relation": "has_risk",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "treatment",
+      "entityName": "手术切除",
+      "relation": "treated_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "treatment",
+      "entityName": "放疗",
+      "relation": "treated_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "treatment",
+      "entityName": "化疗",
+      "relation": "treated_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "treatment",
+      "entityName": "多学科合作综合治疗",
+      "relation": "treated_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "脑胶质瘤",
+      "entityType": "treatment",
+      "entityName": "个体化综合治疗",
+      "relation": "treated_by",
+      "source": "脑胶质瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "长期职业接触工业化学产品",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "芳香胺类化合物",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "多环芳烃",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "氯代烃",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "β-萘胺",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "4-氨基联苯",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "环磷酰胺化疗",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "非那西汀滥用",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "盆腔放疗病史",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "吡格列酮",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "大量摄入脂肪",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "大量摄入胆固醇",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "油煎食物",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "红肉",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "长期饮用砷含量高的水",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "长期饮用氯消毒水",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "咖啡",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "人造甜味剂",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "riskFactor",
+      "entityName": "染发",
+      "relation": "has_risk",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "examination",
+      "entityName": "实验室检查",
+      "relation": "diagnosed_by",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "examination",
+      "entityName": "影像学检查",
+      "relation": "diagnosed_by",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "examination",
+      "entityName": "尿细胞学检查",
+      "relation": "diagnosed_by",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "examination",
+      "entityName": "尿肿瘤标记物检查",
+      "relation": "diagnosed_by",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "examination",
+      "entityName": "膀胱镜检查",
+      "relation": "diagnosed_by",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "examination",
+      "entityName": "膀胱镜下活检病理学检查",
+      "relation": "diagnosed_by",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "examination",
+      "entityName": "上尿路影像学检查",
+      "relation": "diagnosed_by",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "膀胱癌",
+      "entityType": "examination",
+      "entityName": "流式细胞分析技术",
+      "relation": "diagnosed_by",
+      "source": "膀胱癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "自身免疫性溶血性贫血",
+      "entityType": "drug",
+      "entityName": "利妥昔单抗",
+      "relation": "treated_with",
+      "source": "自身免疫性溶血性贫血诊疗指南（2022年版）"
+    },
+    {
+      "disease": "自身免疫性溶血性贫血",
+      "entityType": "drug",
+      "entityName": "环孢素A",
+      "relation": "treated_with",
+      "source": "自身免疫性溶血性贫血诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "symptom",
+      "entityName": "关节出血",
+      "relation": "has_symptom",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "symptom",
+      "entityName": "肌肉出血",
+      "relation": "has_symptom",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "symptom",
+      "entityName": "深部组织出血",
+      "relation": "has_symptom",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "symptom",
+      "entityName": "胃肠道出血",
+      "relation": "has_symptom",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "symptom",
+      "entityName": "泌尿道出血",
+      "relation": "has_symptom",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "symptom",
+      "entityName": "中枢神经系统出血",
+      "relation": "has_symptom",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "symptom",
+      "entityName": "拔牙后出血不止",
+      "relation": "has_symptom",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "symptom",
+      "entityName": "关节畸形",
+      "relation": "has_symptom",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "symptom",
+      "entityName": "假性肿瘤",
+      "relation": "has_symptom",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "symptom",
+      "entityName": "外伤或手术后持续出血",
+      "relation": "has_symptom",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "drug",
+      "entityName": "基因重组FVIII制剂",
+      "relation": "treated_with",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "drug",
+      "entityName": "病毒灭活的血源性FVIII制剂",
+      "relation": "treated_with",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "drug",
+      "entityName": "冷沉淀",
+      "relation": "treated_with",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "drug",
+      "entityName": "新鲜冰冻血浆",
+      "relation": "treated_with",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "examination",
+      "entityName": "FVIII抑制物检测",
+      "relation": "diagnosed_by",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "treatment",
+      "entityName": "替代治疗",
+      "relation": "treated_by",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "treatment",
+      "entityName": "预防治疗",
+      "relation": "treated_by",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "血友病A",
+      "entityType": "treatment",
+      "entityName": "按需治疗",
+      "relation": "treated_by",
+      "source": "血友病A诊疗指南（2022年版）"
+    },
+    {
+      "disease": "食管癌",
+      "entityType": "examination",
+      "entityName": "CT",
+      "relation": "diagnosed_by",
+      "source": "食管癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "食管癌",
+      "entityType": "examination",
+      "entityName": "MRI",
+      "relation": "diagnosed_by",
+      "source": "食管癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "食管癌",
+      "entityType": "examination",
+      "entityName": "PET-CT",
+      "relation": "diagnosed_by",
+      "source": "食管癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "食管癌",
+      "entityType": "examination",
+      "entityName": "超声检查",
+      "relation": "diagnosed_by",
+      "source": "食管癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "食管癌",
+      "entityType": "examination",
+      "entityName": "超声引导下穿刺活检",
+      "relation": "diagnosed_by",
+      "source": "食管癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "食管癌",
+      "entityType": "riskFactor",
+      "entityName": "不良饮食习惯",
+      "relation": "has_risk",
+      "source": "食管癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "食管癌",
+      "entityType": "riskFactor",
+      "entityName": "不健康生活方式",
+      "relation": "has_risk",
+      "source": "食管癌诊疗指南（2022年版）"
+    },
+    {
+      "disease": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）",
+      "entityType": "examination",
+      "entityName": "骨髓流式细胞术检查",
+      "relation": "diagnosed_by",
+      "source": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    },
+    {
+      "disease": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）",
+      "entityType": "examination",
+      "entityName": "基因突变检测",
+      "relation": "diagnosed_by",
+      "source": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "symptom",
+      "entityName": "卫星灶",
+      "relation": "has_symptom",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "symptom",
+      "entityName": "溃疡",
+      "relation": "has_symptom",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "symptom",
+      "entityName": "区域淋巴结转移",
+      "relation": "has_symptom",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "symptom",
+      "entityName": "移行转移",
+      "relation": "has_symptom",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "symptom",
+      "entityName": "肺转移",
+      "relation": "has_symptom",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "symptom",
+      "entityName": "肝转移",
+      "relation": "has_symptom",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "symptom",
+      "entityName": "骨转移",
+      "relation": "has_symptom",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "symptom",
+      "entityName": "脑转移",
+      "relation": "has_symptom",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "examination",
+      "entityName": "皮肤镜",
+      "relation": "diagnosed_by",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "examination",
+      "entityName": "超声检查",
+      "relation": "diagnosed_by",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "examination",
+      "entityName": "CT",
+      "relation": "diagnosed_by",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "examination",
+      "entityName": "MRI",
+      "relation": "diagnosed_by",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "examination",
+      "entityName": "全身骨扫描",
+      "relation": "diagnosed_by",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    },
+    {
+      "disease": "黑色素瘤",
+      "entityType": "examination",
+      "entityName": "正电子发射计算机体层成像",
+      "relation": "diagnosed_by",
+      "source": "黑色素瘤诊疗指南（2022年版）"
+    }
+  ]
+}

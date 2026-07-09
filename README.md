@@ -197,12 +197,14 @@ node tests/compliance-test.mjs
 
 > **知识库源（方案 B：弃 MD 中间层）** —— 原始 PDF/DOCX（`medical-raw/`）为唯一真相源，不再经 Markdown 中转。
 > 索引重建四步（原生 node，需 `pdftotext` 与 python-docx 桥）：
+>
 > ```bash
 > node scripts/prepare-raw.mjs        # 复制原始文档进项目 + 生成归一化 medical-raw-txt/
 > node scripts/extract-outline.mjs    # 由原始文本重建 .outline.json（中文层级正则）
 > node scripts/build-guide-index.mjs  # 重建 .guide-index.json（语义路由/关键词）
 > node scripts/_rebuild-registry.mjs  # 重建 kb-sources.json（真实 sha256 指纹 + 专科归类）
 > ```
+>
 > 向量库 `~/.pi/knowledge/` 由 Pi 运行时 `knowledge_add { source: "medical-raw" }` 重建（见上「首次使用」）。
 > 注意：原始目录中 `.doc` 老格式 Pi 原生无法摄取，由 `prepare-raw.mjs` 经 `antiword` 抽文本后落为 `medical-raw/<同名>.txt`（Pi 原生 TXT 摄取），无需 LibreOffice。
 

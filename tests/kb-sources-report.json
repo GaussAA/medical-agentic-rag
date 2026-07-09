@@ -1,0 +1,89 @@
+{
+  "suite": "kb-sources",
+  "ts": "2026-07-09T11:01:12.569Z",
+  "passed": 20,
+  "failed": 0,
+  "total": 20,
+  "results": [
+    {
+      "name": "读出 2 项",
+      "ok": true
+    },
+    {
+      "name": "local 项带 localPath",
+      "ok": true
+    },
+    {
+      "name": "相同内容 hash 一致",
+      "ok": true
+    },
+    {
+      "name": "不同内容 hash 不同",
+      "ok": true
+    },
+    {
+      "name": "空内容哨兵",
+      "ok": true
+    },
+    {
+      "name": "local 摄取成功(ingested=true)",
+      "ok": true
+    },
+    {
+      "name": "指纹与内容一致",
+      "ok": true
+    },
+    {
+      "name": "缺失 → error=true",
+      "ok": true
+    },
+    {
+      "name": "hash=MISSING",
+      "ok": true
+    },
+    {
+      "name": "web 不误报 ingested",
+      "ok": true
+    },
+    {
+      "name": "含未实现说明",
+      "ok": true
+    },
+    {
+      "name": "刚检查≠过期",
+      "ok": true
+    },
+    {
+      "name": "一年前检查=过期",
+      "ok": true
+    },
+    {
+      "name": "checkStaleness 分桶正确",
+      "ok": true
+    },
+    {
+      "name": "快照文件生成",
+      "ok": true
+    },
+    {
+      "name": "回滚恢复 2 项",
+      "ok": true
+    },
+    {
+      "name": "回滚恢复原始 id",
+      "ok": true
+    },
+    {
+      "name": "refresh 流程 ok",
+      "ok": true
+    },
+    {
+      "name": "local 项被标 lastChecked",
+      "ok": true
+    },
+    {
+      "name": "local 项指纹已写入",
+      "ok": true
+    }
+  ]
+}

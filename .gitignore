@@ -17,6 +17,17 @@ node_modules/
 # ========== 忽略运行时数据 ==========
 .pi/agent/
 .pi/knowledge/
+.pi/cache/
+# 患者画像含 PHI（个人健康信息，已 AES-256-GCM 加密），仍绝对不入仓
+.pi/patient-profile.json
+# PHI 加密密钥（自动生成），绝对不入仓
+.pi/.data-key
+# 知识库来源登记表（含运行元数据/时间戳）+ 快照
+kb-sources.json
+.pi/kb-snapshots/
+# 故障转移选择结果（运行期生成）
+.pi/failover-selection.json
+# 业务日志 + 合规审计日志（audit-*.ndjson）
 logs/
 backups/
 
@@ -25,6 +36,9 @@ backups/
 
 # ========== 忽略测试会话导出 ==========
 pi-session-*.html
+
+# ========== 忽略编译产物 ==========
+scripts/.patient-profile-compiled.mjs
 
 # ========== 忽略系统文件 ==========
 .DS_Store
@@ -39,3 +53,6 @@ Thumbs.db
 
 # ========== 忽略 WorkBuddy 元数据 ==========
 .workbuddy/
+
+# ========== 忽略其他 ==========
+docs/

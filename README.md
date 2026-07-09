@@ -39,17 +39,33 @@ medical-agentic-rag/
 │   │   ├── coding-agent/        # CLI 入口
 │   │   └── tui/                 # 终端 UI
 │   └── ...
-├── medical-knowlegde-base/      # 26 份医疗指南（Markdown）
+├── medical-knowlegde-base/      # 27 份医疗指南（Markdown）
 ├── .pi/
-│   └── extensions/              # 自定义 LLM Provider 扩展
-│       ├── agnes-provider.ts    # Agnes AI
-│       └── sensenova-provider.ts # 商汤日日新
+│   ├── cache/                   # 文件化检索缓存（.retrieval-cache.json）
+│   └── extensions/              # 自定义扩展（检索增强 + Provider）
+│       ├── lib/                 # 共享纯函数模块（jiti / 原生 node 通用）
+│       │   ├── guide-router.mjs # 指南语义路由（IDF 加权 + 同义词归一）
+│       │   ├── kg-search.mjs    # 知识图谱检索
+│       │   ├── retrieval-cache.mjs # 文件化共享检索缓存
+│       │   └── phi-crypto.mjs   # PHI 加密 + PII 脱敏 + 审计
+│       ├── guide-finder.ts      # 指南路由工具（语义路由版）
+│       ├── kg-search-tool.ts    # 知识图谱检索工具
+│       ├── query-cache.ts       # 检索缓存管理命令（/cache）
+│       ├── query-decomposer.ts  # 复杂问题分解
+│       ├── answer-evaluator.ts  # 回答质量评估
+│       ├── monitor-logger.ts    # 运行日志埋点 + 审计（/logs /audit）
+│       ├── patient-profile.ts   # 患者画像（AES-256-GCM 加密 + 审计）
+│       ├── agnes-provider.ts    # Agnes AI Provider
+│       └── sensenova-provider.ts # 商汤日日新 Provider
 ├── prompts/
 │   └── medical-agent.md         # 医疗 Agent System Prompt（核心定制）
 ├── scripts/
 │   └── download-model.bat       # 嵌入模型预下载脚本
 ├── tests/
-│   └── test-cases.md            # 三类测试用例
+│   ├── test-cases.md            # 三类测试用例
+│   ├── eval-bench.mjs           # 端到端评测基准（路由召回 / 延迟）
+│   ├── eval-report.json         # 评测结果（结构化）
+│   └── eval-report.html         # 评测结果（可视化）
 ├── start.example.bat            # 启动脚本模板（填入 Key 后复制为 start.bat）
 ├── README.md
 ```
@@ -127,9 +143,99 @@ pi install npm:pi-mcp-adapter      # MCP 服务集成
 pi install npm:pi-subagents        # 并行子代理
 ```
 
+## 检索增强（近期）
+
+针对「缓存孤岛、无语义路由、指标未量化」三项短板，已落地：
+
+1. **文件化共享检索缓存** (`.pi/extensions/lib/retrieval-cache.mjs`)
+   内存热层 + JSON 文件持久层，供 `guide_finder` / `kg_search` / `query-cache` 共用。
+   重复查询热路径延迟由 ~4.5ms（冷）降至 **~0.05ms**（提速约 70×），`/cache` 命令可观测与清空。
+2. **指南语义路由** (`.pi/extensions/lib/guide-router.mjs`)
+   在关键词/标题字面匹配之上，新增 **IDF 加权词元重叠 + 主体/次要词分层 + 通用词剔除 +
+   短语同义词归一**（如「胃部恶性肿瘤」→「胃癌」）。语义路由 top1 召回率由 **58% → 100%**，
+   越界查询精度 **100%**。每条命中附「命中依据」便于医疗审计。
+3. **端到端评测基准** (`tests/eval-bench.mjs`)
+   无需 API Key，原生 node 运行。量化路由召回（字面 top3 100% / top1 92.6%、语义 top1 100%）、
+   越界精度、冷/热检索延迟与 p95，产出 `tests/eval-report.json` 与 `tests/eval-report.html`。
+
+```bash
+# 跑出当前基线指标
+node tests/eval-bench.mjs
+```
+
+## 合规与可观测性（近期）
+
+针对医疗红线「PHI 明文落盘、缺审计留痕、免责措辞虚假权威」三项风险，已落地：
+
+1. **PHI 静态加密** (`.pi/extensions/lib/phi-crypto.mjs`)
+   患者画像（年龄/过敏史/病史/用药）以 **AES-256-GCM** 认证加密后落盘，明文绝不驻留磁盘。
+   密钥优先取环境变量 `PATIENT_DATA_KEY`（凭证零信任），缺失则自动生成 `.pi/.data-key`（已 gitignore、权限 600），
+   零配置也密文存储。历史明文首次读取时**透明迁移**为密文；密文被篡改时解密抛错（GCM 认证）。
+2. **PII 脱敏** —— 手机号 / 身份证 / 邮箱 / 结构化姓名脱敏工具，供日志埋点在写盘前调用；
+   业务日志只记 `promptLength` 等结构化计数，**绝不记录 prompt 原文**，从源头杜绝 PII 入日志。
+3. **合规审计留痕** —— 患者画像的每次写入 / 读取注入均记 `logs/audit-YYYY-MM-DD.ndjson`
+   （只记动作与字段名，不记原值），与业务日志分离。`/audit` 命令查看今日审计，`/logs` 查看业务日志。
+4. **System Prompt 合规化** (`prompts/medical-agent.md`)
+   删除「三甲医院主任医师级别」虚假权威表述，重定位为**循证医学信息辅助工具**；
+   强制每次回答附免责声明（非诊断、不替代医师、紧急拨 120）；不越界下诊断结论。
+5. **显式错误捕获** —— 加解密 / 日志 / 审计的失败不再静默吞掉，改写 stderr 并记审计事件，
+   避免可观测性断裂无人知晓。
+
+```bash
+# 合规基础设施单测（加密往返 / 旧明文迁移 / PII 脱敏 / 审计，24 项）
+node tests/compliance-test.mjs
+```
+
+> ⚠️ 生产部署请务必通过 `PATIENT_DATA_KEY` 环境变量注入密钥并做密钥轮换管理；
+> `.pi/.data-key` 自动生成密钥仅用于本地开发零配置场景。
+
+## 知识库扩展（近期）
+
+针对「无自动更新机制、偏科 ~70% 肿瘤+血液」短板，已落地**来源登记与更新管理**：
+
+1. **来源登记表** (`kb-sources.json`)
+   每项含 `id/名称/类型(local|web|feed)/地址/cadence/校验方式`。新增外部源只需追加一行，
+   无需改代码——结构化解开「更新机制缺失」死结。当前登记 **27 份本地指南 + 1 个外部示范源**
+   （国家卫健委官网公告，需凭证/网络，默认 `ingest` 显式标记未实现，不假装完成）。
+2. **内容指纹 + 过期判定** (`.pi/extensions/lib/kb-sources.mjs`)
+   `contentHash`（sha256）对 local 源求真实内容指纹；`isStale` 按 cadence 阈值标记「过期待查」，
+   供 `/kb` 命令与定时刷新提醒。版本**快照 + 回滚**：刷新前自动快照，异常即回滚，registry 不处半更新态。
+3. **更新 CLI** (`scripts/kb-update.mjs`)
+   `list / status / check / snapshot / rollback / refresh` 六命令。refresh 走
+   `快照→摄取→更新 lastChecked/hash→回写`，真实 local 指纹落地（已验证 27 份文件哈希）。
+4. **偏科缓解路径**：外部源（官网/RAG 语料库/内部 PDF）登记即纳入管理，覆写 `ingest` 钩子接抓取管线即可扩面。
+
+```bash
+# 来源登记与过期概况
+node scripts/kb-update.mjs status
+# 执行刷新（摄取+回写，异常回滚）
+node scripts/kb-update.mjs refresh
+```
+
+## 高可用增强（近期）
+
+针对「Pi 运行时无 Provider 拦截钩子、无内置故障转移」约束，落地**启动编排 + 运行时可观测**两层闭环：
+
+1. **启动编排故障转移** (`scripts/launch-with-failover.mjs` + `start.bat`/`start.ps1`)
+   每次启动前 `selectProvider` 探测各 Provider（`/models` 端点 + 3s 超时 + API Key 缺失判不健康），
+   选出健康者写入 `.pi/failover-selection.json`，由启动脚本读入 `--model`，**自动避开宕机 Provider**。
+   显式设置 `LLM_PROVIDER` 时尊重用户选择，跳过探测。
+2. **Provider 注册表** (`lib/provider-health.mjs`)：deepseek(主) → agnes → sensenova×2 四候选，含优先级。
+   `selectProvider` 全不健康时降级回退 priority 最小者并标注 degraded（避免启动即崩，但明确告警）。
+3. **运行时可观测** (`provider-failover.ts`)
+   周期（5min）健康监控，健康态跃迁记 `logs/audit-*.ndjson`；`/failover` 命令展示健康排行与当前选定；
+   `/kb` 命令展示来源过期概况。会话关闭清理定时器。
+4. **deepseek 走内置，无需扩展**：`deepseek` 是 Pi 内置 Provider（`pi/packages/ai/src/providers/deepseek.ts`，随启动经 `loadBuiltInModels` 自动播种），
+   其 `deepseek-v4-flash`/`deepseek-v4-pro` 模型与思考模式均由内置提供。故**不写** `deepseek-provider.ts` 扩展注册——
+   强写会因同名 `registerProvider` 覆盖内置、丢失模型与思考能力（已验证：覆盖后 max-out 由 384K 跌至 65.5K、thinking 变 no）。
+   `agnes`/`sensenova` 在 `pi/packages` 全仓零内置，才需扩展注册。故障转移表仅存 deepseek 的**探测元数据**（baseUrl+authEnv），不注册 Provider。
+
+> 注：因 Pi 无运行时 Provider 劫持钩子，「实时会话内切换」需重启（重新走编排）；
+> 若需零重启热切换，须将 Agent 包成服务层（含请求重试/熔断）——属后续可选战役。
+
 ## 设计原则
 
 1. **零手写 RAG 代码** — RAG 能力完全由 pi-knowledge 提供
 2. **本地优先** — 嵌入、向量、存储全部本地化，无需外部服务
-3. **隐私友好** — API Key 仅用于 LLM 调用，知识库数据不出本地
+3. **隐私友好** — API Key 仅用于 LLM 调用，知识库数据不出本地；PHI 静态加密、日志不记原文、读写留痕
 4. **增量式可扩展** — 可随时加装 Pi 生态扩展包，无需改核心代码

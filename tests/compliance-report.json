@@ -1,0 +1,129 @@
+{
+  "suite": "compliance",
+  "ts": "2026-07-09T11:01:12.538Z",
+  "passed": 24,
+  "failed": 0,
+  "total": 24,
+  "results": [
+    {
+      "name": "首次调用生成 32 字节密钥",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "密钥文件已落盘 .pi/.data-key",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "二次调用返回同一密钥（缓存/持久一致）",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "密文带版本前缀 v1:gcm:",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "密文不含明文片段",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "解密还原一致",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "isEncrypted 正确识别密文",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "isEncrypted 正确识别明文",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "密文被篡改时解密抛错（认证有效）",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "密文 JSON 往返对象一致",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "密文解析 migrated=false",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "旧明文可被解析",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "旧明文标记 migrated=true（提示回写）",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "手机号脱敏",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "身份证脱敏",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "邮箱脱敏",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "姓名脱敏(2字)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "姓名脱敏(4字)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "姓名脱敏(单字不动)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "综合脱敏(手机+身份证+邮箱)",
+      "ok": true,
+      "detail": "患者 138****1111，证件 110101********2316，邮箱 a***@x.cn"
+    },
+    {
+      "name": "非 PII 数字不误伤(年龄65岁)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "审计文件生成",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "审计记录含 action",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "审计记录含字段名不含原值",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

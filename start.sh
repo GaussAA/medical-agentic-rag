@@ -2,6 +2,10 @@
 # ============================================================
 # start.sh — Medical Agentic RAG 启动脚本（Git Bash 专用）
 # 优先免费模型（sensenova-6.7-flash-lite），失败回退 deepseek
+#
+# 注意：所有传给 node 的路径用相对路径（已 cd 到项目根目录）
+# 或 Windows 格式（C:/...），不能用 /c/... 格式——
+# Git Bash 命令行参数转换不作用于 NODE_OPTIONS 或 -e 代码内的字符串。
 # ============================================================
 set -euo pipefail
 
@@ -19,21 +23,29 @@ fi
 echo "[orchestration] 探测健康 Provider..."
 node scripts/launch-with-failover.mjs 2>/dev/null || true
 
-# 3) 读 failover 结果
-SEL_FILE="$ROOT/.pi/failover-selection.json"
+# 3) 读 failover 结果（failover-selection.json 字段为 provider/model）
+WIN_ROOT="$(pwd -W)"  # C:/WorkSpace/...（正斜杠，Windows node 原生识别）
+SEL_FILE=".pi/failover-selection.json"
 if [ -f "$SEL_FILE" ]; then
-  PROVIDER=$(node -e "const j=require('$SEL_FILE');console.log(j.selected||'')")
-  MODEL=$(node -e "const j=require('$SEL_FILE');console.log(j.model||'')")
+  PROVIDER=$(node -e "const j=require('./.pi/failover-selection.json');console.log(j.provider||'')")
+  MODEL=$(node -e "const j=require('./.pi/failover-selection.json');console.log(j.model||'')")
 else
   PROVIDER="${LLM_PROVIDER:-deepseek}"
   MODEL="${LLM_MODEL:-deepseek-v4-flash}"
 fi
 echo "[orchestration]   → 选定 Provider: $PROVIDER/$MODEL"
 
-# 4) 启动本地 LLM Provider 代理网关（热切换用）
-echo "[orchestration] 启动本地 LLM Provider 代理网关..."
+# 4) 清理残留 proxy（避免端口冲突）
 PROXY_PORT="${PROXY_PORT:-18880}"
-node "$ROOT/scripts/provider-proxy.mjs" --port="$PROXY_PORT" &
+echo "[orchestration] 清理残留 LLM Provider 代理（端口 $PROXY_PORT）..."
+OLD_PID=$(netstat -ano 2>/dev/null | grep ":${PROXY_PORT} " | grep "LISTENING" | awk '{print $NF}' | head -1) || true
+if [ -n "$OLD_PID" ] && [ "$OLD_PID" != "0" ]; then
+  taskkill -pid "$OLD_PID" -f 2>/dev/null || true
+  sleep 1
+fi
+
+echo "[orchestration] 启动本地 LLM Provider 代理网关..."
+node scripts/provider-proxy.mjs --port="$PROXY_PORT" &
 PROXY_PID=$!
 
 # 等待代理就绪
@@ -45,15 +57,15 @@ for i in $(seq 1 30); do
   sleep 1
 done
 
-# 5) 设置 preload 劫持 fetch → proxy
-export NODE_OPTIONS="--require $ROOT/scripts/preload-fetch-proxy.mjs"
-export NODE_PATH="$ROOT/pi/node_modules"
+# 5) 设置 preload 劫持 fetch → proxy（$WIN_ROOT 为正斜杠 C:/...，无需引号嵌套）
+export NODE_OPTIONS="--require $WIN_ROOT/scripts/preload-fetch-proxy.mjs"
+export NODE_PATH="$WIN_ROOT/pi/node_modules"
 
 echo ""
 echo "[Medical Agentic RAG]  LLM: $PROVIDER/$MODEL (via local proxy)  KB: 134 guidelines"
 echo ""
 
-# 6) 启动 Pi Agent
-exec "$ROOT/pi/packages/coding-agent/dist/cli.js" \
+# 6) 启动 Pi Agent（exec 传给 Windows 内核，必须用 WIN_ROOT 的 C:/... 格式）
+exec node "$WIN_ROOT/pi/packages/coding-agent/dist/cli.js" \
   --model "$PROVIDER/$MODEL" \
-  --system-prompt "$ROOT/prompts/medical-agent.md"
+  --system-prompt "$WIN_ROOT/prompts/medical-agent.md"

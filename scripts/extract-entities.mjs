@@ -121,17 +121,20 @@ async function main() {
     }
   }
 
+  // 统一口径：所有统计均基于去重后的实体集，确保 totalEntities == uniqueEntities == entities.length
+  const uniqueEntities = Array.from(unique.values());
+
   const graph = {
     generatedAt: new Date().toISOString(),
     stats: {
-      totalEntities: allEntities.length,
-      uniqueEntities: unique.size,
-      diseaseCount: new Set(allEntities.map((e) => e.disease)).size,
-      drugCount: allEntities.filter((e) => e.entityType === "drug").length,
-      symptomCount: allEntities.filter((e) => e.entityType === "symptom").length,
-      examCount: allEntities.filter((e) => e.entityType === "examination").length,
+      totalEntities: uniqueEntities.length,
+      uniqueEntities: uniqueEntities.length,
+      diseaseCount: new Set(uniqueEntities.map((e) => e.disease)).size,
+      drugCount: uniqueEntities.filter((e) => e.entityType === "drug").length,
+      symptomCount: uniqueEntities.filter((e) => e.entityType === "symptom").length,
+      examCount: uniqueEntities.filter((e) => e.entityType === "examination").length,
     },
-    entities: Array.from(unique.values()),
+    entities: uniqueEntities,
   };
 
   await writeFile(GRAPH_FILE, JSON.stringify(graph, null, 2), "utf-8");

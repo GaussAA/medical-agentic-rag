@@ -30,8 +30,13 @@ export default function (pi: ExtensionAPI) {
       }
 
       // Detect question type
-      const hasCompare = /比较|对比|差异|区别|vs|versus|versus|不同|哪个更好/.test(question);
-      const hasMultiAspect = /同时|及、|与、|、|和的.{0,10}(治疗|诊断|预后|症状|预防)(治疗|诊断|预后|症状|预防)/.test(question);
+      // 对比类：显式比较意图（含 vs/比较/差异/哪个更好 等触发词）
+      const hasCompare = /比较|对比|差异|区别|不同|哪个更好|vs|versus/i.test(question);
+      // 综合类：含多维连接词，或同时出现 ≥2 个医疗维度词（病因/诊断/治疗/预后...）
+      const MEDICAL_ASPECTS = /(病因|发病机制|危险因素|症状|体征|诊断|筛查|检查|分期|治疗|用药|药物|手术|放疗|化疗|预后|预防|随访|康复)/g;
+      const aspectCount = (question.match(MEDICAL_ASPECTS) || []).length;
+      const hasMultiAspect =
+        /以及|包括|同时|综合|全面|概览|概述|各方面|相关情况/.test(question) || aspectCount >= 2;
 
       // Build decomposition plan
       const subQueries = [];

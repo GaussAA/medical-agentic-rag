@@ -1,11 +1,11 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { searchKG, loadGraph } from "./lib/kg-search.mjs";
 
 /**
  * 医疗知识图谱搜索工具
  *
  * 注册 kg_search 工具，让 Agent 在回答时可查询疾病-药物-症状关系。
+ * 检索逻辑已抽取至 ./lib/kg-search.mjs（纯函数 + 文件化缓存），本文件仅作工具封装。
  * 数据来源: medical-knowlegde-base/.knowledge-graph.json（由 extract-entities.mjs 生成）
  */
 export default function (pi: ExtensionAPI) {
@@ -15,9 +15,7 @@ export default function (pi: ExtensionAPI) {
   async function ensureLoaded() {
     if (loaded) return;
     try {
-      const graphPath = join(process.cwd(), "medical-knowlegde-base", ".knowledge-graph.json");
-      const data = JSON.parse(await readFile(graphPath, "utf-8"));
-      graph = data.entities || [];
+      graph = loadGraph();
       loaded = true;
     } catch {
       graph = [];
@@ -56,68 +54,8 @@ export default function (pi: ExtensionAPI) {
         return { content: [{ type: "text", text: "知识图谱尚未生成，请先运行 scripts/extract-entities.mjs" }] };
       }
 
-      let results = [...graph];
-
-      // Filter by disease name (fuzzy match)
-      if (params.disease) {
-        const kw = params.disease.toLowerCase();
-        results = results.filter(
-          (e) =>
-            (e.disease || "").toLowerCase().includes(kw),
-        );
-      }
-
-      // Filter by entity type
-      if (params.entityType) {
-        results = results.filter((e) => e.entityType === params.entityType);
-      }
-
-      // Filter by relation
-      if (params.relation) {
-        results = results.filter((e) => e.relation === params.relation);
-      }
-
-      // Deduplicate and limit
-      const seen = new Set();
-      const deduped = [];
-      for (const r of results) {
-        const key = `${r.disease}|${r.entityName}|${r.entityType}`;
-        if (!seen.has(key)) {
-          seen.add(key);
-          deduped.push(r);
-          if (deduped.length >= 30) break;
-        }
-      }
-
-      if (deduped.length === 0) {
-        return { content: [{ type: "text", text: `未找到与"${params.disease || ""}"相关的知识图谱条目。` }] };
-      }
-
-      // Group by disease for display
-      const grouped: Record<string, any[]> = {};
-      for (const r of deduped) {
-        const disease = r.disease || "未知";
-        if (!grouped[disease]) grouped[disease] = [];
-        grouped[disease].push(r);
-      }
-
-      let output = `知识图谱查询结果（${deduped.length} 条）:\n\n`;
-      for (const [disease, items] of Object.entries(grouped)) {
-        output += `【${disease}】\n`;
-        const byType: Record<string, string[]> = {};
-        for (const item of items) {
-          const type = item.entityType || "other";
-          if (!byType[type]) byType[type] = [];
-          byType[type].push(item.entityName);
-        }
-        for (const [type, names] of Object.entries(byType)) {
-          const label = { drug: "药物", symptom: "症状", examination: "检查", riskFactor: "危险因素", treatment: "治疗" }[type] || type;
-          output += `  ${label}: ${[...new Set(names)].join("、")}\n`;
-        }
-        output += `  来源: ${items[0].source || "未知"}\n\n`;
-      }
-
-      return { content: [{ type: "text", text: output }] };
+      const res = searchKG(params, { graph });
+      return { content: [{ type: "text", text: res.text }] };
     },
   });
 }

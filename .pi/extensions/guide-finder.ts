@@ -1,24 +1,22 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { routeGuides, loadIndex } from "./lib/guide-router.mjs";
 
 /**
- * 指南查找工具 - 层级检索增强
+ * 指南查找工具 - 层级检索增强（语义路由版）
  *
- * 根据用户问题，先定位应查询哪份(或多份)指南，
- * 然后定向搜索，提高检索精度。
+ * 根据用户问题，先定位应查询哪份(或多份)指南，然后定向搜索，提高检索精度。
+ * 路由逻辑已抽取至 ./lib/guide-router.mjs（纯函数 + 文件化缓存），本文件仅作工具封装。
  *
  * 数据来源: medical-knowlegde-base/.guide-index.json
  */
 export default function (pi: ExtensionAPI) {
-  let index = null;
+  let index: any = null;
   let loaded = false;
 
   async function ensureLoaded() {
     if (loaded) return;
     try {
-      const indexPath = join(process.cwd(), "medical-knowlegde-base", ".guide-index.json");
-      index = JSON.parse(await readFile(indexPath, "utf-8"));
+      index = loadIndex();
       loaded = true;
     } catch {
       index = { guideMap: {}, keywordIndex: {} };
@@ -30,8 +28,8 @@ export default function (pi: ExtensionAPI) {
     name: "guide_finder",
     description:
       "查找与疾病或症状相关的医疗指南。在调用 knowledge_search 前使用本工具，" +
-      "可确定应查询哪份(或多份)指南。支持模糊匹配。",
-    promptSnippet: "Find which medical guideline(s) are relevant to a disease or symptom",
+      "可确定应查询哪份(或多份)指南。支持语义路由（同义/模糊匹配）。",
+    promptSnippet: "Find which medical guideline(s) are relevant to a disease or symptom, with semantic routing",
     parameters: {
       type: "object",
       properties: {
@@ -39,56 +37,40 @@ export default function (pi: ExtensionAPI) {
           type: "string",
           description: "疾病名称、症状、药物或检查名称",
         },
+        useSemantic: {
+          type: "boolean",
+          description: "是否启用语义路由（同义/模糊匹配），默认 true。设为 false 仅做关键词/标题字面匹配。",
+        },
       },
       required: ["query"],
     },
-    execute: async (params) => {
+    execute: async (params: { query?: string; useSemantic?: boolean }) => {
       await ensureLoaded();
-      const query = (params.query || "").trim().toLowerCase();
+      const query = (params.query || "").trim();
       if (!query) {
         return { content: [{ type: "text", text: "请提供查询关键词。" }] };
       }
 
-      // Search keyword index (exact + contains)
-      const matched = new Set();
-      for (const [kw, guides] of Object.entries(index.keywordIndex)) {
-        const kwLower = kw.toLowerCase();
-        if (kwLower === query || kwLower.includes(query) || query.includes(kwLower)) {
-          for (const g of guides) matched.add(g);
-        }
-      }
+      const useSemantic = params.useSemantic !== false;
+      const { top, totalMatched, semantic, cached } = routeGuides(query, { index, useSemantic });
 
-      // Also search guide titles directly
-      for (const [title, info] of Object.entries(index.guideMap)) {
-        const titleLower = title.toLowerCase();
-        const disease = (info).disease.toLowerCase();
-        if (titleLower.includes(query) || disease.includes(query)) {
-          matched.add(title);
-        }
-      }
-
-      if (matched.size === 0) {
+      if (totalMatched === 0) {
         return {
           content: [{
             type: "text",
-            text: `未找到与"${params.query}"直接相关的指南。建议直接使用 knowledge_search 进行全文搜索。`,
+            text: `未找到与"${query}"直接相关的指南。建议直接使用 knowledge_search 进行全文搜索。`,
           }],
         };
       }
 
-      // Sort by relevance (exact match first)
-      const sorted = Array.from(matched).sort((a, b) => {
-        const aExact = a.toLowerCase().includes(query) ? 0 : 1;
-        const bExact = b.toLowerCase().includes(query) ? 0 : 1;
-        return aExact - bExact;
-      });
-
-      const lines = [`与"${params.query}"相关的指南 (${sorted.length}份):\n`];
-      for (const title of sorted) {
-        const info = index.guideMap[title];
-        lines.push(`  ${title}`);
-        lines.push(`    疾病: ${info.disease}`);
-        lines.push(`    章节数: ${info.sectionCount}`);
+      const lines = [
+        `与"${query}"相关的指南 (${top.length}份，语义路由:${semantic ? "开" : "关"}，缓存:${cached ? "命中" : "未命中"}):\n`,
+      ];
+      for (const g of top) {
+        lines.push(`  ${g.title}  (score=${g.score})`);
+        lines.push(`    疾病: ${g.disease}`);
+        if (g.sectionCount != null) lines.push(`    章节数: ${g.sectionCount}`);
+        if (g.reasons && g.reasons.length) lines.push(`    命中依据: ${g.reasons.join("；")}`);
       }
 
       lines.push(`\n建议: 使用 knowledge_search 时指定 kb_id: "医疗指南" 进行定向搜索。`);

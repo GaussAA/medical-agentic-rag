@@ -1,57 +1,29 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { cacheStats, cacheClear } from "./lib/retrieval-cache.mjs";
 
+/**
+ * 检索缓存管理命令
+ *
+ * 实际的缓存读写由 guide_finder / kg_search 在检索时自动触发（经 ./lib/retrieval-cache.mjs
+ * 文件化共享存储）。本扩展仅提供 /cache 命令用于观测与清空，与检索管线共用同一缓存。
+ */
 export default function (pi: ExtensionAPI) {
-  const CACHE_TTL_MS = 5 * 60 * 1000;
-  const store = new Map<string, { result: string; ts: number }>();
-
-  function hash(text: string): string {
-    let h = 0;
-    for (let i = 0; i < text.length; i++) { h = ((h << 5) - h) + text.charCodeAt(i); h |= 0; }
-    return String(h);
-  }
-
-  setInterval(() => {
-    const now = Date.now();
-    for (const [key, entry] of store) {
-      if (now - entry.ts > CACHE_TTL_MS) store.delete(key);
-    }
-  }, 60_000).unref();
-
   pi.registerCommand("cache", {
-    description: "Show or clear query cache (stats / clear)",
+    description: "查看或清空检索缓存（stats / clear）。缓存加速重复的 guide_finder 与 kg_search 查询。",
     handler: async (args: string, ctx: any) => {
       const cmd = (args || "").trim().toLowerCase();
       if (cmd === "clear") {
-        store.clear();
-        ctx.ui.notify("Cache cleared.", "info");
+        cacheClear();
+        ctx.ui.notify("检索缓存已清空。", "info");
         return;
       }
 
-      const now = Date.now();
-      let output = `Cache entries: ${store.size}`;
-      if (store.size > 0) {
-        const entries = Array.from(store.entries())
-          .sort((a, b) => b[1].ts - a[1].ts)
-          .slice(0, 5);
-        for (const [key, entry] of entries) {
-          const age = Math.round((now - entry.ts) / 1000);
-          const preview = entry.result.slice(0, 40).replace(/\n/g, " ");
-          output += `\n  [${age}s ago] ${preview}...`;
-        }
-      }
+      const s = cacheStats();
+      const output =
+        `检索缓存:\n` +
+        `  条目(有效/过期): ${s.valid}/${s.expired}\n` +
+        `  文件: ${s.file}`;
       ctx.ui.notify(output, "info");
     },
   });
-
-  return {
-    cacheGet(key: string): string | undefined {
-      const entry = store.get(hash(key));
-      if (entry && Date.now() - entry.ts < CACHE_TTL_MS) return entry.result;
-      if (entry) store.delete(hash(key));
-      return undefined;
-    },
-    cacheSet(key: string, result: string): void {
-      store.set(hash(key), { result, ts: Date.now() });
-    },
-  };
 }

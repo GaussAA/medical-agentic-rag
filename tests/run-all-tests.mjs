@@ -21,7 +21,7 @@ const KB_DIR = join(ROOT, "medical-knowlegde-base");
 const RAW_DIR = join(ROOT, "medical-raw");
 /** 统计原始知识库可抽取文件数（PDF/DOCX，排除临时残留）。 */
 async function countRaw() {
-  return (await readdir(RAW_DIR)).filter((f) => /\.(pdf|docx)$/i.test(f) && !/\.nhc_tmp_/i.test(f)).length;
+  return (await readdir(RAW_DIR)).filter((f) => /\.(pdf|docx|txt)$/i.test(f) && !/\.nhc_tmp_/i.test(f)).length;
 }
 
 // Test result accumulator
@@ -250,7 +250,7 @@ async function testOutline() {
 // 测试套件 4: 知识库文件完整性
 // ============================================================
 async function testKBIntegrity() {
-  const files = (await readdir(RAW_DIR)).filter((f) => /\.(pdf|docx)$/i.test(f) && !/\.nhc_tmp_/i.test(f));
+  const files = (await readdir(RAW_DIR)).filter((f) => /\.(pdf|docx|txt)$/i.test(f) && !/\.nhc_tmp_/i.test(f));
 
   await runSuite("知识库文件完整性（原始文档）", [
     {
@@ -260,7 +260,7 @@ async function testKBIntegrity() {
       },
     },
     {
-      name: "所有原始文档均为 PDF/DOCX 且可读取不为空",
+      name: "所有原始文档均为 PDF/DOCX/TXT 且可读取不为空",
       fn: async () => {
         for (const file of files) {
           const buf = readFileSync(join(RAW_DIR, file));
@@ -275,7 +275,7 @@ async function testKBIntegrity() {
         const txtFiles = (await readdir(txtDir)).filter((f) => f.endsWith(".txt"));
         assert(txtFiles.length === files.length, `归一化文本数 ${txtFiles.length} ≠ 原始 ${files.length}`);
         for (const file of files) {
-          const base = file.replace(/\.(pdf|docx)$/i, "");
+          const base = file.replace(/\.(pdf|docx|txt)$/i, "");
           const buf = readFileSync(join(txtDir, base + ".txt"));
           assert(buf.length > 0, `${base}.txt 缺失或为空`);
         }

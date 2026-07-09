@@ -16,7 +16,7 @@ function rawHash(p) {
 }
 
 const files = readdirSync(RAW)
-  .filter((f) => /\.(pdf|docx)$/i.test(f) && !/\.nhc_tmp_/i.test(f))
+  .filter((f) => /\.(pdf|docx|txt)$/i.test(f) && !/\.nhc_tmp_/i.test(f))
   .filter((f) => statSync(join(RAW, f)).isFile())
   .sort();
 

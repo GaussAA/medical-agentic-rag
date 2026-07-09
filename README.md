@@ -1,7 +1,7 @@
 # 医疗 Agentic RAG 系统
 
 基于 **Pi Agent (earendil-works/pi)** + **pi-knowledge** 构建的医疗知识问答系统。
-知识源为 **114 份国家卫生健康委员会发布的权威诊疗指南（原始 PDF/DOCX；方案 B：弃 MD 中间层，原始文档为唯一真相源）**。
+知识源为 **135 份国家卫生健康委员会发布的权威诊疗指南（原始 PDF/DOCX，`.doc` 老格式经 antiword 抽文本后纳入；方案 B：弃 MD 中间层，原始文档为唯一真相源；随源目录增长）**。
 
 ## 快速开始
 
@@ -39,7 +39,7 @@ medical-agentic-rag/
 │   │   ├── coding-agent/        # CLI 入口
 │   │   └── tui/                 # 终端 UI
 │   └── ...
-├── medical-raw/                 # 114 份原始医疗指南（PDF/DOCX，方案B唯一真相源；gitignore）
+├── medical-raw/                 # 135 份原始医疗指南（PDF/DOCX/.doc→txt，方案B唯一真相源；gitignore）
 ├── medical-raw-txt/             # 由原始文档归一化抽取的纯文本（供 outline 复用；gitignore）
 ├── medical-knowlegde-base/      # 检索索引（.outline/.guide-index/.knowledge-graph），由原始文档派生
 ├── .pi/
@@ -204,7 +204,7 @@ node tests/compliance-test.mjs
 > node scripts/_rebuild-registry.mjs  # 重建 kb-sources.json（真实 sha256 指纹 + 专科归类）
 > ```
 > 向量库 `~/.pi/knowledge/` 由 Pi 运行时 `knowledge_add { source: "medical-raw" }` 重建（见上「首次使用」）。
-> 注意：原始目录中 `.doc` 老格式 pi-knowledge 与本项目管线均不支持，须 LibreOffice 转 `.docx` 或排除。
+> 注意：原始目录中 `.doc` 老格式 Pi 原生无法摄取，由 `prepare-raw.mjs` 经 `antiword` 抽文本后落为 `medical-raw/<同名>.txt`（Pi 原生 TXT 摄取），无需 LibreOffice。
 
 1. **来源登记表** (`kb-sources.json`)
    每项含 `id/名称/类型(local|web|feed)/地址/cadence/校验方式`。新增外部源只需追加一行，

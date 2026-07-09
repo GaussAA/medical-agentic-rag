@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-09T14:34:04.049Z",
-  "totalFiles": 114,
-  "totalSections": 15986,
+  "generatedAt": "2026-07-09T15:02:04.882Z",
+  "totalFiles": 135,
+  "totalSections": 18132,
   "totalKeyParagraphs": 496,
   "guides": [
     {
@@ -174,6 +174,22 @@
       "keyParagraphs": []
     },
     {
+      "id": "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
+      "title": "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
+      "sectionCount": 517,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
+      "title": "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
+      "sectionCount": 45,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "Pilon骨折切开复位内固定术加速康复临床路径（2023年版）",
       "title": "Pilon骨折切开复位内固定术加速康复临床路径（2023年版）",
       "sectionCount": 45,
@@ -185,6 +201,142 @@
       "id": "WS 890—2026 浅层X射线治疗机质量控制检测标准",
       "title": "WS 890—2026 浅层X射线治疗机质量控制检测标准",
       "sectionCount": 37,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
+      "title": "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
+      "sectionCount": 6,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 477—2026 D-二聚体定量检测标准",
+      "title": "WS-T 477—2026 D-二聚体定量检测标准",
+      "sectionCount": 59,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 497—2026 侵袭性真菌病实验诊断标准",
+      "title": "WS-T 497—2026 侵袭性真菌病实验诊断标准",
+      "sectionCount": 121,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "title": "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "sectionCount": 49,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 503—2026 临床微生物实验室血培养操作标准",
+      "title": "WS-T 503—2026 临床微生物实验室血培养操作标准",
+      "sectionCount": 104,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
+      "title": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
+      "sectionCount": 137,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 641—2026 临床检验定量测定室内质量控制标准",
+      "title": "WS-T 641—2026 临床检验定量测定室内质量控制标准",
+      "sectionCount": 47,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
+      "title": "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
+      "sectionCount": 6,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
+      "title": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
+      "sectionCount": 6,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
+      "title": "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
+      "sectionCount": 64,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 884—2026 分枝杆菌感染实验诊断标准",
+      "title": "WS-T 884—2026 分枝杆菌感染实验诊断标准",
+      "sectionCount": 380,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
+      "title": "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
+      "sectionCount": 17,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 886—2026 临床检验常用项目名称及代码",
+      "title": "WS-T 886—2026 临床检验常用项目名称及代码",
+      "sectionCount": 4,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 894—2026 成分血制备标准",
+      "title": "WS-T 894—2026 成分血制备标准",
+      "sectionCount": 192,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
+      "title": "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
+      "sectionCount": 85,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准",
+      "title": "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准",
+      "sectionCount": 67,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
+      "title": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
+      "sectionCount": 29,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -323,6 +475,14 @@
       "id": "乳腺癌诊疗指南（2022年版）",
       "title": "乳腺癌诊疗指南（2022年版）",
       "sectionCount": 136,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "儿童肺炎支原体肺炎诊疗指南（2023年版）",
+      "title": "儿童肺炎支原体肺炎诊疗指南（2023年版）",
+      "sectionCount": 79,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -483,6 +643,14 @@
       "id": "子宫内膜癌诊疗指南（2022年版）",
       "title": "子宫内膜癌诊疗指南（2022年版）",
       "sectionCount": 53,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "安宁疗护实践指南（2025年版）",
+      "title": "安宁疗护实践指南（2025年版）",
+      "sectionCount": 132,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []

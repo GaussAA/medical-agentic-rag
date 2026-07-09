@@ -35,33 +35,46 @@ function extractPdf(p) {
 function extractDocx(p) {
   return execFileSync(PY, [DOCX_BRIDGE, p], { encoding: "utf-8", maxBuffer: 64 * 1024 * 1024 });
 }
+function extractDoc(p) {
+  // antiword 是 Windows 原生程序，必须传 Windows 盘符路径（不认 Git Bash 的 /d/ 挂载路径）。
+  // 默认映射即可正确抽出中文（代码页 1200/UTF-16 的 OLE2 .doc）。
+  return execFileSync("antiword", [p], {
+    encoding: "utf-8", maxBuffer: 64 * 1024 * 1024,
+  });
+}
 
 const files = readdirSync(SRC)
-  .filter((f) => /\.(pdf|docx)$/i.test(f) && !/\.nhc_tmp_/i.test(f) && statSync(join(SRC, f)).isFile())
+  .filter((f) => /\.(pdf|docx|doc)$/i.test(f) && !/\.nhc_tmp_/i.test(f) && statSync(join(SRC, f)).isFile())
   .sort();
 
-console.log(`待准备文件: ${files.length} (已排除 .doc 与 .nhc_tmp_)`);
+console.log(`待准备文件: ${files.length} (含 .doc 经 antiword 抽取；排除 .nhc_tmp_)`);
 let ok = 0, skip = 0;
 for (const f of files) {
   const ext = extname(f).toLowerCase();
   const base = f.slice(0, -ext.length);
   const srcP = join(SRC, f);
-  const rawP = join(RAW_DIR, f);
   const txtP = join(TXT_DIR, base + ".txt");
 
-  // 1) 复制原始文件进项目
-  copyFileSync(srcP, rawP);
-
-  // 2) 生成归一化文本
   let txt;
   try {
-    txt = ext === ".pdf" ? extractPdf(srcP) : extractDocx(srcP);
+    if (ext === ".pdf") {
+      copyFileSync(srcP, join(RAW_DIR, f)); // 二进制真源（Pi 原生 PDF 摄取）
+      txt = extractPdf(srcP);
+    } else if (ext === ".docx") {
+      copyFileSync(srcP, join(RAW_DIR, f)); // 二进制真源（Pi 原生 DOCX 摄取）
+      txt = extractDocx(srcP);
+    } else if (ext === ".doc") {
+      // 老格式 .doc：mammoth/Pi 均无法摄取。经 antiword 抽文本，
+      // 落为 medical-raw/<base>.txt（Pi 原生 TXT 摄取），不复制二进制 .doc 以免 ingest 失败。
+      txt = extractDoc(srcP);
+      writeFileSync(join(RAW_DIR, base + ".txt"), txt, "utf-8");
+    }
   } catch (e) {
     console.error(`  [抽取失败] ${f}: ${String(e.message || e).slice(0, 80)}`);
     skip++;
     continue;
   }
-  writeFileSync(txtP, txt, "utf-8");
+  writeFileSync(txtP, txt, "utf-8"); // 归一化层（所有类型统一）
   ok++;
   process.stdout.write(`  ${ok}/${files.length} ${f} (${txt.length} 字符)\n`);
 }

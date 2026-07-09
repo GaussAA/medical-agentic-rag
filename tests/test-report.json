@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-09T14:46:59.640Z",
+  "timestamp": "2026-07-09T15:02:32.437Z",
   "summary": {
     "passed": 32,
     "failed": 0,
@@ -126,7 +126,7 @@
           "error": null
         },
         {
-          "name": "所有原始文档均为 PDF/DOCX 且可读取不为空",
+          "name": "所有原始文档均为 PDF/DOCX/TXT 且可读取不为空",
           "passed": true,
           "error": null
         },

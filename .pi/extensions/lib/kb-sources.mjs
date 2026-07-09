@@ -219,3 +219,103 @@ export async function refreshAll(opts = {}) {
     };
   }
 }
+
+// ============================================================
+// 覆盖度分析（偏科缓解核心能力）
+// ============================================================
+
+/**
+ * 依据指南名称推断专科归属。用于新登记源自动归类与既有源缺省补偿。
+ * 规则按关键词优先级匹配，未命中归入「其他内科」。
+ */
+export function inferDepartment(name) {
+  // 人群/场景优先：儿科、急诊先于具体病种，避免儿童白血病误归血液、急危重症漏归急诊
+  if (anyIn(name, ["儿童", "小儿", "婴幼儿"])) return "儿科";
+  if (anyIn(name, ["急诊", "急救", "急危", "复苏", "中毒"])) return "急诊";
+  if (anyIn(name, ["癌", "瘤", "淋巴瘤", "白血病", "骨髓", "黑色素瘤", "肾细胞", "前列腺", "卵巢", "宫颈", "子宫内膜", "肝原发", "食管", "胃", "胰腺", "膀胱", "脑胶质"]))
+    return "肿瘤";
+  if (anyIn(name, ["溶血", "血友", "骨髓增生"])) return "血液";
+  if (anyIn(name, ["肺炎", "支原体", "流感"])) return "呼吸/感染";
+  if (anyIn(name, ["髋部", "骨折", "转诊", "中医药"])) return "外科/综合";
+  if (anyIn(name, ["肥胖", "慢性"])) return "慢病/代谢";
+  if (anyIn(name, ["妊娠", "分娩", "产科", "孕"])) return "产科";
+  if (anyIn(name, ["冠心病", "高血压", "心衰", "心律失常", "心"])) return "心血管";
+  if (anyIn(name, ["卒中", "脑梗", "癫痫", "帕金森", "痴呆"])) return "神经";
+  if (anyIn(name, ["肝", "胃", "肠", "消化"])) return "消化";
+  if (anyIn(name, ["肾", "透析"])) return "肾内";
+  if (anyIn(name, ["糖", "甲状腺", "内分泌"])) return "内分泌";
+  if (anyIn(name, ["风湿", "狼疮", "关节炎"])) return "风湿免疫";
+  if (anyIn(name, ["精神", "抑郁", "焦虑"])) return "精神";
+  return "其他内科";
+}
+
+function anyIn(s, arr) {
+  return arr.some((k) => s.includes(k));
+}
+
+/**
+ * 目标覆盖专科（理想应均有非零指南）。低于阈值的视为偏科缺口。
+ */
+export const TARGET_DEPARTMENTS = [
+  "肿瘤", "血液", "呼吸/感染", "外科/综合", "慢病/代谢",
+  "儿科", "急诊", "产科", "心血管", "神经",
+  "消化", "肾内", "内分泌", "风湿免疫", "精神", "其他内科",
+];
+
+/**
+ * 计算来源登记的专科覆盖度。
+ * @returns {{
+ *   total:number, byDept:Array<{dept:string, count:number, pct:number}>,
+ *   gaps:string[], imbalance:number, top3:Array<{dept:string,pct:number}>
+ * }}
+ * - byDept: 各专科计数与占比（降序）
+ * - gaps: 占比为 0 或低于阈值(5%)的专科
+ * - imbalance: 偏科指数 = 最大专科占比（0~1，越高越偏）
+ * - top3: 占比最高的三个专科
+ */
+export function computeCoverage(registry = loadRegistry()) {
+  const sources = registry.sources || [];
+  const total = sources.length;
+  const counter = new Map();
+  for (const s of sources) {
+    const dept = s.department || inferDepartment(s.name || s.id || "");
+    counter.set(dept, (counter.get(dept) || 0) + 1);
+  }
+  const byDept = [...counter.entries()]
+    .map(([dept, count]) => ({ dept, count, pct: total ? count / total : 0 }))
+    .sort((a, b) => b.count - a.count);
+
+  const gaps = TARGET_DEPARTMENTS.filter(
+    (d) => !counter.has(d) || counter.get(d) / total < 0.05,
+  );
+  const top1 = byDept[0]?.pct || 0;
+  const top3 = byDept.slice(0, 3);
+  return { total, byDept, gaps, imbalance: top1, top3 };
+}
+
+/**
+ * 缺口候选目录：卫健委已发布、当前知识库缺失的高价值指南。
+ * 仅作「候选登记」元数据，ingest 标未实现——真实内容须经认证抓取或用户提供，
+ * 绝不杜撰。待大帅提供认证后由 kb-update 管线落地。
+ */
+export const GAP_CATALOG = [
+  { dept: "儿科", name: "儿童急性淋巴细胞白血病诊疗规范", hint: "国家卫健委官网 / 中国儿科血液病协作网" },
+  { dept: "儿科", name: "小儿社区获得性肺炎诊疗规范", hint: "卫健委基层司" },
+  { dept: "急诊", name: "常见急危重症诊疗规范（急诊科）", hint: "国家急诊医学质控中心" },
+  { dept: "急诊", name: "急性 ST 段抬高型心肌梗死溶栓/急救流程", hint: "胸痛中心认证标准" },
+  { dept: "产科", name: "妊娠期高血压疾病诊疗指南", hint: "中华医学会围产医学分会" },
+  { dept: "产科", name: "产后出血预防与处理指南", hint: "国家产科质控中心" },
+  { dept: "心血管", name: "高血压基层诊疗指南", hint: "国家心血管病中心" },
+  { dept: "心血管", name: "冠心病稳定型心绞痛诊疗指南", hint: "中华医学会心血管病学分会" },
+  { dept: "神经", name: "缺血性脑卒中急性期诊疗指南", hint: "国家神经系统疾病质控中心" },
+  { dept: "神经", name: "癫痫诊疗指南", hint: "中国抗癫痫协会" },
+  { dept: "消化", name: "幽门螺杆菌感染处理共识/指南", hint: "中华医学会消化病学分会" },
+  { dept: "消化", name: "肝硬化诊疗指南", hint: "国家消化系统疾病临床医学研究中心" },
+  { dept: "肾内", name: "慢性肾脏病诊疗指南", hint: "国家肾脏病临床医学研究中心" },
+  { dept: "内分泌", name: "2 型糖尿病基层诊疗指南", hint: "国家代谢性疾病临床医学研究中心" },
+  { dept: "内分泌", name: "甲状腺功能亢进症诊疗指南", hint: "中华医学会内分泌学分会" },
+  { dept: "风湿免疫", name: "系统性红斑狼疮诊疗规范", hint: "国家风湿病数据中心" },
+  { dept: "呼吸/感染", name: "社区获得性肺炎诊疗指南", hint: "中华医学会呼吸病学分会" },
+  { dept: "精神", name: "抑郁症诊疗指南", hint: "国家精神心理疾病临床医学研究中心" },
+];
+

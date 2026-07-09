@@ -1,0 +1,319 @@
+{
+  "sources": [
+    {
+      "id": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
+      "name": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\儿童肺炎支原体肺炎诊疗指南（2025年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.942Z",
+      "lastHash": "18102425e17b19be1f085f2e4a492b5a3490cf6cad360ae5566757d82437b832",
+      "department": "呼吸/感染"
+    },
+    {
+      "id": "前列腺癌诊疗指南（2022年版）",
+      "name": "前列腺癌诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\前列腺癌诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.943Z",
+      "lastHash": "da7422d5f63695e501ace01ecf203f6b062c612efc9ec03f844c1b3e2277a46b",
+      "department": "肿瘤"
+    },
+    {
+      "id": "卵巢癌诊疗指南（2022年版）",
+      "name": "卵巢癌诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\卵巢癌诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.945Z",
+      "lastHash": "5311dc2ef5ebb00c9628f796f1f39b8ee57bbc77de7b8f7bcb4201796e92e5f8",
+      "department": "肿瘤"
+    },
+    {
+      "id": "原发性肝癌诊疗指南（2024年版）",
+      "name": "原发性肝癌诊疗指南（2024年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\原发性肝癌诊疗指南（2024年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.947Z",
+      "lastHash": "d07065d531eb73e96db6a16431d56c05ce129f98f30fb5cbccef5e135f8ea6c8",
+      "department": "肿瘤"
+    },
+    {
+      "id": "基层医疗卫生机构急重患者判断及转诊技术标准（2022年版）",
+      "name": "基层医疗卫生机构急重患者判断及转诊技术标准（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\基层医疗卫生机构急重患者判断及转诊技术标准（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.948Z",
+      "lastHash": "dd9cd36ed5ffa0273b783eb6a518f38066cd4815bddee39f7977d3f14fba8593",
+      "department": "外科/综合"
+    },
+    {
+      "id": "子宫内膜癌诊疗指南（2022年版）",
+      "name": "子宫内膜癌诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\子宫内膜癌诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.949Z",
+      "lastHash": "c040c503daee2d3d27be8e3ed1dbb774dc0b705679d57014fb1220fda451eae9",
+      "department": "肿瘤"
+    },
+    {
+      "id": "宫颈癌诊疗指南（2022年版）",
+      "name": "宫颈癌诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\宫颈癌诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.949Z",
+      "lastHash": "48f979c22af2646d2a29e1c496e2343bfadf1ebf789212ead00047f208467df7",
+      "department": "肿瘤"
+    },
+    {
+      "id": "常见慢性病风险评估指标（2025年版）",
+      "name": "常见慢性病风险评估指标（2025年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\常见慢性病风险评估指标（2025年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.950Z",
+      "lastHash": "d539c2976f59210e4b1063a2fd237348b891c65d64f3b803640f6eb71a4d8850",
+      "department": "慢病/代谢"
+    },
+    {
+      "id": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "name": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\弥漫性大B细胞淋巴瘤诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.950Z",
+      "lastHash": "aae055ab7d8ebc154283ea949b0fd807ac004abef5899343530a8bde262f110e",
+      "department": "肿瘤"
+    },
+    {
+      "id": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+      "name": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.951Z",
+      "lastHash": "f8c0e49eaa054afbfca5475f1e716f77a3878b5d2084cbaa9cf50ab28aebe5db",
+      "department": "肿瘤"
+    },
+    {
+      "id": "慢性病风险筛查项目（2025年版）",
+      "name": "慢性病风险筛查项目（2025年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\慢性病风险筛查项目（2025年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.951Z",
+      "lastHash": "f85fbc3c9869d63e3d8cc3b8c5bc0ce2573f37e598a69a056995f25e043fc650",
+      "department": "慢病/代谢"
+    },
+    {
+      "id": "慢性髓性白血病诊疗指南（2022年版）",
+      "name": "慢性髓性白血病诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\慢性髓性白血病诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.953Z",
+      "lastHash": "47738c53821fbc0682557451112d90a414599edd49ee3b4bdecc07acec4ebe93",
+      "department": "肿瘤"
+    },
+    {
+      "id": "流行性感冒诊疗方案（2025版）",
+      "name": "流行性感冒诊疗方案（2025版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\流行性感冒诊疗方案（2025版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.953Z",
+      "lastHash": "a8db016154a5b9897afe562f9bd7aa82be849b55e41ddd19876a55c211c30fca",
+      "department": "其他内科"
+    },
+    {
+      "id": "淋巴瘤诊疗指南（2022年版）",
+      "name": "淋巴瘤诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\淋巴瘤诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.954Z",
+      "lastHash": "68707e223aa504bfe7bd0d3562f57e0bf7389424ef1dba24e8e3adedd9365346",
+      "department": "肿瘤"
+    },
+    {
+      "id": "综合医院中医药工作指南（2024 版）",
+      "name": "综合医院中医药工作指南（2024 版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\综合医院中医药工作指南（2024 版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.955Z",
+      "lastHash": "6b8e183679a99dc77db5e40dbac69c33a024184871c715e02e730b8ca0f40f38",
+      "department": "外科/综合"
+    },
+    {
+      "id": "老年髋部骨折诊疗与管理指南（2022年版）",
+      "name": "老年髋部骨折诊疗与管理指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\老年髋部骨折诊疗与管理指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.955Z",
+      "lastHash": "5a12241e779fe66ba2116ab8b754b4be6e9fce890097dba13e4b544c0d068adf",
+      "department": "外科/综合"
+    },
+    {
+      "id": "肥胖症诊疗指南（2024年版）",
+      "name": "肥胖症诊疗指南（2024年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\肥胖症诊疗指南（2024年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.956Z",
+      "lastHash": "6eca28b27320d534d1a3146a9a468509b39ada51cb4f5013e7ec9512c2cdfe58",
+      "department": "慢病/代谢"
+    },
+    {
+      "id": "肾细胞癌诊疗指南（2022年版）",
+      "name": "肾细胞癌诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\肾细胞癌诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.957Z",
+      "lastHash": "ee1161e154259a5f1ac029986c55b9d9b99036b0bd7913b97b669950ccc53fab",
+      "department": "肿瘤"
+    },
+    {
+      "id": "胃癌诊疗指南（2022年版）",
+      "name": "胃癌诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\胃癌诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.958Z",
+      "lastHash": "1cc30bf49b0a9c29ead34f47fa7ee67e1c8433adf3330eeccece73895fdfced3",
+      "department": "肿瘤"
+    },
+    {
+      "id": "胰腺癌诊治指南（2022年版）",
+      "name": "胰腺癌诊治指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\胰腺癌诊治指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.959Z",
+      "lastHash": "34ecedaa24645190608d75fc797ccc0f1c772459d672b4f0644342e6b2d9f074",
+      "department": "肿瘤"
+    },
+    {
+      "id": "脑胶质瘤诊疗指南（2022年版）",
+      "name": "脑胶质瘤诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\脑胶质瘤诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.960Z",
+      "lastHash": "80e0538ff23205c8f5f0145d4ed161365126cae89f3a0b6336c0058891cf99a3",
+      "department": "肿瘤"
+    },
+    {
+      "id": "膀胱癌诊疗指南（2022年版）",
+      "name": "膀胱癌诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\膀胱癌诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.961Z",
+      "lastHash": "ec5877bcd551db0d957f6346e7a1dd96ad1bdccb35ce56d919422fd1dd649b30",
+      "department": "肿瘤"
+    },
+    {
+      "id": "自身免疫性溶血性贫血诊疗指南（2022年版）",
+      "name": "自身免疫性溶血性贫血诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\自身免疫性溶血性贫血诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.962Z",
+      "lastHash": "6e6b395d23fd4dbd15ee856cd2e78404b253e523799116558a91821dd18a8b53",
+      "department": "血液"
+    },
+    {
+      "id": "血友病A诊疗指南（2022年版）",
+      "name": "血友病A诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\血友病A诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.962Z",
+      "lastHash": "6f6f7300d4623d86ef78a221133735379ce6d890f9ed5d6278cd0e742e99b001",
+      "department": "血液"
+    },
+    {
+      "id": "食管癌诊疗指南（2022年版）",
+      "name": "食管癌诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\食管癌诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.963Z",
+      "lastHash": "44dede85ec21c747ebcca05a13128c8db18c318e4a89da1929042a9ab8f3719e",
+      "department": "肿瘤"
+    },
+    {
+      "id": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）",
+      "name": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.963Z",
+      "lastHash": "ee108d265be63d76fea9219c4ce11b6c9db6923cdd2719c90eeeedb367d8893a",
+      "department": "肿瘤"
+    },
+    {
+      "id": "黑色素瘤诊疗指南（2022年版）",
+      "name": "黑色素瘤诊疗指南（2022年版）",
+      "type": "local",
+      "localPath": "medical-knowlegde-base\\黑色素瘤诊疗指南（2022年版）.md",
+      "cadenceDays": 7,
+      "validate": "sha256",
+      "lastChecked": "2026-07-09T10:32:43.964Z",
+      "lastHash": "1cf522675a2064db4f56e9d8af311e4b387f232f06fb952c9d8465a3463a3f7b",
+      "department": "肿瘤"
+    },
+    {
+      "id": "nhc-portal",
+      "name": "国家卫健委官网-指南公告",
+      "type": "web",
+      "url": "https://www.nhc.gov.cn/wjw/ywfg/index.shtml",
+      "cadenceDays": 30,
+      "validate": "sha256",
+      "note": "外部源，需手动提供认证数据后覆写 ingest 或接外部抓取管线",
+      "lastChecked": "2026-07-09T10:32:43.964Z",
+      "lastHash": "05c044a0301de2ea58b623dbfb32d350a22dbab1710aa5f5bd58ad7fa996acc6",
+      "department": "其他内科"
+    }
+  ],
+  "meta": {
+    "generatedAt": "2026-07-09T10:32:09.184Z",
+    "description": "知识库来源登记表——新增外部源只需追加一项",
+    "sourceCount": 28,
+    "lastFullCheck": "2026-07-09T10:32:43.964Z"
+  }
+}

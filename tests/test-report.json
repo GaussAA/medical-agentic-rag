@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-09T11:01:24.692Z",
+  "timestamp": "2026-07-09T11:21:38.726Z",
   "summary": {
     "passed": 32,
     "failed": 0,
@@ -121,7 +121,7 @@
       "name": "知识库文件完整性",
       "tests": [
         {
-          "name": "MD 文件数 = 26",
+          "name": "MD 文件数 = 27",
           "passed": true,
           "error": null
         },

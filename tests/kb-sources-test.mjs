@@ -99,6 +99,36 @@ check("local 项指纹已写入", after.sources[0].lastHash === hA);
 
 console.log(`\n=== 结果 ===\n通过 ${passed} / ${passed + failed}`);
 
+// 9. 覆盖度分析（偏科感知）
+console.log("\n[9] 覆盖度分析 computeCoverage");
+const cov = kb.computeCoverage({
+  sources: [
+    { name: "肺癌诊疗指南", department: "肿瘤" },
+    { name: "乳腺癌诊疗指南", department: "肿瘤" },
+    { name: "胃癌诊疗指南", department: "肿瘤" },
+    { name: "儿童肺炎指南", department: "儿科" },
+  ],
+});
+check("总数 4", cov.total === 4);
+check("肿瘤 3 占比 75%", cov.byDept[0].dept === "肿瘤" && cov.byDept[0].pct === 0.75);
+check("偏科指数=最高占比", Math.abs(cov.imbalance - 0.75) < 1e-9);
+check("缺口含缺失专科", cov.gaps.includes("急诊") && cov.gaps.includes("心血管"));
+check("缺口不含已覆盖儿科/肿瘤", !cov.gaps.includes("儿科") && !cov.gaps.includes("肿瘤"));
+
+// 10. inferDepartment 关键词归类
+console.log("\n[10] inferDepartment 归类");
+check("肺癌→肿瘤", kb.inferDepartment("原发性肺癌诊疗指南（2024）") === "肿瘤");
+check("血友病→血液", kb.inferDepartment("血友病A诊疗指南") === "血液");
+check("儿童→儿科", kb.inferDepartment("儿童急性淋巴细胞白血病规范") === "儿科");
+check("急救→急诊", kb.inferDepartment("常见急危重症诊疗规范") === "急诊");
+check("妊娠→产科", kb.inferDepartment("妊娠期高血压疾病指南") === "产科");
+check("未知→其他内科", kb.inferDepartment("某某综合处置原则") === "其他内科");
+
+// 11. GAP_CATALOG 候选目录
+console.log("\n[11] 缺口候选目录 GAP_CATALOG");
+check("目录非空", Array.isArray(kb.GAP_CATALOG) && kb.GAP_CATALOG.length >= 10);
+check("每条含 dept/name/hint", kb.GAP_CATALOG.every((g) => g.dept && g.name && g.hint));
+
 process.chdir(origCwd);
 try { rmSync(workdir, { recursive: true, force: true }); } catch {}
 

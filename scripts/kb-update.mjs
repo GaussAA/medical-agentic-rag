@@ -88,6 +88,36 @@ async function main() {
       process.exit(res.ok ? 0 : 1);
       break;
     }
+    case "coverage": {
+      const cov = kb.computeCoverage();
+      console.log(`\n===== 知识库专科覆盖度（共 ${cov.total} 源）=====`);
+      console.log("专科".padEnd(14, " "), "数量".padStart(5), "占比");
+      for (const d of cov.byDept) {
+        const bar = "█".repeat(Math.round(d.pct * 40));
+        console.log(
+          d.dept.padEnd(14, " "),
+          String(d.count).padStart(5),
+          `  ${(d.pct * 100).toFixed(0).padStart(3)}% ${bar}`,
+        );
+      }
+      console.log(
+        `\n偏科指数（最高专科占比）: ${(cov.imbalance * 100).toFixed(0)}%`,
+      );
+      if (cov.gaps.length) {
+        console.log(`\n⚠ 偏科缺口专科（缺失或 <5%）: ${cov.gaps.length} 个`);
+        console.log("  " + cov.gaps.join("、"));
+        const catalog = (kb.GAP_CATALOG || []).filter((g) => cov.gaps.includes(g.dept));
+        if (catalog.length) {
+          console.log("\n候选补录指南（待认证抓取/用户提供，不杜撰）:");
+          for (const g of catalog)
+            console.log(`  [${g.dept}] ${g.name} — ${g.hint}`);
+        }
+      } else {
+        console.log("\n✓ 各目标专科均达到最低覆盖阈值");
+      }
+      process.exit(0);
+      break;
+    }
     default:
       console.log(`知识库更新 CLI
 
@@ -99,7 +129,8 @@ async function main() {
   check             逐项展示 stale/fresh
   snapshot          快照 registry
   rollback [path]   回滚（省略 path 用最新快照）
-  refresh           刷新流程（摄取+回写，异常回滚）`);
+  refresh           刷新流程（摄取+回写，异常回滚）
+  coverage          专科覆盖度报表（偏科感知/缺口清单）`);
       process.exit(cmd ? 1 : 0);
   }
 }

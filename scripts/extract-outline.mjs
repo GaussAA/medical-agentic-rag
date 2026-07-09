@@ -10,8 +10,11 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+// 输入：归一化纯文本（由 scripts/prepare-raw.mjs 从原始 PDF/DOCX 抽取，复用中文层级正则）
+const TXT_DIR = join(__dirname, "..", "medical-raw-txt");
+// 输出：索引仍落 medical-knowlegde-base/（扩展硬编码读取，零改动）
 const KB_DIR = join(__dirname, "..", "medical-knowlegde-base");
-const OUT_FILE = join(__dirname, "..", "medical-knowlegde-base", ".outline.json");
+const OUT_FILE = join(KB_DIR, ".outline.json");
 
 // 章节匹配（兼容两类来源）：
 //  A. markdown 标题: ## / ### / ####
@@ -40,7 +43,7 @@ function cleanHeading(s) {
 
 async function parseFile(filePath) {
   const text = await readFile(filePath, "utf-8");
-  const fileName = filePath.split(/[/\\]/).pop().replace(/\.md$/i, "");
+  const fileName = filePath.split(/[/\\]/).pop().replace(/\.txt$/i, "");
 
   // Extract title from first h1
   const titleMatch = text.match(/^#\s+(.+)$/m);
@@ -99,15 +102,15 @@ async function parseFile(filePath) {
 }
 
 async function main() {
-  const files = (await readdir(KB_DIR))
-    .filter((f) => f.endsWith(".md") && !f.startsWith("."))
+  const files = (await readdir(TXT_DIR))
+    .filter((f) => f.endsWith(".txt") && !f.startsWith("."))
     .sort();
 
   console.log(`发现 ${files.length} 份指南文件\n`);
 
   const results = [];
   for (const file of files) {
-    const filePath = join(KB_DIR, file);
+    const filePath = join(TXT_DIR, file);
     const result = await parseFile(filePath);
     results.push(result);
     console.log(`  [${String(results.length).padStart(2)}] ${result.title}`);

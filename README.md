@@ -1,7 +1,7 @@
 # 医疗 Agentic RAG 系统
 
 基于 **Pi Agent (earendil-works/pi)** + **pi-knowledge** 构建的医疗知识问答系统。
-知识源为 **26 份国家卫生健康委员会发布的权威诊疗指南**。
+知识源为 **114 份国家卫生健康委员会发布的权威诊疗指南（原始 PDF/DOCX；方案 B：弃 MD 中间层，原始文档为唯一真相源）**。
 
 ## 快速开始
 
@@ -24,8 +24,8 @@ cp start.example.bat start.bat
 
 # 5. 首次启动后索引知识库
 # 在 Pi 交互界面中执行:
-#   knowledge_plan { source: "medical-knowlegde-base" }
-#   knowledge_add { source: "medical-knowlegde-base", name: "医疗指南" }
+#   knowledge_plan { source: "medical-raw" }
+#   knowledge_add { source: "medical-raw", name: "医疗指南" }
 ```
 
 ## 项目结构
@@ -39,7 +39,9 @@ medical-agentic-rag/
 │   │   ├── coding-agent/        # CLI 入口
 │   │   └── tui/                 # 终端 UI
 │   └── ...
-├── medical-knowlegde-base/      # 27 份医疗指南（Markdown）
+├── medical-raw/                 # 114 份原始医疗指南（PDF/DOCX，方案B唯一真相源；gitignore）
+├── medical-raw-txt/             # 由原始文档归一化抽取的纯文本（供 outline 复用；gitignore）
+├── medical-knowlegde-base/      # 检索索引（.outline/.guide-index/.knowledge-graph），由原始文档派生
 ├── .pi/
 │   ├── cache/                   # 文件化检索缓存（.retrieval-cache.json）
 │   └── extensions/              # 自定义扩展（检索增强 + Provider）
@@ -106,8 +108,8 @@ node pi\packages\coding-agent\dist\cli.js ^
 在 Pi 交互界面中输入：
 
 ```
-knowledge_plan { source: "medical-knowlegde-base" }
-knowledge_add { source: "medical-knowlegde-base", name: "医疗指南" }
+knowledge_plan { source: "medical-raw" }
+knowledge_add { source: "medical-raw", name: "医疗指南" }
 knowledge_show
 ```
 
@@ -192,6 +194,17 @@ node tests/compliance-test.mjs
 ## 知识库扩展（近期）
 
 针对「无自动更新机制、偏科 ~70% 肿瘤+血液」短板，已落地**来源登记与更新管理**：
+
+> **知识库源（方案 B：弃 MD 中间层）** —— 原始 PDF/DOCX（`medical-raw/`）为唯一真相源，不再经 Markdown 中转。
+> 索引重建四步（原生 node，需 `pdftotext` 与 python-docx 桥）：
+> ```bash
+> node scripts/prepare-raw.mjs        # 复制原始文档进项目 + 生成归一化 medical-raw-txt/
+> node scripts/extract-outline.mjs    # 由原始文本重建 .outline.json（中文层级正则）
+> node scripts/build-guide-index.mjs  # 重建 .guide-index.json（语义路由/关键词）
+> node scripts/_rebuild-registry.mjs  # 重建 kb-sources.json（真实 sha256 指纹 + 专科归类）
+> ```
+> 向量库 `~/.pi/knowledge/` 由 Pi 运行时 `knowledge_add { source: "medical-raw" }` 重建（见上「首次使用」）。
+> 注意：原始目录中 `.doc` 老格式 pi-knowledge 与本项目管线均不支持，须 LibreOffice 转 `.docx` 或排除。
 
 1. **来源登记表** (`kb-sources.json`)
    每项含 `id/名称/类型(local|web|feed)/地址/cadence/校验方式`。新增外部源只需追加一行，

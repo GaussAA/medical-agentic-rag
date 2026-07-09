@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-09T12:01:43.792Z",
+  "timestamp": "2026-07-09T14:46:59.640Z",
   "summary": {
     "passed": 32,
     "failed": 0,
@@ -94,7 +94,7 @@
       "name": "大纲数据测试",
       "tests": [
         {
-          "name": "全部指南解析且与磁盘一致",
+          "name": "全部指南解析且与原始文档一致",
           "passed": true,
           "error": null
         },
@@ -104,12 +104,12 @@
           "error": null
         },
         {
-          "name": "关键段落总数 >= 500",
+          "name": "关键段落总数 >= 400（原始文本句子边界较 MD 稀疏）",
           "passed": true,
           "error": null
         },
         {
-          "name": "每份指南都有 hierarchy 结构",
+          "name": "每份指南都有 hierarchy 结构（成员名单/纯流程图等可章节数为 0）",
           "passed": true,
           "error": null
         }
@@ -118,20 +118,20 @@
       "failed": 0
     },
     {
-      "name": "知识库文件完整性",
+      "name": "知识库文件完整性（原始文档）",
       "tests": [
         {
-          "name": "MD 文件数 ≥ 基线 27（知识库已扩容）",
+          "name": "原始文档数 ≥ 基线 100（知识库已扩容）",
           "passed": true,
           "error": null
         },
         {
-          "name": "所有 MD 文件均可读取且不为空",
+          "name": "所有原始文档均为 PDF/DOCX 且可读取不为空",
           "passed": true,
           "error": null
         },
         {
-          "name": "所有文件包含 Markdown 标题",
+          "name": "归一化文本已生成（medical-raw-txt 与原始一一对应且非空）",
           "passed": true,
           "error": null
         }

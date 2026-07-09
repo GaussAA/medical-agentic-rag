@@ -25,6 +25,9 @@ node_modules/
 # 知识库来源登记表（含运行元数据/时间戳）+ 快照
 kb-sources.json
 .pi/kb-snapshots/
+# 原始知识库（方案B：弃MD中间层，原始PDF/DOCX为唯一真相源；可经管线重建，体积大不入仓）
+medical-raw/
+medical-raw-txt/
 # 故障转移选择结果（运行期生成）
 .pi/failover-selection.json
 # 业务日志 + 合规审计日志（audit-*.ndjson）

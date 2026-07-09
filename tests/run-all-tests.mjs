@@ -143,12 +143,14 @@ async function testKnowledgeGraph() {
 // ============================================================
 async function testGuideIndex() {
   const index = JSON.parse(await readFile(join(KB_DIR, ".guide-index.json"), "utf-8"));
+  const mdCount = (await readdir(KB_DIR)).filter((f) => f.endsWith(".md") && !f.startsWith(".")).length;
 
   await runSuite("指南索引测试", [
     {
       name: "指南索引文件存在且格式正确",
       fn: () => {
-        assert(index.totalGuides === 27, `应有 27 份指南，实际 ${index.totalGuides}`);
+        assert(index.totalGuides === mdCount, `索引指南数 ${index.totalGuides} ≠ 磁盘 MD 数 ${mdCount}`);
+        assert(index.totalGuides >= 27, `指南数回退至基线以下: ${index.totalGuides}`);
         assert(index.totalKeywords > 200, `关键词数 ${index.totalKeywords} < 200`);
       },
     },
@@ -205,12 +207,13 @@ async function testGuideIndex() {
 // ============================================================
 async function testOutline() {
   const outline = JSON.parse(await readFile(join(KB_DIR, ".outline.json"), "utf-8"));
+  const mdCount = (await readdir(KB_DIR)).filter((f) => f.endsWith(".md") && !f.startsWith(".")).length;
 
   await runSuite("大纲数据测试", [
     {
-      name: "26 份指南全部解析",
+      name: "全部指南解析且与磁盘一致",
       fn: () => {
-        assert(outline.totalFiles === 27, `仅解析 ${outline.totalFiles} 份`);
+        assert(outline.totalFiles === mdCount, `大纲 ${outline.totalFiles} 份 ≠ 磁盘 ${mdCount} 份`);
       },
     },
     {
@@ -245,9 +248,9 @@ async function testKBIntegrity() {
 
   await runSuite("知识库文件完整性", [
     {
-      name: "MD 文件数 = 27",
+      name: "MD 文件数 ≥ 基线 27（知识库已扩容）",
       fn: () => {
-        assert(files.length === 27, `实际 ${files.length} 个 MD 文件`);
+        assert(files.length >= 27, `实际 ${files.length} 个 MD 文件，低于基线 27`);
       },
     },
     {

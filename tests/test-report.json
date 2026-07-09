@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-09T11:21:38.726Z",
+  "timestamp": "2026-07-09T12:01:43.792Z",
   "summary": {
     "passed": 32,
     "failed": 0,
@@ -94,7 +94,7 @@
       "name": "大纲数据测试",
       "tests": [
         {
-          "name": "26 份指南全部解析",
+          "name": "全部指南解析且与磁盘一致",
           "passed": true,
           "error": null
         },
@@ -121,7 +121,7 @@
       "name": "知识库文件完整性",
       "tests": [
         {
-          "name": "MD 文件数 = 27",
+          "name": "MD 文件数 ≥ 基线 27（知识库已扩容）",
           "passed": true,
           "error": null
         },

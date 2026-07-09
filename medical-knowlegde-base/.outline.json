@@ -1,13 +1,93 @@
 {
-  "generatedAt": "2026-07-09T09:31:02.361Z",
-  "totalFiles": 27,
-  "totalSections": 1272,
-  "totalKeyParagraphs": 1029,
+  "generatedAt": "2026-07-09T12:01:06.855Z",
+  "totalFiles": 66,
+  "totalSections": 12852,
+  "totalKeyParagraphs": 1454,
   "guides": [
+    {
+      "id": "86个罕见病病种诊疗指南（2025年版）",
+      "title": "86个罕见病病种诊疗指南（2025年版）",
+      "sectionCount": 1517,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "上颌骨骨折诊疗指南（2022年版）",
+      "title": "上颌骨骨折诊疗指南（2022年版）",
+      "sectionCount": 16,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "下颌骨骨折诊疗指南（2022年版）",
+      "title": "下颌骨骨折诊疗指南（2022年版）",
+      "sectionCount": 41,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "中华医学会肺癌临床诊疗指南（2024版）",
+      "title": "中华医学会肺癌临床诊疗指南（2024版）",
+      "sectionCount": 104,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "中国人群骨质疏松症风险管理公众指南（2024）",
+      "title": "中国人群骨质疏松症风险管理公众指南（2024）",
+      "sectionCount": 48,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
+      "title": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
+      "sectionCount": 290,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "中国糖尿病防治指南（2024版）",
+      "title": "中国糖尿病防治指南（2024版）",
+      "sectionCount": 593,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "中国艾滋病诊疗指南（2024版）",
+      "title": "中国艾滋病诊疗指南（2024版）",
+      "sectionCount": 110,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "中国高血压防治指南（2024年修订版）",
+      "title": "中国高血压防治指南（2024年修订版）",
+      "sectionCount": 213,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "乳腺癌诊疗指南（2022年版）",
+      "title": "乳腺癌诊疗指南（2022年版）",
+      "sectionCount": 142,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
     {
       "id": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
       "title": "儿童肺炎支原体肺炎诊疗指南(2025年版)",
-      "sectionCount": 68,
+      "sectionCount": 88,
       "keyParagraphCount": 33,
       "hierarchy": [],
       "keyParagraphs": [
@@ -26,7 +106,7 @@
     {
       "id": "前列腺癌诊疗指南（2022年版）",
       "title": "前列腺癌诊疗指南（2022年版）",
-      "sectionCount": 54,
+      "sectionCount": 59,
       "keyParagraphCount": 64,
       "hierarchy": [],
       "keyParagraphs": [
@@ -43,9 +123,17 @@
       ]
     },
     {
+      "id": "化脓性颌骨骨髓炎诊疗指南（2022年版）",
+      "title": "化脓性颌骨骨髓炎诊疗指南（2022年版）",
+      "sectionCount": 26,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "卵巢癌诊疗指南（2022年版）",
       "title": "卵巢癌诊疗指南（2022年版）",
-      "sectionCount": 27,
+      "sectionCount": 39,
       "keyParagraphCount": 30,
       "hierarchy": [],
       "keyParagraphs": [
@@ -64,7 +152,7 @@
     {
       "id": "原发性肝癌诊疗指南（2024年版）",
       "title": "原发性肝癌诊疗指南（2024年版）",
-      "sectionCount": 66,
+      "sectionCount": 72,
       "keyParagraphCount": 127,
       "hierarchy": [],
       "keyParagraphs": [
@@ -81,6 +169,54 @@
       ]
     },
     {
+      "id": "原发性肝癌诊疗指南（2026版）",
+      "title": "原发性肝癌诊疗指南（2026版）",
+      "sectionCount": 124,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "原发性肺癌诊疗指南（2022年版）",
+      "title": "原发性肺癌诊疗指南（2022年版）",
+      "sectionCount": 83,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "口腔念珠菌病诊疗指南（2022年版）",
+      "title": "口腔念珠菌病诊疗指南（2022年版）",
+      "sectionCount": 40,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "口腔扁平苔藓诊疗指南（2022年版）",
+      "title": "口腔扁平苔藓诊疗指南（2022年版）",
+      "sectionCount": 49,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "口腔颌面部间隙感染诊疗指南（2022年版）",
+      "title": "口腔颌面部间隙感染诊疗指南（2022年版）",
+      "sectionCount": 22,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "唇裂诊疗指南（2022年版）",
+      "title": "唇裂诊疗指南（2022年版）",
+      "sectionCount": 32,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "基层医疗卫生机构急重患者判断及转诊技术标准（2022年版）",
       "title": "基层医疗卫生机构急重患者判断及转诊技术标准（2022年版）",
       "sectionCount": 42,
@@ -91,7 +227,7 @@
     {
       "id": "子宫内膜癌诊疗指南（2022年版）",
       "title": "子宫内膜癌诊疗指南（2022年版）",
-      "sectionCount": 35,
+      "sectionCount": 56,
       "keyParagraphCount": 42,
       "hierarchy": [],
       "keyParagraphs": [
@@ -110,7 +246,7 @@
     {
       "id": "宫颈癌诊疗指南（2022年版）",
       "title": "宫颈癌诊疗指南（2022年版）",
-      "sectionCount": 46,
+      "sectionCount": 52,
       "keyParagraphCount": 25,
       "hierarchy": [],
       "keyParagraphs": [
@@ -127,9 +263,17 @@
       ]
     },
     {
+      "id": "尼帕病毒病诊疗方案（2026年版）",
+      "title": "尼帕病毒病诊疗方案（2026年版）",
+      "sectionCount": 50,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "常见慢性病风险评估指标（2025年版）",
       "title": "常见慢性病风险评估指标（2025年版）",
-      "sectionCount": 21,
+      "sectionCount": 84,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -137,7 +281,7 @@
     {
       "id": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
       "title": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
-      "sectionCount": 13,
+      "sectionCount": 60,
       "keyParagraphCount": 9,
       "hierarchy": [],
       "keyParagraphs": [
@@ -153,9 +297,20 @@
       ]
     },
     {
+      "id": "慢性乙型肝炎防治指南（2022年版）",
+      "title": "慢性乙型肝炎防治指南（2022年版）",
+      "sectionCount": 33,
+      "keyParagraphCount": 2,
+      "hierarchy": [],
+      "keyParagraphs": [
+        "~ 12 个月。 对于应用 B 淋巴细胞单克隆抗体或进行造血干 治疗( B1) 。 如合并肾功能不全,可考虑使用 TAF 治疗( B2) 。",
+        "并感染者应同时治疗 2 种病毒,包括 2 种抗 HBV 活性的药物 应用 ETV、TDF 或 TAF 进行抗病毒治疗( A1) 。"
+      ]
+    },
+    {
       "id": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
       "title": "慢性淋巴细胞白血病/小淋巴细胞淋巴瘤诊疗指南（2022年版）",
-      "sectionCount": 25,
+      "sectionCount": 45,
       "keyParagraphCount": 9,
       "hierarchy": [],
       "keyParagraphs": [
@@ -174,6 +329,14 @@
       "id": "慢性病风险筛查项目（2025年版）",
       "title": "慢性病风险筛查项目（2025年版）",
       "sectionCount": 3,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
+      "title": "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
+      "sectionCount": 119,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -198,9 +361,44 @@
       ]
     },
     {
+      "id": "成釉细胞瘤诊疗指南（2022年版）",
+      "title": "成釉细胞瘤诊疗指南（2022年版）",
+      "sectionCount": 24,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "新型抗肿瘤药物临床应用指导原则(2022年版)",
+      "title": "新型抗肿瘤药物临床应用指导原则(2022年版)",
+      "sectionCount": 1381,
+      "keyParagraphCount": 423,
+      "hierarchy": [],
+      "keyParagraphs": [
+        "为规范新型抗肿瘤药物临床应用，提高肿瘤治疗的合理用药水平，保障医疗质量和医疗安全，维护肿瘤患者健康权益，特制定新型抗肿瘤药物临床应用指导原则。本指导原则涉及的新型抗肿瘤药物是指小分子靶向药物和大分子单克隆抗体类药物。",
+        "抗肿瘤药物的应用涉及临床多个学科，合理应用抗肿瘤药物是提高疗效、降低不良反应发生率以及合理利用卫生资源的关键。抗肿瘤药物临床应用需考虑药物可及性、患者治疗意愿、疾病预后和用药安全性等四大要素。抗肿瘤药物临床应用是否合理，基于以下两方面：有无抗肿瘤药物应用指征；安全性、有效性、经济性及适当性的综合考量。",
+        "只有经组织或细胞学病理确诊、或特殊分子病理诊断成立的恶性肿瘤，才有指征使用抗肿瘤药物。单纯依据患者的临床症状、体征和影像学结果得出临床诊断的肿瘤患者，没有抗肿瘤药物治疗的指征，经多学科会诊不适宜手术或活检的病例除外。但对于某些难以获取病理诊断的肿瘤，如妊娠滋养细胞肿瘤等，其确诊可参照国家相关指南或规范执行。",
+        "现代抗肿瘤药物的一个显著特征，是出现一批针对分子异常特征的药物——即分子靶向药物。最具代表性的药物是针对表皮生长因子信号通路异常的酪氨酸激酶抑制剂。目前，根据是否需要做分子靶点检测，可以将常用的小分子靶向药物和大分子单克隆抗体类药物分为需要检测和无需检测分子靶点两大类（表1）。具体的检测靶点详见各章节。",
+        "对于明确作用靶点的药物，须遵循靶点检测后方可使用的原则。检测所用的仪器设备、诊断试剂和检测方法应当经过国家药品监督管理部门批准，特别是经过临床试验伴随诊断验证的方法。不得在未做相关检查的情况下盲目用药。",
+        "抗肿瘤药物的药品说明书是抗肿瘤药物临床应用的法定依据，其规定的适应证经过了国家药品监督管理部门批准。抗肿瘤药物临床应用须遵循药品说明书，不能随意超适应证使用。在抗肿瘤药物临床应用过程中，发现新的具有高级别循证医学证据的用法但药品说明书中未体现的，医疗机构和医务人员可及时向药品生产企业反馈，建议其主动向国家药品监督管理部门申报，及时更新相应药品说明书，以保证药品说明书的科学性、权威性，有效指导临床用",
+        "现代临床肿瘤学高度重视恶性肿瘤患者的治疗价值。其核心思想是，在相同治疗成本前提下，使患者获得更长的生存时间和更好的生活质量。在抗肿瘤药物临床应用中，应当充分考虑抗肿瘤药物的成本-效果比，在严格遵循适应证用药的前提下优先选择具有药物经济学评价优势证据的品种。",
+        "随着癌症治疗临床实践的快速发展，目前上市的抗肿瘤药物尚不能完全满足肿瘤患者的用药需求，药品说明书也往往滞后于临床实践，一些具有高级别循证医学证据的用法未能及时在药品说明书中明确规定。在尚无更好治疗手段等特殊情况下，医疗机构应当制定相应管理制度、技术规范，对药品说明书中未明确、但具有循证医学证据的药品用法进行严格管理。特殊情况下抗肿瘤药物的使用权应当仅限于三级医院授权的具有高级专业技术职称的医师，充",
+        "抗肿瘤药物的相关性毒副作用发生率较高，也容易产生罕见的毒副作用，因此抗肿瘤药物不良反应报告尤为重要。医疗机构应当建立药品不良反应、药品损害事件监测报告制度，并按照国家有关规定向相关部门报告。医疗机构应当将抗肿瘤药物不良反应，尤其是新型抗肿瘤药物不良反应报告纳入医疗质量考核体系，定期分析和报告新型抗肿瘤药物不良反应的动态和趋势。临床医师、护理人员和临床药师应当密切随访患者的用药相关毒性，并及时上报不",
+        "5.治疗过程中影像学显示缓慢进展但临床症状未发生恶化的患者，可以继续使用原药物；显示寡进展或中枢神经系统进展患者，可以继续使用原药物加局部治疗；对于广泛进展的患者，建议改换为其他治疗方案。本条标准也适用于其他EGFR酪氨酸激酶抑制剂。"
+      ]
+    },
+    {
+      "id": "新型抗肿瘤药物临床应用指导原则（2025年版）",
+      "title": "新型抗肿瘤药物临床应用指导原则（2025年版）",
+      "sectionCount": 2750,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "流行性感冒诊疗方案（2025版）",
       "title": "流行性感冒诊疗方案（2025年版）",
-      "sectionCount": 38,
+      "sectionCount": 86,
       "keyParagraphCount": 9,
       "hierarchy": [],
       "keyParagraphs": [
@@ -218,7 +416,7 @@
     {
       "id": "淋巴瘤诊疗指南（2022年版）",
       "title": "淋巴瘤诊疗指南（2022年版）",
-      "sectionCount": 79,
+      "sectionCount": 142,
       "keyParagraphCount": 82,
       "hierarchy": [],
       "keyParagraphs": [
@@ -235,9 +433,57 @@
       ]
     },
     {
+      "id": "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）",
+      "title": "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）",
+      "sectionCount": 192,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "牙源性颌骨囊肿诊疗指南（2022年版）",
+      "title": "牙源性颌骨囊肿诊疗指南（2022年版）",
+      "sectionCount": 21,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "牙颌面畸形诊疗指南（2022年版）",
+      "title": "牙颌面畸形诊疗指南（2022年版）",
+      "sectionCount": 99,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "甲状腺癌诊疗指南（2022版）",
+      "title": "甲状腺癌诊疗指南（2022版）",
+      "sectionCount": 127,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "甲状腺结节和分化型甲状腺癌诊治指南（第二版）",
+      "title": "甲状腺结节和分化型甲状腺癌诊治指南（第二版）",
+      "sectionCount": 121,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "磨牙症诊疗指南（2022年版）",
+      "title": "磨牙症诊疗指南（2022年版）",
+      "sectionCount": 39,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "综合医院中医药工作指南（2024 版）",
       "title": "综合医院中医药工作指南（2024版）",
-      "sectionCount": 65,
+      "sectionCount": 177,
       "keyParagraphCount": 1,
       "hierarchy": [],
       "keyParagraphs": [
@@ -245,9 +491,17 @@
       ]
     },
     {
+      "id": "罕见病诊疗指南（2019年版）",
+      "title": "罕见病诊疗指南（2019年版）",
+      "sectionCount": 1999,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "老年髋部骨折诊疗与管理指南（2022年版）",
       "title": "老年髋部骨折诊疗与管理指南（2022年版）",
-      "sectionCount": 27,
+      "sectionCount": 39,
       "keyParagraphCount": 33,
       "hierarchy": [],
       "keyParagraphs": [
@@ -266,7 +520,7 @@
     {
       "id": "肥胖症诊疗指南（2024年版）",
       "title": "肥胖症诊疗指南 (2024年版)",
-      "sectionCount": 87,
+      "sectionCount": 94,
       "keyParagraphCount": 45,
       "hierarchy": [],
       "keyParagraphs": [
@@ -281,6 +535,22 @@
         "非酒精性脂肪性肝病（nonalcoholic fatty liver disease, NAFLD）是一系列临床病理综合征，包括单纯性脂肪肝（nonalcoholic fatty liver, NAFL）、脂肪性肝炎（nonalcoholic steatohepatitis, NASH）及其相关肝纤维化和肝硬化[68-70]。NAFLD是肥胖症患者最常见的并发症之一，超重和肥胖症人群中NAFLD患",
         "NAFLD、MAFLD或者MASLD，尤其是合并有超重或肥胖症的治疗仍以减重治疗为基础治疗。对于合并肥胖症的NAFLD患者，减重 \\(10\\%\\) 以上可显著改善肝脏脂肪变性和炎症，甚至逆转纤维化[76-80]。"
       ]
+    },
+    {
+      "id": "肺结核门诊诊疗规范",
+      "title": "肺结核门诊诊疗规范",
+      "sectionCount": 136,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "肾癌诊疗指南（2022年版）",
+      "title": "肾癌诊疗指南（2022年版）",
+      "sectionCount": 70,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
     },
     {
       "id": "肾细胞癌诊疗指南（2022年版）",
@@ -304,7 +574,7 @@
     {
       "id": "胃癌诊疗指南（2022年版）",
       "title": "胃癌诊疗指南（2022年版）",
-      "sectionCount": 104,
+      "sectionCount": 141,
       "keyParagraphCount": 84,
       "hierarchy": [],
       "keyParagraphs": [
@@ -323,7 +593,7 @@
     {
       "id": "胰腺癌诊治指南（2022年版）",
       "title": "胰腺癌诊疗指南（2022年版）",
-      "sectionCount": 43,
+      "sectionCount": 108,
       "keyParagraphCount": 50,
       "hierarchy": [],
       "keyParagraphs": [
@@ -359,6 +629,30 @@
       ]
     },
     {
+      "id": "脑血管病防治指南（2024年版）",
+      "title": "脑血管病防治指南（2024年版）",
+      "sectionCount": 134,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "腭裂诊疗指南（2022年版）",
+      "title": "腭裂诊疗指南（2022年版）",
+      "sectionCount": 36,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "腮腺浅叶良性肿瘤诊疗指南（2022年版）",
+      "title": "腮腺浅叶良性肿瘤诊疗指南（2022年版）",
+      "sectionCount": 26,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "膀胱癌诊疗指南（2022年版）",
       "title": "膀胱癌诊疗指南（2022年版）",
       "sectionCount": 113,
@@ -380,7 +674,7 @@
     {
       "id": "自身免疫性溶血性贫血诊疗指南（2022年版）",
       "title": "自身免疫性溶血性贫血诊疗指南（2022年版）",
-      "sectionCount": 27,
+      "sectionCount": 65,
       "keyParagraphCount": 2,
       "hierarchy": [],
       "keyParagraphs": [
@@ -389,9 +683,33 @@
       ]
     },
     {
+      "id": "舌下腺囊肿诊疗指南（2022年版）",
+      "title": "舌下腺囊肿诊疗指南（2022年版）",
+      "sectionCount": 34,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "舌癌诊疗指南（2022年版）",
+      "title": "舌癌诊疗指南（2022年版）",
+      "sectionCount": 25,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "菌斑性龈炎诊疗指南（2022年版）",
+      "title": "菌斑性龈炎诊疗指南（2022年版）",
+      "sectionCount": 30,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "血友病A诊疗指南（2022年版）",
       "title": "血友病A诊疗指南（2022年版）",
-      "sectionCount": 26,
+      "sectionCount": 40,
       "keyParagraphCount": 25,
       "hierarchy": [],
       "keyParagraphs": [
@@ -408,9 +726,17 @@
       ]
     },
     {
+      "id": "近视防治指南（2024年版）",
+      "title": "近视防治指南（2024年版）",
+      "sectionCount": 45,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "食管癌诊疗指南（2022年版）",
       "title": "食管癌诊疗指南（2022年版）",
-      "sectionCount": 93,
+      "sectionCount": 113,
       "keyParagraphCount": 66,
       "hierarchy": [],
       "keyParagraphs": [
@@ -429,7 +755,7 @@
     {
       "id": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）",
       "title": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）",
-      "sectionCount": 22,
+      "sectionCount": 41,
       "keyParagraphCount": 14,
       "hierarchy": [],
       "keyParagraphs": [
@@ -448,7 +774,7 @@
     {
       "id": "黑色素瘤诊疗指南（2022年版）",
       "title": "黑色素瘤诊疗指南（2022年版）",
-      "sectionCount": 43,
+      "sectionCount": 47,
       "keyParagraphCount": 25,
       "hierarchy": [],
       "keyParagraphs": [

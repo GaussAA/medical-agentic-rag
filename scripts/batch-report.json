@@ -1,0 +1,410 @@
+{
+  "ts": "2026-07-09T11:49:06.803Z",
+  "src": "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin",
+  "dry": false,
+  "items": [
+    {
+      "file": "86个罕见病病种诊疗指南（2025年版）.pdf",
+      "dept": "其他内科",
+      "action": "add",
+      "reason": "新增(dept=其他内科)"
+    },
+    {
+      "file": "上颌骨骨折诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "下颌骨骨折诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "中华医学会肺癌临床诊疗指南（2024版）.pdf",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "中国人群骨质疏松症风险管理公众指南（2024）.pdf",
+      "dept": "其他内科",
+      "action": "add",
+      "reason": "新增(dept=其他内科)"
+    },
+    {
+      "file": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）.pdf",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "中国糖尿病防治指南（2024版）.pdf",
+      "dept": "内分泌",
+      "action": "add",
+      "reason": "新增(dept=内分泌)"
+    },
+    {
+      "file": "中国艾滋病诊疗指南（2024版）.pdf",
+      "dept": "其他内科",
+      "action": "add",
+      "reason": "新增(dept=其他内科)"
+    },
+    {
+      "file": "中国高血压防治指南（2024年修订版）.pdf",
+      "dept": "心血管",
+      "action": "add",
+      "reason": "新增(dept=心血管)"
+    },
+    {
+      "file": "乳腺癌诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "儿童肺炎支原体肺炎诊疗指南（2023年版）.doc",
+      "dept": "儿科",
+      "action": "skip",
+      "reason": "legacy .doc 暂不支持(请转 docx)"
+    },
+    {
+      "file": "儿童肺炎支原体肺炎诊疗指南（2025年版）.pdf",
+      "dept": "儿科",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "前列腺癌诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "化脓性颌骨骨髓炎诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "卵巢癌诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "原发性肝癌诊疗指南（2024年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "原发性肝癌诊疗指南（2026版）.pdf",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "原发性肺癌诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "口腔念珠菌病诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "口腔扁平苔藓诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "口腔颌面部间隙感染诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "唇裂诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "子宫内膜癌诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "安宁疗护实践指南（2025年版）.doc",
+      "dept": "其他内科",
+      "action": "skip",
+      "reason": "legacy .doc 暂不支持(请转 docx)"
+    },
+    {
+      "file": "宫颈癌诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "尼帕病毒病诊疗方案（2026年版）.pdf",
+      "dept": "其他内科",
+      "action": "add",
+      "reason": "新增(dept=其他内科)"
+    },
+    {
+      "file": "常见慢性病风险评估指标（2025年版）.docx",
+      "dept": "慢病/代谢",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "慢性乙型肝炎防治指南（2022年版）.pdf",
+      "dept": "慢病/代谢",
+      "action": "add",
+      "reason": "新增(dept=慢病/代谢)"
+    },
+    {
+      "file": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "慢性病风险筛查项目（2025年版）.docx",
+      "dept": "慢病/代谢",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）.pdf",
+      "dept": "慢病/代谢",
+      "action": "add",
+      "reason": "新增(dept=慢病/代谢)"
+    },
+    {
+      "file": "慢性髓性白血病诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "成釉细胞瘤诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "新型抗肿瘤药物临床应用指导原则(2022年版).docx",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "新型抗肿瘤药物临床应用指导原则（2025年版）.pdf",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "流行性感冒诊疗方案（2025版）.pdf",
+      "dept": "其他内科",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "淋巴瘤诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "牙源性颌骨囊肿诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "牙颌面畸形诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "甲状腺癌诊疗指南（2022版）.pdf",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "甲状腺结节和分化型甲状腺癌诊治指南（第二版）.pdf",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "磨牙症诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "综合医院中医药工作指南（2024 版）.pdf",
+      "dept": "外科/综合",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "罕见病诊疗指南（2019年版）.pdf",
+      "dept": "其他内科",
+      "action": "add",
+      "reason": "新增(dept=其他内科)"
+    },
+    {
+      "file": "老年髋部骨折诊疗与管理指南（2022年版）.docx",
+      "dept": "外科/综合",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "肥胖症诊疗指南（2024年版）.pdf",
+      "dept": "慢病/代谢",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "肺结核门诊诊疗规范.pdf",
+      "dept": "其他内科",
+      "action": "add",
+      "reason": "新增(dept=其他内科)"
+    },
+    {
+      "file": "肾癌诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "add",
+      "reason": "新增(dept=肿瘤)"
+    },
+    {
+      "file": "胃癌诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "胰腺癌诊治指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "脑胶质瘤诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "脑血管病防治指南（2024年版）.pdf",
+      "dept": "其他内科",
+      "action": "add",
+      "reason": "新增(dept=其他内科)"
+    },
+    {
+      "file": "腭裂诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "腮腺浅叶良性肿瘤诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "膀胱癌诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "自身免疫性溶血性贫血诊疗指南（2022年版）.pdf",
+      "dept": "血液",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "舌下腺囊肿诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "舌癌诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "菌斑性龈炎诊疗指南（2022年版）.pdf",
+      "dept": "口腔",
+      "action": "add",
+      "reason": "新增(dept=口腔)"
+    },
+    {
+      "file": "血友病A诊疗指南（2022年版）.pdf",
+      "dept": "血液",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "近视防治指南（2024年版）.pdf",
+      "dept": "眼科",
+      "action": "add",
+      "reason": "新增(dept=眼科)"
+    },
+    {
+      "file": "食管癌诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    },
+    {
+      "file": "黑色素瘤诊疗指南（2022年版）.pdf",
+      "dept": "肿瘤",
+      "action": "upgrade",
+      "reason": "新年版替换旧版"
+    }
+  ],
+  "summary": {
+    "total": 66,
+    "added": 39,
+    "upgraded": 25,
+    "skipped": 2,
+    "failed": 0
+  }
+}

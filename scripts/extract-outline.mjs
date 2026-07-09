@@ -13,10 +13,30 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const KB_DIR = join(__dirname, "..", "medical-knowlegde-base");
 const OUT_FILE = join(__dirname, "..", "medical-knowlegde-base", ".outline.json");
 
-// 中医数字章节匹配: 一、 二、... / （一） （二）... / 1. 2....
-const SECTION_RE = /^(#{2,4})\s+(.+)$/gm;
+// 章节匹配（兼容两类来源）：
+//  A. markdown 标题: ## / ### / ####
+//  B. 中文层级（纯文本 PDF 抽取）:
+//       - 一、 二、 ……（中文数字 + 标点，含全角 ．、）
+//       - （一）（二）……（中文数字，含全角括号）
+//       - 1. 2. ……（ASCII 数字）
+//       - １． ２． ……（全角数字 + 全角标点）
+//     行首允许空白（pdftotext -layout 可能缩进）
+const CN_NUM = "一二三四五六七八九十百零两";
+const SECTION_RE = new RegExp(
+  "^(?:[ \\t]*)(#{2,4})\\s+(.+)" + // 1,2 markdown ## ### ####
+    "|^(?:[ \\t]*)([" + CN_NUM + "]+[.．、])\\s*(.+)" + // 3,4 一、 二． 三、
+    "|^(?:[ \\t]*)（([" + CN_NUM + "]+)）\\s*(.+)" + // 5,6 （一）（二）
+    "|^(?:[ \\t]*)([０-９]+[.．、])\\s*(.+)" + // 7,8 １． ２、
+    "|^(?:[ \\t]*)(\\d+)([.、])\\s*(.+)", // 9,10,11 1. 2、
+  "gm"
+);
 // 关键内容段落模式：含"推荐"、"诊断"、"治疗"的段落
 const KEY_PARA_RE = /^[^#\n]{30,}?(推荐|诊断|治疗|筛查|预后|分期|药物|剂量)[^#\n]{30,}。$/gm;
+
+// 清洗目录噪点：去除「....」点线 leaders 与尾部页码（如「一、糖尿病…17」→「一、糖尿病」）
+function cleanHeading(s) {
+  return s.replace(/[.．·‥…]+/g, " ").replace(/\s+\d+\s*$/, "").replace(/\s{2,}/g, " ").trim();
+}
 
 async function parseFile(filePath) {
   const text = await readFile(filePath, "utf-8");
@@ -29,8 +49,14 @@ async function parseFile(filePath) {
   const sections = [];
   let match;
   while ((match = SECTION_RE.exec(text)) !== null) {
-    const level = match[1].length; // 2, 3, or 4
-    const title = match[2].trim();
+    let level, title;
+    if (match[1] != null) { level = match[1].length; title = match[2]; }            // markdown ## ### ####
+    else if (match[3] != null) { level = 2; title = match[3] + (match[4] || ""); } // 一、 二． 三、
+    else if (match[5] != null) { level = 3; title = `（${match[5]}）` + (match[6] || ""); } // （一）（二）
+    else if (match[7] != null) { level = 3; title = match[7] + (match[8] || ""); } // １． ２． 全角
+    else if (match[9] != null) { level = 3; title = match[9] + match[10] + (match[11] || ""); } // 1. 2、 ASCII
+    title = cleanHeading(title);
+    if (!title || title.length < 2) continue;
     const startPos = match.index;
     sections.push({ level, title, startPos });
   }

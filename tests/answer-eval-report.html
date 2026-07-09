@@ -1,0 +1,92 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>医疗 Agentic RAG · 答案级评测</title>
+<style>
+:root{--bg:#0b0f17;--panel:rgba(255,255,255,.06);--bd:rgba(255,255,255,.12);--tx:#e6edf3;--mut:#8b949e;--bl:#58a6ff;--cy:#39d0d8;--pp:#bc8cff;--gn:#3fb950;--rd:#f85149;}
+*{box-sizing:border-box}
+body{font-family:-apple-system,Segoe UI,Roboto,'Microsoft YaHei',sans-serif;background:radial-gradient(1200px 600px at 70% -10%,rgba(88,166,255,.12),transparent),var(--bg);color:var(--tx);margin:0;padding:32px;}
+h1{font-size:22px;margin:0 0 4px}
+.s{color:var(--mut);font-size:13px;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+.card{background:var(--panel);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:14px;padding:18px}
+.k{color:var(--mut);font-size:12px}
+.v{font-size:30px;font-weight:700;margin-top:6px}
+.sub{color:var(--mut);font-size:11px;margin-top:4px}
+.bar{height:8px;border-radius:4px;background:rgba(255,255,255,.08);margin-top:10px;overflow:hidden}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--cy),var(--bl))}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;background:var(--panel);backdrop-filter:blur(12px);border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.06)}
+th{color:var(--mut);font-weight:500;background:rgba(255,255,255,.03)}
+.ok{color:var(--gn)}.bad{color:var(--rd)}.mut{color:var(--mut)}
+</style></head><body>
+<h1>医疗 Agentic RAG · 答案级评测基线</h1>
+<div class="s">生成时间 2026-07-09T17:49:52.663Z · 知识库 135 指南 / 836 关键词 · 样本 10 条</div>
+<div class="grid">
+  <div class="card"><div class="k">引用召回率</div><div class="v">100</div><div class="sub">应引指南进入 top3 (10/10)</div><div class="bar"><i style="width:100%"></i></div></div>
+  <div class="card"><div class="k">证据可定位率</div><div class="v">100</div><div class="sub">关键证据短语见于源文 (23/23)</div><div class="bar"><i style="width:100%"></i></div></div>
+  <div class="card"><div class="k">证据等级标注率</div><div class="v">80</div><div class="sub">源文携带 GRADE 标记 (8/10)</div><div class="bar"><i style="width:80%"></i></div></div>
+  <div class="card"><div class="k">幻觉率</div><div class="v">skipped (no SENSENOVA_API_KEY)</div><div class="sub">跳过(无API Key)</div><div class="bar"><i style="width:100%"></i></div></div>
+</div>
+<table><thead><tr><th>引用</th><th>证据</th><th>等级</th><th>查询</th><th>应引指南(top3)</th></tr></thead><tbody>
+<tr>
+      <td class="ok">1/1</td>
+      <td class="ok">100%</td>
+      <td class="ok">✓</td>
+      <td>原发性肝癌一线系统抗肿瘤治疗推荐哪些药物</td>
+      <td class="mut">原发性肝癌诊疗指南（2026版）</td>
+    </tr><tr>
+      <td class="ok">1/1</td>
+      <td class="ok">100%</td>
+      <td class="bad">✗</td>
+      <td>儿童肺炎支原体肺炎耐药了怎么处理</td>
+      <td class="mut">儿童肺炎支原体肺炎诊疗指南（2025年版）</td>
+    </tr><tr>
+      <td class="ok">1/1</td>
+      <td class="ok">100%</td>
+      <td class="ok">✓</td>
+      <td>新型抗肿瘤药物临床应用如何合理选择</td>
+      <td class="mut">新型抗肿瘤药物临床应用指导原则（2025年版）</td>
+    </tr><tr>
+      <td class="ok">1/1</td>
+      <td class="ok">100%</td>
+      <td class="ok">✓</td>
+      <td>前列腺癌内分泌治疗的基本原则</td>
+      <td class="mut">前列腺癌诊疗指南（2022年版）</td>
+    </tr><tr>
+      <td class="ok">1/1</td>
+      <td class="ok">100%</td>
+      <td class="ok">✓</td>
+      <td>乳腺癌化疗方案一般怎么推荐</td>
+      <td class="mut">中国抗癌协会乳腺癌诊治指南与规范（2025年版）</td>
+    </tr><tr>
+      <td class="ok">1/1</td>
+      <td class="ok">100%</td>
+      <td class="ok">✓</td>
+      <td>2024版肺癌靶向治疗的适用指征</td>
+      <td class="mut">中华医学会肺癌临床诊疗指南（2024版）</td>
+    </tr><tr>
+      <td class="ok">1/1</td>
+      <td class="ok">100%</td>
+      <td class="ok">✓</td>
+      <td>慢性髓性白血病一线用药是什么</td>
+      <td class="mut">慢性髓性白血病诊疗指南（2022年版）</td>
+    </tr><tr>
+      <td class="ok">1/1</td>
+      <td class="ok">100%</td>
+      <td class="ok">✓</td>
+      <td>高血压降压治疗的目标与原则</td>
+      <td class="mut">中国高血压防治指南(2024年修订版)</td>
+    </tr><tr>
+      <td class="ok">1/1</td>
+      <td class="ok">100%</td>
+      <td class="ok">✓</td>
+      <td>2型糖尿病综合管理的要点</td>
+      <td class="mut">中国糖尿病防治指南（2024版）</td>
+    </tr><tr>
+      <td class="ok">1/1</td>
+      <td class="ok">100%</td>
+      <td class="bad">✗</td>
+      <td>淋巴瘤化疗的基本原则有哪些</td>
+      <td class="mut">淋巴瘤诊疗指南（2022年版）</td>
+    </tr>
+</tbody></table>
+</body></html>

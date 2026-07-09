@@ -1,0 +1,287 @@
+{
+  "metrics": {
+    "generatedAt": "2026-07-09T17:49:52.663Z",
+    "knowledgeBase": {
+      "guides": 135,
+      "keywords": 836
+    },
+    "kpi": {
+      "citationRecall": 100,
+      "evidenceLocatability": 100,
+      "gradeLabelRate": 80,
+      "hallucinationRate": "skipped (no SENSENOVA_API_KEY)"
+    },
+    "raw": {
+      "citHit": 10,
+      "citTot": 10,
+      "evHit": 23,
+      "evTot": 23,
+      "gradeHit": 8,
+      "gradeTot": 10,
+      "hallYes": 0,
+      "hallChecked": 0
+    }
+  },
+  "details": [
+    {
+      "q": "原发性肝癌一线系统抗肿瘤治疗推荐哪些药物",
+      "gtSources": [
+        "原发性肝癌诊疗指南（2026版）"
+      ],
+      "top3": [
+        "原发性肝癌诊疗指南（2026版）",
+        "原发性肝癌诊疗指南（2024年版）",
+        "原发性肺癌诊疗指南（2022年版）"
+      ],
+      "citation": {
+        "hit": 1,
+        "tot": 1
+      },
+      "evidence": {
+        "hit": 4,
+        "tot": 4,
+        "missing": []
+      },
+      "gradeFound": true,
+      "expectGrade": true,
+      "hallucination": {
+        "skipped": true,
+        "reason": "no_api_key"
+      }
+    },
+    {
+      "q": "儿童肺炎支原体肺炎耐药了怎么处理",
+      "gtSources": [
+        "儿童肺炎支原体肺炎诊疗指南（2025年版）"
+      ],
+      "top3": [
+        "儿童肺炎支原体肺炎诊疗指南（2025年版）",
+        "儿童肺炎支原体肺炎诊疗指南（2023年版）",
+        "原发性肺癌诊疗指南（2022年版）"
+      ],
+      "citation": {
+        "hit": 1,
+        "tot": 1
+      },
+      "evidence": {
+        "hit": 3,
+        "tot": 3,
+        "missing": []
+      },
+      "gradeFound": false,
+      "expectGrade": true,
+      "hallucination": {
+        "skipped": true,
+        "reason": "no_api_key"
+      }
+    },
+    {
+      "q": "新型抗肿瘤药物临床应用如何合理选择",
+      "gtSources": [
+        "新型抗肿瘤药物临床应用指导原则（2025年版）"
+      ],
+      "top3": [
+        "新型抗肿瘤药物临床应用指导原则（2025年版）",
+        "新型抗肿瘤药物临床应用指导原则(2022年版)",
+        "1.生物医学新技术临床转化应用申请书"
+      ],
+      "citation": {
+        "hit": 1,
+        "tot": 1
+      },
+      "evidence": {
+        "hit": 2,
+        "tot": 2,
+        "missing": []
+      },
+      "gradeFound": true,
+      "expectGrade": true,
+      "hallucination": {
+        "skipped": true,
+        "reason": "no_api_key"
+      }
+    },
+    {
+      "q": "前列腺癌内分泌治疗的基本原则",
+      "gtSources": [
+        "前列腺癌诊疗指南（2022年版）"
+      ],
+      "top3": [
+        "前列腺癌诊疗指南（2022年版）",
+        "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
+        "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+      ],
+      "citation": {
+        "hit": 1,
+        "tot": 1
+      },
+      "evidence": {
+        "hit": 2,
+        "tot": 2,
+        "missing": []
+      },
+      "gradeFound": true,
+      "expectGrade": true,
+      "hallucination": {
+        "skipped": true,
+        "reason": "no_api_key"
+      }
+    },
+    {
+      "q": "乳腺癌化疗方案一般怎么推荐",
+      "gtSources": [
+        "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+      ],
+      "top3": [
+        "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
+        "乳腺癌诊疗指南（2022年版）",
+        "胰腺癌诊治指南（2022年版）"
+      ],
+      "citation": {
+        "hit": 1,
+        "tot": 1
+      },
+      "evidence": {
+        "hit": 2,
+        "tot": 2,
+        "missing": []
+      },
+      "gradeFound": true,
+      "expectGrade": true,
+      "hallucination": {
+        "skipped": true,
+        "reason": "no_api_key"
+      }
+    },
+    {
+      "q": "2024版肺癌靶向治疗的适用指征",
+      "gtSources": [
+        "中华医学会肺癌临床诊疗指南（2024版）"
+      ],
+      "top3": [
+        "中华医学会肺癌临床诊疗指南（2024版）",
+        "原发性肝癌诊疗指南（2024年版）",
+        "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+      ],
+      "citation": {
+        "hit": 1,
+        "tot": 1
+      },
+      "evidence": {
+        "hit": 2,
+        "tot": 2,
+        "missing": []
+      },
+      "gradeFound": true,
+      "expectGrade": true,
+      "hallucination": {
+        "skipped": true,
+        "reason": "no_api_key"
+      }
+    },
+    {
+      "q": "慢性髓性白血病一线用药是什么",
+      "gtSources": [
+        "慢性髓性白血病诊疗指南（2022年版）"
+      ],
+      "top3": [
+        "慢性髓性白血病诊疗指南（2022年版）",
+        "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+        "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+      ],
+      "citation": {
+        "hit": 1,
+        "tot": 1
+      },
+      "evidence": {
+        "hit": 2,
+        "tot": 2,
+        "missing": []
+      },
+      "gradeFound": true,
+      "expectGrade": true,
+      "hallucination": {
+        "skipped": true,
+        "reason": "no_api_key"
+      }
+    },
+    {
+      "q": "高血压降压治疗的目标与原则",
+      "gtSources": [
+        "中国高血压防治指南(2024年修订版)"
+      ],
+      "top3": [
+        "中国高血压防治指南(2024年修订版)",
+        "中国高血压防治指南（2024年修订版）",
+        "脑血管病防治指南（2024年版）"
+      ],
+      "citation": {
+        "hit": 1,
+        "tot": 1
+      },
+      "evidence": {
+        "hit": 2,
+        "tot": 2,
+        "missing": []
+      },
+      "gradeFound": true,
+      "expectGrade": true,
+      "hallucination": {
+        "skipped": true,
+        "reason": "no_api_key"
+      }
+    },
+    {
+      "q": "2型糖尿病综合管理的要点",
+      "gtSources": [
+        "中国糖尿病防治指南（2024版）"
+      ],
+      "top3": [
+        "中国糖尿病防治指南（2024版）",
+        "中国老年糖尿病诊疗指南（2024版）",
+        "脑血管病防治指南（2024年版）"
+      ],
+      "citation": {
+        "hit": 1,
+        "tot": 1
+      },
+      "evidence": {
+        "hit": 2,
+        "tot": 2,
+        "missing": []
+      },
+      "gradeFound": true,
+      "expectGrade": true,
+      "hallucination": {
+        "skipped": true,
+        "reason": "no_api_key"
+      }
+    },
+    {
+      "q": "淋巴瘤化疗的基本原则有哪些",
+      "gtSources": [
+        "淋巴瘤诊疗指南（2022年版）"
+      ],
+      "top3": [
+        "淋巴瘤诊疗指南（2022年版）",
+        "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+        "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+      ],
+      "citation": {
+        "hit": 1,
+        "tot": 1
+      },
+      "evidence": {
+        "hit": 2,
+        "tot": 2,
+        "missing": []
+      },
+      "gradeFound": false,
+      "expectGrade": true,
+      "hallucination": {
+        "skipped": true,
+        "reason": "no_api_key"
+      }
+    }
+  ]
+}

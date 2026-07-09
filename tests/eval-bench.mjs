@@ -22,9 +22,18 @@ const index = loadIndex(REPO_ROOT);
 const graph = loadGraph(REPO_ROOT);
 
 // ---------- 1) 自动黄金集：每指南取疾病名作查询，期望 top1=该指南 ----------
-const autoGold = Object.entries(index.guideMap).map(([title, info]) => ({
-  q: info.disease,
-  expected: title,
+// 同名归一（同疾病+同人群）仅保留「最新版」作字面金标准，避免 query 无法区分多版本导致的自相矛盾。
+const latestByNorm = new Map();
+for (const [title, info] of Object.entries(index.guideMap)) {
+  const key = `${(info.normalizedDisease || info.disease) || ""}|${info.audience || ""}`;
+  const cur = latestByNorm.get(key);
+  if (!cur || (info.version || 0) > (cur.version || 0)) {
+    latestByNorm.set(key, { title, version: info.version || 0, disease: info.disease });
+  }
+}
+const autoGold = [...latestByNorm.values()].map((v) => ({
+  q: v.disease,
+  expected: v.title,
   kind: "literal",
 }));
 
@@ -33,7 +42,7 @@ const semanticProbes = [
   { q: "前列腺恶性肿瘤的治疗", expected: "前列腺癌诊疗指南（2022年版）" },
   { q: "宫颈恶性肿瘤筛查", expected: "宫颈癌诊疗指南（2022年版）" },
   { q: "胃部恶性肿瘤化疗方案", expected: "胃癌诊疗指南（2022年版）" },
-  { q: "肝脏恶性肿瘤靶向药", expected: "原发性肝癌诊疗指南（2024年版）" },
+  { q: "肝脏恶性肿瘤靶向药", expected: "原发性肝癌诊疗指南（2026版）" },
   { q: "膀胱恶性肿瘤晚期", expected: "膀胱癌诊疗指南（2022年版）" },
   { q: "胰腺恶性肿瘤黄疸", expected: "胰腺癌诊治指南（2022年版）" },
   { q: "食道恶性肿瘤吞咽困难", expected: "食管癌诊疗指南（2022年版）" },
@@ -44,6 +53,14 @@ const semanticProbes = [
   { q: "黑色素瘤转移靶向", expected: "黑色素瘤诊疗指南（2022年版）" },
 ].map((p) => ({ ...p, kind: "semantic" }));
 
+// ---------- 2.5) 显式年份强匹配探针：用户指明年版时应精确命中（验证版本歧义修复） ----------
+const explicitYearProbes = [
+  { q: "2024版肝癌靶向治疗方案", expected: "原发性肝癌诊疗指南（2024年版）" },
+  { q: "2023版儿童支原体肺炎用药", expected: "儿童肺炎支原体肺炎诊疗指南（2023年版）" },
+  { q: "2022版新型抗肿瘤药物指导原则", expected: "新型抗肿瘤药物临床应用指导原则(2022年版)" },
+  { q: "2025版中国抗癌协会乳腺癌", expected: "中国抗癌协会乳腺癌诊治指南与规范（2025年版）" },
+].map((p) => ({ ...p, kind: "explicit-year" }));
+
 // ---------- 3) 越界精度探针：不应误召回任何指南 ----------
 const oosProbes = [
   { q: "番茄炒蛋怎么做", expected: null, kind: "out-of-scope" },
@@ -51,7 +68,7 @@ const oosProbes = [
   { q: "怎么用 Python 写快排", expected: null, kind: "out-of-scope" },
 ];
 
-const all = [...autoGold, ...semanticProbes, ...oosProbes];
+const all = [...autoGold, ...semanticProbes, ...explicitYearProbes, ...oosProbes];
 
 // ---------- 运行 + 度量 ----------
 cacheClear(); // 确保冷启动基线的纯净
@@ -91,7 +108,7 @@ for (const c of all) {
   if (c.kind === "out-of-scope") {
     oosN++;
     if (warm.totalMatched === 0) oosOk++;
-  } else if (c.kind === "semantic") {
+  } else if (c.kind === "semantic" || c.kind === "explicit-year") {
     semN++;
     if (hit1) semTop1++;
     if (hit3) semTop3++;

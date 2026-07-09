@@ -158,6 +158,21 @@ export function applyPhraseAliases(query) {
 }
 
 /**
+ * 从查询中提取显式年份版次（如"2024版""2026年版"，「年」字可选）。
+ * 命中返回数字年份，否则 null。用于用户对版本有明确诉求时的强偏好路由。
+ */
+export function extractYear(query) {
+  const m = String(query || "").match(/(\d{4})\s*年?版/);
+  return m ? Number(m[1]) : null;
+}
+
+/** 兼容全角/半角括号，从指南标题提取版本年份（「年」字可选：2024年版 / 2026版）。 */
+export function versionOf(title) {
+  const m = String(title || "").match(/(?:（|\()(\d{4})\s*年?版(?:）|\))/);
+  return m ? Number(m[1]) : null;
+}
+
+/**
  * 构建 IDF 表：token 在越多指南中出现，区分度越低（idf 越小）。
  * 用于语义重叠加权——稀有词元（如"前列""列腺"）权重远高于高频词元（如"性""的""肿瘤"）。
  * 结果挂到 index._idf 上，避免重复计算。
@@ -254,6 +269,7 @@ export function routeGuides(query, opts = {}) {
   const gtok = buildGuideTokens(idx);
   const qAliased = applyPhraseAliases(query);
   const qNorm = normalize(qAliased);
+  const qYear = extractYear(qAliased);
   const cacheKey = `route:${qNorm}`;
 
   if (useCache) {
@@ -292,6 +308,11 @@ export function routeGuides(query, opts = {}) {
       score += matchedKw.length * 5;
       reasons.push(`关键词命中:${matchedKw.slice(0, 3).join("/")}`);
     }
+
+    // 版本/归一疾病/人群元数据（用于「最新版优先」+ 显式年份强匹配）
+    const candYear = info.version ?? versionOf(title);
+    const candNorm = info.normalizedDisease || info.disease || "";
+    const candAud = info.audience || null;
 
     // ② 标题/疾病字面包含
     const titleL = title.toLowerCase();
@@ -346,6 +367,17 @@ export function routeGuides(query, opts = {}) {
       }
     }
 
+    // ③·补 显式年份强匹配：用户明确要某年版时，命中该年版则强偏好，否则降级
+    if (qYear != null && candYear != null) {
+      if (candYear === qYear) {
+        score += 12;
+        reasons.push(`年份精确匹配${qYear}`);
+      } else {
+        score -= 3;
+        reasons.push(`年份不符(查${qYear}/文${candYear})`);
+      }
+    }
+
     // 仅当具备实质性信号（关键词/标题命中，或语义加权分达标）才计入候选，
     // 避免越界查询因若干高频词元噪声被误召回。
     const hasStrong =
@@ -353,11 +385,21 @@ export function routeGuides(query, opts = {}) {
       titleL.includes(qNorm) ||
       disease.includes(qNorm) ||
       score >= MIN_SCORE;
+    // 显式年份硬约束：用户明确要某年版时，仅保留该年版候选
+    // （同行若无匹配则 totalMatched=0，由越界/澄清逻辑接管，优于误推他版）。
+    if (qYear != null && candYear != null && candYear !== qYear) {
+      continue;
+    }
     if (score > 0 && hasStrong) {
+      const deprecated = info.deprecated === true;
       scored.push({
         title,
         id: info.id || title,
         disease: info.disease || "",
+        version: candYear,
+        normalizedDisease: candNorm,
+        audience: candAud,
+        deprecated,
         sectionCount: info.sectionCount ?? null,
         keyParagraphCount: info.keyParagraphCount ?? null,
         score,
@@ -368,6 +410,18 @@ export function routeGuides(query, opts = {}) {
   }
 
   scored.sort((a, b) => {
+    // 废弃标记软降权：已废止指南降分处理（非硬排序），确保显式年份查询仍可定位旧版
+    const aScore = a.score - ((a.deprecated && a.version != null) ? 10 : 0);
+    const bScore = b.score - ((b.deprecated && b.version != null) ? 10 : 0);
+    if (bScore !== aScore) return bScore - aScore;
+    // 同名归一 + 同人群 = 同一指南的不同年版：医疗上现行「最新版」优先（旧版或已废止）
+    const an = a.normalizedDisease || "";
+    const bn = b.normalizedDisease || "";
+    if (an && an === bn && (a.audience || null) === (b.audience || null)) {
+      const av = a.version || 0;
+      const bv = b.version || 0;
+      if (av !== bv) return bv - av; // 新版在前
+    }
     if (b.score !== a.score) return b.score - a.score;
     const aE =
       a.title.toLowerCase().includes(qNorm) ||

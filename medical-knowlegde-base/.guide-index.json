@@ -1,11 +1,17 @@
 {
-  "generatedAt": "2026-07-09T15:02:05.008Z",
-  "totalGuides": 135,
-  "totalKeywords": 382,
+  "generatedAt": "2026-07-09T18:32:05.582Z",
+  "totalGuides": 134,
+  "totalKeywords": 833,
   "guideMap": {
     "1.2026年国家医疗质量安全改进目标": {
       "id": "1.2026年国家医疗质量安全改进目标",
       "disease": "1.2026年国家医疗质量安全改进目标",
+      "version": null,
+      "normalizedDisease": "1.2026年国家医疗质量安全改进目标",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "1.2026年国家医疗质量安全改进目标"
       ],
@@ -15,6 +21,12 @@
     "1.健康体检自测问卷（2025年版）": {
       "id": "1.健康体检自测问卷（2025年版）",
       "disease": "1.健康体检自测问卷",
+      "version": 2025,
+      "normalizedDisease": "1.健康体检自测问卷",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "1.健康体检自测问卷（2025年版）",
         "1.健康体检自测问卷"
@@ -25,6 +37,12 @@
     "1.全国生育友好城市评审标准（2026年版）": {
       "id": "1.全国生育友好城市评审标准（2026年版）",
       "disease": "1.全国生育友好城市评审标准",
+      "version": 2026,
+      "normalizedDisease": "1.全国生育友好城市评审标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "1.全国生育友好城市评审标准（2026年版）",
         "1.全国生育友好城市评审标准"
@@ -35,6 +53,12 @@
     "1.全国防盲技术指导组成员名单": {
       "id": "1.全国防盲技术指导组成员名单",
       "disease": "1.全国防盲技术指导组成员名单",
+      "version": null,
+      "normalizedDisease": "1.全国防盲技术指导组成员名单",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "1.全国防盲技术指导组成员名单"
       ],
@@ -44,6 +68,12 @@
     "1.生物医学新技术临床转化应用申请书": {
       "id": "1.生物医学新技术临床转化应用申请书",
       "disease": "1.生物医学新技术临床转化应用申请书",
+      "version": null,
+      "normalizedDisease": "1.生物医学新技术临床转化应用申请书",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "1.生物医学新技术临床转化应用申请书"
       ],
@@ -53,6 +83,12 @@
     "1.紧密型县域医共体医学影像中心建设与服务指南（试行）": {
       "id": "1.紧密型县域医共体医学影像中心建设与服务指南（试行）",
       "disease": "1.紧密型县域医共体医学影像中心建设与服务指南",
+      "version": null,
+      "normalizedDisease": "1.紧密型县域医共体医学影像中心建设与服务指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "1.紧密型县域医共体医学影像中心建设与服务指南（试行）",
         "1.紧密型县域医共体医学影像中心建设与服务指南"
@@ -63,8 +99,16 @@
     "2.2026年各专业质控工作改进目标": {
       "id": "2.2026年各专业质控工作改进目标",
       "disease": "2.2026年各专业质控工作改进目标",
+      "version": null,
+      "normalizedDisease": "2.2026年各专业质控工作改进目标",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
-        "2.2026年各专业质控工作改进目标"
+        "2.2026年各专业质控工作改进目标",
+        "流感",
+        "流感病原学诊断"
       ],
       "sectionCount": 60,
       "keyParagraphCount": 6
@@ -72,6 +116,12 @@
     "2.全国生育友好单位评审标准（2026年版）": {
       "id": "2.全国生育友好单位评审标准（2026年版）",
       "disease": "2.全国生育友好单位评审标准",
+      "version": 2026,
+      "normalizedDisease": "2.全国生育友好单位评审标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "2.全国生育友好单位评审标准（2026年版）",
         "2.全国生育友好单位评审标准"
@@ -82,6 +132,12 @@
     "2.全国防盲技术指导组章程": {
       "id": "2.全国防盲技术指导组章程",
       "disease": "2.全国防盲技术指导组章程",
+      "version": null,
+      "normalizedDisease": "2.全国防盲技术指导组章程",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "2.全国防盲技术指导组章程"
       ],
@@ -91,6 +147,12 @@
     "2.基本体检项目（2025年版）": {
       "id": "2.基本体检项目（2025年版）",
       "disease": "2.基本体检项目",
+      "version": 2025,
+      "normalizedDisease": "2.基本体检项目",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "2.基本体检项目（2025年版）",
         "2.基本体检项目"
@@ -101,6 +163,12 @@
     "2.生物医学新技术临床转化应用申请形式审查条件要求": {
       "id": "2.生物医学新技术临床转化应用申请形式审查条件要求",
       "disease": "2.生物医学新技术临床转化应用申请形式审查条件要求",
+      "version": null,
+      "normalizedDisease": "2.生物医学新技术临床转化应用申请形式审查条件要求",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "2.生物医学新技术临床转化应用申请形式审查条件要求"
       ],
@@ -110,6 +178,12 @@
     "2.紧密型县域医共体医学检验中心建设与服务指南（试行）": {
       "id": "2.紧密型县域医共体医学检验中心建设与服务指南（试行）",
       "disease": "2.紧密型县域医共体医学检验中心建设与服务指南",
+      "version": null,
+      "normalizedDisease": "2.紧密型县域医共体医学检验中心建设与服务指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "2.紧密型县域医共体医学检验中心建设与服务指南（试行）",
         "2.紧密型县域医共体医学检验中心建设与服务指南"
@@ -120,6 +194,12 @@
     "3.生物医学新技术临床转化应用优先审查审批申请表": {
       "id": "3.生物医学新技术临床转化应用优先审查审批申请表",
       "disease": "3.生物医学新技术临床转化应用优先审查审批申请表",
+      "version": null,
+      "normalizedDisease": "3.生物医学新技术临床转化应用优先审查审批申请表",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "3.生物医学新技术临床转化应用优先审查审批申请表"
       ],
@@ -129,6 +209,12 @@
     "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）": {
       "id": "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）",
       "disease": "3.紧密型县域医共体心电诊断中心建设与服务指南",
+      "version": null,
+      "normalizedDisease": "3.紧密型县域医共体心电诊断中心建设与服务指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）",
         "3.紧密型县域医共体心电诊断中心建设与服务指南"
@@ -139,6 +225,12 @@
     "4.成人健康体检工作流程图（2025年版）": {
       "id": "4.成人健康体检工作流程图（2025年版）",
       "disease": "4.成人健康体检工作流程图",
+      "version": 2025,
+      "normalizedDisease": "4.成人健康体检工作流程图",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "4.成人健康体检工作流程图（2025年版）",
         "4.成人健康体检工作流程图"
@@ -149,6 +241,12 @@
     "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）": {
       "id": "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）",
       "disease": "4.紧密型县域医共体消毒供应中心建设与服务指南",
+      "version": null,
+      "normalizedDisease": "4.紧密型县域医共体消毒供应中心建设与服务指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）",
         "4.紧密型县域医共体消毒供应中心建设与服务指南"
@@ -159,6 +257,12 @@
     "86个罕见病病种诊疗指南（2025年版）": {
       "id": "86个罕见病病种诊疗指南（2025年版）",
       "disease": "86个罕见病病种",
+      "version": 2025,
+      "normalizedDisease": "86个罕见病病种",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "86个罕见病病种诊疗指南（2025年版）",
         "86个罕见病病种"
@@ -169,8 +273,20 @@
     "GBZ 104—2026 职业性外照射急性放射病诊断标准": {
       "id": "GBZ 104—2026 职业性外照射急性放射病诊断标准",
       "disease": "GBZ 104—2026 职业性外照射急性放射病诊断标准",
+      "version": null,
+      "normalizedDisease": "GBZ 104—2026 职业性外照射急性放射病诊断标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
-        "GBZ 104—2026 职业性外照射急性放射病诊断标准"
+        "GBZ 104—2026 职业性外照射急性放射病诊断标准",
+        "职业性外照射急性放射病",
+        "呕吐",
+        "外周血淋巴细胞计数",
+        "职业性外照射",
+        "重组人粒细胞集落刺激因子",
+        "对症支持治疗"
       ],
       "sectionCount": 34,
       "keyParagraphCount": 0
@@ -178,8 +294,27 @@
     "GBZ 105—2026 职业性外照射慢性放射病诊断标准": {
       "id": "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
       "disease": "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
+      "version": null,
+      "normalizedDisease": "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
-        "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+        "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
+        "职业性外照射慢性放射病",
+        "乏力",
+        "头痛",
+        "出血倾向",
+        "白细胞减少",
+        "血常规检查",
+        "染色体畸变分析",
+        "骨髓象检查",
+        "长期职业性外照射接触",
+        "脱离放射源",
+        "对症支持治疗",
+        "升白细胞药物",
+        "维生素类药"
       ],
       "sectionCount": 10,
       "keyParagraphCount": 0
@@ -187,8 +322,23 @@
     "GBZ 97—2026 职业性放射性肿瘤病因判断标准": {
       "id": "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
       "disease": "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
+      "version": null,
+      "normalizedDisease": "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
-        "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
+        "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
+        "职业性放射性肿瘤",
+        "职业性电离辐射暴露",
+        "辐射剂量估算",
+        "职业史调查",
+        "肿瘤病理学检查",
+        "脱离辐射暴露",
+        "手术切除",
+        "放射治疗",
+        "化学治疗"
       ],
       "sectionCount": 680,
       "keyParagraphCount": 0
@@ -196,6 +346,12 @@
     "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准": {
       "id": "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
       "disease": "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
+      "version": null,
+      "normalizedDisease": "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准"
       ],
@@ -205,8 +361,17 @@
     "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准": {
       "id": "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
       "disease": "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
+      "version": null,
+      "normalizedDisease": "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
-        "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准"
+        "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
+        "甲状腺放射性碘污染",
+        "直接测量法",
+        "放射工作"
       ],
       "sectionCount": 45,
       "keyParagraphCount": 0
@@ -214,6 +379,12 @@
     "Pilon骨折切开复位内固定术加速康复临床路径（2023年版）": {
       "id": "Pilon骨折切开复位内固定术加速康复临床路径（2023年版）",
       "disease": "Pilon骨折切开复位内固定术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "Pilon骨折切开复位内固定术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "Pilon骨折切开复位内固定术加速康复临床路径（2023年版）",
         "Pilon骨折切开复位内固定术加速康复临床路径"
@@ -224,6 +395,12 @@
     "WS 890—2026 浅层X射线治疗机质量控制检测标准": {
       "id": "WS 890—2026 浅层X射线治疗机质量控制检测标准",
       "disease": "WS 890—2026 浅层X射线治疗机质量控制检测标准",
+      "version": null,
+      "normalizedDisease": "WS 890—2026 浅层X射线治疗机质量控制检测标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS 890—2026 浅层X射线治疗机质量控制检测标准"
       ],
@@ -233,6 +410,12 @@
     "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分": {
       "id": "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
       "disease": "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
+      "version": null,
+      "normalizedDisease": "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分"
       ],
@@ -242,6 +425,12 @@
     "WS-T 477—2026 D-二聚体定量检测标准": {
       "id": "WS-T 477—2026 D-二聚体定量检测标准",
       "disease": "WS-T 477—2026 D-二聚体定量检测标准",
+      "version": null,
+      "normalizedDisease": "WS-T 477—2026 D-二聚体定量检测标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 477—2026 D-二聚体定量检测标准"
       ],
@@ -251,6 +440,12 @@
     "WS-T 497—2026 侵袭性真菌病实验诊断标准": {
       "id": "WS-T 497—2026 侵袭性真菌病实验诊断标准",
       "disease": "WS-T 497—2026 侵袭性真菌病实验诊断标准",
+      "version": null,
+      "normalizedDisease": "WS-T 497—2026 侵袭性真菌病实验诊断标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 497—2026 侵袭性真菌病实验诊断标准"
       ],
@@ -260,8 +455,27 @@
     "WS-T 498—2026 感染性腹泻实验诊断标准": {
       "id": "WS-T 498—2026 感染性腹泻实验诊断标准",
       "disease": "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "version": null,
+      "normalizedDisease": "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
-        "WS-T 498—2026 感染性腹泻实验诊断标准"
+        "WS-T 498—2026 感染性腹泻实验诊断标准",
+        "感染性腹泻",
+        "腹泻",
+        "腹痛",
+        "发热",
+        "诺氟沙星",
+        "蒙脱石散",
+        "粪便常规",
+        "粪便培养",
+        "血常规",
+        "不洁饮食",
+        "免疫力低下",
+        "补液治疗",
+        "抗感染治疗"
       ],
       "sectionCount": 49,
       "keyParagraphCount": 0
@@ -269,6 +483,12 @@
     "WS-T 503—2026 临床微生物实验室血培养操作标准": {
       "id": "WS-T 503—2026 临床微生物实验室血培养操作标准",
       "disease": "WS-T 503—2026 临床微生物实验室血培养操作标准",
+      "version": null,
+      "normalizedDisease": "WS-T 503—2026 临床微生物实验室血培养操作标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 503—2026 临床微生物实验室血培养操作标准"
       ],
@@ -278,6 +498,12 @@
     "WS-T 640—2026 临床微生物学检验标本的采集和转运标准": {
       "id": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
       "disease": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
+      "version": null,
+      "normalizedDisease": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 640—2026 临床微生物学检验标本的采集和转运标准"
       ],
@@ -287,6 +513,12 @@
     "WS-T 641—2026 临床检验定量测定室内质量控制标准": {
       "id": "WS-T 641—2026 临床检验定量测定室内质量控制标准",
       "disease": "WS-T 641—2026 临床检验定量测定室内质量控制标准",
+      "version": null,
+      "normalizedDisease": "WS-T 641—2026 临床检验定量测定室内质量控制标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 641—2026 临床检验定量测定室内质量控制标准"
       ],
@@ -296,6 +528,12 @@
     "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分": {
       "id": "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
       "disease": "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
+      "version": null,
+      "normalizedDisease": "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分"
       ],
@@ -305,6 +543,12 @@
     "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分": {
       "id": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
       "disease": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
+      "version": null,
+      "normalizedDisease": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分"
       ],
@@ -314,6 +558,12 @@
     "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准": {
       "id": "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
       "disease": "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
+      "version": null,
+      "normalizedDisease": "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准"
       ],
@@ -323,6 +573,12 @@
     "WS-T 884—2026 分枝杆菌感染实验诊断标准": {
       "id": "WS-T 884—2026 分枝杆菌感染实验诊断标准",
       "disease": "WS-T 884—2026 分枝杆菌感染实验诊断标准",
+      "version": null,
+      "normalizedDisease": "WS-T 884—2026 分枝杆菌感染实验诊断标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 884—2026 分枝杆菌感染实验诊断标准"
       ],
@@ -332,6 +588,12 @@
     "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标": {
       "id": "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
       "disease": "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
+      "version": null,
+      "normalizedDisease": "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标"
       ],
@@ -341,6 +603,12 @@
     "WS-T 886—2026 临床检验常用项目名称及代码": {
       "id": "WS-T 886—2026 临床检验常用项目名称及代码",
       "disease": "WS-T 886—2026 临床检验常用项目名称及代码",
+      "version": null,
+      "normalizedDisease": "WS-T 886—2026 临床检验常用项目名称及代码",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 886—2026 临床检验常用项目名称及代码"
       ],
@@ -350,6 +618,12 @@
     "WS-T 894—2026 成分血制备标准": {
       "id": "WS-T 894—2026 成分血制备标准",
       "disease": "WS-T 894—2026 成分血制备标准",
+      "version": null,
+      "normalizedDisease": "WS-T 894—2026 成分血制备标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 894—2026 成分血制备标准"
       ],
@@ -359,6 +633,12 @@
     "WS-T 895—2026 脐带血造血干细胞制备与冻存标准": {
       "id": "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
       "disease": "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
+      "version": null,
+      "normalizedDisease": "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 895—2026 脐带血造血干细胞制备与冻存标准"
       ],
@@ -368,6 +648,12 @@
     "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准": {
       "id": "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准",
       "disease": "WS-T 900—2026 病原微生物菌种保藏质量控制通用标准",
+      "version": null,
+      "normalizedDisease": "WS-T 900—2026 病原微生物菌种保藏质量控制通用标准",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准",
         "WS-T 900—2026 病原微生物菌种保藏质量控制通用标准"
@@ -378,6 +664,12 @@
     "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则": {
       "id": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
       "disease": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
+      "version": null,
+      "normalizedDisease": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则"
       ],
@@ -387,9 +679,31 @@
     "三踝骨折切开复位内固定术加速康复临床路径（2023年版）": {
       "id": "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
       "disease": "三踝骨折切开复位内固定术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "三踝骨折切开复位内固定术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
-        "三踝骨折切开复位内固定术加速康复临床路径"
+        "三踝骨折切开复位内固定术加速康复临床路径",
+        "三踝骨折",
+        "踝部疼痛",
+        "踝部肿胀",
+        "踝部畸形",
+        "活动受限",
+        "X线平片",
+        "CT扫描",
+        "MRI",
+        "骨质疏松",
+        "高能量损伤",
+        "运动损伤",
+        "非甾体抗炎药",
+        "抗生素",
+        "抗凝药",
+        "切开复位内固定术",
+        "加速康复方案"
       ],
       "sectionCount": 44,
       "keyParagraphCount": 0
@@ -397,6 +711,12 @@
     "上颌骨骨折诊疗指南（2022年版）": {
       "id": "上颌骨骨折诊疗指南（2022年版）",
       "disease": "上颌骨骨折",
+      "version": 2022,
+      "normalizedDisease": "上颌骨骨折",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "上颌骨骨折诊疗指南（2022年版）",
         "上颌骨骨折"
@@ -407,6 +727,12 @@
     "下颌骨骨折诊疗指南（2022年版）": {
       "id": "下颌骨骨折诊疗指南（2022年版）",
       "disease": "下颌骨骨折",
+      "version": 2022,
+      "normalizedDisease": "下颌骨骨折",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "下颌骨骨折诊疗指南（2022年版）",
         "下颌骨骨折"
@@ -417,6 +743,12 @@
     "中华医学会肺癌临床诊疗指南（2024版）": {
       "id": "中华医学会肺癌临床诊疗指南（2024版）",
       "disease": "中华医学会肺癌临床",
+      "version": 2024,
+      "normalizedDisease": "肺癌临床",
+      "audience": null,
+      "org": "中华医学会",
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "中华医学会肺癌临床诊疗指南（2024版）",
         "中华医学会肺癌临床"
@@ -427,9 +759,42 @@
     "中国人群骨质疏松症风险管理公众指南（2024）": {
       "id": "中国人群骨质疏松症风险管理公众指南（2024）",
       "disease": "中国人群骨质疏松症风险管理公众指南",
+      "version": null,
+      "normalizedDisease": "中国人群骨质疏松症风险管理公众指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "中国人群骨质疏松症风险管理公众指南（2024）",
-        "中国人群骨质疏松症风险管理公众指南"
+        "中国人群骨质疏松症风险管理公众指南",
+        "骨质疏松症",
+        "腰背疼痛",
+        "身高缩短",
+        "驼背",
+        "易骨折",
+        "双膦酸盐类",
+        "维生素D",
+        "钙剂",
+        "地舒单抗",
+        "雷洛昔芬",
+        "双能X线骨密度测量",
+        "FRAX骨折风险评估工具",
+        "骨代谢标志物检测",
+        "年龄增长",
+        "女性绝经",
+        "低体重",
+        "吸烟",
+        "过量饮酒",
+        "低钙摄入",
+        "缺乏运动",
+        "家族史",
+        "糖皮质激素使用",
+        "生活方式调整",
+        "药物治疗",
+        "营养补充",
+        "预防跌倒",
+        "骨折管理"
       ],
       "sectionCount": 48,
       "keyParagraphCount": 0
@@ -437,9 +802,31 @@
     "中国抗癌协会乳腺癌诊治指南与规范（2025年版）": {
       "id": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
       "disease": "中国抗癌协会乳腺癌",
+      "version": 2025,
+      "normalizedDisease": "乳腺癌",
+      "audience": null,
+      "org": "中国抗癌协会",
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
-        "中国抗癌协会乳腺癌"
+        "中国抗癌协会乳腺癌",
+        "乳腺癌",
+        "乳房无痛性肿块",
+        "乳头溢液",
+        "乳房皮肤橘皮样改变",
+        "他莫昔芬",
+        "阿那曲唑",
+        "曲妥珠单抗",
+        "乳腺X线摄影（钼靶）",
+        "乳腺超声检查",
+        "空心针穿刺活检",
+        "年龄增长",
+        "乳腺癌家族史",
+        "BRCA1/BRCA2基因突变",
+        "乳腺癌改良根治术",
+        "术后辅助放疗",
+        "内分泌治疗"
       ],
       "sectionCount": 186,
       "keyParagraphCount": 0
@@ -447,9 +834,22 @@
     "中国糖尿病防治指南（2024版）": {
       "id": "中国糖尿病防治指南（2024版）",
       "disease": "中国糖尿病防治指南",
+      "version": 2024,
+      "normalizedDisease": "中国糖尿病防治指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "中国糖尿病防治指南（2024版）",
-        "中国糖尿病防治指南"
+        "中国糖尿病防治指南",
+        "2型糖尿病",
+        "医学营养治疗",
+        "降压治疗",
+        "调脂治疗",
+        "抗血小板治疗",
+        "补液治疗",
+        "中国糖尿病风险评分"
       ],
       "sectionCount": 593,
       "keyParagraphCount": 15
@@ -457,9 +857,25 @@
     "中国老年糖尿病诊疗指南（2024版）": {
       "id": "中国老年糖尿病诊疗指南（2024版）",
       "disease": "中国老年糖尿病",
+      "version": 2024,
+      "normalizedDisease": "中国老年糖尿病",
+      "audience": "老年",
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "中国老年糖尿病诊疗指南（2024版）",
-        "中国老年糖尿病"
+        "中国老年糖尿病",
+        "老年糖尿病",
+        "眼底病变",
+        "ACEI",
+        "ARB",
+        "eGFR",
+        "蛋白尿",
+        "多重用药",
+        "降压治疗",
+        "慢性并发症筛查与处理",
+        "低血糖风险较高的药物"
       ],
       "sectionCount": 139,
       "keyParagraphCount": 6
@@ -467,9 +883,30 @@
     "中国艾滋病诊疗指南（2024版）": {
       "id": "中国艾滋病诊疗指南（2024版）",
       "disease": "中国艾滋病",
+      "version": 2024,
+      "normalizedDisease": "中国艾滋病",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "中国艾滋病诊疗指南（2024版）",
-        "中国艾滋病"
+        "中国艾滋病",
+        "艾滋病",
+        "发热",
+        "持续性全身淋巴结肿大",
+        "机会性感染",
+        "替诺福韦",
+        "恩曲他滨",
+        "洛匹那韦/利托那韦",
+        "HIV抗体检测",
+        "CD4+T淋巴细胞计数",
+        "HIV病毒载量检测",
+        "不安全性行为",
+        "共用针具注射",
+        "母婴传播",
+        "抗逆转录病毒治疗",
+        "预防机会性感染"
       ],
       "sectionCount": 107,
       "keyParagraphCount": 0
@@ -477,19 +914,17 @@
     "中国高血压防治指南(2024年修订版)": {
       "id": "中国高血压防治指南(2024年修订版)",
       "disease": "中国高血压防治指南",
+      "version": 2024,
+      "normalizedDisease": "中国高血压防治指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "中国高血压防治指南(2024年修订版)",
-        "中国高血压防治指南"
-      ],
-      "sectionCount": 213,
-      "keyParagraphCount": 2
-    },
-    "中国高血压防治指南（2024年修订版）": {
-      "id": "中国高血压防治指南（2024年修订版）",
-      "disease": "中国高血压防治指南",
-      "keywords": [
-        "中国高血压防治指南（2024年修订版）",
-        "中国高血压防治指南"
+        "中国高血压防治指南",
+        "高血压",
+        "起始小剂量降压治疗"
       ],
       "sectionCount": 213,
       "keyParagraphCount": 2
@@ -497,6 +932,12 @@
     "临床检验专业医疗质量控制指标（2025年版）": {
       "id": "临床检验专业医疗质量控制指标（2025年版）",
       "disease": "临床检验专业医疗质量控制指标",
+      "version": 2025,
+      "normalizedDisease": "临床检验专业医疗质量控制指标",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "临床检验专业医疗质量控制指标（2025年版）",
         "临床检验专业医疗质量控制指标"
@@ -507,6 +948,12 @@
     "乙烯醇均聚物等2种食品相关产品新品种": {
       "id": "乙烯醇均聚物等2种食品相关产品新品种",
       "disease": "乙烯醇均聚物等2种食品相关产品新品种",
+      "version": null,
+      "normalizedDisease": "乙烯醇均聚物等2种食品相关产品新品种",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "乙烯醇均聚物等2种食品相关产品新品种"
       ],
@@ -516,9 +963,28 @@
     "乳腺癌诊疗指南（2022年版）": {
       "id": "乳腺癌诊疗指南（2022年版）",
       "disease": "乳腺癌",
+      "version": 2022,
+      "normalizedDisease": "乳腺癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "乳腺癌诊疗指南（2022年版）",
-        "乳腺癌"
+        "乳腺癌",
+        "乳房肿块",
+        "腋窝淋巴结肿大",
+        "来曲唑",
+        "乳腺X线摄影",
+        "空心针活检",
+        "BRCA基因突变",
+        "高龄",
+        "初潮早或绝经晚",
+        "保乳手术",
+        "全乳切除",
+        "放射治疗",
+        "化疗",
+        "靶向治疗"
       ],
       "sectionCount": 136,
       "keyParagraphCount": 0
@@ -526,9 +992,24 @@
     "儿童肺炎支原体肺炎诊疗指南（2023年版）": {
       "id": "儿童肺炎支原体肺炎诊疗指南（2023年版）",
       "disease": "儿童肺炎支原体肺炎",
+      "version": 2023,
+      "normalizedDisease": "儿童肺炎支原体肺炎",
+      "audience": "儿童",
+      "org": null,
+      "deprecated": true,
+      "supersededBy": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
       "keywords": [
         "儿童肺炎支原体肺炎诊疗指南（2023年版）",
-        "儿童肺炎支原体肺炎"
+        "儿童肺炎支原体肺炎",
+        "发热",
+        "咳嗽",
+        "阿奇霉素",
+        "红霉素",
+        "血清学抗体检测",
+        "肺炎支原体核酸检测",
+        "年龄（学龄前及学龄期儿童）",
+        "免疫力低下",
+        "大环内酯类抗菌药物治疗"
       ],
       "sectionCount": 79,
       "keyParagraphCount": 0
@@ -536,9 +1017,22 @@
     "儿童肺炎支原体肺炎诊疗指南（2025年版）": {
       "id": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
       "disease": "儿童肺炎支原体肺炎",
+      "version": 2025,
+      "normalizedDisease": "儿童肺炎支原体肺炎",
+      "audience": "儿童",
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "儿童肺炎支原体肺炎诊疗指南（2025年版）",
-        "儿童肺炎支原体肺炎"
+        "儿童肺炎支原体肺炎",
+        "呼吸困难",
+        "肺炎支原体血清学检测",
+        "胸部影像学检查",
+        "免疫功能低下",
+        "集体生活",
+        "抗生素治疗",
+        "对症治疗"
       ],
       "sectionCount": 89,
       "keyParagraphCount": 0
@@ -546,6 +1040,12 @@
     "全膝关节置换术加速康复临床路径（2023年版）": {
       "id": "全膝关节置换术加速康复临床路径（2023年版）",
       "disease": "全膝关节置换术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "全膝关节置换术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "全膝关节置换术加速康复临床路径（2023年版）",
         "全膝关节置换术加速康复临床路径"
@@ -556,6 +1056,12 @@
     "全踝关节置换术加速康复临床路径（2023年版）": {
       "id": "全踝关节置换术加速康复临床路径（2023年版）",
       "disease": "全踝关节置换术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "全踝关节置换术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "全踝关节置换术加速康复临床路径（2023年版）",
         "全踝关节置换术加速康复临床路径"
@@ -566,6 +1072,12 @@
     "全髋关节置换术加速康复临床路径（2023年版）": {
       "id": "全髋关节置换术加速康复临床路径（2023年版）",
       "disease": "全髋关节置换术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "全髋关节置换术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "全髋关节置换术加速康复临床路径（2023年版）",
         "全髋关节置换术加速康复临床路径"
@@ -576,6 +1088,12 @@
     "养老服务机构中营养指导员工作流程示例": {
       "id": "养老服务机构中营养指导员工作流程示例",
       "disease": "养老服务机构中营养指导员工作流程示例",
+      "version": null,
+      "normalizedDisease": "养老服务机构中营养指导员工作流程示例",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "养老服务机构中营养指导员工作流程示例"
       ],
@@ -585,18 +1103,15 @@
     "前列腺癌诊疗指南（2022年版）": {
       "id": "前列腺癌诊疗指南（2022年版）",
       "disease": "前列腺癌",
+      "version": 2022,
+      "normalizedDisease": "前列腺癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "前列腺癌诊疗指南（2022年版）",
-        "前列腺癌",
-        "直肠指诊",
-        "PSA",
-        "穿刺活检",
-        "核素全身骨显像",
-        "前列腺MRI",
-        "前列腺CT",
-        "盆腔淋巴结清扫",
-        "X线",
-        "CT"
+        "前列腺癌"
       ],
       "sectionCount": 64,
       "keyParagraphCount": 0
@@ -604,6 +1119,12 @@
     "化脓性颌骨骨髓炎诊疗指南（2022年版）": {
       "id": "化脓性颌骨骨髓炎诊疗指南（2022年版）",
       "disease": "化脓性颌骨骨髓炎",
+      "version": 2022,
+      "normalizedDisease": "化脓性颌骨骨髓炎",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "化脓性颌骨骨髓炎诊疗指南（2022年版）",
         "化脓性颌骨骨髓炎"
@@ -614,23 +1135,15 @@
     "卵巢癌诊疗指南（2022年版）": {
       "id": "卵巢癌诊疗指南（2022年版）",
       "disease": "卵巢癌",
+      "version": 2022,
+      "normalizedDisease": "卵巢癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "卵巢癌诊疗指南（2022年版）",
-        "卵巢癌",
-        "下腹不适",
-        "腹胀",
-        "食欲下降",
-        "短期内腹围迅速增大",
-        "乏力",
-        "消瘦",
-        "大小便次数增多",
-        "气短",
-        "难以平卧",
-        "糖类抗原125（CA125）",
-        "人附睾蛋白4（HE4）",
-        "ROMA指数",
-        "经阴道超声",
-        "绝经后女性"
+        "卵巢癌"
       ],
       "sectionCount": 45,
       "keyParagraphCount": 0
@@ -638,12 +1151,34 @@
     "原发性肝癌诊疗指南（2024年版）": {
       "id": "原发性肝癌诊疗指南（2024年版）",
       "disease": "原发性肝癌",
+      "version": 2024,
+      "normalizedDisease": "原发性肝癌",
+      "audience": null,
+      "org": null,
+      "deprecated": true,
+      "supersededBy": "原发性肝癌诊疗指南（2026版）",
       "keywords": [
         "原发性肝癌诊疗指南（2024年版）",
         "原发性肝癌",
-        "彩色多普勒血流成像",
-        "超声造影检查",
-        "局部治疗"
+        "肝区疼痛",
+        "腹胀",
+        "食欲减退",
+        "黄疸",
+        "索拉非尼",
+        "仑伐替尼",
+        "腹部超声",
+        "增强CT",
+        "增强MRI",
+        "甲胎蛋白（AFP）",
+        "乙型肝炎病毒感染",
+        "丙型肝炎病毒感染",
+        "肝硬化",
+        "酒精性肝病",
+        "肝切除术",
+        "肝移植术",
+        "消融治疗",
+        "经动脉化疗栓塞术",
+        "放射治疗"
       ],
       "sectionCount": 195,
       "keyParagraphCount": 0
@@ -651,6 +1186,12 @@
     "原发性肝癌诊疗指南（2026版）": {
       "id": "原发性肝癌诊疗指南（2026版）",
       "disease": "原发性肝癌",
+      "version": 2026,
+      "normalizedDisease": "原发性肝癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "原发性肝癌诊疗指南（2026版）",
         "原发性肝癌"
@@ -661,9 +1202,38 @@
     "原发性肺癌诊疗指南（2022年版）": {
       "id": "原发性肺癌诊疗指南（2022年版）",
       "disease": "原发性肺癌",
+      "version": 2022,
+      "normalizedDisease": "原发性肺癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "原发性肺癌诊疗指南（2022年版）",
-        "原发性肺癌"
+        "原发性肺癌",
+        "咳嗽",
+        "咳血",
+        "胸痛",
+        "气短",
+        "吉非替尼",
+        "奥希替尼",
+        "克唑替尼",
+        "顺铂",
+        "培美曲塞",
+        "胸部CT",
+        "PET-CT",
+        "支气管镜检查",
+        "经皮肺穿刺活检",
+        "肿瘤标志物检测",
+        "吸烟",
+        "空气污染",
+        "石棉暴露",
+        "家族肺癌史",
+        "手术切除",
+        "放射治疗",
+        "化学治疗",
+        "靶向治疗",
+        "免疫治疗"
       ],
       "sectionCount": 79,
       "keyParagraphCount": 0
@@ -671,9 +1241,30 @@
     "口腔念珠菌病诊疗指南（2022年版）": {
       "id": "口腔念珠菌病诊疗指南（2022年版）",
       "disease": "口腔念珠菌病",
+      "version": 2022,
+      "normalizedDisease": "口腔念珠菌病",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "口腔念珠菌病诊疗指南（2022年版）",
-        "口腔念珠菌病"
+        "口腔念珠菌病",
+        "口腔黏膜白色斑块",
+        "口腔黏膜红斑",
+        "口腔疼痛",
+        "味觉丧失",
+        "制霉菌素",
+        "氟康唑",
+        "伊曲康唑",
+        "直接镜检",
+        "真菌培养",
+        "组织病理检查",
+        "免疫功能低下",
+        "长期使用抗生素",
+        "糖尿病",
+        "局部抗真菌药物治疗",
+        "全身抗真菌药物治疗"
       ],
       "sectionCount": 38,
       "keyParagraphCount": 0
@@ -681,9 +1272,28 @@
     "口腔扁平苔藓诊疗指南（2022年版）": {
       "id": "口腔扁平苔藓诊疗指南（2022年版）",
       "disease": "口腔扁平苔藓",
+      "version": 2022,
+      "normalizedDisease": "口腔扁平苔藓",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "口腔扁平苔藓诊疗指南（2022年版）",
-        "口腔扁平苔藓"
+        "口腔扁平苔藓",
+        "白色条纹",
+        "糜烂",
+        "灼痛",
+        "糖皮质激素",
+        "环孢素",
+        "维A酸",
+        "口腔黏膜检查",
+        "病理活检",
+        "精神压力",
+        "免疫异常",
+        "局部糖皮质激素治疗",
+        "全身免疫抑制治疗",
+        "激光治疗"
       ],
       "sectionCount": 45,
       "keyParagraphCount": 0
@@ -691,9 +1301,30 @@
     "口腔颌面部间隙感染诊疗指南（2022年版）": {
       "id": "口腔颌面部间隙感染诊疗指南（2022年版）",
       "disease": "口腔颌面部间隙感染",
+      "version": 2022,
+      "normalizedDisease": "口腔颌面部间隙感染",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "口腔颌面部间隙感染诊疗指南（2022年版）",
-        "口腔颌面部间隙感染"
+        "口腔颌面部间隙感染",
+        "局部红肿热痛",
+        "张口受限",
+        "发热",
+        "青霉素",
+        "甲硝唑",
+        "克林霉素",
+        "CT检查",
+        "血常规",
+        "穿刺检查",
+        "牙源性感染",
+        "口腔卫生不良",
+        "全身免疫功能低下",
+        "切开引流术",
+        "抗感染药物治疗",
+        "支持治疗"
       ],
       "sectionCount": 22,
       "keyParagraphCount": 0
@@ -701,9 +1332,20 @@
     "唇裂诊疗指南（2022年版）": {
       "id": "唇裂诊疗指南（2022年版）",
       "disease": "唇裂",
+      "version": 2022,
+      "normalizedDisease": "唇裂",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "唇裂诊疗指南（2022年版）",
-        "唇裂"
+        "唇裂",
+        "唇部裂隙",
+        "抗生素",
+        "体格检查",
+        "遗传因素",
+        "唇裂修复术"
       ],
       "sectionCount": 31,
       "keyParagraphCount": 0
@@ -711,6 +1353,12 @@
     "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）": {
       "id": "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）",
       "disease": "国家卫生健康委关于修改和废止部分部门规章的决定",
+      "version": null,
+      "normalizedDisease": "关于修改和废止部分部门规章的决定",
+      "audience": null,
+      "org": "国家卫生健康委",
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）",
         "国家卫生健康委关于修改和废止部分部门规章的决定"
@@ -721,6 +1369,12 @@
     "国家基本药物目录（2026年版）": {
       "id": "国家基本药物目录（2026年版）",
       "disease": "国家基本药物目录",
+      "version": 2026,
+      "normalizedDisease": "国家基本药物目录",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "国家基本药物目录（2026年版）",
         "国家基本药物目录"
@@ -731,6 +1385,12 @@
     "基层医疗卫生机构医疗质量改善三年行动（2026—2028年）自查整改表": {
       "id": "基层医疗卫生机构医疗质量改善三年行动（2026—2028年）自查整改表",
       "disease": "基层医疗卫生机构医疗质量改善三年行动自查整改表",
+      "version": null,
+      "normalizedDisease": "基层医疗卫生机构医疗质量改善三年行动自查整改表",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "基层医疗卫生机构医疗质量改善三年行动（2026—2028年）自查整改表",
         "基层医疗卫生机构医疗质量改善三年行动自查整改表"
@@ -741,9 +1401,29 @@
     "基层血液透析室（中心）建设与服务指南（试行）": {
       "id": "基层血液透析室（中心）建设与服务指南（试行）",
       "disease": "基层血液透析室建设与服务指南",
+      "version": null,
+      "normalizedDisease": "基层血液透析室建设与服务指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "基层血液透析室（中心）建设与服务指南（试行）",
-        "基层血液透析室建设与服务指南"
+        "基层血液透析室建设与服务指南",
+        "终末期肾病",
+        "恶心呕吐",
+        "水肿",
+        "尿量减少",
+        "促红细胞生成素",
+        "降压药",
+        "血肌酐",
+        "尿素氮",
+        "肾小球滤过率",
+        "高血压",
+        "糖尿病",
+        "血液透析",
+        "腹膜透析",
+        "肾移植"
       ],
       "sectionCount": 0,
       "keyParagraphCount": 0
@@ -751,15 +1431,15 @@
     "子宫内膜癌诊疗指南（2022年版）": {
       "id": "子宫内膜癌诊疗指南（2022年版）",
       "disease": "子宫内膜癌",
+      "version": 2022,
+      "normalizedDisease": "子宫内膜癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "子宫内膜癌诊疗指南（2022年版）",
-        "子宫内膜癌",
-        "林奇综合征",
-        "他莫昔芬",
-        "超声检查",
-        "子宫内膜活检",
-        "手术治疗",
-        "预防性全子宫切除术/双侧输卵管卵巢切除术"
+        "子宫内膜癌"
       ],
       "sectionCount": 53,
       "keyParagraphCount": 0
@@ -767,6 +1447,12 @@
     "安宁疗护实践指南（2025年版）": {
       "id": "安宁疗护实践指南（2025年版）",
       "disease": "安宁疗护实践指南",
+      "version": 2025,
+      "normalizedDisease": "安宁疗护实践指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "安宁疗护实践指南（2025年版）",
         "安宁疗护实践指南"
@@ -777,16 +1463,20 @@
     "宫颈癌诊疗指南（2022年版）": {
       "id": "宫颈癌诊疗指南（2022年版）",
       "disease": "宫颈癌",
+      "version": 2022,
+      "normalizedDisease": "宫颈癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "宫颈癌诊疗指南（2022年版）",
         "宫颈癌",
-        "子宫颈癌",
-        "宫颈液基薄层细胞学检查",
+        "接触性出血",
+        "顺铂",
         "HPV检测",
-        "阴道镜检查",
-        "宫颈组织学活检",
-        "宫颈锥形切除病理检查",
-        "醋酸或碘溶液涂抹后肉眼观察"
+        "HPV感染",
+        "子宫切除术"
       ],
       "sectionCount": 54,
       "keyParagraphCount": 0
@@ -794,6 +1484,12 @@
     "尼帕病毒病诊疗方案（2026年版）": {
       "id": "尼帕病毒病诊疗方案（2026年版）",
       "disease": "尼帕病毒病",
+      "version": 2026,
+      "normalizedDisease": "尼帕病毒病",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "尼帕病毒病诊疗方案（2026年版）",
         "尼帕病毒病"
@@ -804,6 +1500,12 @@
     "常见慢性病风险评估指标（2025年版）": {
       "id": "常见慢性病风险评估指标（2025年版）",
       "disease": "常见慢性病",
+      "version": 2025,
+      "normalizedDisease": "常见慢性病",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "常见慢性病风险评估指标（2025年版）",
         "常见慢性病"
@@ -814,20 +1516,37 @@
     "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）": {
       "id": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
       "disease": "弥漫性大B细胞淋巴瘤",
+      "version": 2022,
+      "normalizedDisease": "弥漫性大B细胞淋巴瘤",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
         "弥漫性大B细胞淋巴瘤",
-        "进行性肿大的无痛性肿物",
-        "胃肠道症状",
-        "中枢神经系统症状",
-        "骨骼症状",
-        "肿瘤溶解综合征",
-        "免疫组化",
-        "组织病理学分析",
-        "免疫表型分析",
+        "无痛性淋巴结肿大",
+        "发热",
+        "盗汗",
+        "体重减轻",
         "利妥昔单抗",
-        "R-CHOP方案化疗",
-        "放疗"
+        "环磷酰胺",
+        "多柔比星",
+        "长春新碱",
+        "泼尼松",
+        "淋巴结活检",
+        "免疫组化",
+        "PET-CT",
+        "血常规",
+        "骨髓活检",
+        "免疫缺陷",
+        "自身免疫性疾病",
+        "EB病毒感染",
+        "年龄增长",
+        "R-CHOP化疗方案",
+        "放疗",
+        "靶向治疗",
+        "造血干细胞移植"
       ],
       "sectionCount": 59,
       "keyParagraphCount": 0
@@ -835,9 +1554,20 @@
     "慢性乙型肝炎防治指南（2022年版）": {
       "id": "慢性乙型肝炎防治指南（2022年版）",
       "disease": "慢性乙型肝炎防治指南",
+      "version": 2022,
+      "normalizedDisease": "慢性乙型肝炎防治指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "慢性乙型肝炎防治指南（2022年版）",
-        "慢性乙型肝炎防治指南"
+        "慢性乙型肝炎防治指南",
+        "慢性乙型肝炎",
+        "TAF",
+        "ETV",
+        "TDF",
+        "抗病毒治疗"
       ],
       "sectionCount": 33,
       "keyParagraphCount": 2
@@ -845,9 +1575,37 @@
     "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）": {
       "id": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
       "disease": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤",
+      "version": 2022,
+      "normalizedDisease": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
-        "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤"
+        "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤",
+        "淋巴结肿大",
+        "肝脾肿大",
+        "贫血",
+        "反复感染",
+        "伊布替尼",
+        "阿卡替尼",
+        "利妥昔单抗",
+        "氟达拉滨",
+        "环磷酰胺",
+        "血常规",
+        "外周血涂片",
+        "流式细胞术",
+        "骨髓活检",
+        "免疫分型",
+        "FISH检测",
+        "年龄增长",
+        "家族史",
+        "免疫抑制状态",
+        "化学免疫治疗",
+        "靶向治疗",
+        "造血干细胞移植",
+        "支持治疗"
       ],
       "sectionCount": 41,
       "keyParagraphCount": 0
@@ -855,6 +1613,12 @@
     "慢性病风险筛查项目（2025年版）": {
       "id": "慢性病风险筛查项目（2025年版）",
       "disease": "慢性病",
+      "version": 2025,
+      "normalizedDisease": "慢性病",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "慢性病风险筛查项目（2025年版）",
         "慢性病"
@@ -865,9 +1629,37 @@
     "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）": {
       "id": "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
       "disease": "慢性阻塞性肺疾病基层",
+      "version": 2024,
+      "normalizedDisease": "慢性阻塞性肺疾病基层",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
-        "慢性阻塞性肺疾病基层"
+        "慢性阻塞性肺疾病基层",
+        "慢性阻塞性肺疾病",
+        "慢性咳嗽",
+        "咳痰",
+        "呼吸困难",
+        "喘息",
+        "沙丁胺醇",
+        "异丙托溴铵",
+        "噻托溴铵",
+        "布地奈德",
+        "氟替卡松",
+        "肺功能检查",
+        "胸部X线",
+        "血气分析",
+        "吸烟",
+        "空气污染",
+        "职业粉尘",
+        "α1-抗胰蛋白酶缺乏",
+        "戒烟",
+        "氧疗",
+        "肺康复",
+        "疫苗接种",
+        "肺减容手术"
       ],
       "sectionCount": 119,
       "keyParagraphCount": 0
@@ -875,17 +1667,28 @@
     "慢性髓性白血病诊疗指南（2022年版）": {
       "id": "慢性髓性白血病诊疗指南（2022年版）",
       "disease": "慢性髓性白血病",
+      "version": 2022,
+      "normalizedDisease": "慢性髓性白血病",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "慢性髓性白血病诊疗指南（2022年版）",
         "慢性髓性白血病",
-        "甲磺酸伊马替尼",
+        "乏力",
+        "盗汗",
+        "脾肿大",
         "伊马替尼",
-        "尼洛替尼",
         "达沙替尼",
-        "博舒替尼",
-        "拉多替尼",
-        "氟马替尼",
-        "免疫分型"
+        "尼洛替尼",
+        "血常规",
+        "骨髓穿刺",
+        "Ph染色体检测",
+        "BCR-ABL融合基因检测",
+        "电离辐射",
+        "靶向药物治疗",
+        "异基因造血干细胞移植"
       ],
       "sectionCount": 21,
       "keyParagraphCount": 0
@@ -893,6 +1696,12 @@
     "成釉细胞瘤诊疗指南（2022年版）": {
       "id": "成釉细胞瘤诊疗指南（2022年版）",
       "disease": "成釉细胞瘤",
+      "version": 2022,
+      "normalizedDisease": "成釉细胞瘤",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "成釉细胞瘤诊疗指南（2022年版）",
         "成釉细胞瘤"
@@ -903,6 +1712,12 @@
     "新型冠状病毒感染诊疗方案（试行第十版）": {
       "id": "新型冠状病毒感染诊疗方案（试行第十版）",
       "disease": "新型冠状病毒感染",
+      "version": null,
+      "normalizedDisease": "新型冠状病毒感染",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "新型冠状病毒感染诊疗方案（试行第十版）",
         "新型冠状病毒感染"
@@ -913,9 +1728,25 @@
     "新型抗肿瘤药物临床应用指导原则(2022年版)": {
       "id": "新型抗肿瘤药物临床应用指导原则(2022年版)",
       "disease": "新型抗肿瘤药物临床应用指导原则",
+      "version": 2022,
+      "normalizedDisease": "新型抗肿瘤药物临床应用指导原则",
+      "audience": null,
+      "org": null,
+      "deprecated": true,
+      "supersededBy": "新型抗肿瘤药物临床应用指导原则（2025年版）",
       "keywords": [
         "新型抗肿瘤药物临床应用指导原则(2022年版)",
-        "新型抗肿瘤药物临床应用指导原则"
+        "新型抗肿瘤药物临床应用指导原则",
+        "恶性肿瘤",
+        "组织或细胞学病理确诊",
+        "特殊分子病理诊断",
+        "分子靶点检测",
+        "小分子靶向药物",
+        "大分子单克隆抗体类药物",
+        "酪氨酸激酶抑制剂",
+        "多学科会诊",
+        "妊娠滋养细胞肿瘤",
+        "国家相关指南或规范"
       ],
       "sectionCount": 1381,
       "keyParagraphCount": 423
@@ -923,6 +1754,12 @@
     "新型抗肿瘤药物临床应用指导原则（2025年版）": {
       "id": "新型抗肿瘤药物临床应用指导原则（2025年版）",
       "disease": "新型抗肿瘤药物临床应用指导原则",
+      "version": 2025,
+      "normalizedDisease": "新型抗肿瘤药物临床应用指导原则",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "新型抗肿瘤药物临床应用指导原则（2025年版）",
         "新型抗肿瘤药物临床应用指导原则"
@@ -933,6 +1770,12 @@
     "木聚糖酶等7种食品添加剂新品种": {
       "id": "木聚糖酶等7种食品添加剂新品种",
       "disease": "木聚糖酶等7种食品添加剂新品种",
+      "version": null,
+      "normalizedDisease": "木聚糖酶等7种食品添加剂新品种",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "木聚糖酶等7种食品添加剂新品种"
       ],
@@ -942,6 +1785,12 @@
     "核医学专业医疗质量控制指标（2025年版）": {
       "id": "核医学专业医疗质量控制指标（2025年版）",
       "disease": "核医学专业医疗质量控制指标",
+      "version": 2025,
+      "normalizedDisease": "核医学专业医疗质量控制指标",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "核医学专业医疗质量控制指标（2025年版）",
         "核医学专业医疗质量控制指标"
@@ -952,9 +1801,44 @@
     "流行性感冒诊疗方案（2025版）": {
       "id": "流行性感冒诊疗方案（2025版）",
       "disease": "流行性感冒",
+      "version": 2025,
+      "normalizedDisease": "流行性感冒",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "流行性感冒诊疗方案（2025版）",
-        "流行性感冒"
+        "流行性感冒",
+        "发热",
+        "咳嗽",
+        "咽痛",
+        "流涕",
+        "头痛",
+        "肌肉酸痛",
+        "乏力",
+        "奥司他韦",
+        "扎那米韦",
+        "帕拉米韦",
+        "玛巴洛沙韦",
+        "布洛芬",
+        "对乙酰氨基酚",
+        "血常规",
+        "流感抗原检测",
+        "核酸检测",
+        "病毒分离",
+        "血清学检测",
+        "年龄小于5岁",
+        "年龄大于65岁",
+        "妊娠",
+        "肥胖",
+        "慢性心肺疾病",
+        "糖尿病",
+        "免疫抑制",
+        "抗病毒治疗",
+        "对症治疗",
+        "支持治疗",
+        "住院治疗"
       ],
       "sectionCount": 82,
       "keyParagraphCount": 0
@@ -962,15 +1846,30 @@
     "淋巴瘤诊疗指南（2022年版）": {
       "id": "淋巴瘤诊疗指南（2022年版）",
       "disease": "淋巴瘤",
+      "version": 2022,
+      "normalizedDisease": "淋巴瘤",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "淋巴瘤诊疗指南（2022年版）",
         "淋巴瘤",
-        "超声",
-        "病理学检查",
-        "粗针穿刺",
-        "切除活检",
-        "荧光原位杂交（FISH）",
-        "Ann-Arbor分期"
+        "无痛性淋巴结肿大",
+        "发热",
+        "盗汗",
+        "体重减轻",
+        "利妥昔单抗",
+        "CHOP方案（环磷酰胺+多柔比星+长春新碱+泼尼松）",
+        "淋巴结活检",
+        "免疫组化",
+        "PET-CT",
+        "EB病毒感染",
+        "免疫功能低下",
+        "化疗",
+        "放疗",
+        "靶向治疗",
+        "造血干细胞移植"
       ],
       "sectionCount": 99,
       "keyParagraphCount": 0
@@ -978,6 +1877,12 @@
     "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）": {
       "id": "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）",
       "disease": "牙体缺损、牙列缺损与缺失修复诊疗规范",
+      "version": 2022,
+      "normalizedDisease": "牙体缺损、牙列缺损与缺失修复",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）",
         "牙体缺损、牙列缺损与缺失修复诊疗规范"
@@ -988,6 +1893,12 @@
     "牙源性颌骨囊肿诊疗指南（2022年版）": {
       "id": "牙源性颌骨囊肿诊疗指南（2022年版）",
       "disease": "牙源性颌骨囊肿",
+      "version": 2022,
+      "normalizedDisease": "牙源性颌骨囊肿",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "牙源性颌骨囊肿诊疗指南（2022年版）",
         "牙源性颌骨囊肿"
@@ -998,9 +1909,29 @@
     "牙颌面畸形诊疗指南（2022年版）": {
       "id": "牙颌面畸形诊疗指南（2022年版）",
       "disease": "牙颌面畸形",
+      "version": 2022,
+      "normalizedDisease": "牙颌面畸形",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "牙颌面畸形诊疗指南（2022年版）",
-        "牙颌面畸形"
+        "牙颌面畸形",
+        "开颌",
+        "反颌",
+        "深覆颌",
+        "面部不对称",
+        "头颅侧位X线片",
+        "模型分析",
+        "面弓转移",
+        "三维CT扫描",
+        "遗传因素",
+        "不良口腔习惯",
+        "正畸治疗",
+        "正颌外科手术",
+        "抗生素",
+        "非甾体抗炎药"
       ],
       "sectionCount": 93,
       "keyParagraphCount": 0
@@ -1008,6 +1939,12 @@
     "牡丹籽油等7种新食品原料": {
       "id": "牡丹籽油等7种新食品原料",
       "disease": "牡丹籽油等7种新食品原料",
+      "version": null,
+      "normalizedDisease": "牡丹籽油等7种新食品原料",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "牡丹籽油等7种新食品原料"
       ],
@@ -1017,6 +1954,12 @@
     "生物医学新技术临床研究备案指导清单（第1版）": {
       "id": "生物医学新技术临床研究备案指导清单（第1版）",
       "disease": "生物医学新技术临床研究备案指导清单",
+      "version": null,
+      "normalizedDisease": "生物医学新技术临床研究备案指导清单",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "生物医学新技术临床研究备案指导清单（第1版）",
         "生物医学新技术临床研究备案指导清单"
@@ -1027,9 +1970,27 @@
     "甲状腺癌诊疗指南（2022版）": {
       "id": "甲状腺癌诊疗指南（2022版）",
       "disease": "甲状腺癌",
+      "version": 2022,
+      "normalizedDisease": "甲状腺癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "甲状腺癌诊疗指南（2022版）",
-        "甲状腺癌"
+        "甲状腺癌",
+        "颈部肿块",
+        "声音嘶哑",
+        "吞咽困难",
+        "左甲状腺素钠片",
+        "碘131",
+        "甲状腺超声",
+        "细针穿刺活检",
+        "甲状腺功能检查",
+        "辐射暴露",
+        "家族遗传",
+        "甲状腺全切除术",
+        "放射性碘治疗"
       ],
       "sectionCount": 117,
       "keyParagraphCount": 0
@@ -1037,9 +1998,30 @@
     "甲状腺结节和分化型甲状腺癌诊治指南（第二版）": {
       "id": "甲状腺结节和分化型甲状腺癌诊治指南（第二版）",
       "disease": "甲状腺结节和分化型甲状腺癌",
+      "version": null,
+      "normalizedDisease": "甲状腺结节和分化型甲状腺癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "甲状腺结节和分化型甲状腺癌诊治指南（第二版）",
-        "甲状腺结节和分化型甲状腺癌"
+        "甲状腺结节和分化型甲状腺癌",
+        "甲状腺结节",
+        "颈部肿块",
+        "分化型甲状腺癌",
+        "声音嘶哑",
+        "吞咽困难",
+        "左甲状腺素钠",
+        "放射性碘",
+        "甲状腺超声",
+        "细针穿刺活检",
+        "甲状腺功能检查",
+        "辐射暴露",
+        "家族史",
+        "甲状腺切除术",
+        "放射性碘治疗",
+        "甲状腺激素抑制治疗"
       ],
       "sectionCount": 96,
       "keyParagraphCount": 0
@@ -1047,6 +2029,12 @@
     "磨牙症诊疗指南（2022年版）": {
       "id": "磨牙症诊疗指南（2022年版）",
       "disease": "磨牙症",
+      "version": 2022,
+      "normalizedDisease": "磨牙症",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "磨牙症诊疗指南（2022年版）",
         "磨牙症"
@@ -1057,9 +2045,27 @@
     "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）": {
       "id": "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
       "disease": "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
-        "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径"
+        "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径",
+        "骨质疏松性椎体压缩骨折",
+        "背部疼痛",
+        "脊柱后凸畸形",
+        "钙剂",
+        "维生素D",
+        "双膦酸盐",
+        "X线平片",
+        "CT扫描",
+        "MRI",
+        "骨质疏松症",
+        "经皮椎体成形术",
+        "经皮椎体后凸成形术"
       ],
       "sectionCount": 35,
       "keyParagraphCount": 0
@@ -1067,6 +2073,12 @@
     "综合医院中医药工作指南（2024 版）": {
       "id": "综合医院中医药工作指南（2024 版）",
       "disease": "综合医院中医药",
+      "version": 2024,
+      "normalizedDisease": "综合医院中医药",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "综合医院中医药工作指南（2024 版）",
         "综合医院中医药"
@@ -1077,6 +2089,12 @@
     "罕见病诊疗指南（2019年版）": {
       "id": "罕见病诊疗指南（2019年版）",
       "disease": "罕见病",
+      "version": 2019,
+      "normalizedDisease": "罕见病",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "罕见病诊疗指南（2019年版）",
         "罕见病"
@@ -1087,8 +2105,18 @@
     "老年合理用药核心信息": {
       "id": "老年合理用药核心信息",
       "disease": "老年合理用药核心信息",
+      "version": null,
+      "normalizedDisease": "老年合理用药核心信息",
+      "audience": "老年",
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
-        "老年合理用药核心信息"
+        "老年合理用药核心信息",
+        "老年患者",
+        "多重用药",
+        "药学门诊",
+        "老年医学科"
       ],
       "sectionCount": 8,
       "keyParagraphCount": 1
@@ -1096,12 +2124,24 @@
     "老年髋部骨折诊疗与管理指南（2022年版）": {
       "id": "老年髋部骨折诊疗与管理指南（2022年版）",
       "disease": "老年髋部骨折",
+      "version": 2022,
+      "normalizedDisease": "老年髋部骨折",
+      "audience": "老年",
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "老年髋部骨折诊疗与管理指南（2022年版）",
         "老年髋部骨折",
         "骨质疏松",
         "跌倒",
-        "多学科团队协作治疗"
+        "多学科团队协作治疗",
+        "急诊绿色通道",
+        "术前评估",
+        "手术治疗",
+        "康复锻炼",
+        "预防再骨折",
+        "镇痛"
       ],
       "sectionCount": 39,
       "keyParagraphCount": 34
@@ -1109,9 +2149,30 @@
     "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）": {
       "id": "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
       "disease": "股骨转子间骨折闭合复位内固定术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "股骨转子间骨折闭合复位内固定术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
-        "股骨转子间骨折闭合复位内固定术加速康复临床路径"
+        "股骨转子间骨折闭合复位内固定术加速康复临床路径",
+        "股骨转子间骨折",
+        "髋部疼痛",
+        "下肢肿胀",
+        "活动受限",
+        "非甾体抗炎药",
+        "抗生素",
+        "抗凝药",
+        "X线检查",
+        "CT检查",
+        "MRI检查",
+        "骨质疏松",
+        "老年人",
+        "跌倒",
+        "闭合复位内固定术",
+        "加速康复措施"
       ],
       "sectionCount": 37,
       "keyParagraphCount": 0
@@ -1119,9 +2180,17 @@
     "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）": {
       "id": "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）",
       "disease": "股骨颈骨折闭合复位内固定术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "股骨颈骨折闭合复位内固定术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）",
-        "股骨颈骨折闭合复位内固定术加速康复临床路径"
+        "股骨颈骨折闭合复位内固定术加速康复临床路径",
+        "股骨颈骨折",
+        "闭合复位内固定术"
       ],
       "sectionCount": 37,
       "keyParagraphCount": 0
@@ -1129,9 +2198,33 @@
     "肥胖症诊疗指南（2024年版）": {
       "id": "肥胖症诊疗指南（2024年版）",
       "disease": "肥胖症",
+      "version": 2024,
+      "normalizedDisease": "肥胖症",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "肥胖症诊疗指南（2024年版）",
-        "肥胖症"
+        "肥胖症",
+        "体重超重",
+        "腹型肥胖",
+        "乏力",
+        "奥利司他",
+        "利拉鲁肽",
+        "司美格鲁肽",
+        "体重指数测定",
+        "腰围测量",
+        "体脂率测定",
+        "血糖检测",
+        "血脂检测",
+        "遗传因素",
+        "高热量饮食",
+        "缺乏运动",
+        "代谢异常",
+        "生活方式干预",
+        "药物治疗",
+        "减重手术"
       ],
       "sectionCount": 100,
       "keyParagraphCount": 0
@@ -1139,8 +2232,39 @@
     "肺结核门诊诊疗规范": {
       "id": "肺结核门诊诊疗规范",
       "disease": "肺结核门诊诊疗规范",
+      "version": null,
+      "normalizedDisease": "肺结核门诊",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
-        "肺结核门诊诊疗规范"
+        "肺结核门诊诊疗规范",
+        "肺结核",
+        "咳嗽",
+        "咳痰",
+        "咯血",
+        "胸痛",
+        "发热",
+        "盗汗",
+        "乏力",
+        "异烟肼",
+        "利福平",
+        "吡嗪酰胺",
+        "乙胺丁醇",
+        "链霉素",
+        "胸部X线",
+        "痰涂片",
+        "痰培养",
+        "结核菌素试验",
+        "分子检测",
+        "与结核病患者密切接触",
+        "免疫力低下",
+        "HIV感染",
+        "营养不良",
+        "糖尿病",
+        "标准短程化疗",
+        "直接面视下督导服药"
       ],
       "sectionCount": 128,
       "keyParagraphCount": 0
@@ -1148,6 +2272,12 @@
     "肾癌诊疗指南（2022年版）": {
       "id": "肾癌诊疗指南（2022年版）",
       "disease": "肾癌",
+      "version": 2022,
+      "normalizedDisease": "肾癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "肾癌诊疗指南（2022年版）",
         "肾癌"
@@ -1158,9 +2288,21 @@
     "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）": {
       "id": "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）",
       "disease": "肿瘤半髋／全髋关节置换术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "肿瘤半髋／全髋关节置换术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）",
-        "肿瘤半髋／全髋关节置换术加速康复临床路径"
+        "肿瘤半髋／全髋关节置换术加速康复临床路径",
+        "髋部骨肿瘤",
+        "髋部疼痛",
+        "非甾体抗炎药",
+        "髋关节X线",
+        "高龄",
+        "全髋关节置换术"
       ],
       "sectionCount": 35,
       "keyParagraphCount": 0
@@ -1168,6 +2310,12 @@
     "肿瘤膝关节置换术加速康复临床路径（2023年版）": {
       "id": "肿瘤膝关节置换术加速康复临床路径（2023年版）",
       "disease": "肿瘤膝关节置换术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "肿瘤膝关节置换术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "肿瘤膝关节置换术加速康复临床路径（2023年版）",
         "肿瘤膝关节置换术加速康复临床路径"
@@ -1178,15 +2326,15 @@
     "胃癌诊疗指南（2022年版）": {
       "id": "胃癌诊疗指南（2022年版）",
       "disease": "胃癌",
+      "version": 2022,
+      "normalizedDisease": "胃癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "胃癌诊疗指南（2022年版）",
-        "胃癌",
-        "超声检查",
-        "CT检查",
-        "MRI",
-        "彩色多普勒血流成像",
-        "超声双重造影",
-        "外科为主的综合治疗"
+        "胃癌"
       ],
       "sectionCount": 138,
       "keyParagraphCount": 0
@@ -1194,9 +2342,36 @@
     "胰腺癌诊治指南（2022年版）": {
       "id": "胰腺癌诊治指南（2022年版）",
       "disease": "胰腺癌",
+      "version": 2022,
+      "normalizedDisease": "胰腺癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "胰腺癌诊治指南（2022年版）",
-        "胰腺癌"
+        "胰腺癌",
+        "腹痛",
+        "黄疸",
+        "消瘦",
+        "食欲不振",
+        "吉西他滨",
+        "白蛋白紫杉醇",
+        "FOLFIRINOX方案",
+        "CT",
+        "MRI",
+        "CA19-9",
+        "超声内镜",
+        "活检",
+        "吸烟",
+        "糖尿病",
+        "慢性胰腺炎",
+        "家族史",
+        "手术切除",
+        "化疗",
+        "放疗",
+        "靶向治疗",
+        "免疫治疗"
       ],
       "sectionCount": 104,
       "keyParagraphCount": 0
@@ -1204,29 +2379,35 @@
     "脑胶质瘤诊疗指南（2022年版）": {
       "id": "脑胶质瘤诊疗指南（2022年版）",
       "disease": "脑胶质瘤",
+      "version": 2022,
+      "normalizedDisease": "脑胶质瘤",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "脑胶质瘤诊疗指南（2022年版）",
         "脑胶质瘤",
-        "颅内压增高",
-        "神经功能及认知功能障碍",
+        "头痛",
         "癫痫发作",
-        "CT",
-        "MRI",
-        "弥散加权成像",
-        "弥散张量成像",
-        "灌注加权成像",
-        "磁共振波谱成像",
-        "组织病理和分子病理整合诊断",
-        "分子标志物检测",
-        "高剂量电离辐射",
-        "高外显率基因遗传突变",
-        "亚硝酸盐食品",
-        "病毒或细菌感染",
+        "恶心呕吐",
+        "视乳头水肿",
+        "神经功能缺损",
+        "替莫唑胺",
+        "贝伐珠单抗",
+        "地塞米松",
+        "丙戊酸钠",
+        "头颅磁共振成像（MRI）",
+        "头颅CT",
+        "脑电图",
+        "立体定向活检",
+        "电离辐射暴露",
+        "遗传易感性（如神经纤维瘤病）",
         "手术切除",
-        "放疗",
-        "化疗",
-        "多学科合作综合治疗",
-        "个体化综合治疗"
+        "放射治疗",
+        "化疗（替莫唑胺方案）",
+        "肿瘤电场治疗",
+        "靶向治疗"
       ],
       "sectionCount": 59,
       "keyParagraphCount": 0
@@ -1234,9 +2415,33 @@
     "脑血管病防治指南（2024年版）": {
       "id": "脑血管病防治指南（2024年版）",
       "disease": "脑血管病防治指南",
+      "version": 2024,
+      "normalizedDisease": "脑血管病防治指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "脑血管病防治指南（2024年版）",
-        "脑血管病防治指南"
+        "脑血管病防治指南",
+        "脑血管病",
+        "偏瘫",
+        "失语",
+        "头痛",
+        "呕吐",
+        "阿司匹林",
+        "氯吡格雷",
+        "他汀类药物",
+        "头颅CT",
+        "头颅MRI",
+        "脑血管造影",
+        "高血压",
+        "糖尿病",
+        "高脂血症",
+        "吸烟",
+        "溶栓治疗",
+        "抗血小板治疗",
+        "血管内介入治疗"
       ],
       "sectionCount": 129,
       "keyParagraphCount": 0
@@ -1244,9 +2449,29 @@
     "腭裂诊疗指南（2022年版）": {
       "id": "腭裂诊疗指南（2022年版）",
       "disease": "腭裂",
+      "version": 2022,
+      "normalizedDisease": "腭裂",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "腭裂诊疗指南（2022年版）",
-        "腭裂"
+        "腭裂",
+        "腭部裂隙",
+        "语音不清",
+        "喂养困难",
+        "抗生素",
+        "镇痛药",
+        "口腔检查",
+        "鼻咽镜",
+        "影像学检查",
+        "遗传因素",
+        "孕期叶酸缺乏",
+        "孕期吸烟",
+        "腭裂修复术",
+        "语音治疗",
+        "术后护理"
       ],
       "sectionCount": 35,
       "keyParagraphCount": 0
@@ -1254,9 +2479,20 @@
     "腮腺浅叶良性肿瘤诊疗指南（2022年版）": {
       "id": "腮腺浅叶良性肿瘤诊疗指南（2022年版）",
       "disease": "腮腺浅叶良性肿瘤",
+      "version": 2022,
+      "normalizedDisease": "腮腺浅叶良性肿瘤",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "腮腺浅叶良性肿瘤诊疗指南（2022年版）",
-        "腮腺浅叶良性肿瘤"
+        "腮腺浅叶良性肿瘤",
+        "耳前无痛性肿块",
+        "超声检查",
+        "磁共振成像",
+        "细针穿刺活检",
+        "手术切除"
       ],
       "sectionCount": 25,
       "keyParagraphCount": 0
@@ -1264,9 +2500,22 @@
     "腰椎后路短节段减压融合术加速康复临床路径（2023年版）": {
       "id": "腰椎后路短节段减压融合术加速康复临床路径（2023年版）",
       "disease": "腰椎后路短节段减压融合术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "腰椎后路短节段减压融合术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "腰椎后路短节段减压融合术加速康复临床路径（2023年版）",
-        "腰椎后路短节段减压融合术加速康复临床路径"
+        "腰椎后路短节段减压融合术加速康复临床路径",
+        "腰椎退行性疾病",
+        "腰痛",
+        "下肢放射痛",
+        "非甾体抗炎药",
+        "腰椎MRI",
+        "年龄",
+        "腰椎后路短节段减压融合术"
       ],
       "sectionCount": 46,
       "keyParagraphCount": 0
@@ -1274,36 +2523,32 @@
     "膀胱癌诊疗指南（2022年版）": {
       "id": "膀胱癌诊疗指南（2022年版）",
       "disease": "膀胱癌",
+      "version": 2022,
+      "normalizedDisease": "膀胱癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "膀胱癌诊疗指南（2022年版）",
         "膀胱癌",
-        "长期职业接触工业化学产品",
-        "芳香胺类化合物",
-        "多环芳烃",
-        "氯代烃",
-        "β-萘胺",
-        "4-氨基联苯",
-        "环磷酰胺化疗",
-        "非那西汀滥用",
-        "盆腔放疗病史",
-        "吡格列酮",
-        "大量摄入脂肪",
-        "大量摄入胆固醇",
-        "油煎食物",
-        "红肉",
-        "长期饮用砷含量高的水",
-        "长期饮用氯消毒水",
-        "咖啡",
-        "人造甜味剂",
-        "染发",
-        "实验室检查",
-        "影像学检查",
-        "尿细胞学检查",
-        "尿肿瘤标记物检查",
+        "无痛性肉眼血尿",
+        "尿频",
+        "尿急",
+        "排尿困难",
+        "卡介苗",
+        "吉西他滨",
+        "顺铂",
         "膀胱镜检查",
-        "膀胱镜下活检病理学检查",
-        "上尿路影像学检查",
-        "流式细胞分析技术"
+        "尿脱落细胞学检查",
+        "CT尿路造影",
+        "吸烟",
+        "职业暴露于芳香胺",
+        "男性",
+        "年龄增长",
+        "经尿道膀胱肿瘤电切术",
+        "膀胱灌注化疗",
+        "根治性膀胱切除术"
       ],
       "sectionCount": 124,
       "keyParagraphCount": 0
@@ -1311,11 +2556,26 @@
     "自身免疫性溶血性贫血诊疗指南（2022年版）": {
       "id": "自身免疫性溶血性贫血诊疗指南（2022年版）",
       "disease": "自身免疫性溶血性贫血",
+      "version": 2022,
+      "normalizedDisease": "自身免疫性溶血性贫血",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "自身免疫性溶血性贫血诊疗指南（2022年版）",
         "自身免疫性溶血性贫血",
+        "贫血",
+        "黄疸",
+        "脾大",
+        "糖皮质激素",
         "利妥昔单抗",
-        "环孢素A"
+        "直接抗人球蛋白试验",
+        "血常规",
+        "自身免疫性疾病",
+        "感染",
+        "糖皮质激素治疗",
+        "脾切除术"
       ],
       "sectionCount": 63,
       "keyParagraphCount": 0
@@ -1323,9 +2583,29 @@
     "舌下腺囊肿诊疗指南（2022年版）": {
       "id": "舌下腺囊肿诊疗指南（2022年版）",
       "disease": "舌下腺囊肿",
+      "version": 2022,
+      "normalizedDisease": "舌下腺囊肿",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "舌下腺囊肿诊疗指南（2022年版）",
-        "舌下腺囊肿"
+        "舌下腺囊肿",
+        "口腔底部无痛性肿块",
+        "蓝色半透明囊性隆起",
+        "吞咽不适",
+        "青霉素",
+        "头孢类抗生素",
+        "口腔B超",
+        "穿刺抽液检查",
+        "CT检查",
+        "舌下腺导管损伤",
+        "唾液腺结石",
+        "口腔感染",
+        "舌下腺切除术",
+        "囊肿造袋术",
+        "硬化剂注射治疗"
       ],
       "sectionCount": 33,
       "keyParagraphCount": 0
@@ -1333,9 +2613,47 @@
     "舌癌诊疗指南（2022年版）": {
       "id": "舌癌诊疗指南（2022年版）",
       "disease": "舌癌",
+      "version": 2022,
+      "normalizedDisease": "舌癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "舌癌诊疗指南（2022年版）",
-        "舌癌"
+        "舌癌",
+        "舌部溃疡",
+        "舌痛",
+        "吞咽困难",
+        "言语不清",
+        "舌运动受限",
+        "颈部淋巴结肿大",
+        "顺铂",
+        "5-氟尿嘧啶",
+        "紫杉醇",
+        "多西他赛",
+        "西妥昔单抗",
+        "纳武利尤单抗",
+        "帕博利珠单抗",
+        "体格检查",
+        "CT",
+        "MRI",
+        "PET-CT",
+        "病理活检",
+        "超声检查",
+        "吸烟",
+        "饮酒",
+        "口腔卫生不良",
+        "HPV感染",
+        "咀嚼槟榔",
+        "营养不良",
+        "手术切除",
+        "颈淋巴结清扫",
+        "放射治疗",
+        "化学治疗",
+        "靶向治疗",
+        "免疫治疗",
+        "综合治疗"
       ],
       "sectionCount": 25,
       "keyParagraphCount": 0
@@ -1343,6 +2661,12 @@
     "药事管理专业医疗质量控制指标（2025年版）": {
       "id": "药事管理专业医疗质量控制指标（2025年版）",
       "disease": "药事管理专业医疗质量控制指标",
+      "version": 2025,
+      "normalizedDisease": "药事管理专业医疗质量控制指标",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "药事管理专业医疗质量控制指标（2025年版）",
         "药事管理专业医疗质量控制指标"
@@ -1353,9 +2677,24 @@
     "菌斑性龈炎诊疗指南（2022年版）": {
       "id": "菌斑性龈炎诊疗指南（2022年版）",
       "disease": "菌斑性龈炎",
+      "version": 2022,
+      "normalizedDisease": "菌斑性龈炎",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "菌斑性龈炎诊疗指南（2022年版）",
-        "菌斑性龈炎"
+        "菌斑性龈炎",
+        "牙龈出血",
+        "牙龈红肿",
+        "氯己定漱口水",
+        "牙周探诊",
+        "菌斑染色",
+        "口腔卫生不良",
+        "牙菌斑堆积",
+        "洁治",
+        "口腔卫生指导"
       ],
       "sectionCount": 30,
       "keyParagraphCount": 0
@@ -1363,27 +2702,26 @@
     "血友病A诊疗指南（2022年版）": {
       "id": "血友病A诊疗指南（2022年版）",
       "disease": "血友病A",
+      "version": 2022,
+      "normalizedDisease": "血友病A",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "血友病A诊疗指南（2022年版）",
         "血友病A",
         "关节出血",
         "肌肉出血",
-        "深部组织出血",
-        "胃肠道出血",
-        "泌尿道出血",
-        "中枢神经系统出血",
-        "拔牙后出血不止",
-        "关节畸形",
-        "假性肿瘤",
-        "外伤或手术后持续出血",
-        "基因重组FVIII制剂",
-        "病毒灭活的血源性FVIII制剂",
-        "冷沉淀",
-        "新鲜冰冻血浆",
-        "FVIII抑制物检测",
-        "替代治疗",
-        "预防治疗",
-        "按需治疗"
+        "凝血因子VIII",
+        "氨甲环酸",
+        "去氨加压素",
+        "凝血因子活性测定",
+        "活化部分凝血活酶时间（APTT）",
+        "家族史",
+        "男性",
+        "因子替代治疗",
+        "预防治疗"
       ],
       "sectionCount": 32,
       "keyParagraphCount": 0
@@ -1391,6 +2729,12 @@
     "血站技术操作规程（2026版）": {
       "id": "血站技术操作规程（2026版）",
       "disease": "血站技术操作规程",
+      "version": 2026,
+      "normalizedDisease": "血站技术操作规程",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "血站技术操作规程（2026版）",
         "血站技术操作规程"
@@ -1401,9 +2745,30 @@
     "近视防治指南（2024年版）": {
       "id": "近视防治指南（2024年版）",
       "disease": "近视防治指南",
+      "version": 2024,
+      "normalizedDisease": "近视防治指南",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "近视防治指南（2024年版）",
-        "近视防治指南"
+        "近视防治指南",
+        "近视",
+        "视力模糊",
+        "远视力下降",
+        "低浓度阿托品滴眼液",
+        "视力检查",
+        "验光",
+        "散瞳验光",
+        "眼轴长度测量",
+        "遗传因素",
+        "长时间近距离用眼",
+        "户外活动不足",
+        "配戴框架眼镜",
+        "角膜塑形镜",
+        "多焦点软性接触镜",
+        "近视手术"
       ],
       "sectionCount": 45,
       "keyParagraphCount": 0
@@ -1411,6 +2776,12 @@
     "颈椎前路椎间盘切除减压融合术加速康复临床路径（2023年版）": {
       "id": "颈椎前路椎间盘切除减压融合术加速康复临床路径（2023年版）",
       "disease": "颈椎前路椎间盘切除减压融合术加速康复临床路径",
+      "version": 2023,
+      "normalizedDisease": "颈椎前路椎间盘切除减压融合术加速康复临床路径",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "颈椎前路椎间盘切除减压融合术加速康复临床路径（2023年版）",
         "颈椎前路椎间盘切除减压融合术加速康复临床路径"
@@ -1421,6 +2792,12 @@
     "食养指南与科普资源": {
       "id": "食养指南与科普资源",
       "disease": "食养指南与科普资源",
+      "version": null,
+      "normalizedDisease": "食养指南与科普资源",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "食养指南与科普资源"
       ],
@@ -1430,16 +2807,37 @@
     "食管癌诊疗指南（2022年版）": {
       "id": "食管癌诊疗指南（2022年版）",
       "disease": "食管癌",
+      "version": 2022,
+      "normalizedDisease": "食管癌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "食管癌诊疗指南（2022年版）",
         "食管癌",
+        "吞咽困难",
+        "胸骨后疼痛",
+        "进行性吞咽困难",
+        "反流",
+        "紫杉醇",
+        "顺铂",
+        "卡铂",
+        "氟尿嘧啶",
+        "食管镜",
+        "上消化道钡餐造影",
         "CT",
-        "MRI",
+        "超声内镜",
         "PET-CT",
-        "超声检查",
-        "超声引导下穿刺活检",
-        "不良饮食习惯",
-        "不健康生活方式"
+        "吸烟",
+        "饮酒",
+        "热饮热食",
+        "亚硝酸盐",
+        "手术切除",
+        "放射治疗",
+        "化学治疗",
+        "靶向治疗",
+        "免疫治疗"
       ],
       "sectionCount": 92,
       "keyParagraphCount": 0
@@ -1447,12 +2845,31 @@
     "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）": {
       "id": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）",
       "disease": "骨髓增生异常综合征伴原始细胞增多",
+      "version": 2022,
+      "normalizedDisease": "骨髓增生异常综合征伴原始细胞增多",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）",
         "骨髓增生异常综合征伴原始细胞增多",
         "骨髓增生异常综合征伴原始细胞增多（MDS-EB）",
-        "骨髓流式细胞术检查",
-        "基因突变检测"
+        "贫血",
+        "乏力",
+        "出血倾向",
+        "感染",
+        "阿扎胞苷",
+        "地西他滨",
+        "来那度胺",
+        "血常规",
+        "骨髓穿刺涂片",
+        "染色体核型分析",
+        "高龄",
+        "既往化疗史",
+        "去甲基化治疗",
+        "造血干细胞移植",
+        "支持治疗"
       ],
       "sectionCount": 38,
       "keyParagraphCount": 0
@@ -1460,23 +2877,39 @@
     "黑色素瘤诊疗指南（2022年版）": {
       "id": "黑色素瘤诊疗指南（2022年版）",
       "disease": "黑色素瘤",
+      "version": 2022,
+      "normalizedDisease": "黑色素瘤",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
       "keywords": [
         "黑色素瘤诊疗指南（2022年版）",
         "黑色素瘤",
-        "卫星灶",
+        "色素痣不对称",
+        "边缘不规则",
+        "颜色不均匀",
+        "直径大于6mm",
         "溃疡",
-        "区域淋巴结转移",
-        "移行转移",
-        "肺转移",
-        "肝转移",
-        "骨转移",
-        "脑转移",
+        "伊匹木单抗",
+        "纳武利尤单抗",
+        "帕博利珠单抗",
+        "达卡巴嗪",
+        "维莫非尼",
         "皮肤镜",
-        "超声检查",
-        "CT",
-        "MRI",
-        "全身骨扫描",
-        "正电子发射计算机体层成像"
+        "组织病理学检查",
+        "BRAF基因检测",
+        "影像学检查（CT/MRI/PET-CT）",
+        "紫外线暴露",
+        "家族史",
+        "多发痣或非典型痣",
+        "白皙皮肤",
+        "手术扩大切除",
+        "前哨淋巴结活检",
+        "免疫治疗",
+        "靶向治疗",
+        "化疗",
+        "放疗"
       ],
       "sectionCount": 27,
       "keyParagraphCount": 0
@@ -1511,6 +2944,12 @@
       "1.紧密型县域医共体医学影像中心建设与服务指南（试行）"
     ],
     "2.2026年各专业质控工作改进目标": [
+      "2.2026年各专业质控工作改进目标"
+    ],
+    "流感": [
+      "2.2026年各专业质控工作改进目标"
+    ],
+    "流感病原学诊断": [
       "2.2026年各专业质控工作改进目标"
     ],
     "2.全国生育友好单位评审标准（2026年版）": [
@@ -1567,16 +3006,132 @@
     "GBZ 104—2026 职业性外照射急性放射病诊断标准": [
       "GBZ 104—2026 职业性外照射急性放射病诊断标准"
     ],
+    "职业性外照射急性放射病": [
+      "GBZ 104—2026 职业性外照射急性放射病诊断标准"
+    ],
+    "呕吐": [
+      "GBZ 104—2026 职业性外照射急性放射病诊断标准",
+      "脑血管病防治指南（2024年版）"
+    ],
+    "外周血淋巴细胞计数": [
+      "GBZ 104—2026 职业性外照射急性放射病诊断标准"
+    ],
+    "职业性外照射": [
+      "GBZ 104—2026 职业性外照射急性放射病诊断标准"
+    ],
+    "重组人粒细胞集落刺激因子": [
+      "GBZ 104—2026 职业性外照射急性放射病诊断标准"
+    ],
+    "对症支持治疗": [
+      "GBZ 104—2026 职业性外照射急性放射病诊断标准",
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
     "GBZ 105—2026 职业性外照射慢性放射病诊断标准": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
+    "职业性外照射慢性放射病": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
+    "乏力": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
+      "慢性髓性白血病诊疗指南（2022年版）",
+      "流行性感冒诊疗方案（2025版）",
+      "肥胖症诊疗指南（2024年版）",
+      "肺结核门诊诊疗规范",
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "头痛": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
+      "流行性感冒诊疗方案（2025版）",
+      "脑胶质瘤诊疗指南（2022年版）",
+      "脑血管病防治指南（2024年版）"
+    ],
+    "出血倾向": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "白细胞减少": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
+    "血常规检查": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
+    "染色体畸变分析": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
+    "骨髓象检查": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
+    "长期职业性外照射接触": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
+    "脱离放射源": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
+    "升白细胞药物": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
+    "维生素类药": [
       "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
     ],
     "GBZ 97—2026 职业性放射性肿瘤病因判断标准": [
       "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
     ],
+    "职业性放射性肿瘤": [
+      "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
+    ],
+    "职业性电离辐射暴露": [
+      "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
+    ],
+    "辐射剂量估算": [
+      "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
+    ],
+    "职业史调查": [
+      "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
+    ],
+    "肿瘤病理学检查": [
+      "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
+    ],
+    "脱离辐射暴露": [
+      "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
+    ],
+    "手术切除": [
+      "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
+      "原发性肺癌诊疗指南（2022年版）",
+      "胰腺癌诊治指南（2022年版）",
+      "脑胶质瘤诊疗指南（2022年版）",
+      "腮腺浅叶良性肿瘤诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "放射治疗": [
+      "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
+      "乳腺癌诊疗指南（2022年版）",
+      "原发性肝癌诊疗指南（2024年版）",
+      "原发性肺癌诊疗指南（2022年版）",
+      "脑胶质瘤诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "化学治疗": [
+      "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
+      "原发性肺癌诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
     "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准": [
       "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准"
     ],
     "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准": [
+      "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准"
+    ],
+    "甲状腺放射性碘污染": [
+      "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准"
+    ],
+    "直接测量法": [
+      "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准"
+    ],
+    "放射工作": [
       "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准"
     ],
     "Pilon骨折切开复位内固定术加速康复临床路径（2023年版）": [
@@ -1598,6 +3153,63 @@
       "WS-T 497—2026 侵袭性真菌病实验诊断标准"
     ],
     "WS-T 498—2026 感染性腹泻实验诊断标准": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准"
+    ],
+    "感染性腹泻": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准"
+    ],
+    "腹泻": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准"
+    ],
+    "腹痛": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "胰腺癌诊治指南（2022年版）"
+    ],
+    "发热": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "中国艾滋病诊疗指南（2024版）",
+      "儿童肺炎支原体肺炎诊疗指南（2023年版）",
+      "口腔颌面部间隙感染诊疗指南（2022年版）",
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "流行性感冒诊疗方案（2025版）",
+      "淋巴瘤诊疗指南（2022年版）",
+      "肺结核门诊诊疗规范"
+    ],
+    "诺氟沙星": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准"
+    ],
+    "蒙脱石散": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准"
+    ],
+    "粪便常规": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准"
+    ],
+    "粪便培养": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准"
+    ],
+    "血常规": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "口腔颌面部间隙感染诊疗指南（2022年版）",
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+      "慢性髓性白血病诊疗指南（2022年版）",
+      "流行性感冒诊疗方案（2025版）",
+      "自身免疫性溶血性贫血诊疗指南（2022年版）",
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "不洁饮食": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准"
+    ],
+    "免疫力低下": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "儿童肺炎支原体肺炎诊疗指南（2023年版）",
+      "肺结核门诊诊疗规范"
+    ],
+    "补液治疗": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "中国糖尿病防治指南（2024版）"
+    ],
+    "抗感染治疗": [
       "WS-T 498—2026 感染性腹泻实验诊断标准"
     ],
     "WS-T 503—2026 临床微生物实验室血培养操作标准": [
@@ -1648,6 +3260,71 @@
     "三踝骨折切开复位内固定术加速康复临床路径": [
       "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"
     ],
+    "三踝骨折": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "踝部疼痛": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "踝部肿胀": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "踝部畸形": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "活动受限": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "X线平片": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "CT扫描": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "MRI": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
+      "胰腺癌诊治指南（2022年版）",
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "骨质疏松": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
+      "老年髋部骨折诊疗与管理指南（2022年版）",
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "高能量损伤": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "运动损伤": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "非甾体抗炎药": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
+      "牙颌面畸形诊疗指南（2022年版）",
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
+      "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）",
+      "腰椎后路短节段减压融合术加速康复临床路径（2023年版）"
+    ],
+    "抗生素": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
+      "唇裂诊疗指南（2022年版）",
+      "牙颌面畸形诊疗指南（2022年版）",
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "抗凝药": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "切开复位内固定术": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "加速康复方案": [
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"
+    ],
     "上颌骨骨折诊疗指南（2022年版）": [
       "上颌骨骨折诊疗指南（2022年版）"
     ],
@@ -1672,10 +3349,158 @@
     "中国人群骨质疏松症风险管理公众指南": [
       "中国人群骨质疏松症风险管理公众指南（2024）"
     ],
+    "骨质疏松症": [
+      "中国人群骨质疏松症风险管理公众指南（2024）",
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "腰背疼痛": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "身高缩短": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "驼背": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "易骨折": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "双膦酸盐类": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "维生素D": [
+      "中国人群骨质疏松症风险管理公众指南（2024）",
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "钙剂": [
+      "中国人群骨质疏松症风险管理公众指南（2024）",
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "地舒单抗": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "雷洛昔芬": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "双能X线骨密度测量": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "FRAX骨折风险评估工具": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "骨代谢标志物检测": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "年龄增长": [
+      "中国人群骨质疏松症风险管理公众指南（2024）",
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+      "膀胱癌诊疗指南（2022年版）"
+    ],
+    "女性绝经": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "低体重": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "吸烟": [
+      "中国人群骨质疏松症风险管理公众指南（2024）",
+      "原发性肺癌诊疗指南（2022年版）",
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
+      "胰腺癌诊治指南（2022年版）",
+      "脑血管病防治指南（2024年版）",
+      "膀胱癌诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "过量饮酒": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "低钙摄入": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "缺乏运动": [
+      "中国人群骨质疏松症风险管理公众指南（2024）",
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "家族史": [
+      "中国人群骨质疏松症风险管理公众指南（2024）",
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）",
+      "胰腺癌诊治指南（2022年版）",
+      "血友病A诊疗指南（2022年版）",
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "糖皮质激素使用": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "生活方式调整": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "药物治疗": [
+      "中国人群骨质疏松症风险管理公众指南（2024）",
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "营养补充": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "预防跌倒": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
+    "骨折管理": [
+      "中国人群骨质疏松症风险管理公众指南（2024）"
+    ],
     "中国抗癌协会乳腺癌诊治指南与规范（2025年版）": [
       "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
     ],
     "中国抗癌协会乳腺癌": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "乳腺癌": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
+      "乳腺癌诊疗指南（2022年版）"
+    ],
+    "乳房无痛性肿块": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "乳头溢液": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "乳房皮肤橘皮样改变": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "他莫昔芬": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "阿那曲唑": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "曲妥珠单抗": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "乳腺X线摄影（钼靶）": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "乳腺超声检查": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "空心针穿刺活检": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "乳腺癌家族史": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "BRCA1/BRCA2基因突变": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "乳腺癌改良根治术": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "术后辅助放疗": [
+      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
+    ],
+    "内分泌治疗": [
       "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
     ],
     "中国糖尿病防治指南（2024版）": [
@@ -1684,10 +3509,58 @@
     "中国糖尿病防治指南": [
       "中国糖尿病防治指南（2024版）"
     ],
+    "2型糖尿病": [
+      "中国糖尿病防治指南（2024版）"
+    ],
+    "医学营养治疗": [
+      "中国糖尿病防治指南（2024版）"
+    ],
+    "降压治疗": [
+      "中国糖尿病防治指南（2024版）",
+      "中国老年糖尿病诊疗指南（2024版）"
+    ],
+    "调脂治疗": [
+      "中国糖尿病防治指南（2024版）"
+    ],
+    "抗血小板治疗": [
+      "中国糖尿病防治指南（2024版）",
+      "脑血管病防治指南（2024年版）"
+    ],
+    "中国糖尿病风险评分": [
+      "中国糖尿病防治指南（2024版）"
+    ],
     "中国老年糖尿病诊疗指南（2024版）": [
       "中国老年糖尿病诊疗指南（2024版）"
     ],
     "中国老年糖尿病": [
+      "中国老年糖尿病诊疗指南（2024版）"
+    ],
+    "老年糖尿病": [
+      "中国老年糖尿病诊疗指南（2024版）"
+    ],
+    "眼底病变": [
+      "中国老年糖尿病诊疗指南（2024版）"
+    ],
+    "ACEI": [
+      "中国老年糖尿病诊疗指南（2024版）"
+    ],
+    "ARB": [
+      "中国老年糖尿病诊疗指南（2024版）"
+    ],
+    "eGFR": [
+      "中国老年糖尿病诊疗指南（2024版）"
+    ],
+    "蛋白尿": [
+      "中国老年糖尿病诊疗指南（2024版）"
+    ],
+    "多重用药": [
+      "中国老年糖尿病诊疗指南（2024版）",
+      "老年合理用药核心信息"
+    ],
+    "慢性并发症筛查与处理": [
+      "中国老年糖尿病诊疗指南（2024版）"
+    ],
+    "低血糖风险较高的药物": [
       "中国老年糖尿病诊疗指南（2024版）"
     ],
     "中国艾滋病诊疗指南（2024版）": [
@@ -1696,15 +3569,61 @@
     "中国艾滋病": [
       "中国艾滋病诊疗指南（2024版）"
     ],
+    "艾滋病": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "持续性全身淋巴结肿大": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "机会性感染": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "替诺福韦": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "恩曲他滨": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "洛匹那韦/利托那韦": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "HIV抗体检测": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "CD4+T淋巴细胞计数": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "HIV病毒载量检测": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "不安全性行为": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "共用针具注射": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "母婴传播": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "抗逆转录病毒治疗": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
+    "预防机会性感染": [
+      "中国艾滋病诊疗指南（2024版）"
+    ],
     "中国高血压防治指南(2024年修订版)": [
       "中国高血压防治指南(2024年修订版)"
     ],
     "中国高血压防治指南": [
-      "中国高血压防治指南(2024年修订版)",
-      "中国高血压防治指南（2024年修订版）"
+      "中国高血压防治指南(2024年修订版)"
     ],
-    "中国高血压防治指南（2024年修订版）": [
-      "中国高血压防治指南（2024年修订版）"
+    "高血压": [
+      "中国高血压防治指南(2024年修订版)",
+      "基层血液透析室（中心）建设与服务指南（试行）",
+      "脑血管病防治指南（2024年版）"
+    ],
+    "起始小剂量降压治疗": [
+      "中国高血压防治指南(2024年修订版)"
     ],
     "临床检验专业医疗质量控制指标（2025年版）": [
       "临床检验专业医疗质量控制指标（2025年版）"
@@ -1718,8 +3637,55 @@
     "乳腺癌诊疗指南（2022年版）": [
       "乳腺癌诊疗指南（2022年版）"
     ],
-    "乳腺癌": [
+    "乳房肿块": [
       "乳腺癌诊疗指南（2022年版）"
+    ],
+    "腋窝淋巴结肿大": [
+      "乳腺癌诊疗指南（2022年版）"
+    ],
+    "来曲唑": [
+      "乳腺癌诊疗指南（2022年版）"
+    ],
+    "乳腺X线摄影": [
+      "乳腺癌诊疗指南（2022年版）"
+    ],
+    "空心针活检": [
+      "乳腺癌诊疗指南（2022年版）"
+    ],
+    "BRCA基因突变": [
+      "乳腺癌诊疗指南（2022年版）"
+    ],
+    "高龄": [
+      "乳腺癌诊疗指南（2022年版）",
+      "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）",
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "初潮早或绝经晚": [
+      "乳腺癌诊疗指南（2022年版）"
+    ],
+    "保乳手术": [
+      "乳腺癌诊疗指南（2022年版）"
+    ],
+    "全乳切除": [
+      "乳腺癌诊疗指南（2022年版）"
+    ],
+    "化疗": [
+      "乳腺癌诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）",
+      "胰腺癌诊治指南（2022年版）",
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "靶向治疗": [
+      "乳腺癌诊疗指南（2022年版）",
+      "原发性肺癌诊疗指南（2022年版）",
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）",
+      "胰腺癌诊治指南（2022年版）",
+      "脑胶质瘤诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）",
+      "黑色素瘤诊疗指南（2022年版）"
     ],
     "儿童肺炎支原体肺炎诊疗指南（2023年版）": [
       "儿童肺炎支原体肺炎诊疗指南（2023年版）"
@@ -1728,8 +3694,57 @@
       "儿童肺炎支原体肺炎诊疗指南（2023年版）",
       "儿童肺炎支原体肺炎诊疗指南（2025年版）"
     ],
+    "咳嗽": [
+      "儿童肺炎支原体肺炎诊疗指南（2023年版）",
+      "原发性肺癌诊疗指南（2022年版）",
+      "流行性感冒诊疗方案（2025版）",
+      "肺结核门诊诊疗规范"
+    ],
+    "阿奇霉素": [
+      "儿童肺炎支原体肺炎诊疗指南（2023年版）"
+    ],
+    "红霉素": [
+      "儿童肺炎支原体肺炎诊疗指南（2023年版）"
+    ],
+    "血清学抗体检测": [
+      "儿童肺炎支原体肺炎诊疗指南（2023年版）"
+    ],
+    "肺炎支原体核酸检测": [
+      "儿童肺炎支原体肺炎诊疗指南（2023年版）"
+    ],
+    "年龄（学龄前及学龄期儿童）": [
+      "儿童肺炎支原体肺炎诊疗指南（2023年版）"
+    ],
+    "大环内酯类抗菌药物治疗": [
+      "儿童肺炎支原体肺炎诊疗指南（2023年版）"
+    ],
     "儿童肺炎支原体肺炎诊疗指南（2025年版）": [
       "儿童肺炎支原体肺炎诊疗指南（2025年版）"
+    ],
+    "呼吸困难": [
+      "儿童肺炎支原体肺炎诊疗指南（2025年版）",
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "肺炎支原体血清学检测": [
+      "儿童肺炎支原体肺炎诊疗指南（2025年版）"
+    ],
+    "胸部影像学检查": [
+      "儿童肺炎支原体肺炎诊疗指南（2025年版）"
+    ],
+    "免疫功能低下": [
+      "儿童肺炎支原体肺炎诊疗指南（2025年版）",
+      "口腔念珠菌病诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）"
+    ],
+    "集体生活": [
+      "儿童肺炎支原体肺炎诊疗指南（2025年版）"
+    ],
+    "抗生素治疗": [
+      "儿童肺炎支原体肺炎诊疗指南（2025年版）"
+    ],
+    "对症治疗": [
+      "儿童肺炎支原体肺炎诊疗指南（2025年版）",
+      "流行性感冒诊疗方案（2025版）"
     ],
     "全膝关节置换术加速康复临床路径（2023年版）": [
       "全膝关节置换术加速康复临床路径（2023年版）"
@@ -1758,36 +3773,6 @@
     "前列腺癌": [
       "前列腺癌诊疗指南（2022年版）"
     ],
-    "直肠指诊": [
-      "前列腺癌诊疗指南（2022年版）"
-    ],
-    "PSA": [
-      "前列腺癌诊疗指南（2022年版）"
-    ],
-    "穿刺活检": [
-      "前列腺癌诊疗指南（2022年版）"
-    ],
-    "核素全身骨显像": [
-      "前列腺癌诊疗指南（2022年版）"
-    ],
-    "前列腺MRI": [
-      "前列腺癌诊疗指南（2022年版）"
-    ],
-    "前列腺CT": [
-      "前列腺癌诊疗指南（2022年版）"
-    ],
-    "盆腔淋巴结清扫": [
-      "前列腺癌诊疗指南（2022年版）"
-    ],
-    "X线": [
-      "前列腺癌诊疗指南（2022年版）"
-    ],
-    "CT": [
-      "前列腺癌诊疗指南（2022年版）",
-      "脑胶质瘤诊疗指南（2022年版）",
-      "食管癌诊疗指南（2022年版）",
-      "黑色素瘤诊疗指南（2022年版）"
-    ],
     "化脓性颌骨骨髓炎诊疗指南（2022年版）": [
       "化脓性颌骨骨髓炎诊疗指南（2022年版）"
     ],
@@ -1800,48 +3785,6 @@
     "卵巢癌": [
       "卵巢癌诊疗指南（2022年版）"
     ],
-    "下腹不适": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "腹胀": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "食欲下降": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "短期内腹围迅速增大": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "乏力": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "消瘦": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "大小便次数增多": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "气短": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "难以平卧": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "糖类抗原125（CA125）": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "人附睾蛋白4（HE4）": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "ROMA指数": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "经阴道超声": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
-    "绝经后女性": [
-      "卵巢癌诊疗指南（2022年版）"
-    ],
     "原发性肝癌诊疗指南（2024年版）": [
       "原发性肝癌诊疗指南（2024年版）"
     ],
@@ -1849,14 +3792,60 @@
       "原发性肝癌诊疗指南（2024年版）",
       "原发性肝癌诊疗指南（2026版）"
     ],
-    "彩色多普勒血流成像": [
-      "原发性肝癌诊疗指南（2024年版）",
-      "胃癌诊疗指南（2022年版）"
-    ],
-    "超声造影检查": [
+    "肝区疼痛": [
       "原发性肝癌诊疗指南（2024年版）"
     ],
-    "局部治疗": [
+    "腹胀": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "食欲减退": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "黄疸": [
+      "原发性肝癌诊疗指南（2024年版）",
+      "胰腺癌诊治指南（2022年版）",
+      "自身免疫性溶血性贫血诊疗指南（2022年版）"
+    ],
+    "索拉非尼": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "仑伐替尼": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "腹部超声": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "增强CT": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "增强MRI": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "甲胎蛋白（AFP）": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "乙型肝炎病毒感染": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "丙型肝炎病毒感染": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "肝硬化": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "酒精性肝病": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "肝切除术": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "肝移植术": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "消融治疗": [
+      "原发性肝癌诊疗指南（2024年版）"
+    ],
+    "经动脉化疗栓塞术": [
       "原发性肝癌诊疗指南（2024年版）"
     ],
     "原发性肝癌诊疗指南（2026版）": [
@@ -1868,10 +3857,122 @@
     "原发性肺癌": [
       "原发性肺癌诊疗指南（2022年版）"
     ],
+    "咳血": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "胸痛": [
+      "原发性肺癌诊疗指南（2022年版）",
+      "肺结核门诊诊疗规范"
+    ],
+    "气短": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "吉非替尼": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "奥希替尼": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "克唑替尼": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "顺铂": [
+      "原发性肺癌诊疗指南（2022年版）",
+      "宫颈癌诊疗指南（2022年版）",
+      "膀胱癌诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "培美曲塞": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "胸部CT": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "PET-CT": [
+      "原发性肺癌诊疗指南（2022年版）",
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "支气管镜检查": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "经皮肺穿刺活检": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "肿瘤标志物检测": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "空气污染": [
+      "原发性肺癌诊疗指南（2022年版）",
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "石棉暴露": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "家族肺癌史": [
+      "原发性肺癌诊疗指南（2022年版）"
+    ],
+    "免疫治疗": [
+      "原发性肺癌诊疗指南（2022年版）",
+      "胰腺癌诊治指南（2022年版）",
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）",
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
     "口腔念珠菌病诊疗指南（2022年版）": [
       "口腔念珠菌病诊疗指南（2022年版）"
     ],
     "口腔念珠菌病": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "口腔黏膜白色斑块": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "口腔黏膜红斑": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "口腔疼痛": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "味觉丧失": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "制霉菌素": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "氟康唑": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "伊曲康唑": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "直接镜检": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "真菌培养": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "组织病理检查": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "长期使用抗生素": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "糖尿病": [
+      "口腔念珠菌病诊疗指南（2022年版）",
+      "基层血液透析室（中心）建设与服务指南（试行）",
+      "流行性感冒诊疗方案（2025版）",
+      "肺结核门诊诊疗规范",
+      "胰腺癌诊治指南（2022年版）",
+      "脑血管病防治指南（2024年版）"
+    ],
+    "局部抗真菌药物治疗": [
+      "口腔念珠菌病诊疗指南（2022年版）"
+    ],
+    "全身抗真菌药物治疗": [
       "口腔念珠菌病诊疗指南（2022年版）"
     ],
     "口腔扁平苔藓诊疗指南（2022年版）": [
@@ -1880,16 +3981,121 @@
     "口腔扁平苔藓": [
       "口腔扁平苔藓诊疗指南（2022年版）"
     ],
+    "白色条纹": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
+    "糜烂": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
+    "灼痛": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
+    "糖皮质激素": [
+      "口腔扁平苔藓诊疗指南（2022年版）",
+      "自身免疫性溶血性贫血诊疗指南（2022年版）"
+    ],
+    "环孢素": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
+    "维A酸": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
+    "口腔黏膜检查": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
+    "病理活检": [
+      "口腔扁平苔藓诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "精神压力": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
+    "免疫异常": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
+    "局部糖皮质激素治疗": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
+    "全身免疫抑制治疗": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
+    "激光治疗": [
+      "口腔扁平苔藓诊疗指南（2022年版）"
+    ],
     "口腔颌面部间隙感染诊疗指南（2022年版）": [
       "口腔颌面部间隙感染诊疗指南（2022年版）"
     ],
     "口腔颌面部间隙感染": [
       "口腔颌面部间隙感染诊疗指南（2022年版）"
     ],
+    "局部红肿热痛": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）"
+    ],
+    "张口受限": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）"
+    ],
+    "青霉素": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）",
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "甲硝唑": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）"
+    ],
+    "克林霉素": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）"
+    ],
+    "CT检查": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）",
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "穿刺检查": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）"
+    ],
+    "牙源性感染": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）"
+    ],
+    "口腔卫生不良": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）",
+      "菌斑性龈炎诊疗指南（2022年版）"
+    ],
+    "全身免疫功能低下": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）"
+    ],
+    "切开引流术": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）"
+    ],
+    "抗感染药物治疗": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）"
+    ],
+    "支持治疗": [
+      "口腔颌面部间隙感染诊疗指南（2022年版）",
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+      "流行性感冒诊疗方案（2025版）",
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
     "唇裂诊疗指南（2022年版）": [
       "唇裂诊疗指南（2022年版）"
     ],
     "唇裂": [
+      "唇裂诊疗指南（2022年版）"
+    ],
+    "唇部裂隙": [
+      "唇裂诊疗指南（2022年版）"
+    ],
+    "体格检查": [
+      "唇裂诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "遗传因素": [
+      "唇裂诊疗指南（2022年版）",
+      "牙颌面畸形诊疗指南（2022年版）",
+      "肥胖症诊疗指南（2024年版）",
+      "腭裂诊疗指南（2022年版）",
+      "近视防治指南（2024年版）"
+    ],
+    "唇裂修复术": [
       "唇裂诊疗指南（2022年版）"
     ],
     "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）": [
@@ -1916,31 +4122,47 @@
     "基层血液透析室建设与服务指南": [
       "基层血液透析室（中心）建设与服务指南（试行）"
     ],
+    "终末期肾病": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
+    "恶心呕吐": [
+      "基层血液透析室（中心）建设与服务指南（试行）",
+      "脑胶质瘤诊疗指南（2022年版）"
+    ],
+    "水肿": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
+    "尿量减少": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
+    "促红细胞生成素": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
+    "降压药": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
+    "血肌酐": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
+    "尿素氮": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
+    "肾小球滤过率": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
+    "血液透析": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
+    "腹膜透析": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
+    "肾移植": [
+      "基层血液透析室（中心）建设与服务指南（试行）"
+    ],
     "子宫内膜癌诊疗指南（2022年版）": [
       "子宫内膜癌诊疗指南（2022年版）"
     ],
     "子宫内膜癌": [
-      "子宫内膜癌诊疗指南（2022年版）"
-    ],
-    "林奇综合征": [
-      "子宫内膜癌诊疗指南（2022年版）"
-    ],
-    "他莫昔芬": [
-      "子宫内膜癌诊疗指南（2022年版）"
-    ],
-    "超声检查": [
-      "子宫内膜癌诊疗指南（2022年版）",
-      "胃癌诊疗指南（2022年版）",
-      "食管癌诊疗指南（2022年版）",
-      "黑色素瘤诊疗指南（2022年版）"
-    ],
-    "子宫内膜活检": [
-      "子宫内膜癌诊疗指南（2022年版）"
-    ],
-    "手术治疗": [
-      "子宫内膜癌诊疗指南（2022年版）"
-    ],
-    "预防性全子宫切除术/双侧输卵管卵巢切除术": [
       "子宫内膜癌诊疗指南（2022年版）"
     ],
     "安宁疗护实践指南（2025年版）": [
@@ -1955,25 +4177,17 @@
     "宫颈癌": [
       "宫颈癌诊疗指南（2022年版）"
     ],
-    "子宫颈癌": [
-      "宫颈癌诊疗指南（2022年版）"
-    ],
-    "宫颈液基薄层细胞学检查": [
+    "接触性出血": [
       "宫颈癌诊疗指南（2022年版）"
     ],
     "HPV检测": [
       "宫颈癌诊疗指南（2022年版）"
     ],
-    "阴道镜检查": [
-      "宫颈癌诊疗指南（2022年版）"
+    "HPV感染": [
+      "宫颈癌诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）"
     ],
-    "宫颈组织学活检": [
-      "宫颈癌诊疗指南（2022年版）"
-    ],
-    "宫颈锥形切除病理检查": [
-      "宫颈癌诊疗指南（2022年版）"
-    ],
-    "醋酸或碘溶液涂抹后肉眼观察": [
+    "子宫切除术": [
       "宫颈癌诊疗指南（2022年版）"
     ],
     "尼帕病毒病诊疗方案（2026年版）": [
@@ -1994,40 +4208,76 @@
     "弥漫性大B细胞淋巴瘤": [
       "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
     ],
-    "进行性肿大的无痛性肿物": [
-      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    "无痛性淋巴结肿大": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）"
     ],
-    "胃肠道症状": [
-      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    "盗汗": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "慢性髓性白血病诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）",
+      "肺结核门诊诊疗规范"
     ],
-    "中枢神经系统症状": [
-      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
-    ],
-    "骨骼症状": [
-      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
-    ],
-    "肿瘤溶解综合征": [
-      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
-    ],
-    "免疫组化": [
-      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
-    ],
-    "组织病理学分析": [
-      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
-    ],
-    "免疫表型分析": [
-      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    "体重减轻": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）"
     ],
     "利妥昔单抗": [
       "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）",
       "自身免疫性溶血性贫血诊疗指南（2022年版）"
     ],
-    "R-CHOP方案化疗": [
+    "环磷酰胺": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "多柔比星": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "长春新碱": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "泼尼松": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "淋巴结活检": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）"
+    ],
+    "免疫组化": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）"
+    ],
+    "骨髓活检": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "免疫缺陷": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "自身免疫性疾病": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "自身免疫性溶血性贫血诊疗指南（2022年版）"
+    ],
+    "EB病毒感染": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）"
+    ],
+    "R-CHOP化疗方案": [
       "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）"
     ],
     "放疗": [
       "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
-      "脑胶质瘤诊疗指南（2022年版）"
+      "淋巴瘤诊疗指南（2022年版）",
+      "胰腺癌诊治指南（2022年版）",
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "造血干细胞移植": [
+      "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+      "淋巴瘤诊疗指南（2022年版）",
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
     ],
     "慢性乙型肝炎防治指南（2022年版）": [
       "慢性乙型肝炎防治指南（2022年版）"
@@ -2035,10 +4285,67 @@
     "慢性乙型肝炎防治指南": [
       "慢性乙型肝炎防治指南（2022年版）"
     ],
+    "慢性乙型肝炎": [
+      "慢性乙型肝炎防治指南（2022年版）"
+    ],
+    "TAF": [
+      "慢性乙型肝炎防治指南（2022年版）"
+    ],
+    "ETV": [
+      "慢性乙型肝炎防治指南（2022年版）"
+    ],
+    "TDF": [
+      "慢性乙型肝炎防治指南（2022年版）"
+    ],
+    "抗病毒治疗": [
+      "慢性乙型肝炎防治指南（2022年版）",
+      "流行性感冒诊疗方案（2025版）"
+    ],
     "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）": [
       "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
     ],
     "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "淋巴结肿大": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "肝脾肿大": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "贫血": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+      "自身免疫性溶血性贫血诊疗指南（2022年版）",
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "反复感染": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "伊布替尼": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "阿卡替尼": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "氟达拉滨": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "外周血涂片": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "流式细胞术": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "免疫分型": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "FISH检测": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "免疫抑制状态": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "化学免疫治疗": [
       "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
     ],
     "慢性病风险筛查项目（2025年版）": [
@@ -2053,34 +4360,99 @@
     "慢性阻塞性肺疾病基层": [
       "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
     ],
+    "慢性阻塞性肺疾病": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "慢性咳嗽": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "咳痰": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
+      "肺结核门诊诊疗规范"
+    ],
+    "喘息": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "沙丁胺醇": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "异丙托溴铵": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "噻托溴铵": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "布地奈德": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "氟替卡松": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "肺功能检查": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "胸部X线": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
+      "肺结核门诊诊疗规范"
+    ],
+    "血气分析": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "职业粉尘": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "α1-抗胰蛋白酶缺乏": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "戒烟": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "氧疗": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "肺康复": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "疫苗接种": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "肺减容手术": [
+      "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
     "慢性髓性白血病诊疗指南（2022年版）": [
       "慢性髓性白血病诊疗指南（2022年版）"
     ],
     "慢性髓性白血病": [
       "慢性髓性白血病诊疗指南（2022年版）"
     ],
-    "甲磺酸伊马替尼": [
+    "脾肿大": [
       "慢性髓性白血病诊疗指南（2022年版）"
     ],
     "伊马替尼": [
       "慢性髓性白血病诊疗指南（2022年版）"
     ],
-    "尼洛替尼": [
-      "慢性髓性白血病诊疗指南（2022年版）"
-    ],
     "达沙替尼": [
       "慢性髓性白血病诊疗指南（2022年版）"
     ],
-    "博舒替尼": [
+    "尼洛替尼": [
       "慢性髓性白血病诊疗指南（2022年版）"
     ],
-    "拉多替尼": [
+    "骨髓穿刺": [
       "慢性髓性白血病诊疗指南（2022年版）"
     ],
-    "氟马替尼": [
+    "Ph染色体检测": [
       "慢性髓性白血病诊疗指南（2022年版）"
     ],
-    "免疫分型": [
+    "BCR-ABL融合基因检测": [
+      "慢性髓性白血病诊疗指南（2022年版）"
+    ],
+    "电离辐射": [
+      "慢性髓性白血病诊疗指南（2022年版）"
+    ],
+    "靶向药物治疗": [
+      "慢性髓性白血病诊疗指南（2022年版）"
+    ],
+    "异基因造血干细胞移植": [
       "慢性髓性白血病诊疗指南（2022年版）"
     ],
     "成釉细胞瘤诊疗指南（2022年版）": [
@@ -2102,6 +4474,36 @@
       "新型抗肿瘤药物临床应用指导原则(2022年版)",
       "新型抗肿瘤药物临床应用指导原则（2025年版）"
     ],
+    "恶性肿瘤": [
+      "新型抗肿瘤药物临床应用指导原则(2022年版)"
+    ],
+    "组织或细胞学病理确诊": [
+      "新型抗肿瘤药物临床应用指导原则(2022年版)"
+    ],
+    "特殊分子病理诊断": [
+      "新型抗肿瘤药物临床应用指导原则(2022年版)"
+    ],
+    "分子靶点检测": [
+      "新型抗肿瘤药物临床应用指导原则(2022年版)"
+    ],
+    "小分子靶向药物": [
+      "新型抗肿瘤药物临床应用指导原则(2022年版)"
+    ],
+    "大分子单克隆抗体类药物": [
+      "新型抗肿瘤药物临床应用指导原则(2022年版)"
+    ],
+    "酪氨酸激酶抑制剂": [
+      "新型抗肿瘤药物临床应用指导原则(2022年版)"
+    ],
+    "多学科会诊": [
+      "新型抗肿瘤药物临床应用指导原则(2022年版)"
+    ],
+    "妊娠滋养细胞肿瘤": [
+      "新型抗肿瘤药物临床应用指导原则(2022年版)"
+    ],
+    "国家相关指南或规范": [
+      "新型抗肿瘤药物临床应用指导原则(2022年版)"
+    ],
     "新型抗肿瘤药物临床应用指导原则（2025年版）": [
       "新型抗肿瘤药物临床应用指导原则（2025年版）"
     ],
@@ -2120,28 +4522,73 @@
     "流行性感冒": [
       "流行性感冒诊疗方案（2025版）"
     ],
+    "咽痛": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "流涕": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "肌肉酸痛": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "奥司他韦": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "扎那米韦": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "帕拉米韦": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "玛巴洛沙韦": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "布洛芬": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "对乙酰氨基酚": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "流感抗原检测": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "核酸检测": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "病毒分离": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "血清学检测": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "年龄小于5岁": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "年龄大于65岁": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "妊娠": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "肥胖": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "慢性心肺疾病": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "免疫抑制": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
+    "住院治疗": [
+      "流行性感冒诊疗方案（2025版）"
+    ],
     "淋巴瘤诊疗指南（2022年版）": [
       "淋巴瘤诊疗指南（2022年版）"
     ],
     "淋巴瘤": [
       "淋巴瘤诊疗指南（2022年版）"
     ],
-    "超声": [
-      "淋巴瘤诊疗指南（2022年版）"
-    ],
-    "病理学检查": [
-      "淋巴瘤诊疗指南（2022年版）"
-    ],
-    "粗针穿刺": [
-      "淋巴瘤诊疗指南（2022年版）"
-    ],
-    "切除活检": [
-      "淋巴瘤诊疗指南（2022年版）"
-    ],
-    "荧光原位杂交（FISH）": [
-      "淋巴瘤诊疗指南（2022年版）"
-    ],
-    "Ann-Arbor分期": [
+    "CHOP方案（环磷酰胺+多柔比星+长春新碱+泼尼松）": [
       "淋巴瘤诊疗指南（2022年版）"
     ],
     "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）": [
@@ -2162,6 +4609,39 @@
     "牙颌面畸形": [
       "牙颌面畸形诊疗指南（2022年版）"
     ],
+    "开颌": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
+    "反颌": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
+    "深覆颌": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
+    "面部不对称": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
+    "头颅侧位X线片": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
+    "模型分析": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
+    "面弓转移": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
+    "三维CT扫描": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
+    "不良口腔习惯": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
+    "正畸治疗": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
+    "正颌外科手术": [
+      "牙颌面畸形诊疗指南（2022年版）"
+    ],
     "牡丹籽油等7种新食品原料": [
       "牡丹籽油等7种新食品原料"
     ],
@@ -2177,10 +4657,75 @@
     "甲状腺癌": [
       "甲状腺癌诊疗指南（2022版）"
     ],
+    "颈部肿块": [
+      "甲状腺癌诊疗指南（2022版）",
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "声音嘶哑": [
+      "甲状腺癌诊疗指南（2022版）",
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "吞咽困难": [
+      "甲状腺癌诊疗指南（2022版）",
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）",
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "左甲状腺素钠片": [
+      "甲状腺癌诊疗指南（2022版）"
+    ],
+    "碘131": [
+      "甲状腺癌诊疗指南（2022版）"
+    ],
+    "甲状腺超声": [
+      "甲状腺癌诊疗指南（2022版）",
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "细针穿刺活检": [
+      "甲状腺癌诊疗指南（2022版）",
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）",
+      "腮腺浅叶良性肿瘤诊疗指南（2022年版）"
+    ],
+    "甲状腺功能检查": [
+      "甲状腺癌诊疗指南（2022版）",
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "辐射暴露": [
+      "甲状腺癌诊疗指南（2022版）",
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "家族遗传": [
+      "甲状腺癌诊疗指南（2022版）"
+    ],
+    "甲状腺全切除术": [
+      "甲状腺癌诊疗指南（2022版）"
+    ],
+    "放射性碘治疗": [
+      "甲状腺癌诊疗指南（2022版）",
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
     "甲状腺结节和分化型甲状腺癌诊治指南（第二版）": [
       "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
     ],
     "甲状腺结节和分化型甲状腺癌": [
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "甲状腺结节": [
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "分化型甲状腺癌": [
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "左甲状腺素钠": [
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "放射性碘": [
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "甲状腺切除术": [
+      "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
+    ],
+    "甲状腺激素抑制治疗": [
       "甲状腺结节和分化型甲状腺癌诊治指南（第二版）"
     ],
     "磨牙症诊疗指南（2022年版）": [
@@ -2193,6 +4738,24 @@
       "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
     ],
     "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径": [
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "骨质疏松性椎体压缩骨折": [
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "背部疼痛": [
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "脊柱后凸畸形": [
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "双膦酸盐": [
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "经皮椎体成形术": [
+      "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
+    ],
+    "经皮椎体后凸成形术": [
       "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
     ],
     "综合医院中医药工作指南（2024 版）": [
@@ -2210,19 +4773,44 @@
     "老年合理用药核心信息": [
       "老年合理用药核心信息"
     ],
+    "老年患者": [
+      "老年合理用药核心信息"
+    ],
+    "药学门诊": [
+      "老年合理用药核心信息"
+    ],
+    "老年医学科": [
+      "老年合理用药核心信息"
+    ],
     "老年髋部骨折诊疗与管理指南（2022年版）": [
       "老年髋部骨折诊疗与管理指南（2022年版）"
     ],
     "老年髋部骨折": [
       "老年髋部骨折诊疗与管理指南（2022年版）"
     ],
-    "骨质疏松": [
-      "老年髋部骨折诊疗与管理指南（2022年版）"
-    ],
     "跌倒": [
-      "老年髋部骨折诊疗与管理指南（2022年版）"
+      "老年髋部骨折诊疗与管理指南（2022年版）",
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
     ],
     "多学科团队协作治疗": [
+      "老年髋部骨折诊疗与管理指南（2022年版）"
+    ],
+    "急诊绿色通道": [
+      "老年髋部骨折诊疗与管理指南（2022年版）"
+    ],
+    "术前评估": [
+      "老年髋部骨折诊疗与管理指南（2022年版）"
+    ],
+    "手术治疗": [
+      "老年髋部骨折诊疗与管理指南（2022年版）"
+    ],
+    "康复锻炼": [
+      "老年髋部骨折诊疗与管理指南（2022年版）"
+    ],
+    "预防再骨折": [
+      "老年髋部骨折诊疗与管理指南（2022年版）"
+    ],
+    "镇痛": [
       "老年髋部骨折诊疗与管理指南（2022年版）"
     ],
     "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）": [
@@ -2231,10 +4819,39 @@
     "股骨转子间骨折闭合复位内固定术加速康复临床路径": [
       "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
     ],
+    "股骨转子间骨折": [
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "髋部疼痛": [
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
+      "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）"
+    ],
+    "下肢肿胀": [
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "X线检查": [
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "MRI检查": [
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "老年人": [
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "闭合复位内固定术": [
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
+      "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "加速康复措施": [
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
     "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）": [
       "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）"
     ],
     "股骨颈骨折闭合复位内固定术加速康复临床路径": [
+      "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）"
+    ],
+    "股骨颈骨折": [
       "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）"
     ],
     "肥胖症诊疗指南（2024年版）": [
@@ -2243,7 +4860,98 @@
     "肥胖症": [
       "肥胖症诊疗指南（2024年版）"
     ],
+    "体重超重": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "腹型肥胖": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "奥利司他": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "利拉鲁肽": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "司美格鲁肽": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "体重指数测定": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "腰围测量": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "体脂率测定": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "血糖检测": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "血脂检测": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "高热量饮食": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "代谢异常": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "生活方式干预": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
+    "减重手术": [
+      "肥胖症诊疗指南（2024年版）"
+    ],
     "肺结核门诊诊疗规范": [
+      "肺结核门诊诊疗规范"
+    ],
+    "肺结核": [
+      "肺结核门诊诊疗规范"
+    ],
+    "咯血": [
+      "肺结核门诊诊疗规范"
+    ],
+    "异烟肼": [
+      "肺结核门诊诊疗规范"
+    ],
+    "利福平": [
+      "肺结核门诊诊疗规范"
+    ],
+    "吡嗪酰胺": [
+      "肺结核门诊诊疗规范"
+    ],
+    "乙胺丁醇": [
+      "肺结核门诊诊疗规范"
+    ],
+    "链霉素": [
+      "肺结核门诊诊疗规范"
+    ],
+    "痰涂片": [
+      "肺结核门诊诊疗规范"
+    ],
+    "痰培养": [
+      "肺结核门诊诊疗规范"
+    ],
+    "结核菌素试验": [
+      "肺结核门诊诊疗规范"
+    ],
+    "分子检测": [
+      "肺结核门诊诊疗规范"
+    ],
+    "与结核病患者密切接触": [
+      "肺结核门诊诊疗规范"
+    ],
+    "HIV感染": [
+      "肺结核门诊诊疗规范"
+    ],
+    "营养不良": [
+      "肺结核门诊诊疗规范",
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "标准短程化疗": [
+      "肺结核门诊诊疗规范"
+    ],
+    "直接面视下督导服药": [
       "肺结核门诊诊疗规范"
     ],
     "肾癌诊疗指南（2022年版）": [
@@ -2258,6 +4966,15 @@
     "肿瘤半髋／全髋关节置换术加速康复临床路径": [
       "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）"
     ],
+    "髋部骨肿瘤": [
+      "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）"
+    ],
+    "髋关节X线": [
+      "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）"
+    ],
+    "全髋关节置换术": [
+      "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）"
+    ],
     "肿瘤膝关节置换术加速康复临床路径（2023年版）": [
       "肿瘤膝关节置换术加速康复临床路径（2023年版）"
     ],
@@ -2270,25 +4987,44 @@
     "胃癌": [
       "胃癌诊疗指南（2022年版）"
     ],
-    "CT检查": [
-      "胃癌诊疗指南（2022年版）"
-    ],
-    "MRI": [
-      "胃癌诊疗指南（2022年版）",
-      "脑胶质瘤诊疗指南（2022年版）",
-      "食管癌诊疗指南（2022年版）",
-      "黑色素瘤诊疗指南（2022年版）"
-    ],
-    "超声双重造影": [
-      "胃癌诊疗指南（2022年版）"
-    ],
-    "外科为主的综合治疗": [
-      "胃癌诊疗指南（2022年版）"
-    ],
     "胰腺癌诊治指南（2022年版）": [
       "胰腺癌诊治指南（2022年版）"
     ],
     "胰腺癌": [
+      "胰腺癌诊治指南（2022年版）"
+    ],
+    "消瘦": [
+      "胰腺癌诊治指南（2022年版）"
+    ],
+    "食欲不振": [
+      "胰腺癌诊治指南（2022年版）"
+    ],
+    "吉西他滨": [
+      "胰腺癌诊治指南（2022年版）",
+      "膀胱癌诊疗指南（2022年版）"
+    ],
+    "白蛋白紫杉醇": [
+      "胰腺癌诊治指南（2022年版）"
+    ],
+    "FOLFIRINOX方案": [
+      "胰腺癌诊治指南（2022年版）"
+    ],
+    "CT": [
+      "胰腺癌诊治指南（2022年版）",
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "CA19-9": [
+      "胰腺癌诊治指南（2022年版）"
+    ],
+    "超声内镜": [
+      "胰腺癌诊治指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "活检": [
+      "胰腺癌诊治指南（2022年版）"
+    ],
+    "慢性胰腺炎": [
       "胰腺癌诊治指南（2022年版）"
     ],
     "脑胶质瘤诊疗指南（2022年版）": [
@@ -2297,55 +5033,50 @@
     "脑胶质瘤": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "颅内压增高": [
-      "脑胶质瘤诊疗指南（2022年版）"
-    ],
-    "神经功能及认知功能障碍": [
-      "脑胶质瘤诊疗指南（2022年版）"
-    ],
     "癫痫发作": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "弥散加权成像": [
+    "视乳头水肿": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "弥散张量成像": [
+    "神经功能缺损": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "灌注加权成像": [
+    "替莫唑胺": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "磁共振波谱成像": [
+    "贝伐珠单抗": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "组织病理和分子病理整合诊断": [
+    "地塞米松": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "分子标志物检测": [
+    "丙戊酸钠": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "高剂量电离辐射": [
+    "头颅磁共振成像（MRI）": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "高外显率基因遗传突变": [
+    "头颅CT": [
+      "脑胶质瘤诊疗指南（2022年版）",
+      "脑血管病防治指南（2024年版）"
+    ],
+    "脑电图": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "亚硝酸盐食品": [
+    "立体定向活检": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "病毒或细菌感染": [
+    "电离辐射暴露": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "手术切除": [
+    "遗传易感性（如神经纤维瘤病）": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "化疗": [
+    "化疗（替莫唑胺方案）": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
-    "多学科合作综合治疗": [
-      "脑胶质瘤诊疗指南（2022年版）"
-    ],
-    "个体化综合治疗": [
+    "肿瘤电场治疗": [
       "脑胶质瘤诊疗指南（2022年版）"
     ],
     "脑血管病防治指南（2024年版）": [
@@ -2354,10 +5085,79 @@
     "脑血管病防治指南": [
       "脑血管病防治指南（2024年版）"
     ],
+    "脑血管病": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "偏瘫": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "失语": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "阿司匹林": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "氯吡格雷": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "他汀类药物": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "头颅MRI": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "脑血管造影": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "高脂血症": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "溶栓治疗": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "血管内介入治疗": [
+      "脑血管病防治指南（2024年版）"
+    ],
     "腭裂诊疗指南（2022年版）": [
       "腭裂诊疗指南（2022年版）"
     ],
     "腭裂": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "腭部裂隙": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "语音不清": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "喂养困难": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "镇痛药": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "口腔检查": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "鼻咽镜": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "影像学检查": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "孕期叶酸缺乏": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "孕期吸烟": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "腭裂修复术": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "语音治疗": [
+      "腭裂诊疗指南（2022年版）"
+    ],
+    "术后护理": [
       "腭裂诊疗指南（2022年版）"
     ],
     "腮腺浅叶良性肿瘤诊疗指南（2022年版）": [
@@ -2366,10 +5166,38 @@
     "腮腺浅叶良性肿瘤": [
       "腮腺浅叶良性肿瘤诊疗指南（2022年版）"
     ],
+    "耳前无痛性肿块": [
+      "腮腺浅叶良性肿瘤诊疗指南（2022年版）"
+    ],
+    "超声检查": [
+      "腮腺浅叶良性肿瘤诊疗指南（2022年版）",
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "磁共振成像": [
+      "腮腺浅叶良性肿瘤诊疗指南（2022年版）"
+    ],
     "腰椎后路短节段减压融合术加速康复临床路径（2023年版）": [
       "腰椎后路短节段减压融合术加速康复临床路径（2023年版）"
     ],
     "腰椎后路短节段减压融合术加速康复临床路径": [
+      "腰椎后路短节段减压融合术加速康复临床路径（2023年版）"
+    ],
+    "腰椎退行性疾病": [
+      "腰椎后路短节段减压融合术加速康复临床路径（2023年版）"
+    ],
+    "腰痛": [
+      "腰椎后路短节段减压融合术加速康复临床路径（2023年版）"
+    ],
+    "下肢放射痛": [
+      "腰椎后路短节段减压融合术加速康复临床路径（2023年版）"
+    ],
+    "腰椎MRI": [
+      "腰椎后路短节段减压融合术加速康复临床路径（2023年版）"
+    ],
+    "年龄": [
+      "腰椎后路短节段减压融合术加速康复临床路径（2023年版）"
+    ],
+    "腰椎后路短节段减压融合术": [
       "腰椎后路短节段减压融合术加速康复临床路径（2023年版）"
     ],
     "膀胱癌诊疗指南（2022年版）": [
@@ -2378,85 +5206,44 @@
     "膀胱癌": [
       "膀胱癌诊疗指南（2022年版）"
     ],
-    "长期职业接触工业化学产品": [
+    "无痛性肉眼血尿": [
       "膀胱癌诊疗指南（2022年版）"
     ],
-    "芳香胺类化合物": [
+    "尿频": [
       "膀胱癌诊疗指南（2022年版）"
     ],
-    "多环芳烃": [
+    "尿急": [
       "膀胱癌诊疗指南（2022年版）"
     ],
-    "氯代烃": [
+    "排尿困难": [
       "膀胱癌诊疗指南（2022年版）"
     ],
-    "β-萘胺": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "4-氨基联苯": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "环磷酰胺化疗": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "非那西汀滥用": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "盆腔放疗病史": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "吡格列酮": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "大量摄入脂肪": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "大量摄入胆固醇": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "油煎食物": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "红肉": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "长期饮用砷含量高的水": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "长期饮用氯消毒水": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "咖啡": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "人造甜味剂": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "染发": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "实验室检查": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "影像学检查": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "尿细胞学检查": [
-      "膀胱癌诊疗指南（2022年版）"
-    ],
-    "尿肿瘤标记物检查": [
+    "卡介苗": [
       "膀胱癌诊疗指南（2022年版）"
     ],
     "膀胱镜检查": [
       "膀胱癌诊疗指南（2022年版）"
     ],
-    "膀胱镜下活检病理学检查": [
+    "尿脱落细胞学检查": [
       "膀胱癌诊疗指南（2022年版）"
     ],
-    "上尿路影像学检查": [
+    "CT尿路造影": [
       "膀胱癌诊疗指南（2022年版）"
     ],
-    "流式细胞分析技术": [
+    "职业暴露于芳香胺": [
+      "膀胱癌诊疗指南（2022年版）"
+    ],
+    "男性": [
+      "膀胱癌诊疗指南（2022年版）",
+      "血友病A诊疗指南（2022年版）"
+    ],
+    "经尿道膀胱肿瘤电切术": [
+      "膀胱癌诊疗指南（2022年版）"
+    ],
+    "膀胱灌注化疗": [
+      "膀胱癌诊疗指南（2022年版）"
+    ],
+    "根治性膀胱切除术": [
       "膀胱癌诊疗指南（2022年版）"
     ],
     "自身免疫性溶血性贫血诊疗指南（2022年版）": [
@@ -2465,7 +5252,20 @@
     "自身免疫性溶血性贫血": [
       "自身免疫性溶血性贫血诊疗指南（2022年版）"
     ],
-    "环孢素A": [
+    "脾大": [
+      "自身免疫性溶血性贫血诊疗指南（2022年版）"
+    ],
+    "直接抗人球蛋白试验": [
+      "自身免疫性溶血性贫血诊疗指南（2022年版）"
+    ],
+    "感染": [
+      "自身免疫性溶血性贫血诊疗指南（2022年版）",
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "糖皮质激素治疗": [
+      "自身免疫性溶血性贫血诊疗指南（2022年版）"
+    ],
+    "脾切除术": [
       "自身免疫性溶血性贫血诊疗指南（2022年版）"
     ],
     "舌下腺囊肿诊疗指南（2022年版）": [
@@ -2474,10 +5274,95 @@
     "舌下腺囊肿": [
       "舌下腺囊肿诊疗指南（2022年版）"
     ],
+    "口腔底部无痛性肿块": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "蓝色半透明囊性隆起": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "吞咽不适": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "头孢类抗生素": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "口腔B超": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "穿刺抽液检查": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "舌下腺导管损伤": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "唾液腺结石": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "口腔感染": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "舌下腺切除术": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "囊肿造袋术": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
+    "硬化剂注射治疗": [
+      "舌下腺囊肿诊疗指南（2022年版）"
+    ],
     "舌癌诊疗指南（2022年版）": [
       "舌癌诊疗指南（2022年版）"
     ],
     "舌癌": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "舌部溃疡": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "舌痛": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "言语不清": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "舌运动受限": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "颈部淋巴结肿大": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "5-氟尿嘧啶": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "紫杉醇": [
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "多西他赛": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "西妥昔单抗": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "纳武利尤单抗": [
+      "舌癌诊疗指南（2022年版）",
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "帕博利珠单抗": [
+      "舌癌诊疗指南（2022年版）",
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "饮酒": [
+      "舌癌诊疗指南（2022年版）",
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "咀嚼槟榔": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "颈淋巴结清扫": [
+      "舌癌诊疗指南（2022年版）"
+    ],
+    "综合治疗": [
       "舌癌诊疗指南（2022年版）"
     ],
     "药事管理专业医疗质量控制指标（2025年版）": [
@@ -2492,6 +5377,30 @@
     "菌斑性龈炎": [
       "菌斑性龈炎诊疗指南（2022年版）"
     ],
+    "牙龈出血": [
+      "菌斑性龈炎诊疗指南（2022年版）"
+    ],
+    "牙龈红肿": [
+      "菌斑性龈炎诊疗指南（2022年版）"
+    ],
+    "氯己定漱口水": [
+      "菌斑性龈炎诊疗指南（2022年版）"
+    ],
+    "牙周探诊": [
+      "菌斑性龈炎诊疗指南（2022年版）"
+    ],
+    "菌斑染色": [
+      "菌斑性龈炎诊疗指南（2022年版）"
+    ],
+    "牙菌斑堆积": [
+      "菌斑性龈炎诊疗指南（2022年版）"
+    ],
+    "洁治": [
+      "菌斑性龈炎诊疗指南（2022年版）"
+    ],
+    "口腔卫生指导": [
+      "菌斑性龈炎诊疗指南（2022年版）"
+    ],
     "血友病A诊疗指南（2022年版）": [
       "血友病A诊疗指南（2022年版）"
     ],
@@ -2504,52 +5413,25 @@
     "肌肉出血": [
       "血友病A诊疗指南（2022年版）"
     ],
-    "深部组织出血": [
+    "凝血因子VIII": [
       "血友病A诊疗指南（2022年版）"
     ],
-    "胃肠道出血": [
+    "氨甲环酸": [
       "血友病A诊疗指南（2022年版）"
     ],
-    "泌尿道出血": [
+    "去氨加压素": [
       "血友病A诊疗指南（2022年版）"
     ],
-    "中枢神经系统出血": [
+    "凝血因子活性测定": [
       "血友病A诊疗指南（2022年版）"
     ],
-    "拔牙后出血不止": [
+    "活化部分凝血活酶时间（APTT）": [
       "血友病A诊疗指南（2022年版）"
     ],
-    "关节畸形": [
-      "血友病A诊疗指南（2022年版）"
-    ],
-    "假性肿瘤": [
-      "血友病A诊疗指南（2022年版）"
-    ],
-    "外伤或手术后持续出血": [
-      "血友病A诊疗指南（2022年版）"
-    ],
-    "基因重组FVIII制剂": [
-      "血友病A诊疗指南（2022年版）"
-    ],
-    "病毒灭活的血源性FVIII制剂": [
-      "血友病A诊疗指南（2022年版）"
-    ],
-    "冷沉淀": [
-      "血友病A诊疗指南（2022年版）"
-    ],
-    "新鲜冰冻血浆": [
-      "血友病A诊疗指南（2022年版）"
-    ],
-    "FVIII抑制物检测": [
-      "血友病A诊疗指南（2022年版）"
-    ],
-    "替代治疗": [
+    "因子替代治疗": [
       "血友病A诊疗指南（2022年版）"
     ],
     "预防治疗": [
-      "血友病A诊疗指南（2022年版）"
-    ],
-    "按需治疗": [
       "血友病A诊疗指南（2022年版）"
     ],
     "血站技术操作规程（2026版）": [
@@ -2562,6 +5444,48 @@
       "近视防治指南（2024年版）"
     ],
     "近视防治指南": [
+      "近视防治指南（2024年版）"
+    ],
+    "近视": [
+      "近视防治指南（2024年版）"
+    ],
+    "视力模糊": [
+      "近视防治指南（2024年版）"
+    ],
+    "远视力下降": [
+      "近视防治指南（2024年版）"
+    ],
+    "低浓度阿托品滴眼液": [
+      "近视防治指南（2024年版）"
+    ],
+    "视力检查": [
+      "近视防治指南（2024年版）"
+    ],
+    "验光": [
+      "近视防治指南（2024年版）"
+    ],
+    "散瞳验光": [
+      "近视防治指南（2024年版）"
+    ],
+    "眼轴长度测量": [
+      "近视防治指南（2024年版）"
+    ],
+    "长时间近距离用眼": [
+      "近视防治指南（2024年版）"
+    ],
+    "户外活动不足": [
+      "近视防治指南（2024年版）"
+    ],
+    "配戴框架眼镜": [
+      "近视防治指南（2024年版）"
+    ],
+    "角膜塑形镜": [
+      "近视防治指南（2024年版）"
+    ],
+    "多焦点软性接触镜": [
+      "近视防治指南（2024年版）"
+    ],
+    "近视手术": [
       "近视防治指南（2024年版）"
     ],
     "颈椎前路椎间盘切除减压融合术加速康复临床路径（2023年版）": [
@@ -2579,16 +5503,31 @@
     "食管癌": [
       "食管癌诊疗指南（2022年版）"
     ],
-    "PET-CT": [
+    "胸骨后疼痛": [
       "食管癌诊疗指南（2022年版）"
     ],
-    "超声引导下穿刺活检": [
+    "进行性吞咽困难": [
       "食管癌诊疗指南（2022年版）"
     ],
-    "不良饮食习惯": [
+    "反流": [
       "食管癌诊疗指南（2022年版）"
     ],
-    "不健康生活方式": [
+    "卡铂": [
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "氟尿嘧啶": [
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "食管镜": [
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "上消化道钡餐造影": [
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "热饮热食": [
+      "食管癌诊疗指南（2022年版）"
+    ],
+    "亚硝酸盐": [
       "食管癌诊疗指南（2022年版）"
     ],
     "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）": [
@@ -2600,10 +5539,25 @@
     "骨髓增生异常综合征伴原始细胞增多（MDS-EB）": [
       "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
     ],
-    "骨髓流式细胞术检查": [
+    "阿扎胞苷": [
       "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
     ],
-    "基因突变检测": [
+    "地西他滨": [
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "来那度胺": [
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "骨髓穿刺涂片": [
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "染色体核型分析": [
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "既往化疗史": [
+      "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
+    ],
+    "去甲基化治疗": [
       "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
     ],
     "黑色素瘤诊疗指南（2022年版）": [
@@ -2612,37 +5566,55 @@
     "黑色素瘤": [
       "黑色素瘤诊疗指南（2022年版）"
     ],
-    "卫星灶": [
+    "色素痣不对称": [
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "边缘不规则": [
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "颜色不均匀": [
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "直径大于6mm": [
       "黑色素瘤诊疗指南（2022年版）"
     ],
     "溃疡": [
       "黑色素瘤诊疗指南（2022年版）"
     ],
-    "区域淋巴结转移": [
+    "伊匹木单抗": [
       "黑色素瘤诊疗指南（2022年版）"
     ],
-    "移行转移": [
+    "达卡巴嗪": [
       "黑色素瘤诊疗指南（2022年版）"
     ],
-    "肺转移": [
-      "黑色素瘤诊疗指南（2022年版）"
-    ],
-    "肝转移": [
-      "黑色素瘤诊疗指南（2022年版）"
-    ],
-    "骨转移": [
-      "黑色素瘤诊疗指南（2022年版）"
-    ],
-    "脑转移": [
+    "维莫非尼": [
       "黑色素瘤诊疗指南（2022年版）"
     ],
     "皮肤镜": [
       "黑色素瘤诊疗指南（2022年版）"
     ],
-    "全身骨扫描": [
+    "组织病理学检查": [
       "黑色素瘤诊疗指南（2022年版）"
     ],
-    "正电子发射计算机体层成像": [
+    "BRAF基因检测": [
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "影像学检查（CT/MRI/PET-CT）": [
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "紫外线暴露": [
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "多发痣或非典型痣": [
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "白皙皮肤": [
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "手术扩大切除": [
+      "黑色素瘤诊疗指南（2022年版）"
+    ],
+    "前哨淋巴结活检": [
       "黑色素瘤诊疗指南（2022年版）"
     ]
   }

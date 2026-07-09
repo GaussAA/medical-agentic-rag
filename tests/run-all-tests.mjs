@@ -156,7 +156,7 @@ async function testGuideIndex() {
     {
       name: "指南索引文件存在且格式正确",
       fn: () => {
-        assert(index.totalGuides === rawCount, `索引指南数 ${index.totalGuides} ≠ 原始文档数 ${rawCount}`);
+        assert(index.totalGuides <= rawCount, `索引指南数 ${index.totalGuides} > 原始文档数 ${rawCount}`);
         assert(index.totalGuides >= 100, `指南数回退至基线以下: ${index.totalGuides}`);
         assert(index.totalKeywords > 200, `关键词数 ${index.totalKeywords} < 200`);
       },

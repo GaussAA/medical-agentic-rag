@@ -1,6 +1,6 @@
 {
   "suite": "provider-health",
-  "ts": "2026-07-09T11:21:38.411Z",
+  "ts": "2026-07-09T16:31:12.439Z",
   "passed": 13,
   "failed": 0,
   "total": 13,
@@ -46,7 +46,7 @@
       "ok": true
     },
     {
-      "name": "回退 priority 最小(deepseek)",
+      "name": "回退 priority 最小(sensenova 免费优先)",
       "ok": true
     },
     {

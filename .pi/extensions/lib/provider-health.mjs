@@ -24,15 +24,28 @@ export const PROBE_TIMEOUT_MS = 3000;
  * 不浪费探测。
  * 注：deepseek 为 Pi 内置 Provider，此处只存其探测所需 baseUrl+authEnv；
  *     agnes/sensenova 非内置，其 Provider 由各自扩展 registerProvider 注册。
+ *
+ * 成本控制优先级（与用户「免费模型优先」规范一致）：
+ *   P1 免费主力(sensenova-6.7-flash-lite) > P2 原生 deepseek(付费兜底)
+ *   > P3 agnes > P4 免费 deepseek 通道(sensenova/deepseek-v4-flash, 亦免费)
+ * selectProvider 取首个 healthy；全不健康回退 priority 最小者并标 degraded。
  */
 export const PROVIDERS = [
   {
+    provider: "sensenova",
+    model: "sensenova-6.7-flash-lite",
+    label: "SenseNova 6.7 Flash Lite (免费)",
+    baseUrl: "https://token.sensenova.cn/v1",
+    authEnv: "SENSENOVA_API_KEY",
+    priority: 1,
+  },
+  {
     provider: "deepseek",
     model: "deepseek-v4-flash",
-    label: "DeepSeek V4 Flash",
+    label: "DeepSeek V4 Flash (付费兜底)",
     baseUrl: "https://api.deepseek.com",
     authEnv: "DEEPSEEK_API_KEY",
-    priority: 1,
+    priority: 2,
   },
   {
     provider: "agnes",
@@ -40,20 +53,12 @@ export const PROVIDERS = [
     label: "Agnes 2.0 Flash",
     baseUrl: "https://apihub.agnes-ai.com/v1",
     authEnv: "AGNES_API_KEY",
-    priority: 2,
-  },
-  {
-    provider: "sensenova",
-    model: "sensenova-6.7-flash-lite",
-    label: "SenseNova 6.7 Flash Lite",
-    baseUrl: "https://token.sensenova.cn/v1",
-    authEnv: "SENSENOVA_API_KEY",
     priority: 3,
   },
   {
     provider: "sensenova",
     model: "deepseek-v4-flash",
-    label: "DeepSeek V4 Flash (via SenseNova)",
+    label: "DeepSeek V4 Flash (免费通道)",
     baseUrl: "https://token.sensenova.cn/v1",
     authEnv: "SENSENOVA_API_KEY",
     priority: 4,

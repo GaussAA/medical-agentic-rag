@@ -1,8 +1,11 @@
 /**
  * 医学实体提取脚本
- * 使用 DeepSeek API 从指南大纲中提取结构化医学实体和关系
+ * 优先使用 SenseNova(日日新) 免费模型从指南大纲抽取结构化医学实体与关系，
+ * DeepSeek 仅作兜底（成本控制：免费额度优先）。
  *
- * 用法: set DEEPSEEK_API_KEY=xxx && node scripts/extract-entities.mjs
+ * 用法: node scripts/extract-entities.mjs
+ *   - 优先 SENSENOVA_API_KEY (sensenova-6.7-flash-lite, 每日免费额度)
+ *   - 缺失/失败则回退 DEEPSEEK_API_KEY
  * 输出: medical-knowlegde-base/.knowledge-graph.json
  */
 import { readFile, writeFile } from "node:fs/promises";
@@ -13,23 +16,38 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTLINE_FILE = join(__dirname, "..", "medical-knowlegde-base", ".outline.json");
 const GRAPH_FILE = join(__dirname, "..", "medical-knowlegde-base", ".knowledge-graph.json");
 
+const SENSENOVA_API_KEY = process.env.SENSENOVA_API_KEY;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
-if (!DEEPSEEK_API_KEY) {
-  console.error("请设置 DEEPSEEK_API_KEY 环境变量");
+if (!SENSENOVA_API_KEY && !DEEPSEEK_API_KEY) {
+  console.error("请至少设置 SENSENOVA_API_KEY 或 DEEPSEEK_API_KEY 环境变量");
   process.exit(1);
 }
 
-const API_URL = "https://api.deepseek.com/chat/completions";
+// 免费模型优先（商汤日日新，每日免费额度），DeepSeek 付费通道仅作兜底
+const ENDPOINTS = [
+  {
+    name: "SenseNova 6.7 Flash Lite (免费)",
+    url: "https://token.sensenova.cn/v1/chat/completions",
+    key: SENSENOVA_API_KEY,
+    model: "sensenova-6.7-flash-lite",
+  },
+  {
+    name: "DeepSeek V4 Flash (兜底)",
+    url: "https://api.deepseek.com/chat/completions",
+    key: DEEPSEEK_API_KEY,
+    model: "deepseek-v4-flash",
+  },
+];
 
-async function callLLM(prompt) {
-  const res = await fetch(API_URL, {
+async function callOne(ep, prompt) {
+  const res = await fetch(ep.url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${DEEPSEEK_API_KEY}`,
+      Authorization: `Bearer ${ep.key}`,
     },
     body: JSON.stringify({
-      model: "deepseek-v4-flash",
+      model: ep.model,
       messages: [
         {
           role: "system",
@@ -52,15 +70,13 @@ async function callLLM(prompt) {
 
   if (!res.ok) {
     const err = await res.text().catch(() => "");
-    throw new Error(`API error ${res.status}: ${err.slice(0, 200)}`);
+    throw new Error(`[${ep.name}] API error ${res.status}: ${err.slice(0, 200)}`);
   }
 
   const data = await res.json();
   const text = data.choices?.[0]?.message?.content || "";
-  // Try to extract JSON from the response
   const jsonMatch = text.match(/\[[\s\S]*\]/);
   if (jsonMatch) return JSON.parse(jsonMatch[0]);
-  // If response is NOT wrapped in array brackets, try to parse as-is
   try {
     return JSON.parse(text);
   } catch {
@@ -69,9 +85,29 @@ async function callLLM(prompt) {
   }
 }
 
+// 免费模型优先；当前端点无凭证或调用失败则依次回退到下一可用端点
+async function callLLM(prompt) {
+  let lastErr;
+  for (const ep of ENDPOINTS) {
+    if (!ep.key) continue;
+    try {
+      const entities = await callOne(ep, prompt);
+      if (ep !== ENDPOINTS[0]) console.log(`  ↳ 回退至 ${ep.name}`);
+      return entities;
+    } catch (err) {
+      lastErr = err;
+      console.warn(`  ⚠ ${ep.name} 调用失败: ${String(err.message).slice(0, 80)}`);
+    }
+  }
+  console.error(`  ✗ 全部 LLM 端点不可用: ${String(lastErr?.message || "").slice(0, 100)}`);
+  return [];
+}
+
 async function main() {
   const outline = JSON.parse(await readFile(OUTLINE_FILE, "utf-8"));
 
+  const activeChain = ENDPOINTS.filter((e) => e.key).map((e) => e.name).join(" > ");
+  console.log(`LLM 优先级: ${activeChain || "（无可用凭证）"}`);
   console.log(`开始从 ${outline.totalFiles} 份指南提取实体...\n`);
 
   const allEntities = [];

@@ -31,27 +31,28 @@ console.log("\n=== Provider 故障转移单测 ===\n");
 console.log("[1] runProbe 健康");
 mockFetch(async (url) => ({ ok: true, status: 200 }));
 process.env.DEEPSEEK_API_KEY = "k1";
-const h1 = await ph.runProbe(ph.PROVIDERS[0]);
+const deepseek = ph.PROVIDERS.find((p) => p.provider === "deepseek" && p.model === "deepseek-v4-flash");
+const h1 = await ph.runProbe(deepseek);
 check("200 → healthy", h1.healthy === true);
 check("记录原因 200 OK", h1.reason === "200 OK");
 
 // 2. 不健康探测
 console.log("\n[2] runProbe 异常");
 mockFetch(async () => ({ ok: false, status: 500 }));
-const h2 = await ph.runProbe(ph.PROVIDERS[0]);
+const h2 = await ph.runProbe(deepseek);
 check("500 → unhealthy", h2.healthy === false);
 check("记录 HTTP 500", h2.reason === "HTTP 500");
 
 // 3. 超时探测
 console.log("\n[3] runProbe 超时 (AbortError)");
 mockFetch(async () => { throw new Error("This operation was aborted"); });
-const h3 = await ph.runProbe(ph.PROVIDERS[0]);
+const h3 = await ph.runProbe(deepseek);
 check("超时/异常 → unhealthy", h3.healthy === false);
 
 // 4. 缺 Key 判不健康
 console.log("\n[4] 缺 API Key");
 delete process.env.DEEPSEEK_API_KEY;
-const h4 = await ph.runProbe(ph.PROVIDERS[0]);
+const h4 = await ph.runProbe(deepseek);
 check("缺 Key → unhealthy", h4.healthy === false);
 check("原因含环境变量名", h4.reason.includes("DEEPSEEK_API_KEY"));
 
@@ -59,7 +60,7 @@ check("原因含环境变量名", h4.reason.includes("DEEPSEEK_API_KEY"));
 console.log("\n[5] selectProvider 优先级选择");
 mockFetch(async () => ({ ok: true, status: 200 }));
 process.env.SENSENOVA_API_KEY = "sk";
-// deepseek 无 Key（unhealthy），sensenova 有 Key（healthy）→ 应跳过 deepseek 选 sensenova
+// sensenova 有 Key（healthy，且 priority 居首）→ 直接选 sensenova（免费优先）
 const sel = await ph.selectProvider();
 check("跳过无 Key 的 primary 选次优先", sel.provider === "sensenova", sel.provider);
 check("未降级", sel.degraded === false);
@@ -70,7 +71,7 @@ delete process.env.SENSENOVA_API_KEY;
 mockFetch(async () => ({ ok: false, status: 503 }));
 const sel2 = await ph.selectProvider();
 check("全失败 → degraded=true", sel2.degraded === true);
-check("回退 priority 最小(deepseek)", sel2.provider === "deepseek", sel2.provider);
+check("回退 priority 最小(sensenova 免费优先)", sel2.provider === "sensenova", sel2.provider);
 
 // 7. formatStatus 可读
 console.log("\n[7] formatStatus");

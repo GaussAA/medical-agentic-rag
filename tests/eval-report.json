@@ -1,10 +1,10 @@
 {
   "metrics": {
-    "generatedAt": "2026-07-09T15:03:36.492Z",
+    "generatedAt": "2026-07-09T16:23:12.766Z",
     "knowledgeBase": {
       "guides": 135,
       "keywords": 382,
-      "kgEntities": 250
+      "kgEntities": 776
     },
     "routing": {
       "literal": {
@@ -29,21 +29,21 @@
     },
     "latency": {
       "routeCold": {
-        "avgMs": 20.893,
-        "p95Ms": 24.276,
-        "maxMs": "80.51"
+        "avgMs": 23.171,
+        "p95Ms": 35.914,
+        "maxMs": "98.10"
       },
       "routeWarm": {
-        "avgMs": 0.046,
-        "p95Ms": 0.092
+        "avgMs": 0.056,
+        "p95Ms": 0.12
       },
       "kgCold": {
-        "avgMs": 0.237,
-        "p95Ms": 0.37
+        "avgMs": 0.543,
+        "p95Ms": 0.93
       },
       "kgWarm": {
-        "avgMs": 0.086,
-        "p95Ms": 0.172
+        "avgMs": 0.082,
+        "p95Ms": 0.096
       }
     }
   },
@@ -61,8 +61,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 60,
-      "coldMs": 80.51,
-      "warmMs": 0.06,
+      "coldMs": 98.1,
+      "warmMs": 0.094,
       "reasons": [
         "语义重叠(IDF加权)111.9(1/2026/国/家/医)"
       ]
@@ -80,8 +80,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 14,
-      "coldMs": 18.54,
-      "warmMs": 0.065,
+      "coldMs": 28.65,
+      "warmMs": 0.086,
       "reasons": [
         "语义重叠(IDF加权)75.7(1/健/康/体/检)"
       ]
@@ -99,8 +99,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 29,
-      "coldMs": 21.32,
-      "warmMs": 0.07,
+      "coldMs": 19.07,
+      "warmMs": 0.058,
       "reasons": [
         "语义重叠(IDF加权)109.2(1/全/国/生/育)"
       ]
@@ -118,8 +118,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 38,
-      "coldMs": 18.45,
-      "warmMs": 0.092,
+      "coldMs": 21.87,
+      "warmMs": 0.058,
       "reasons": [
         "语义重叠(IDF加权)111.7(1/全/国/防/盲)"
       ]
@@ -137,8 +137,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 44,
-      "coldMs": 21.27,
-      "warmMs": 0.099,
+      "coldMs": 19.09,
+      "warmMs": 0.114,
       "reasons": [
         "语义重叠(IDF加权)125.2(1/生/物/医/学)"
       ]
@@ -156,8 +156,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 46,
-      "coldMs": 19.26,
-      "warmMs": 0.057,
+      "coldMs": 21.2,
+      "warmMs": 0.059,
       "reasons": [
         "语义重叠(IDF加权)161.6(1/紧/密/型/县)"
       ]
@@ -175,8 +175,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 42,
-      "coldMs": 19.63,
-      "warmMs": 0.072,
+      "coldMs": 22.53,
+      "warmMs": 0.057,
       "reasons": [
         "语义重叠(IDF加权)111.1(2/2026/各/专/业)"
       ]
@@ -194,8 +194,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 33,
-      "coldMs": 21.01,
-      "warmMs": 0.061,
+      "coldMs": 19.77,
+      "warmMs": 0.07,
       "reasons": [
         "语义重叠(IDF加权)105.8(2/全/国/生/育)"
       ]
@@ -213,8 +213,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 33,
-      "coldMs": 20.68,
-      "warmMs": 0.059,
+      "coldMs": 25.62,
+      "warmMs": 0.077,
       "reasons": [
         "语义重叠(IDF加权)91.6(2/全/国/防/盲)"
       ]
@@ -232,8 +232,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 14,
-      "coldMs": 19.48,
-      "warmMs": 0.058,
+      "coldMs": 22.05,
+      "warmMs": 0.073,
       "reasons": [
         "语义重叠(IDF加权)51.0(2/基/本/体/检)"
       ]
@@ -251,8 +251,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 46,
-      "coldMs": 20.26,
-      "warmMs": 0.067,
+      "coldMs": 19.74,
+      "warmMs": 0.116,
       "reasons": [
         "语义重叠(IDF加权)198.2(2/生/物/医/学)"
       ]
@@ -270,8 +270,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 58,
-      "coldMs": 21.38,
-      "warmMs": 0.072,
+      "coldMs": 28.28,
+      "warmMs": 0.08,
       "reasons": [
         "语义重叠(IDF加权)155.5(2/紧/密/型/县)"
       ]
@@ -289,8 +289,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 46,
-      "coldMs": 17.94,
-      "warmMs": 0.052,
+      "coldMs": 29.29,
+      "warmMs": 0.086,
       "reasons": [
         "语义重叠(IDF加权)186.5(3/生/物/医/学)"
       ]
@@ -308,8 +308,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 81,
-      "coldMs": 19.37,
-      "warmMs": 0.048,
+      "coldMs": 29.21,
+      "warmMs": 0.077,
       "reasons": [
         "语义重叠(IDF加权)162.9(3/紧/密/型/县)"
       ]
@@ -327,8 +327,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 18,
-      "coldMs": 18.27,
-      "warmMs": 0.063,
+      "coldMs": 18.86,
+      "warmMs": 0.051,
       "reasons": [
         "语义重叠(IDF加权)101.0(4/成/人/健/康)"
       ]
@@ -346,8 +346,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 39,
-      "coldMs": 18.89,
-      "warmMs": 0.091,
+      "coldMs": 18.48,
+      "warmMs": 0.075,
       "reasons": [
         "语义重叠(IDF加权)172.4(4/紧/密/型/县)"
       ]
@@ -365,7 +365,7 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 7,
-      "coldMs": 31.07,
+      "coldMs": 37.85,
       "warmMs": 0.073,
       "reasons": [
         "关键词命中:86个罕见病病种诊疗指南（2025年版）/86个罕见病病种",
@@ -386,8 +386,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 53,
-      "coldMs": 21.11,
-      "warmMs": 0.042,
+      "coldMs": 30.81,
+      "warmMs": 0.134,
       "reasons": [
         "语义重叠(IDF加权)123.4(gbz/104/2026/职/业)"
       ]
@@ -405,8 +405,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 54,
-      "coldMs": 22.19,
-      "warmMs": 0.043,
+      "coldMs": 19.92,
+      "warmMs": 0.065,
       "reasons": [
         "语义重叠(IDF加权)119.6(gbz/105/2026/职/业)"
       ]
@@ -424,8 +424,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 51,
-      "coldMs": 21.15,
-      "warmMs": 0.087,
+      "coldMs": 21.24,
+      "warmMs": 0.074,
       "reasons": [
         "语义重叠(IDF加权)119.7(gbz/97/2026/职/业)"
       ]
@@ -443,8 +443,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 52,
-      "coldMs": 23.91,
-      "warmMs": 0.064,
+      "coldMs": 22.45,
+      "warmMs": 0.069,
       "reasons": [
         "语义重叠(IDF加权)264.1(gbz/t/244/2026/电)"
       ]
@@ -462,8 +462,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 52,
-      "coldMs": 21.62,
-      "warmMs": 0.043,
+      "coldMs": 20.18,
+      "warmMs": 0.053,
       "reasons": [
         "语义重叠(IDF加权)181.5(gbz/t/344/2026/131i)"
       ]
@@ -481,8 +481,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 37,
-      "coldMs": 24.28,
-      "warmMs": 0.038,
+      "coldMs": 22.89,
+      "warmMs": 0.045,
       "reasons": [
         "关键词命中:Pilon骨折切开复位内固定术加速康复临床路径（2023年版）/Pilon骨折切开复位内固定术加速康复临床路径",
         "标题/疾病包含",
@@ -502,8 +502,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 58,
-      "coldMs": 19.02,
-      "warmMs": 0.04,
+      "coldMs": 20.93,
+      "warmMs": 0.053,
       "reasons": [
         "语义重叠(IDF加权)130.0(ws/890/2026/x/浅)"
       ]
@@ -521,8 +521,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 58,
-      "coldMs": 20.82,
-      "warmMs": 0.066,
+      "coldMs": 20.71,
+      "warmMs": 0.124,
       "reasons": [
         "语义重叠(IDF加权)153.6(ws/t/404/9/2026)"
       ]
@@ -540,8 +540,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 50,
-      "coldMs": 21.34,
-      "warmMs": 0.063,
+      "coldMs": 20.93,
+      "warmMs": 0.122,
       "reasons": [
         "语义重叠(IDF加权)90.6(ws/t/477/2026/d)"
       ]
@@ -559,8 +559,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 55,
-      "coldMs": 20.39,
-      "warmMs": 0.051,
+      "coldMs": 22.86,
+      "warmMs": 0.07,
       "reasons": [
         "语义重叠(IDF加权)110.1(ws/t/497/2026/侵)"
       ]
@@ -578,8 +578,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 50,
-      "coldMs": 23.53,
-      "warmMs": 0.05,
+      "coldMs": 22.26,
+      "warmMs": 0.079,
       "reasons": [
         "语义重叠(IDF加权)97.7(ws/t/498/2026/感)"
       ]
@@ -597,8 +597,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 66,
-      "coldMs": 20.47,
-      "warmMs": 0.104,
+      "coldMs": 21.18,
+      "warmMs": 0.055,
       "reasons": [
         "语义重叠(IDF加权)137.3(ws/t/503/2026/临)"
       ]
@@ -616,8 +616,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 57,
-      "coldMs": 20.23,
-      "warmMs": 0.124,
+      "coldMs": 21.5,
+      "warmMs": 0.071,
       "reasons": [
         "语义重叠(IDF加权)154.6(ws/t/640/2026/临)"
       ]
@@ -635,8 +635,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 58,
-      "coldMs": 22.45,
-      "warmMs": 0.044,
+      "coldMs": 20.19,
+      "warmMs": 0.054,
       "reasons": [
         "语义重叠(IDF加权)130.1(ws/t/641/2026/临)"
       ]
@@ -654,8 +654,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 63,
-      "coldMs": 22.19,
-      "warmMs": 0.098,
+      "coldMs": 22.72,
+      "warmMs": 0.1,
       "reasons": [
         "语义重叠(IDF加权)160.7(ws/t/645/1/2026)"
       ]
@@ -673,8 +673,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 61,
-      "coldMs": 20.84,
-      "warmMs": 0.076,
+      "coldMs": 27.36,
+      "warmMs": 0.114,
       "reasons": [
         "语义重叠(IDF加权)160.7(ws/t/645/2/2026)"
       ]
@@ -692,8 +692,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 62,
-      "coldMs": 21.15,
-      "warmMs": 0.062,
+      "coldMs": 28.53,
+      "warmMs": 0.063,
       "reasons": [
         "语义重叠(IDF加权)148.4(ws/t/883/2026/中)"
       ]
@@ -711,8 +711,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 40,
-      "coldMs": 19.15,
-      "warmMs": 0.042,
+      "coldMs": 19.73,
+      "warmMs": 0.051,
       "reasons": [
         "语义重叠(IDF加权)109.1(ws/t/884/2026/分)"
       ]
@@ -730,8 +730,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 71,
-      "coldMs": 20.27,
-      "warmMs": 0.086,
+      "coldMs": 20.61,
+      "warmMs": 0.135,
       "reasons": [
         "语义重叠(IDF加权)175.6(ws/t/885/2026/临)"
       ]
@@ -749,7 +749,7 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 50,
-      "coldMs": 22.64,
+      "coldMs": 20.29,
       "warmMs": 0.054,
       "reasons": [
         "语义重叠(IDF加权)123.2(ws/t/886/2026/临)"
@@ -768,8 +768,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 43,
-      "coldMs": 19.2,
-      "warmMs": 0.063,
+      "coldMs": 18.62,
+      "warmMs": 0.049,
       "reasons": [
         "语义重叠(IDF加权)67.6(ws/t/894/2026/成)"
       ]
@@ -787,8 +787,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 44,
-      "coldMs": 20.62,
-      "warmMs": 0.044,
+      "coldMs": 19.24,
+      "warmMs": 0.053,
       "reasons": [
         "语义重叠(IDF加权)146.9(ws/t/895/2026/脐)"
       ]
@@ -806,8 +806,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 56,
-      "coldMs": 22.83,
-      "warmMs": 0.045,
+      "coldMs": 21.32,
+      "warmMs": 0.073,
       "reasons": [
         "语义重叠(IDF加权)160.5(ws/t/900/2026/病)"
       ]
@@ -825,8 +825,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 77,
-      "coldMs": 21,
-      "warmMs": 0.044,
+      "coldMs": 20.75,
+      "warmMs": 0.055,
       "reasons": [
         "语义重叠(IDF加权)198.4(ws/t/901/2026/医)"
       ]
@@ -844,8 +844,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 38,
-      "coldMs": 21.69,
-      "warmMs": 0.058,
+      "coldMs": 22.78,
+      "warmMs": 0.035,
       "reasons": [
         "关键词命中:三踝骨折切开复位内固定术加速康复临床路径（2023年版）/三踝骨折切开复位内固定术加速康复临床路径",
         "标题/疾病包含",
@@ -865,8 +865,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 11,
-      "coldMs": 21.71,
-      "warmMs": 0.036,
+      "coldMs": 19.67,
+      "warmMs": 0.051,
       "reasons": [
         "关键词命中:上颌骨骨折诊疗指南（2022年版）/上颌骨骨折",
         "标题/疾病包含",
@@ -886,8 +886,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 12,
-      "coldMs": 18.87,
-      "warmMs": 0.048,
+      "coldMs": 19.29,
+      "warmMs": 0.037,
       "reasons": [
         "关键词命中:下颌骨骨折诊疗指南（2022年版）/下颌骨骨折",
         "标题/疾病包含",
@@ -907,8 +907,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 53,
-      "coldMs": 18.79,
-      "warmMs": 0.045,
+      "coldMs": 21.01,
+      "warmMs": 0.042,
       "reasons": [
         "关键词命中:中华医学会肺癌临床诊疗指南（2024版）/中华医学会肺癌临床",
         "标题/疾病包含",
@@ -928,8 +928,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 48,
-      "coldMs": 18.56,
-      "warmMs": 0.053,
+      "coldMs": 18.84,
+      "warmMs": 0.04,
       "reasons": [
         "关键词命中:中国人群骨质疏松症风险管理公众指南（2024）/中国人群骨质疏松症风险管理公众指南",
         "标题/疾病包含",
@@ -949,8 +949,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 29,
-      "coldMs": 22.75,
-      "warmMs": 0.058,
+      "coldMs": 19.14,
+      "warmMs": 0.059,
       "reasons": [
         "关键词命中:中国抗癌协会乳腺癌诊治指南与规范（2025年版）/中国抗癌协会乳腺癌",
         "标题/疾病包含",
@@ -970,8 +970,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 42,
-      "coldMs": 21.73,
-      "warmMs": 0.039,
+      "coldMs": 24.4,
+      "warmMs": 0.072,
       "reasons": [
         "关键词命中:中国糖尿病防治指南（2024版）/中国糖尿病防治指南",
         "标题/疾病包含",
@@ -991,8 +991,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 13,
-      "coldMs": 22.56,
-      "warmMs": 0.039,
+      "coldMs": 20.6,
+      "warmMs": 0.061,
       "reasons": [
         "关键词命中:中国老年糖尿病诊疗指南（2024版）/中国老年糖尿病",
         "标题/疾病包含",
@@ -1012,7 +1012,7 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 8,
-      "coldMs": 17.81,
+      "coldMs": 18.93,
       "warmMs": 0.042,
       "reasons": [
         "关键词命中:中国艾滋病诊疗指南（2024版）/中国艾滋病",
@@ -1033,8 +1033,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 35,
-      "coldMs": 20.21,
-      "warmMs": 0.041,
+      "coldMs": 22.58,
+      "warmMs": 0.044,
       "reasons": [
         "关键词命中:中国高血压防治指南(2024年修订版)/中国高血压防治指南",
         "标题/疾病包含",
@@ -1054,7 +1054,7 @@
       "hit1": false,
       "hit3": true,
       "totalMatched": 35,
-      "coldMs": 21.71,
+      "coldMs": 22.55,
       "warmMs": 0.005,
       "reasons": [
         "关键词命中:中国高血压防治指南(2024年修订版)/中国高血压防治指南",
@@ -1075,8 +1075,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 68,
-      "coldMs": 20.57,
-      "warmMs": 0.08,
+      "coldMs": 19.96,
+      "warmMs": 0.046,
       "reasons": [
         "关键词命中:临床检验专业医疗质量控制指标（2025年版）/临床检验专业医疗质量控制指标",
         "标题/疾病包含",
@@ -1096,8 +1096,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 15,
-      "coldMs": 19.06,
-      "warmMs": 0.052,
+      "coldMs": 19.67,
+      "warmMs": 0.112,
       "reasons": [
         "关键词命中:乙烯醇均聚物等2种食品相关产品新品种",
         "标题/疾病包含",
@@ -1117,8 +1117,8 @@
       "hit1": false,
       "hit3": true,
       "totalMatched": 19,
-      "coldMs": 18.95,
-      "warmMs": 0.041,
+      "coldMs": 19.47,
+      "warmMs": 0.056,
       "reasons": [
         "关键词命中:中国抗癌协会乳腺癌诊治指南与规范（2025年版）/中国抗癌协会乳腺癌",
         "标题/疾病包含",
@@ -1138,8 +1138,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 6,
-      "coldMs": 20.82,
-      "warmMs": 0.056,
+      "coldMs": 18.34,
+      "warmMs": 0.06,
       "reasons": [
         "关键词命中:儿童肺炎支原体肺炎诊疗指南（2023年版）/儿童肺炎支原体肺炎",
         "标题/疾病包含",
@@ -1159,8 +1159,8 @@
       "hit1": false,
       "hit3": true,
       "totalMatched": 6,
-      "coldMs": 20.88,
-      "warmMs": 0.01,
+      "coldMs": 20.58,
+      "warmMs": 0.044,
       "reasons": [
         "关键词命中:儿童肺炎支原体肺炎诊疗指南（2023年版）/儿童肺炎支原体肺炎",
         "标题/疾病包含",
@@ -1180,8 +1180,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 33,
-      "coldMs": 19.4,
-      "warmMs": 0.077,
+      "coldMs": 19.56,
+      "warmMs": 0.046,
       "reasons": [
         "关键词命中:全膝关节置换术加速康复临床路径（2023年版）/全膝关节置换术加速康复临床路径",
         "标题/疾病包含",
@@ -1201,8 +1201,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 33,
-      "coldMs": 28.66,
-      "warmMs": 0.042,
+      "coldMs": 19.42,
+      "warmMs": 0.059,
       "reasons": [
         "关键词命中:全踝关节置换术加速康复临床路径（2023年版）/全踝关节置换术加速康复临床路径",
         "标题/疾病包含",
@@ -1222,8 +1222,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 34,
-      "coldMs": 23.09,
-      "warmMs": 0.039,
+      "coldMs": 19.61,
+      "warmMs": 0.041,
       "reasons": [
         "关键词命中:全髋关节置换术加速康复临床路径（2023年版）/全髋关节置换术加速康复临床路径",
         "标题/疾病包含",
@@ -1243,8 +1243,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 32,
-      "coldMs": 18.47,
-      "warmMs": 0.039,
+      "coldMs": 19.15,
+      "warmMs": 0.038,
       "reasons": [
         "关键词命中:养老服务机构中营养指导员工作流程示例",
         "标题/疾病包含",
@@ -1264,8 +1264,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 21,
-      "coldMs": 21.51,
-      "warmMs": 0.038,
+      "coldMs": 19.55,
+      "warmMs": 0.056,
       "reasons": [
         "关键词命中:前列腺癌诊疗指南（2022年版）/前列腺癌",
         "标题/疾病包含",
@@ -1285,8 +1285,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 13,
-      "coldMs": 20.62,
-      "warmMs": 0.06,
+      "coldMs": 22.1,
+      "warmMs": 0.058,
       "reasons": [
         "关键词命中:化脓性颌骨骨髓炎诊疗指南（2022年版）/化脓性颌骨骨髓炎",
         "标题/疾病包含",
@@ -1306,8 +1306,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 18,
-      "coldMs": 22.74,
-      "warmMs": 0.044,
+      "coldMs": 24.45,
+      "warmMs": 0.036,
       "reasons": [
         "关键词命中:卵巢癌诊疗指南（2022年版）/卵巢癌",
         "标题/疾病包含",
@@ -1327,7 +1327,7 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 26,
-      "coldMs": 21.83,
+      "coldMs": 20.02,
       "warmMs": 0.047,
       "reasons": [
         "关键词命中:原发性肝癌诊疗指南（2024年版）/原发性肝癌",
@@ -1348,7 +1348,7 @@
       "hit1": false,
       "hit3": true,
       "totalMatched": 26,
-      "coldMs": 23.17,
+      "coldMs": 19.91,
       "warmMs": 0.003,
       "reasons": [
         "关键词命中:原发性肝癌诊疗指南（2024年版）/原发性肝癌",
@@ -1369,8 +1369,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 28,
-      "coldMs": 23.42,
-      "warmMs": 0.04,
+      "coldMs": 18.74,
+      "warmMs": 0.036,
       "reasons": [
         "关键词命中:原发性肺癌诊疗指南（2022年版）/原发性肺癌",
         "标题/疾病包含",
@@ -1390,8 +1390,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 7,
-      "coldMs": 20.04,
-      "warmMs": 0.05,
+      "coldMs": 19.76,
+      "warmMs": 0.035,
       "reasons": [
         "关键词命中:口腔念珠菌病诊疗指南（2022年版）/口腔念珠菌病",
         "标题/疾病包含",
@@ -1411,8 +1411,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 3,
-      "coldMs": 19.91,
-      "warmMs": 0.077,
+      "coldMs": 20.69,
+      "warmMs": 0.041,
       "reasons": [
         "关键词命中:口腔扁平苔藓诊疗指南（2022年版）/口腔扁平苔藓",
         "标题/疾病包含",
@@ -1432,8 +1432,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 18,
-      "coldMs": 18.93,
-      "warmMs": 0.056,
+      "coldMs": 20.55,
+      "warmMs": 0.164,
       "reasons": [
         "关键词命中:口腔颌面部间隙感染诊疗指南（2022年版）/口腔颌面部间隙感染",
         "标题/疾病包含",
@@ -1452,8 +1452,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 2,
-      "coldMs": 17.75,
-      "warmMs": 0.037,
+      "coldMs": 19.6,
+      "warmMs": 0.033,
       "reasons": [
         "关键词命中:唇裂诊疗指南（2022年版）/唇裂",
         "标题/疾病包含",
@@ -1473,8 +1473,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 31,
-      "coldMs": 19.99,
-      "warmMs": 0.027,
+      "coldMs": 21.32,
+      "warmMs": 0.026,
       "reasons": [
         "关键词命中:国家卫生健康委关于修改和废止部分部门规章的决定（第15号）/国家卫生健康委关于修改和废止部分部门规章的决定",
         "标题/疾病包含",
@@ -1494,8 +1494,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 11,
-      "coldMs": 18.9,
-      "warmMs": 0.039,
+      "coldMs": 18.33,
+      "warmMs": 0.028,
       "reasons": [
         "关键词命中:国家基本药物目录（2026年版）/国家基本药物目录",
         "标题/疾病包含",
@@ -1515,8 +1515,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 36,
-      "coldMs": 25.5,
-      "warmMs": 0.063,
+      "coldMs": 19.9,
+      "warmMs": 0.035,
       "reasons": [
         "关键词命中:基层医疗卫生机构医疗质量改善三年行动自查整改表",
         "标题/疾病包含",
@@ -1536,8 +1536,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 28,
-      "coldMs": 17.79,
-      "warmMs": 0.039,
+      "coldMs": 18.99,
+      "warmMs": 0.035,
       "reasons": [
         "关键词命中:基层血液透析室建设与服务指南",
         "标题/疾病包含",
@@ -1557,8 +1557,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 20,
-      "coldMs": 17.79,
-      "warmMs": 0.037,
+      "coldMs": 17.55,
+      "warmMs": 0.049,
       "reasons": [
         "关键词命中:子宫内膜癌诊疗指南（2022年版）/子宫内膜癌",
         "标题/疾病包含",
@@ -1578,8 +1578,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 50,
-      "coldMs": 20.76,
-      "warmMs": 0.033,
+      "coldMs": 19.65,
+      "warmMs": 0.112,
       "reasons": [
         "关键词命中:安宁疗护实践指南（2025年版）/安宁疗护实践指南",
         "标题/疾病包含",
@@ -1599,8 +1599,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 20,
-      "coldMs": 17.82,
-      "warmMs": 0.024,
+      "coldMs": 18.65,
+      "warmMs": 0.027,
       "reasons": [
         "关键词命中:宫颈癌诊疗指南（2022年版）/宫颈癌/子宫颈癌",
         "标题/疾病包含",
@@ -1620,8 +1620,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 5,
-      "coldMs": 19.57,
-      "warmMs": 0.039,
+      "coldMs": 19.1,
+      "warmMs": 0.029,
       "reasons": [
         "关键词命中:尼帕病毒病诊疗方案（2026年版）/尼帕病毒病",
         "标题/疾病包含",
@@ -1641,8 +1641,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 18,
-      "coldMs": 20.03,
-      "warmMs": 0.031,
+      "coldMs": 20.15,
+      "warmMs": 0.037,
       "reasons": [
         "关键词命中:常见慢性病风险评估指标（2025年版）/常见慢性病",
         "标题/疾病包含",
@@ -1662,8 +1662,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 21,
-      "coldMs": 21.07,
-      "warmMs": 0.034,
+      "coldMs": 25.7,
+      "warmMs": 0.04,
       "reasons": [
         "关键词命中:弥漫性大B细胞淋巴瘤诊疗指南（2022年版）/弥漫性大B细胞淋巴瘤",
         "标题/疾病包含",
@@ -1683,8 +1683,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 42,
-      "coldMs": 20.18,
-      "warmMs": 0.094,
+      "coldMs": 34.61,
+      "warmMs": 0.059,
       "reasons": [
         "关键词命中:慢性乙型肝炎防治指南（2022年版）/慢性乙型肝炎防治指南",
         "标题/疾病包含",
@@ -1704,8 +1704,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 33,
-      "coldMs": 19.99,
-      "warmMs": 0.039,
+      "coldMs": 32.43,
+      "warmMs": 0.058,
       "reasons": [
         "语义重叠(IDF加权)101.0(慢/性/淋/巴/细)"
       ]
@@ -1723,8 +1723,8 @@
       "hit1": false,
       "hit3": true,
       "totalMatched": 11,
-      "coldMs": 19.44,
-      "warmMs": 0.028,
+      "coldMs": 31.2,
+      "warmMs": 0.045,
       "reasons": [
         "关键词命中:常见慢性病风险评估指标（2025年版）/常见慢性病",
         "标题/疾病包含",
@@ -1744,8 +1744,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 16,
-      "coldMs": 19.81,
-      "warmMs": 0.026,
+      "coldMs": 37.42,
+      "warmMs": 0.043,
       "reasons": [
         "关键词命中:慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）/慢性阻塞性肺疾病基层",
         "标题/疾病包含",
@@ -1765,8 +1765,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 16,
-      "coldMs": 21.41,
-      "warmMs": 0.043,
+      "coldMs": 34.54,
+      "warmMs": 0.05,
       "reasons": [
         "关键词命中:慢性髓性白血病诊疗指南（2022年版）/慢性髓性白血病",
         "标题/疾病包含",
@@ -1786,8 +1786,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 16,
-      "coldMs": 20.05,
-      "warmMs": 0.145,
+      "coldMs": 28.25,
+      "warmMs": 0.046,
       "reasons": [
         "关键词命中:成釉细胞瘤诊疗指南（2022年版）/成釉细胞瘤",
         "标题/疾病包含",
@@ -1807,8 +1807,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 16,
-      "coldMs": 19.06,
-      "warmMs": 0.038,
+      "coldMs": 35.91,
+      "warmMs": 0.035,
       "reasons": [
         "关键词命中:新型冠状病毒感染诊疗方案（试行第十版）/新型冠状病毒感染",
         "标题/疾病包含",
@@ -1828,8 +1828,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 76,
-      "coldMs": 18.87,
-      "warmMs": 0.028,
+      "coldMs": 48.44,
+      "warmMs": 0.042,
       "reasons": [
         "关键词命中:新型抗肿瘤药物临床应用指导原则(2022年版)/新型抗肿瘤药物临床应用指导原则",
         "标题/疾病包含",
@@ -1849,8 +1849,8 @@
       "hit1": false,
       "hit3": true,
       "totalMatched": 76,
-      "coldMs": 18.76,
-      "warmMs": 0.003,
+      "coldMs": 48.59,
+      "warmMs": 0.017,
       "reasons": [
         "关键词命中:新型抗肿瘤药物临床应用指导原则(2022年版)/新型抗肿瘤药物临床应用指导原则",
         "标题/疾病包含",
@@ -1870,8 +1870,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 11,
-      "coldMs": 22.26,
-      "warmMs": 0.035,
+      "coldMs": 39.45,
+      "warmMs": 0.044,
       "reasons": [
         "关键词命中:木聚糖酶等7种食品添加剂新品种",
         "标题/疾病包含",
@@ -1891,8 +1891,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 42,
-      "coldMs": 19.47,
-      "warmMs": 0.027,
+      "coldMs": 27.24,
+      "warmMs": 0.059,
       "reasons": [
         "关键词命中:核医学专业医疗质量控制指标（2025年版）/核医学专业医疗质量控制指标",
         "标题/疾病包含",
@@ -1912,7 +1912,7 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 6,
-      "coldMs": 19.52,
+      "coldMs": 24.57,
       "warmMs": 0.031,
       "reasons": [
         "关键词命中:流行性感冒诊疗方案（2025版）/流行性感冒",
@@ -1933,8 +1933,8 @@
       "hit1": false,
       "hit3": true,
       "totalMatched": 13,
-      "coldMs": 20.05,
-      "warmMs": 0.029,
+      "coldMs": 28.79,
+      "warmMs": 0.044,
       "reasons": [
         "关键词命中:弥漫性大B细胞淋巴瘤诊疗指南（2022年版）/弥漫性大B细胞淋巴瘤",
         "标题/疾病包含",
@@ -1954,8 +1954,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 20,
-      "coldMs": 19.76,
-      "warmMs": 0.052,
+      "coldMs": 27.99,
+      "warmMs": 0.055,
       "reasons": [
         "语义重叠(IDF加权)120.2(牙/体/缺/损/牙体)"
       ]
@@ -1973,8 +1973,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 14,
-      "coldMs": 22.17,
-      "warmMs": 0.035,
+      "coldMs": 36.14,
+      "warmMs": 0.042,
       "reasons": [
         "关键词命中:牙源性颌骨囊肿诊疗指南（2022年版）/牙源性颌骨囊肿",
         "标题/疾病包含",
@@ -1994,8 +1994,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 11,
-      "coldMs": 18.68,
-      "warmMs": 0.038,
+      "coldMs": 31.7,
+      "warmMs": 0.09,
       "reasons": [
         "关键词命中:牙颌面畸形诊疗指南（2022年版）/牙颌面畸形",
         "标题/疾病包含",
@@ -2015,8 +2015,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 9,
-      "coldMs": 20.05,
-      "warmMs": 0.031,
+      "coldMs": 27.68,
+      "warmMs": 0.049,
       "reasons": [
         "关键词命中:牡丹籽油等7种新食品原料",
         "标题/疾病包含",
@@ -2036,8 +2036,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 55,
-      "coldMs": 23.59,
-      "warmMs": 0.031,
+      "coldMs": 24.14,
+      "warmMs": 0.033,
       "reasons": [
         "关键词命中:生物医学新技术临床研究备案指导清单（第1版）/生物医学新技术临床研究备案指导清单",
         "标题/疾病包含",
@@ -2057,8 +2057,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 22,
-      "coldMs": 22.13,
-      "warmMs": 0.028,
+      "coldMs": 22.19,
+      "warmMs": 0.052,
       "reasons": [
         "关键词命中:甲状腺癌诊疗指南（2022版）/甲状腺癌",
         "标题/疾病包含",
@@ -2078,8 +2078,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 32,
-      "coldMs": 18.71,
-      "warmMs": 0.06,
+      "coldMs": 29.76,
+      "warmMs": 0.072,
       "reasons": [
         "关键词命中:甲状腺结节和分化型甲状腺癌诊治指南（第二版）/甲状腺结节和分化型甲状腺癌",
         "标题/疾病包含",
@@ -2099,8 +2099,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 6,
-      "coldMs": 17.19,
-      "warmMs": 0.043,
+      "coldMs": 23.62,
+      "warmMs": 0.036,
       "reasons": [
         "关键词命中:磨牙症诊疗指南（2022年版）/磨牙症",
         "标题/疾病包含",
@@ -2120,8 +2120,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 40,
-      "coldMs": 21.26,
-      "warmMs": 0.036,
+      "coldMs": 22.25,
+      "warmMs": 0.05,
       "reasons": [
         "语义重叠(IDF加权)142.3(经/皮/椎/体/成)"
       ]
@@ -2139,8 +2139,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 16,
-      "coldMs": 17.3,
-      "warmMs": 0.03,
+      "coldMs": 20.89,
+      "warmMs": 0.038,
       "reasons": [
         "关键词命中:综合医院中医药工作指南（2024 版）/综合医院中医药",
         "标题/疾病包含",
@@ -2160,8 +2160,8 @@
       "hit1": false,
       "hit3": true,
       "totalMatched": 3,
-      "coldMs": 27.71,
-      "warmMs": 0.075,
+      "coldMs": 22.45,
+      "warmMs": 0.035,
       "reasons": [
         "关键词命中:86个罕见病病种诊疗指南（2025年版）/86个罕见病病种",
         "标题/疾病包含",
@@ -2181,8 +2181,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 16,
-      "coldMs": 19.9,
-      "warmMs": 0.025,
+      "coldMs": 21.42,
+      "warmMs": 0.039,
       "reasons": [
         "关键词命中:老年合理用药核心信息",
         "标题/疾病包含",
@@ -2202,8 +2202,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 12,
-      "coldMs": 19.16,
-      "warmMs": 0.029,
+      "coldMs": 20.07,
+      "warmMs": 0.033,
       "reasons": [
         "关键词命中:老年髋部骨折诊疗与管理指南（2022年版）/老年髋部骨折",
         "标题/疾病包含",
@@ -2223,8 +2223,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 40,
-      "coldMs": 20.28,
-      "warmMs": 0.025,
+      "coldMs": 22.89,
+      "warmMs": 0.039,
       "reasons": [
         "关键词命中:股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）/股骨转子间骨折闭合复位内固定术加速康复临床路径",
         "标题/疾病包含",
@@ -2244,8 +2244,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 39,
-      "coldMs": 19.9,
-      "warmMs": 0.029,
+      "coldMs": 20.69,
+      "warmMs": 0.047,
       "reasons": [
         "关键词命中:股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）/股骨颈骨折闭合复位内固定术加速康复临床路径",
         "标题/疾病包含",
@@ -2265,8 +2265,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 3,
-      "coldMs": 19.28,
-      "warmMs": 0.033,
+      "coldMs": 18.82,
+      "warmMs": 0.029,
       "reasons": [
         "关键词命中:肥胖症诊疗指南（2024年版）/肥胖症",
         "标题/疾病包含",
@@ -2286,8 +2286,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 17,
-      "coldMs": 18.61,
-      "warmMs": 0.026,
+      "coldMs": 20.98,
+      "warmMs": 0.041,
       "reasons": [
         "关键词命中:肺结核门诊诊疗规范",
         "标题/疾病包含",
@@ -2307,8 +2307,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 18,
-      "coldMs": 21.08,
-      "warmMs": 0.028,
+      "coldMs": 20.66,
+      "warmMs": 0.036,
       "reasons": [
         "关键词命中:肾癌诊疗指南（2022年版）/肾癌",
         "标题/疾病包含",
@@ -2328,8 +2328,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 45,
-      "coldMs": 20.03,
-      "warmMs": 0.071,
+      "coldMs": 19.78,
+      "warmMs": 0.038,
       "reasons": [
         "语义重叠(IDF加权)132.9(肿/瘤/半/髋/肿瘤)"
       ]
@@ -2347,8 +2347,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 41,
-      "coldMs": 21.28,
-      "warmMs": 0.031,
+      "coldMs": 21.09,
+      "warmMs": 0.044,
       "reasons": [
         "关键词命中:肿瘤膝关节置换术加速康复临床路径（2023年版）/肿瘤膝关节置换术加速康复临床路径",
         "标题/疾病包含",
@@ -2368,8 +2368,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 19,
-      "coldMs": 28.29,
-      "warmMs": 0.029,
+      "coldMs": 21.09,
+      "warmMs": 0.031,
       "reasons": [
         "关键词命中:胃癌诊疗指南（2022年版）/胃癌",
         "标题/疾病包含",
@@ -2389,8 +2389,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 19,
-      "coldMs": 18.54,
-      "warmMs": 0.044,
+      "coldMs": 23.09,
+      "warmMs": 0.04,
       "reasons": [
         "关键词命中:胰腺癌诊治指南（2022年版）/胰腺癌",
         "标题/疾病包含",
@@ -2410,7 +2410,7 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 13,
-      "coldMs": 20.66,
+      "coldMs": 19.82,
       "warmMs": 0.04,
       "reasons": [
         "关键词命中:脑胶质瘤诊疗指南（2022年版）/脑胶质瘤",
@@ -2431,8 +2431,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 36,
-      "coldMs": 20.62,
-      "warmMs": 0.032,
+      "coldMs": 21.91,
+      "warmMs": 0.037,
       "reasons": [
         "关键词命中:脑血管病防治指南（2024年版）/脑血管病防治指南",
         "标题/疾病包含",
@@ -2451,8 +2451,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 2,
-      "coldMs": 18.33,
-      "warmMs": 0.021,
+      "coldMs": 20.07,
+      "warmMs": 0.041,
       "reasons": [
         "关键词命中:腭裂诊疗指南（2022年版）/腭裂",
         "标题/疾病包含",
@@ -2472,8 +2472,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 27,
-      "coldMs": 18.77,
-      "warmMs": 0.026,
+      "coldMs": 19.94,
+      "warmMs": 0.039,
       "reasons": [
         "关键词命中:腮腺浅叶良性肿瘤诊疗指南（2022年版）/腮腺浅叶良性肿瘤",
         "标题/疾病包含",
@@ -2493,8 +2493,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 34,
-      "coldMs": 19.12,
-      "warmMs": 0.031,
+      "coldMs": 19.74,
+      "warmMs": 0.03,
       "reasons": [
         "关键词命中:腰椎后路短节段减压融合术加速康复临床路径（2023年版）/腰椎后路短节段减压融合术加速康复临床路径",
         "标题/疾病包含",
@@ -2514,8 +2514,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 18,
-      "coldMs": 23.16,
-      "warmMs": 0.036,
+      "coldMs": 19.08,
+      "warmMs": 0.045,
       "reasons": [
         "关键词命中:膀胱癌诊疗指南（2022年版）/膀胱癌",
         "标题/疾病包含",
@@ -2535,8 +2535,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 9,
-      "coldMs": 21.26,
-      "warmMs": 0.027,
+      "coldMs": 20.18,
+      "warmMs": 0.032,
       "reasons": [
         "关键词命中:自身免疫性溶血性贫血诊疗指南（2022年版）/自身免疫性溶血性贫血",
         "标题/疾病包含",
@@ -2556,8 +2556,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 5,
-      "coldMs": 19.82,
-      "warmMs": 0.135,
+      "coldMs": 18.35,
+      "warmMs": 0.028,
       "reasons": [
         "关键词命中:舌下腺囊肿诊疗指南（2022年版）/舌下腺囊肿",
         "标题/疾病包含",
@@ -2577,8 +2577,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 19,
-      "coldMs": 17.4,
-      "warmMs": 0.025,
+      "coldMs": 19.21,
+      "warmMs": 0.027,
       "reasons": [
         "关键词命中:舌癌诊疗指南（2022年版）/舌癌",
         "标题/疾病包含",
@@ -2598,8 +2598,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 43,
-      "coldMs": 20.12,
-      "warmMs": 0.027,
+      "coldMs": 19.47,
+      "warmMs": 0.038,
       "reasons": [
         "关键词命中:药事管理专业医疗质量控制指标（2025年版）/药事管理专业医疗质量控制指标",
         "标题/疾病包含",
@@ -2619,8 +2619,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 9,
-      "coldMs": 19.82,
-      "warmMs": 0.038,
+      "coldMs": 20.24,
+      "warmMs": 0.032,
       "reasons": [
         "关键词命中:菌斑性龈炎诊疗指南（2022年版）/菌斑性龈炎",
         "标题/疾病包含",
@@ -2640,8 +2640,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 7,
-      "coldMs": 20.26,
-      "warmMs": 0.052,
+      "coldMs": 18.72,
+      "warmMs": 0.07,
       "reasons": [
         "关键词命中:血友病A诊疗指南（2022年版）/血友病A",
         "标题/疾病包含",
@@ -2661,8 +2661,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 17,
-      "coldMs": 19.19,
-      "warmMs": 0.03,
+      "coldMs": 18.91,
+      "warmMs": 0.032,
       "reasons": [
         "关键词命中:血站技术操作规程（2026版）/血站技术操作规程",
         "标题/疾病包含",
@@ -2682,8 +2682,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 17,
-      "coldMs": 22.27,
-      "warmMs": 0.026,
+      "coldMs": 19.45,
+      "warmMs": 0.034,
       "reasons": [
         "关键词命中:近视防治指南（2024年版）/近视防治指南",
         "标题/疾病包含",
@@ -2703,8 +2703,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 38,
-      "coldMs": 17.84,
-      "warmMs": 0.023,
+      "coldMs": 19.88,
+      "warmMs": 0.033,
       "reasons": [
         "关键词命中:颈椎前路椎间盘切除减压融合术加速康复临床路径（2023年版）/颈椎前路椎间盘切除减压融合术加速康复临床路径",
         "标题/疾病包含",
@@ -2724,8 +2724,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 13,
-      "coldMs": 21.44,
-      "warmMs": 0.043,
+      "coldMs": 17.88,
+      "warmMs": 0.037,
       "reasons": [
         "关键词命中:食养指南与科普资源",
         "标题/疾病包含",
@@ -2745,8 +2745,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 18,
-      "coldMs": 19.52,
-      "warmMs": 0.026,
+      "coldMs": 18.88,
+      "warmMs": 0.037,
       "reasons": [
         "关键词命中:食管癌诊疗指南（2022年版）/食管癌",
         "标题/疾病包含",
@@ -2766,8 +2766,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 24,
-      "coldMs": 18.64,
-      "warmMs": 0.029,
+      "coldMs": 21.2,
+      "warmMs": 0.032,
       "reasons": [
         "关键词命中:骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）/骨髓增生异常综合征伴原始细胞增多/骨髓增生异常综合征伴原始细胞增多（MDS-EB）",
         "标题/疾病包含",
@@ -2787,8 +2787,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 15,
-      "coldMs": 21.26,
-      "warmMs": 0.027,
+      "coldMs": 20.01,
+      "warmMs": 0.04,
       "reasons": [
         "关键词命中:黑色素瘤诊疗指南（2022年版）/黑色素瘤",
         "标题/疾病包含",
@@ -2808,8 +2808,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 31,
-      "coldMs": 28.77,
-      "warmMs": 0.049,
+      "coldMs": 21.08,
+      "warmMs": 0.054,
       "reasons": [
         "关键词命中:前列腺癌",
         "语义重叠(IDF加权)36.9(前/列/腺/癌/疗)"
@@ -2828,8 +2828,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 21,
-      "coldMs": 17.87,
-      "warmMs": 0.025,
+      "coldMs": 18.94,
+      "warmMs": 0.061,
       "reasons": [
         "关键词命中:宫颈癌",
         "语义重叠(IDF加权)28.5(宫/颈/癌/查/宫颈)"
@@ -2848,8 +2848,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 31,
-      "coldMs": 19.83,
-      "warmMs": 0.024,
+      "coldMs": 22.53,
+      "warmMs": 0.056,
       "reasons": [
         "关键词命中:胃癌",
         "语义重叠(IDF加权)18.0(胃/癌/疗/胃癌/肿瘤)"
@@ -2868,8 +2868,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 26,
-      "coldMs": 19.92,
-      "warmMs": 0.036,
+      "coldMs": 18.7,
+      "warmMs": 0.072,
       "reasons": [
         "语义重叠(IDF加权)15.2(肝/癌/肝癌/肿瘤)"
       ]
@@ -2887,8 +2887,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 19,
-      "coldMs": 20.21,
-      "warmMs": 0.037,
+      "coldMs": 18.66,
+      "warmMs": 0.066,
       "reasons": [
         "关键词命中:膀胱癌",
         "语义重叠(IDF加权)30.8(膀/胱/癌/期/膀胱)"
@@ -2907,8 +2907,8 @@
       "hit1": false,
       "hit3": true,
       "totalMatched": 25,
-      "coldMs": 18.94,
-      "warmMs": 0.04,
+      "coldMs": 19.67,
+      "warmMs": 0.06,
       "reasons": [
         "语义重叠(IDF加权)20.2(腺/性/肿/瘤/性肿)"
       ]
@@ -2926,8 +2926,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 18,
-      "coldMs": 21.24,
-      "warmMs": 0.029,
+      "coldMs": 19.7,
+      "warmMs": 0.163,
       "reasons": [
         "关键词命中:食管癌",
         "语义重叠(IDF加权)24.9(食/管/癌/食管/管癌)"
@@ -2946,8 +2946,8 @@
       "hit1": false,
       "hit3": true,
       "totalMatched": 10,
-      "coldMs": 18.89,
-      "warmMs": 0.028,
+      "coldMs": 19.42,
+      "warmMs": 0.065,
       "reasons": [
         "语义重叠(IDF加权)56.5(儿/童/支/原/体)"
       ]
@@ -2965,8 +2965,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 13,
-      "coldMs": 17.35,
-      "warmMs": 0.036,
+      "coldMs": 20.16,
+      "warmMs": 0.05,
       "reasons": [
         "关键词命中:老年髋部骨折",
         "语义重叠(IDF加权)50.2(老/髋/部/骨/折)"
@@ -2985,8 +2985,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 23,
-      "coldMs": 18.81,
-      "warmMs": 0.038,
+      "coldMs": 21.6,
+      "warmMs": 0.058,
       "reasons": [
         "关键词命中:慢性髓性白血病",
         "语义重叠(IDF加权)54.3(慢/性/髓/白/血)"
@@ -3005,8 +3005,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 12,
-      "coldMs": 19.31,
-      "warmMs": 0.025,
+      "coldMs": 26.41,
+      "warmMs": 0.042,
       "reasons": [
         "关键词命中:肥胖症",
         "语义重叠(IDF加权)29.9(肥/胖/症/疗/肥胖)"
@@ -3025,8 +3025,8 @@
       "hit1": true,
       "hit3": true,
       "totalMatched": 20,
-      "coldMs": 18.89,
-      "warmMs": 0.026,
+      "coldMs": 20.78,
+      "warmMs": 0.12,
       "reasons": [
         "关键词命中:黑色素瘤",
         "语义重叠(IDF加权)46.6(黑/色/素/瘤/转)"
@@ -3041,8 +3041,8 @@
       "hit1": true,
       "hit3": false,
       "totalMatched": 0,
-      "coldMs": 19.6,
-      "warmMs": 0.043,
+      "coldMs": 20.07,
+      "warmMs": 0.041,
       "reasons": []
     },
     {
@@ -3054,8 +3054,8 @@
       "hit1": true,
       "hit3": false,
       "totalMatched": 0,
-      "coldMs": 17.94,
-      "warmMs": 0.044,
+      "coldMs": 24.88,
+      "warmMs": 0.048,
       "reasons": []
     },
     {
@@ -3067,8 +3067,8 @@
       "hit1": true,
       "hit3": false,
       "totalMatched": 0,
-      "coldMs": 17.99,
-      "warmMs": 0.03,
+      "coldMs": 22.06,
+      "warmMs": 0.159,
       "reasons": []
     }
   ],
@@ -3078,8 +3078,8 @@
         "disease": "前列腺癌",
         "entityType": "drug"
       },
-      "coldMs": 0.37,
-      "warmMs": 0.048,
+      "coldMs": 0.54,
+      "warmMs": 0.082,
       "count": 1
     },
     {
@@ -3087,8 +3087,8 @@
         "disease": "胃癌",
         "entityType": "symptom"
       },
-      "coldMs": 0.06,
-      "warmMs": 0.037,
+      "coldMs": 0.16,
+      "warmMs": 0.067,
       "count": 1
     },
     {
@@ -3096,8 +3096,8 @@
         "disease": "淋巴瘤",
         "entityType": ""
       },
-      "coldMs": 0.28,
-      "warmMs": 0.172,
+      "coldMs": 0.93,
+      "warmMs": 0.096,
       "count": 1
     }
   ]

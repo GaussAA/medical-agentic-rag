@@ -148,7 +148,7 @@ async function testGuideIndex() {
     {
       name: "指南索引文件存在且格式正确",
       fn: () => {
-        assert(index.totalGuides === 26, `应有 26 份指南，实际 ${index.totalGuides}`);
+        assert(index.totalGuides === 27, `应有 27 份指南，实际 ${index.totalGuides}`);
         assert(index.totalKeywords > 200, `关键词数 ${index.totalKeywords} < 200`);
       },
     },
@@ -210,7 +210,7 @@ async function testOutline() {
     {
       name: "26 份指南全部解析",
       fn: () => {
-        assert(outline.totalFiles === 26, `仅解析 ${outline.totalFiles} 份`);
+        assert(outline.totalFiles === 27, `仅解析 ${outline.totalFiles} 份`);
       },
     },
     {
@@ -245,9 +245,9 @@ async function testKBIntegrity() {
 
   await runSuite("知识库文件完整性", [
     {
-      name: "MD 文件数 = 26",
+      name: "MD 文件数 = 27",
       fn: () => {
-        assert(files.length === 26, `实际 ${files.length} 个 MD 文件`);
+        assert(files.length === 27, `实际 ${files.length} 个 MD 文件`);
       },
     },
     {
@@ -324,9 +324,23 @@ async function testSystemPrompt() {
 
   await runSuite("System Prompt 完整性", [
     {
-      name: "包含角色定义",
+      name: "包含合规角色定义",
       fn: () => {
-        assert(prompt.includes("主任医师"), "缺少主任医师角色定义");
+        // 合规役已删除"主任医师"虚假权威措辞，改为循证信息辅助工具定位
+        assert(
+          prompt.includes("循证医学信息辅助工具") || prompt.includes("信息检索与整理助手"),
+          "缺少合规角色定义（循证信息辅助工具）",
+        );
+      },
+    },
+    {
+      name: "不含虚假权威自称",
+      fn: () => {
+        // 断言 prompt 明确禁止自称主任医师/专家（合规护栏）
+        assert(
+          prompt.includes("严禁自称") || prompt.includes("避免制造虚假权威"),
+          "缺少禁止虚假权威自称的合规护栏",
+        );
       },
     },
     {

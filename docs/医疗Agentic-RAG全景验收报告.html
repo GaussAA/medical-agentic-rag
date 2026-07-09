@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>医疗 Agentic RAG 系统 · 全景验收报告</title>
+<style>
+  :root {
+    --bg-0: #070c18;
+    --bg-1: #0b1220;
+    --bg-2: #0f1a2e;
+    --glass: rgba(20, 32, 56, 0.55);
+    --glass-brd: rgba(94, 156, 255, 0.18);
+    --glass-hl: rgba(120, 180, 255, 0.35);
+    --ink-0: #eaf2ff;
+    --ink-1: #b8c8e6;
+    --ink-2: #7f92b5;
+    --accent: #4f9cff;
+    --accent-2: #38e1c8;
+    --accent-3: #a78bfa;
+    --ok: #35d07f;
+    --warn: #f5b544;
+    --idle: #5b6b8c;
+    --danger: #ff6b7d;
+    --shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background:
+      radial-gradient(1100px 700px at 12% -8%, rgba(79,156,255,0.14), transparent 55%),
+      radial-gradient(1000px 640px at 96% 4%, rgba(56,225,200,0.10), transparent 55%),
+      radial-gradient(900px 700px at 50% 110%, rgba(167,139,250,0.10), transparent 55%),
+      var(--bg-0);
+    color: var(--ink-0);
+    line-height: 1.65;
+    padding: 0 0 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative;
+    padding: 68px 0 44px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 16px; border-radius: 999px;
+    background: var(--glass); border: 1px solid var(--glass-brd);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    font-size: 13px; color: var(--ink-1); letter-spacing: .5px;
+    margin-bottom: 22px;
+  }
+  .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 12px var(--ok); }
+  .hero h1 {
+    font-size: 42px; font-weight: 800; letter-spacing: -0.5px;
+    background: linear-gradient(120deg, #eaf2ff 10%, #7db8ff 55%, #38e1c8 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom: 14px;
+  }
+  .hero p.sub { color: var(--ink-1); font-size: 17px; max-width: 720px; margin: 0 auto 8px; }
+  .hero p.meta { color: var(--ink-2); font-size: 13.5px; margin-top: 14px; }
+
+  /* ===== KPI strip ===== */
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 42px 0 8px;
+  }
+  .kpi {
+    background: var(--glass); border: 1px solid var(--glass-brd); border-radius: var(--radius);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    padding: 22px 20px; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .kpi::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--glass-hl), transparent);
+  }
+  .kpi .num { font-size: 34px; font-weight: 800; color: var(--ink-0); letter-spacing: -1px; }
+  .kpi .num small { font-size: 16px; color: var(--ink-2); font-weight: 600; }
+  .kpi .lbl { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+  .kpi .tag { font-size: 11.5px; color: var(--accent-2); margin-top: 8px; font-weight: 600; }
+
+  /* ===== Section ===== */
+  section { margin-top: 58px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; }
+  .sec-head h2 { font-size: 24px; font-weight: 750; color: var(--ink-0); letter-spacing: -0.3px; }
+  .sec-head .idx {
+    font-family: "SF Mono", ui-monospace, monospace; font-size: 13px; color: var(--accent);
+    border: 1px solid var(--glass-brd); border-radius: 8px; padding: 3px 9px; background: rgba(79,156,255,0.08);
+  }
+  .sec-head .note { color: var(--ink-2); font-size: 14px; margin-left: auto; }
+
+  /* ===== Roadmap cards ===== */
+  .road { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .rc {
+    background: var(--glass); border: 1px solid var(--glass-brd); border-radius: var(--radius);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    padding: 22px; box-shadow: var(--shadow); position: relative;
+    transition: transform .25s ease, border-color .25s ease;
+  }
+  .rc:hover { transform: translateY(-4px); border-color: var(--glass-hl); }
+  .rc .top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .rc .ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-size: 20px;
+    background: rgba(79,156,255,0.12); border: 1px solid var(--glass-brd); }
+  .rc h3 { font-size: 17px; font-weight: 700; }
+  .rc .st { margin-left: auto; font-size: 12px; font-weight: 700; padding: 4px 11px; border-radius: 999px; }
+  .st.done { color: var(--ok); background: rgba(53,208,127,0.12); border: 1px solid rgba(53,208,127,0.3); }
+  .st.part { color: var(--warn); background: rgba(245,181,68,0.12); border: 1px solid rgba(245,181,68,0.3); }
+  .st.todo { color: var(--idle); background: rgba(91,107,140,0.12); border: 1px solid rgba(91,107,140,0.3); }
+  .rc p { color: var(--ink-1); font-size: 14px; }
+  .rc ul { list-style: none; margin-top: 10px; }
+  .rc li { color: var(--ink-1); font-size: 13.5px; padding-left: 18px; position: relative; margin-top: 5px; }
+  .rc li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+  .rc .bar { height: 6px; border-radius: 999px; background: rgba(255,255,255,0.06); margin-top: 16px; overflow: hidden; }
+  .rc .bar i { display: block; height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+
+  /* ===== Test dashboard ===== */
+  .tests { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .tc {
+    background: var(--glass); border: 1px solid var(--glass-brd); border-radius: 16px;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    padding: 20px 16px; text-align: center; box-shadow: var(--shadow); position: relative;
+  }
+  .tc .ring { position: relative; width: 74px; height: 74px; margin: 0 auto 12px; }
+  .tc .ring svg { transform: rotate(-90deg); }
+  .tc .ring .val { position: absolute; inset: 0; display: grid; place-items: center; font-size: 17px; font-weight: 800; color: var(--ok); }
+  .tc .name { font-size: 13.5px; font-weight: 650; color: var(--ink-0); }
+  .tc .sub { font-size: 11.5px; color: var(--ink-2); margin-top: 3px; }
+
+  /* ===== Metrics table ===== */
+  .panel {
+    background: var(--glass); border: 1px solid var(--glass-brd); border-radius: var(--radius);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--shadow); overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    text-align: left; font-size: 12.5px; color: var(--ink-2); font-weight: 600;
+    padding: 15px 20px; border-bottom: 1px solid var(--glass-brd); letter-spacing: .4px; text-transform: uppercase;
+  }
+  tbody td { padding: 14px 20px; font-size: 14px; color: var(--ink-1); border-bottom: 1px solid rgba(255,255,255,0.05); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(79,156,255,0.05); }
+  td .metric { font-weight: 700; color: var(--ink-0); font-family: "SF Mono", ui-monospace, monospace; }
+  td .good { color: var(--ok); font-weight: 700; }
+  .mgrid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 18px; }
+
+  /* mini bar chart for latency */
+  .lat { padding: 22px; }
+  .lat h4 { font-size: 14px; color: var(--ink-1); margin-bottom: 18px; font-weight: 650; }
+  .latrow { display: grid; grid-template-columns: 92px 1fr 74px; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .latrow .k { font-size: 12.5px; color: var(--ink-2); }
+  .latrow .track { height: 10px; border-radius: 999px; background: rgba(255,255,255,0.06); overflow: hidden; }
+  .latrow .track i { display: block; height: 100%; border-radius: 999px; }
+  .latrow .v { font-size: 12.5px; font-family: "SF Mono", ui-monospace, monospace; color: var(--ink-0); text-align: right; }
+  .cold i { background: linear-gradient(90deg, #f5b544, #ff6b7d); }
+  .warm i { background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
+
+  /* ===== Deliverables ===== */
+  .deliv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .dcard {
+    background: var(--glass); border: 1px solid var(--glass-brd); border-radius: 16px;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    padding: 20px; box-shadow: var(--shadow);
+  }
+  .dcard h4 { font-size: 14px; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .dcard h4 .c { font-size: 11px; color: var(--ink-2); margin-left: auto; font-weight: 600; }
+  .dcard code {
+    display: block; font-family: "SF Mono", ui-monospace, monospace; font-size: 12px; color: var(--ink-1);
+    padding: 6px 0; border-bottom: 1px dashed rgba(255,255,255,0.06);
+  }
+  .dcard code:last-child { border-bottom: none; }
+  .dcard code b { color: var(--ink-0); font-weight: 600; }
+
+  /* ===== Boundaries ===== */
+  .bnd { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .bcard {
+    background: var(--glass); border: 1px solid var(--glass-brd); border-left: 3px solid var(--warn);
+    border-radius: 14px; padding: 18px 20px; backdrop-filter: blur(12px); box-shadow: var(--shadow);
+  }
+  .bcard h4 { font-size: 15px; color: var(--ink-0); margin-bottom: 6px; }
+  .bcard p { font-size: 13.5px; color: var(--ink-1); }
+  .bcard .fix { font-size: 12.5px; color: var(--accent-2); margin-top: 8px; }
+
+  /* ===== Architecture flow ===== */
+  .arch { padding: 26px; }
+  .flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; justify-content: center; }
+  .node {
+    background: rgba(79,156,255,0.08); border: 1px solid var(--glass-brd); border-radius: 12px;
+    padding: 12px 16px; font-size: 13px; color: var(--ink-0); text-align: center; min-width: 120px;
+  }
+  .node small { display: block; color: var(--ink-2); font-size: 11px; margin-top: 3px; }
+  .arrow { display: grid; place-items: center; color: var(--accent); font-size: 20px; padding: 0 10px; }
+
+  footer { text-align: center; color: var(--ink-2); font-size: 13px; margin-top: 64px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .foot-note { color: var(--danger); font-size: 12.5px; margin-top: 8px; }
+
+  @media (max-width: 860px) {
+    .kpis, .tests { grid-template-columns: repeat(2, 1fr); }
+    .road, .deliv, .bnd, .mgrid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="badge"><span class="dot"></span> 收尾复盘 · 全景验收 · 全绿通过</span>
+    <h1>医疗 Agentic RAG 系统<br>全景验收报告</h1>
+    <p class="sub">六大改进方向落地复盘 · 131 项测试断言全绿 · 启动链路端到端冒烟贯通</p>
+    <p class="meta">Pi Agent v0.80.3 + pi-knowledge v0.5.1 · DeepSeek V4 Flash · 本地 e5-small 嵌入 · 27 份国家卫健委诊疗指南 · 2026-07-09</p>
+  </div>
+
+  <!-- KPI -->
+  <div class="kpis">
+    <div class="kpi">
+      <div class="num">131<small> / 131</small></div>
+      <div class="lbl">测试断言通过</div>
+      <div class="tag">✓ 单测 + 集成 + 评测全绿</div>
+    </div>
+    <div class="kpi">
+      <div class="num">4<small> / 6</small></div>
+      <div class="lbl">方向完成 · 1 部分 · 1 待启</div>
+      <div class="tag">✓ 核心能力已闭环</div>
+    </div>
+    <div class="kpi">
+      <div class="num">~83<small>×</small></div>
+      <div class="lbl">检索缓存热/冷加速</div>
+      <div class="tag">✓ 6.88ms → 0.083ms</div>
+    </div>
+    <div class="kpi">
+      <div class="num">3<small> Provider</small></div>
+      <div class="lbl">故障转移 · 内置+扩展</div>
+      <div class="tag">✓ deepseek/agnes/sensenova</div>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+  <section>
+    <div class="sec-head">
+      <span class="idx">01</span>
+      <h2>六方向进度盘点</h2>
+      <span class="note">对照初版分析报告的改进路线图</span>
+    </div>
+    <div class="road">
+
+      <div class="rc">
+        <div class="top"><div class="ic">🔍</div><h3>检索增强</h3><span class="st done">已完成</span></div>
+        <p>文件化共享缓存 + IDF 加权语义路由 + bge-reranker 中文重排序。</p>
+        <ul>
+          <li>热缓存延迟 0.083ms（冷 6.88ms，~83×）</li>
+          <li>语义 top1 由 58% 提升至 100%</li>
+          <li>越界拦截精度 100%</li>
+        </ul>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+
+      <div class="rc">
+        <div class="top"><div class="ic">🔐</div><h3>合规与隐私</h3><span class="st done">已完成</span></div>
+        <p>PHI 加密落盘 + PII 脱敏 + 审计日志 + System Prompt 合规化。</p>
+        <ul>
+          <li>AES-256-GCM 密文落盘，旧明文透明迁移</li>
+          <li>审计只记动作与字段名，不记原值</li>
+          <li>删除"主任医师"虚假权威 → 信息辅助工具定位</li>
+        </ul>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+
+      <div class="rc">
+        <div class="top"><div class="ic">📚</div><h3>知识库扩展</h3><span class="st done">机制完成</span></div>
+        <p>来源登记 + 内容指纹/过期判定 + 快照回滚 + 更新 CLI。</p>
+        <ul>
+          <li>28 源登记（27 local + 1 web 示范）</li>
+          <li>sha256 指纹 + cadence 过期分桶</li>
+          <li>kb-update：list/status/check/snapshot/rollback/refresh</li>
+        </ul>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+
+      <div class="rc">
+        <div class="top"><div class="ic">⚡</div><h3>高可用增强</h3><span class="st done">已完成</span></div>
+        <p>启动编排探测选健康 Provider + 运行时可观测 + 周期监控。</p>
+        <ul>
+          <li>launch-with-failover 写 failover-selection.json</li>
+          <li>deepseek(主)→agnes→sensenova 优先级链</li>
+          <li>/failover /kb 命令 + 5min 周期审计</li>
+        </ul>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+
+      <div class="rc">
+        <div class="top"><div class="ic">💬</div><h3>多轮对话记忆</h3><span class="st part">部分落地</span></div>
+        <p>患者画像加密落盘已实现，跨轮上下文编排尚待深化。</p>
+        <ul>
+          <li>patient-profile 加密画像 + 防空覆盖</li>
+          <li>会话级摘要与长期记忆编排待建</li>
+        </ul>
+        <div class="bar"><i style="width:55%"></i></div>
+      </div>
+
+      <div class="rc">
+        <div class="top"><div class="ic">🖼️</div><h3>多模态融合</h3><span class="st todo">待启动</span></div>
+        <p>影像/图表理解与多模态检索尚未纳入，属后续役。</p>
+        <ul>
+          <li>需接入视觉模型与图文混合索引</li>
+          <li>当前 Provider 均 images=no</li>
+        </ul>
+        <div class="bar"><i style="width:8%"></i></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TEST DASHBOARD -->
+  <section>
+    <div class="sec-head">
+      <span class="idx">02</span>
+      <h2>全单测回归 · 测试仪表盘</h2>
+      <span class="note">五套测试均 Exit 0 · 无红</span>
+    </div>
+    <div class="tests">
+      <div class="tc">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="32" stroke="rgba(255,255,255,0.08)" stroke-width="6" fill="none"/><circle cx="37" cy="37" r="32" stroke="#35d07f" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="0"/></svg>
+          <div class="val">24/24</div>
+        </div>
+        <div class="name">合规单测</div>
+        <div class="sub">加密·脱敏·审计</div>
+      </div>
+      <div class="tc">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="32" stroke="rgba(255,255,255,0.08)" stroke-width="6" fill="none"/><circle cx="37" cy="37" r="32" stroke="#35d07f" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="0"/></svg>
+          <div class="val">13/13</div>
+        </div>
+        <div class="name">故障转移</div>
+        <div class="sub">健康探测·选择</div>
+      </div>
+      <div class="tc">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="32" stroke="rgba(255,255,255,0.08)" stroke-width="6" fill="none"/><circle cx="37" cy="37" r="32" stroke="#35d07f" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="0"/></svg>
+          <div class="val">20/20</div>
+        </div>
+        <div class="name">来源管理</div>
+        <div class="sub">指纹·快照·回滚</div>
+      </div>
+      <div class="tc">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="32" stroke="rgba(255,255,255,0.08)" stroke-width="6" fill="none"/><circle cx="37" cy="37" r="32" stroke="#35d07f" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="0"/></svg>
+          <div class="val">32/32</div>
+        </div>
+        <div class="name">总集成</div>
+        <div class="sub">KG·索引·Prompt</div>
+      </div>
+      <div class="tc">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="32" stroke="rgba(255,255,255,0.08)" stroke-width="6" fill="none"/><circle cx="37" cy="37" r="32" stroke="#35d07f" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="0"/></svg>
+          <div class="val">42/42</div>
+        </div>
+        <div class="name">评测基准</div>
+        <div class="sub">路由·延迟</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section>
+    <div class="sec-head">
+      <span class="idx">03</span>
+      <h2>指标基线</h2>
+      <span class="note">eval-report.json · 2026-07-09</span>
+    </div>
+    <div class="mgrid">
+      <div class="panel">
+        <table>
+          <thead><tr><th>维度</th><th>样本</th><th>Top-1</th><th>Top-3 / 精度</th></tr></thead>
+          <tbody>
+            <tr><td>字面路由</td><td>27</td><td><span class="metric">92.6%</span></td><td><span class="good">100%</span></td></tr>
+            <tr><td>语义路由</td><td>12</td><td><span class="good">100%</span></td><td><span class="good">100%</span></td></tr>
+            <tr><td>越界拦截</td><td>3</td><td>—</td><td><span class="good">100%</span></td></tr>
+            <tr><td>知识库规模</td><td colspan="3"><span class="metric">27</span> 指南 · <span class="metric">291</span> 关键词 · <span class="metric">250</span> 图谱实体</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel lat">
+        <h4>检索延迟（冷 vs 热缓存）</h4>
+        <div class="latrow cold"><span class="k">路由 冷</span><span class="track"><i style="width:100%"></i></span><span class="v">6.88ms</span></div>
+        <div class="latrow warm"><span class="k">路由 热</span><span class="track"><i style="width:2%"></i></span><span class="v">0.083ms</span></div>
+        <div class="latrow cold"><span class="k">图谱 冷</span><span class="track"><i style="width:6%"></i></span><span class="v">0.38ms</span></div>
+        <div class="latrow warm"><span class="k">图谱 热</span><span class="track"><i style="width:1%"></i></span><span class="v">0.075ms</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCH FLOW -->
+  <section>
+    <div class="sec-head">
+      <span class="idx">04</span>
+      <h2>核心检索链路</h2>
+      <span class="note">复杂/对比类问题的 Agentic 编排</span>
+    </div>
+    <div class="panel arch">
+      <div class="flow">
+        <div class="node">query_decomposer<small>拆解子查询</small></div>
+        <div class="arrow">→</div>
+        <div class="node">guide_finder<small>语义路由定位</small></div>
+        <div class="arrow">→</div>
+        <div class="node">subagent<small>并行派发</small></div>
+        <div class="arrow">→</div>
+        <div class="node">knowledge_search<small>+ 重排序</small></div>
+        <div class="arrow">→</div>
+        <div class="node">kg_search<small>图谱补充</small></div>
+        <div class="arrow">→</div>
+        <div class="node">融合汇总<small>+ 强制免责</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DELIVERABLES -->
+  <section>
+    <div class="sec-head">
+      <span class="idx">05</span>
+      <h2>交付物清单</h2>
+      <span class="note">10 扩展 · 6 共享库 · 10 脚本 · 5 测试套件</span>
+    </div>
+    <div class="deliv">
+      <div class="dcard">
+        <h4>共享纯函数库 <span class="c">.pi/extensions/lib</span></h4>
+        <code><b>guide-router.mjs</b> · 语义路由</code>
+        <code><b>kg-search.mjs</b> · 图谱检索</code>
+        <code><b>retrieval-cache.mjs</b> · 文件化缓存</code>
+        <code><b>phi-crypto.mjs</b> · 加密脱敏审计</code>
+        <code><b>provider-health.mjs</b> · 故障转移</code>
+        <code><b>kb-sources.mjs</b> · 来源管理</code>
+      </div>
+      <div class="dcard">
+        <h4>Pi 扩展 <span class="c">.pi/extensions</span></h4>
+        <code><b>guide-finder</b> / <b>kg-search-tool</b></code>
+        <code><b>query-decomposer</b> / <b>query-cache</b></code>
+        <code><b>answer-evaluator</b> / <b>patient-profile</b></code>
+        <code><b>provider-failover</b> / <b>monitor-logger</b></code>
+        <code><b>agnes-provider</b> / <b>sensenova-provider</b></code>
+        <code style="color:var(--ink-2)">deepseek 走内置，无需扩展</code>
+      </div>
+      <div class="dcard">
+        <h4>脚本与测试 <span class="c">scripts / tests</span></h4>
+        <code><b>launch-with-failover.mjs</b> · 启动编排</code>
+        <code><b>kb-update.mjs</b> · 更新 CLI</code>
+        <code><b>apply-reranker-patch.mjs</b> · 重排序</code>
+        <code><b>eval-bench.mjs</b> · 评测基准</code>
+        <code><b>compliance / provider-health</b></code>
+        <code><b>kb-sources / run-all-tests</b></code>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROVIDER TOPO -->
+  <section>
+    <div class="sec-head">
+      <span class="idx">06</span>
+      <h2>Provider 拓扑（--list-models 实证）</h2>
+      <span class="note">纠错后：deepseek 内置复原</span>
+    </div>
+    <div class="panel">
+      <table>
+        <thead><tr><th>Provider</th><th>模型</th><th>上下文</th><th>Max-Out</th><th>思考</th><th>来源</th></tr></thead>
+        <tbody>
+          <tr><td><span class="good">deepseek</span></td><td>deepseek-v4-flash</td><td>1M</td><td><span class="metric">384K</span></td><td class="good">yes</td><td>内置</td></tr>
+          <tr><td><span class="good">deepseek</span></td><td>deepseek-v4-pro</td><td>1M</td><td><span class="metric">384K</span></td><td class="good">yes</td><td>内置</td></tr>
+          <tr><td>agnes</td><td>agnes-2.0-flash</td><td>256K</td><td>65.5K</td><td>no</td><td>扩展注册</td></tr>
+          <tr><td>sensenova</td><td>sensenova-6.7-flash-lite</td><td>256K</td><td>65.5K</td><td class="good">yes</td><td>扩展注册</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bcard" style="margin-top:16px;border-left-color:var(--ok)">
+      <h4>纠错沉淀：deepseek 无需自写 Provider 扩展</h4>
+      <p>大帅指正——deepseek 是 Pi 内置 Provider，随启动经 loadBuiltInModels 自动播种。曾误补的 deepseek-provider.ts 因同名 registerProvider 覆盖内置，致 max-out 由 384K 跌至 65.5K、thinking 变 no、丢 deepseek-v4-pro 模型。已删除该扩展，故障转移表仅保留探测元数据（baseUrl+authEnv）。</p>
+      <p class="fix">✓ 实证：删除后 --list-models 显示 384K / thinking=yes / pro 模型复现</p>
+    </div>
+  </section>
+
+  <!-- BOUNDARIES -->
+  <section>
+    <div class="sec-head">
+      <span class="idx">07</span>
+      <h2>遗留边界与后续役</h2>
+      <span class="note">诚实标注未竟事项</span>
+    </div>
+    <div class="bnd">
+      <div class="bcard">
+        <h4>知识库偏科</h4>
+        <p>~70% 集中于肿瘤+血液，缺内科/儿科/急诊/妇产科非肿瘤覆盖。</p>
+        <p class="fix">→ 外部源已可登记纳管，接抓取管线即可扩面</p>
+      </div>
+      <div class="bcard">
+        <h4>零重启热切换</h4>
+        <p>Pi 运行时无 Provider 拦截钩子，实时会话内切换须重启走编排。</p>
+        <p class="fix">→ 须将 Agent 包成服务层（请求重试/熔断）</p>
+      </div>
+      <div class="bcard">
+        <h4>多轮对话深化</h4>
+        <p>患者画像已加密落盘，会话级摘要与长期记忆编排尚待建设。</p>
+        <p class="fix">→ 后续役：上下文压缩 + 记忆检索</p>
+      </div>
+      <div class="bcard">
+        <h4>多模态融合</h4>
+        <p>影像/图表理解未纳入，当前三 Provider 均 images=no。</p>
+        <p class="fix">→ 后续役：视觉模型 + 图文混合索引</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    医疗 Agentic RAG 系统 · 全景验收报告 · 2026-07-09<br>
+    <span class="foot-note">⚠ 本系统为循证医学信息辅助工具，不作诊断结论，一切诊疗决策须由具备资质的执业医师作出。紧急症状请立即就医或拨打 120。</span>
+  </footer>
+
+</div>
+</body>
+</html>

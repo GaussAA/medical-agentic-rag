@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-07-08T12:44:15.889Z",
+  "timestamp": "2026-07-09T11:01:24.692Z",
   "summary": {
-    "passed": 31,
+    "passed": 32,
     "failed": 0,
-    "total": 31
+    "total": 32
   },
   "suites": [
     {
@@ -165,7 +165,12 @@
       "name": "System Prompt 完整性",
       "tests": [
         {
-          "name": "包含角色定义",
+          "name": "包含合规角色定义",
+          "passed": true,
+          "error": null
+        },
+        {
+          "name": "不含虚假权威自称",
           "passed": true,
           "error": null
         },
@@ -200,7 +205,7 @@
           "error": null
         }
       ],
-      "passed": 7,
+      "passed": 8,
       "failed": 0
     }
   ]

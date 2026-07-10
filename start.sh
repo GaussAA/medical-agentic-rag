@@ -65,7 +65,8 @@ echo ""
 echo "[Medical Agentic RAG]  LLM: $PROVIDER/$MODEL (via local proxy)  KB: 134 guidelines"
 echo ""
 
-# 6) 启动 Pi Agent（exec 传给 Windows 内核，必须用 WIN_ROOT 的 C:/... 格式）
-exec node "$WIN_ROOT/pi/packages/coding-agent/dist/cli.js" \
+# 6) 启动 Pi Agent（用 managed node v22.22.2，与 better-sqlite3 原生模块版本匹配）
+NODE_BIN="/c/Users/JaNiy/.workbuddy/binaries/node/versions/22.22.2/node"
+exec "$NODE_BIN" "$WIN_ROOT/pi/packages/coding-agent/dist/cli.js" \
   --model "$PROVIDER/$MODEL" \
   --system-prompt "$WIN_ROOT/prompts/medical-agent.md"

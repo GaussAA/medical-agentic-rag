@@ -121,6 +121,17 @@ knowledge_show
 "比较肝癌和胰腺癌的治疗方案差异"
 ```
 
+## 常用命令（npm scripts）
+
+项目以 `package.json` 提供逻辑分组的统一命令入口（物理文件仍平铺于 `scripts/` 与 `tests/`，避免破坏启动链路与测试引用）：
+
+- **知识库**：`npm run kb:rebuild`（重建向量库）· `npm run kb:update`（源更新 CLI）· `npm run kb:prepare`（归一化原始文档）· `npm run kb:outline` / `npm run kb:index`（大纲 / 关键词索引）· `npm run kb:ingest`（单份入库）· `npm run kb:deprecate` / `npm run kb:lifecycle`（版本废止 / 数据生命周期）
+- **代理与故障转移**：`npm run proxy:start`（本地 LLM 代理网关）· `npm run proxy:keys`（校验 sensenova key）· `npm run failover`（探测健康 Provider 并写 failover 选择）
+- **测试**：`npm test`（全量数据完整性套件 `tests/run-all-tests.mjs`）· `npm run test:ci`（CI 门禁 `tests/eval-ci-gate.mjs`）
+- **合规审计**：`npm run audit:verify`（校验审计链）
+
+> 完整启动（含故障转移编排 + 代理网关 + Pi Agent）请用 `start.sh` / `start.bat` / `start.ps1`，勿单独以 `npm run` 启 Agent。
+
 ## 搜索模式速查
 
 | 场景               |    模式    | 示例                                                   |

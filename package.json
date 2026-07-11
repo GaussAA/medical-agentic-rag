@@ -1,0 +1,27 @@
+{
+  "name": "medical-agentic-rag",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "医疗 Agentic RAG 系统 —— Pi Agent + pi-knowledge 驱动的卫健委诊疗指南检索增强",
+  "scripts": {
+    "kb:rebuild": "node scripts/rebuild-kb.mjs",
+    "kb:update": "node scripts/kb-update.mjs",
+    "kb:prepare": "node scripts/prepare-raw.mjs",
+    "kb:outline": "node scripts/extract-outline.mjs",
+    "kb:index": "node scripts/build-guide-index.mjs",
+    "kb:entities": "node scripts/extract-entities.mjs",
+    "kb:ingest": "node scripts/ingest-raw.mjs",
+    "kb:deprecate": "node scripts/deprecate-versions.mjs",
+    "kb:lifecycle": "node scripts/data-lifecycle.mjs",
+    "proxy:start": "node scripts/provider-proxy.mjs",
+    "proxy:keys": "node scripts/check-sensenova-keys.mjs",
+    "failover": "node scripts/launch-with-failover.mjs",
+    "audit:verify": "node scripts/audit-verify.mjs",
+    "test": "node tests/run-all-tests.mjs",
+    "test:ci": "node tests/eval-ci-gate.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

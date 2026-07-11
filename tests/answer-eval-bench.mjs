@@ -9,7 +9,7 @@
 //
 // 设计原则：
 //   - 纯 node 运行，无需 jiti / 不强制 API Key：三项离线指标必有量化值；
-//   - 幻觉检测仅在 SENSENOVA_API_KEY 存在时调用 sensenova 免费通道，否则 skipped；
+//   - 幻觉检测仅在 SENSENOVA_API_KEYS / SENSENOVA_API_KEY 存在时调用 sensenova 免费通道（多 Key 池并发），否则 skipped；
 //   - 证据短语一律经 normalize 后再做子串匹配，容忍中英文标点/全半角差异。
 //
 // 输出：tests/answer-eval-report.json + tests/answer-eval-report.html
@@ -18,6 +18,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { readFileSync, existsSync, writeFileSync } from "node:fs";
 import { routeGuides, loadIndex, normalize } from "../.pi/extensions/lib/guide-router.mjs";
+import { callLLM, isLLMAvailable, runWithConcurrency, SENSENOVA_CONCURRENCY } from "../.pi/extensions/lib/llm-judge.mjs";
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const index = loadIndex(REPO_ROOT);
@@ -109,34 +110,22 @@ function readGuideText(title) {
   }
 }
 
-// ---------- 幻觉检测钩子（免费模型优先；无 Key 自动跳过） ----------
-const RUN_LLM = !!process.env.SENSENOVA_API_KEY;
+// ---------- 幻觉检测钩子（免费优先；经 lib/llm-judge.mjs 的 callLLM 回退，无 Key 自动跳过） ----------
+const RUN_LLM = isLLMAvailable();
 async function checkHallucination(sample) {
   if (!RUN_LLM) return { skipped: true, reason: "no_api_key" };
   if (!sample.answerDraft) return { skipped: true, reason: "no_draft" };
-  const key = process.env.SENSENOVA_API_KEY;
-  const endpoint = "https://token.sensenova.cn/v1/chat/completions";
   const prompt =
     `你是医疗事实核查员。给定用户问题、应引用的指南、模型应答草稿，` +
     `判断应答是否存在无指南支撑的断言（幻觉/事实错误）。仅返回 JSON：{"hasHallucination":boolean,"reasons":[string]}。` +
-    `问题：${sample.q}\n应引用指南：${sample.gtSources.join("、")}\n应答草稿：${sample.answerDraft}`;
+    `问题：${sample.q}\n应引指南：${sample.gtSources.join("、")}\n应答草稿：${sample.answerDraft}`;
   try {
-    const r = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify({
-        model: "sensenova-6.7-flash-lite",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0,
-      }),
-    });
-    const j = await r.json();
-    const txt = j?.choices?.[0]?.message?.content || "";
+    const txt = await callLLM(prompt);
     const m = txt.match(/\{[\s\S]*\}/);
     const obj = m ? JSON.parse(m[0]) : { hasHallucination: null };
     return { skipped: false, ...obj };
   } catch (e) {
-    return { skipped: true, reason: "call_failed:" + e.message };
+    return { skipped: true, reason: "call_failed:" + (e?.message || e) };
   }
 }
 
@@ -150,7 +139,8 @@ let evHit = 0, evTot = 0;
 let gradeHit = 0, gradeTot = 0;
 let hallYes = 0, hallChecked = 0;
 
-const details = [];
+// ---------- 阶段一：离线结构层（串行，零成本） ----------
+const partials = [];
 for (const s of SAMPLES) {
   const route = routeGuides(s.q, { index, useCache: false });
   const top3 = route.top.slice(0, 3).map((g) => g.title);
@@ -182,23 +172,32 @@ for (const s of SAMPLES) {
   if (s.expectGradeLabel !== false) gradeTot++;
   if (gradeLocal) gradeHit++;
 
-  const hall = await checkHallucination(s);
+  partials.push({ s, top3, gtHit, evLocalHit, evLocalTot, gradeLocal, missingSources });
+}
+
+// ---------- 阶段二：幻觉检测（有界并发，吃满 ≤20 免费 Key） ----------
+const halls = await runWithConcurrency(
+  partials.map((p) => () => checkHallucination(p.s)),
+  SENSENOVA_CONCURRENCY,
+);
+
+const details = partials.map((p, i) => {
+  const hall = halls[i];
   if (!hall.skipped && typeof hall.hasHallucination === "boolean") {
     hallChecked++;
     if (hall.hasHallucination) hallYes++;
   }
-
-  details.push({
-    q: s.q,
-    gtSources: s.gtSources,
-    top3,
-    citation: { hit: gtHit, tot: s.gtSources.length },
-    evidence: { hit: evLocalHit, tot: evLocalTot, missing: missingSources },
-    gradeFound: gradeLocal,
-    expectGrade: s.expectGradeLabel !== false,
+  return {
+    q: p.s.q,
+    gtSources: p.s.gtSources,
+    top3: p.top3,
+    citation: { hit: p.gtHit, tot: p.s.gtSources.length },
+    evidence: { hit: p.evLocalHit, tot: p.evLocalTot, missing: p.missingSources },
+    gradeFound: p.gradeLocal,
+    expectGrade: p.s.expectGradeLabel !== false,
     hallucination: hall,
-  });
-}
+  };
+});
 
 const metrics = {
   generatedAt: new Date().toISOString(),

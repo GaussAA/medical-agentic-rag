@@ -1,69 +1,53 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { judgeAnswer } from "./lib/llm-judge.mjs";
+
+// 交互式 /eval 复用 lib/llm-judge.mjs 的 judgeAnswer（与批量基座 answer-quality-judge.mjs
+// 共用框架规范四维口径 + 免费优先回退），消除「交互/批量双口径」漂移。
 
 export default function (pi: ExtensionAPI) {
-  const agnesKey = process.env.AGNES_API_KEY;
-
+  // ctx 为 Pi 运行期命令上下文，类型较松，按既有扩展惯例以 any 承接并显式标注。
   pi.registerCommand("eval", {
-    description: "Evaluate last medical Q&A quality (accuracy/completeness/readability/safety)",
+    description: "Evaluate medical Q&A quality (faithfulness/relevance/clinical-correctness/safety)",
     handler: async (_args: string, ctx: any) => {
-      if (!agnesKey) {
-        ctx.ui.notify("Set AGNES_API_KEY in .env first", "error");
-        return;
-      }
-
-      // Note: session messages access depends on Pi version.
-      // This tool evaluates via paste mode - copy the Q&A and use /eval <question>||<answer>
+      // 粘贴模式：/eval <问题>||<回答>
       const parts = (_args || "").split("||");
-      let question = parts[0]?.trim() || "";
-      let answer = parts[1]?.trim() || "";
+      const question = parts[0]?.trim() || "";
+      const answer = parts[1]?.trim() || "";
 
       if (!question || !answer) {
-        ctx.ui.notify("No recent Q&A found. Ask a question first, then run /eval", "warning");
+        ctx.ui.notify("用法：/eval <问题>||<回答>", "warning");
         return;
       }
 
-      const evalPrompt = `You are a medical QA quality reviewer. Rate this AI medical response.
-
-Question: ${question.slice(0, 500)}
-
-Answer: ${answer.slice(0, 2000)}
-
-Rate 1-10 on: accuracy, completeness, readability, safety.
-Return ONLY JSON: {"accuracy":{"score":N,"comment":"..."},"completeness":{...},"readability":{...},"safety":{...},"totalScore":N,"summary":"..."}`;
+      if (!process.env.SENSENOVA_API_KEY && !process.env.DEEPSEEK_API_KEY) {
+        ctx.ui.notify("设置 SENSENOVA_API_KEY 或 DEEPSEEK_API_KEY 后启用四维评分", "error");
+        return;
+      }
 
       try {
-        const res = await fetch("https://apihub.agnes-ai.com/v1/chat/completions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${agnesKey}` },
-          body: JSON.stringify({
-            model: "agnes-2.0-flash",
-            messages: [{ role: "user", content: evalPrompt }],
-            temperature: 0.1,
-            max_tokens: 1024,
-          }),
-        });
-
-        if (!res.ok) {
-          const err = await res.text().catch(() => "");
-          throw new Error(`Agnes API error: ${res.status}`);
+        const j = await judgeAnswer({ question, answer });
+        if (j.skipped) {
+          ctx.ui.notify(`评测失败：${j.reason}`, "error");
+          return;
         }
 
-        const data = await res.json();
-        const text = data.choices?.[0]?.message?.content || "";
-        const jsonMatch = text.match(/\{[\s\S]*\}/);
-        const evalResult = jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(text);
+        const dims: [string, number][] = [
+          ["忠实 Faithfulness", j.faithfulness],
+          ["相关 Relevance", j.answerRelevance],
+          ["临床正确性 Clinical", j.clinicalCorrectness],
+          ["安全 Safety", j.safety],
+        ];
+        const bar = (v: number) =>
+          "█".repeat(Math.max(0, Math.min(10, Math.round(v * 10)))) +
+          "░".repeat(10 - Math.max(0, Math.min(10, Math.round(v * 10))));
 
-        const total = evalResult.totalScore || 0;
-        const bar = "#".repeat(Math.round(total / 4)) + "-".repeat(Math.max(0, 10 - Math.round(total / 4)));
-        let output = `QA Score: ${total}/40  [${bar}]\n`;
-
-        for (const key of ["accuracy", "completeness", "readability", "safety"]) {
-          const d = evalResult[key] || { score: 0, comment: "" };
-          const b = "#".repeat(d.score) + "-".repeat(10 - d.score);
-          output += `\n${key}: ${d.score}/10 [${b}]`;
-          output += `\n  ${d.comment}`;
+        let output = `QA 四维评审（0–1，免费模型优先）\n`;
+        for (const [name, v] of dims) {
+          output += `\n${name}: ${v.toFixed(2)} [${bar(v)}]`;
         }
-        output += `\n\nSummary: ${evalResult.summary || ""}`;
+        const total = (j.faithfulness + j.answerRelevance + j.clinicalCorrectness + j.safety) / 4;
+        output += `\n\n总分: ${total.toFixed(2)}/1.0  (≈${(total * 40).toFixed(0)}/40)`;
+        output += `\n\n理由: ${j.reasons}`;
 
         ctx.ui.notify(output, "info");
       } catch (err) {

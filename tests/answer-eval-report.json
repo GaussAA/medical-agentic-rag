@@ -1,15 +1,15 @@
 {
   "metrics": {
-    "generatedAt": "2026-07-09T17:49:52.663Z",
+    "generatedAt": "2026-07-10T12:59:13.707Z",
     "knowledgeBase": {
-      "guides": 135,
-      "keywords": 836
+      "guides": 134,
+      "keywords": 833
     },
     "kpi": {
       "citationRecall": 100,
       "evidenceLocatability": 100,
       "gradeLabelRate": 80,
-      "hallucinationRate": "skipped (no SENSENOVA_API_KEY)"
+      "hallucinationRate": 100
     },
     "raw": {
       "citHit": 10,
@@ -18,8 +18,8 @@
       "evTot": 23,
       "gradeHit": 8,
       "gradeTot": 10,
-      "hallYes": 0,
-      "hallChecked": 0
+      "hallYes": 1,
+      "hallChecked": 1
     }
   },
   "details": [
@@ -45,8 +45,11 @@
       "gradeFound": true,
       "expectGrade": true,
       "hallucination": {
-        "skipped": true,
-        "reason": "no_api_key"
+        "skipped": false,
+        "hasHallucination": true,
+        "reasons": [
+          "应答草稿中推荐'仑伐替尼联合派安普利单抗'作为一线治疗，但现行主流指南及截至2026年已知临床证据中，该联合方案尚未获得高级别循证医学证据支持，也未在《原发性肝癌诊疗指南（2026版）》中列为标准推荐，可能存在无指南依据的断言。"
+        ]
       }
     },
     {
@@ -72,7 +75,7 @@
       "expectGrade": true,
       "hallucination": {
         "skipped": true,
-        "reason": "no_api_key"
+        "reason": "no_draft"
       }
     },
     {
@@ -98,7 +101,7 @@
       "expectGrade": true,
       "hallucination": {
         "skipped": true,
-        "reason": "no_api_key"
+        "reason": "no_draft"
       }
     },
     {
@@ -124,7 +127,7 @@
       "expectGrade": true,
       "hallucination": {
         "skipped": true,
-        "reason": "no_api_key"
+        "reason": "no_draft"
       }
     },
     {
@@ -133,8 +136,8 @@
         "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
       ],
       "top3": [
-        "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
         "乳腺癌诊疗指南（2022年版）",
+        "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
         "胰腺癌诊治指南（2022年版）"
       ],
       "citation": {
@@ -150,7 +153,7 @@
       "expectGrade": true,
       "hallucination": {
         "skipped": true,
-        "reason": "no_api_key"
+        "reason": "no_draft"
       }
     },
     {
@@ -160,8 +163,8 @@
       ],
       "top3": [
         "中华医学会肺癌临床诊疗指南（2024版）",
-        "原发性肝癌诊疗指南（2024年版）",
-        "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+        "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
+        "中国老年糖尿病诊疗指南（2024版）"
       ],
       "citation": {
         "hit": 1,
@@ -176,7 +179,7 @@
       "expectGrade": true,
       "hallucination": {
         "skipped": true,
-        "reason": "no_api_key"
+        "reason": "no_draft"
       }
     },
     {
@@ -202,7 +205,7 @@
       "expectGrade": true,
       "hallucination": {
         "skipped": true,
-        "reason": "no_api_key"
+        "reason": "no_draft"
       }
     },
     {
@@ -212,8 +215,8 @@
       ],
       "top3": [
         "中国高血压防治指南(2024年修订版)",
-        "中国高血压防治指南（2024年修订版）",
-        "脑血管病防治指南（2024年版）"
+        "脑血管病防治指南（2024年版）",
+        "基层血液透析室（中心）建设与服务指南（试行）"
       ],
       "citation": {
         "hit": 1,
@@ -228,7 +231,7 @@
       "expectGrade": true,
       "hallucination": {
         "skipped": true,
-        "reason": "no_api_key"
+        "reason": "no_draft"
       }
     },
     {
@@ -254,7 +257,7 @@
       "expectGrade": true,
       "hallucination": {
         "skipped": true,
-        "reason": "no_api_key"
+        "reason": "no_draft"
       }
     },
     {
@@ -280,7 +283,7 @@
       "expectGrade": true,
       "hallucination": {
         "skipped": true,
-        "reason": "no_api_key"
+        "reason": "no_draft"
       }
     }
   ]

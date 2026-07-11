@@ -1,9 +1,9 @@
-// scripts/preload-fetch-proxy.mjs
+// scripts/proxy/preload-fetch-proxy.mjs
 // Node.js --require 预加载脚本：劫持 globalThis.fetch，将 Pi 对 LLM Provider 的 API 请求
 // 重定向到本地代理（provider-proxy），实现零运行时侵入的热切换。
 //
 // 用法：
-//   set NODE_OPTIONS="--require %cd%\scripts\preload-fetch-proxy.mjs"
+//   set NODE_OPTIONS="--require %cd%\scripts\proxy\preload-fetch-proxy.mjs"
 //   node start-pi.js
 //
 // 或 start.bat 中：

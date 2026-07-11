@@ -1,4 +1,4 @@
-// scripts/provider-proxy.mjs
+// scripts/proxy/provider-proxy.mjs
 // LLM Provider 本地代理网关 —— 零宕机热切换核心层。
 //
 // 功能：
@@ -12,7 +12,7 @@
 //            → provider-proxy → (deepseek | agnes | sensenova)
 //
 // 用法：
-//   node scripts/provider-proxy.mjs [--port 18880]
+//   node scripts/proxy/provider-proxy.mjs [--port 18880]
 //
 // 纯 node 运行，零外部依赖。
 

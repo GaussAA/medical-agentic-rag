@@ -1,4 +1,4 @@
-// scripts/ingest-batch.mjs
+// scripts/kb/ingest-batch.mjs
 // 知识库偏科缓解 · 批量统一原始文档入库（大帅 D:/.../medical-knowlegde-origin 目录）
 //
 // 流程（逐份，绝不杜撰）：
@@ -10,18 +10,18 @@
 //   6. 输出 batch-report.json（skip/added/upgraded 明细）
 //
 // 红线：抽取失败/正文过短→跳过该份，不落半截文件。
-// 用法：node scripts/ingest-batch.mjs [--src-dir <路径>] [--dry] [--limit N]
+// 用法：node scripts/kb/ingest-batch.mjs [--src-dir <路径>] [--dry] [--limit N]
 
 import { readdirSync, statSync, readFileSync, writeFileSync, existsSync, mkdirSync, rmSync } from "node:fs";
 import { join, dirname, extname, basename } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const KB_DIR = join(ROOT, "medical-knowlegde-base");
 const REG_FILE = join(ROOT, "kb-sources.json");
 const PY_VENV = "C:/Users/JaNiy/.workbuddy/binaries/python/envs/default/Scripts/python.exe";
-const DOCX_BRIDGE = join(ROOT, "scripts", "_docx2txt.py");
+const DOCX_BRIDGE = join(ROOT, "scripts", "kb", "_docx2txt.py");
 const DEF_SRC = "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const kb = await import(MOD);
@@ -54,7 +54,7 @@ function normalize(text, name, srcPath) {
   const first = lines.find((l) => l.length > 6) || name;
   const title = name;
   const body = lines.join("\n\n");
-  return `# ${title}\n\n> 来源: 大帅原始文档直供（${basename(srcPath)}）\n> 入库日期: ${date}\n> 入库方式: 批量统一（scripts/ingest-batch.mjs）\n\n${body}\n`;
+  return `# ${title}\n\n> 来源: 大帅原始文档直供（${basename(srcPath)}）\n> 入库日期: ${date}\n> 入库方式: 批量统一（scripts/kb/ingest-batch.mjs）\n\n${body}\n`;
 }
 
 // ---------- 归类（口腔特判） ----------
@@ -133,10 +133,10 @@ async function main() {
   if (!DRY) {
     kb.saveRegistry(reg, REG_FILE);
     console.log("\n[batch] 刷新大纲…");
-    execFileSync(process.execPath, [join(ROOT, "scripts", "extract-outline.mjs")], { stdio: "inherit", cwd: ROOT });
+    execFileSync(process.execPath, [join(ROOT, "scripts", "kb", "extract-outline.mjs")], { stdio: "inherit", cwd: ROOT });
   }
   report.summary = { total: files.length, added, upgraded, skipped, failed };
-  writeFileSync(join(ROOT, "scripts", "batch-report.json"), JSON.stringify(report, null, 2), "utf-8");
+  writeFileSync(join(ROOT, "logs", "kb-batch-report.json"), JSON.stringify(report, null, 2), "utf-8");
   console.log(`\n=== 批量完成 === 新增 ${added} / 升级 ${upgraded} / 跳过 ${skipped} / 失败 ${failed}`);
   if (failed) console.log("⚠ 失败份请检查源文件是否损坏；.doc 请先转 docx");
 }

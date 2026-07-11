@@ -1,4 +1,4 @@
-// scripts/audit-verify.mjs
+// scripts/ops/audit-verify.mjs
 // 审计链验证与查询 CLI。
 //
 // 命令：
@@ -7,15 +7,15 @@
 //   status                 审计系统状态摘要
 //
 // 用法：
-//   node scripts/audit-verify.mjs verify
-//   node scripts/audit-verify.mjs query --action patient
-//   node scripts/audit-verify.mjs status
+//   node scripts/ops/audit-verify.mjs verify
+//   node scripts/ops/audit-verify.mjs query --action patient
+//   node scripts/ops/audit-verify.mjs status
 
 import { existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/audit-chain.mjs")).href;
 const { verifyChain, queryAuditLog } = await import(MOD);
 
@@ -123,9 +123,9 @@ async function main() {
   --offset  num   偏移（默认 0）
 
 用法:
-  node scripts/audit-verify.mjs verify
-  node scripts/audit-verify.mjs query --action patient --limit 10
-  node scripts/audit-verify.mjs status`);
+  node scripts/ops/audit-verify.mjs verify
+  node scripts/ops/audit-verify.mjs query --action patient --limit 10
+  node scripts/ops/audit-verify.mjs status`);
       process.exit(cmd ? 1 : 0);
   }
 }

@@ -2,7 +2,7 @@
  * 医疗指南结构化解析脚本
  * 提取每份指南的章节标题、层级、关键内容，生成结构化 JSON 大纲
  *
- * 用法: node scripts/extract-outline.mjs
+ * 用法: node scripts/kb/extract-outline.mjs
  * 输出: medical-knowlegde-base/.outline.json
  */
 import { readdir, readFile, writeFile } from "node:fs/promises";
@@ -10,7 +10,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-// 输入：归一化纯文本（由 scripts/prepare-raw.mjs 从原始 PDF/DOCX 抽取，复用中文层级正则）
+// 输入：归一化纯文本（由 scripts/kb/prepare-raw.mjs 从原始 PDF/DOCX 抽取，复用中文层级正则）
 const TXT_DIR = join(__dirname, "..", "medical-raw-txt");
 // 输出：索引仍落 medical-knowlegde-base/（扩展硬编码读取，零改动）
 const KB_DIR = join(__dirname, "..", "medical-knowlegde-base");

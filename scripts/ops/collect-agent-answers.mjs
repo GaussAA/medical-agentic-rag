@@ -15,12 +15,12 @@
  *  - ANSI 转义清洗，仅保留纯文本回答
  *
  * 用法：
- *   node scripts/collect-agent-answers.mjs                 # 采全部 null 条目
- *   node scripts/collect-agent-answers.mjs --dry-run       # 仅打印将执行的命令
- *   node scripts/collect-agent-answers.mjs --only Q01      # 仅采指定 id
- *   node scripts/collect-agent-answers.mjs --limit 3       # 仅采前 3 条
- *   node scripts/collect-agent-answers.mjs --force         # 覆盖已有 systemAnswer
- *   node scripts/collect-agent-answers.mjs --model deepseek/deepseek-v4-flash
+ *   node scripts/ops/collect-agent-answers.mjs                 # 采全部 null 条目
+ *   node scripts/ops/collect-agent-answers.mjs --dry-run       # 仅打印将执行的命令
+ *   node scripts/ops/collect-agent-answers.mjs --only Q01      # 仅采指定 id
+ *   node scripts/ops/collect-agent-answers.mjs --limit 3       # 仅采前 3 条
+ *   node scripts/ops/collect-agent-answers.mjs --force         # 覆盖已有 systemAnswer
+ *   node scripts/ops/collect-agent-answers.mjs --model deepseek/deepseek-v4-flash
  */
 import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -28,7 +28,7 @@ import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+const ROOT = join(__dirname, '..', '..');
 const GOLD_PATH = join(ROOT, 'tests', 'gold-answers.json');
 const SP_PATH = join(ROOT, 'prompts', 'medical-agent.md');
 const LOG_DIR = join(ROOT, 'logs');

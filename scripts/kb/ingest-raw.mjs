@@ -1,4 +1,4 @@
-// scripts/ingest-raw.mjs
+// scripts/kb/ingest-raw.mjs
 // 知识库偏科缓解 · 官方文件直供管线（B 方案，最合规）
 //
 // 用途：大帅在已登录浏览器下载卫健委/权威机构指南（PDF/HTML/MD），
@@ -13,14 +13,14 @@
 //
 // 红线：绝不生成占位正文；PDF/HTML 解析失败即报错退出，不落半截文件。
 //
-// 用法：node scripts/ingest-raw.mjs <投放文件> [--name 指南名] [--dept 专科] [--src 来源URL]
+// 用法：node scripts/kb/ingest-raw.mjs <投放文件> [--name 指南名] [--dept 专科] [--src 来源URL]
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { join, dirname, extname, basename } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const KB_DIR = join(ROOT, "medical-knowlegde-base");
 const REG_FILE = join(ROOT, "kb-sources.json");
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
@@ -35,7 +35,7 @@ const getOpt = (k) => {
 };
 const rawPath = positional[0];
 if (!rawPath) {
-  console.error("用法: node scripts/ingest-raw.mjs <投放文件> [--name 指南名] [--dept 专科] [--src 来源URL]");
+  console.error("用法: node scripts/kb/ingest-raw.mjs <投放文件> [--name 指南名] [--dept 专科] [--src 来源URL]");
   process.exit(1);
 }
 if (!existsSync(rawPath)) {
@@ -147,12 +147,12 @@ try {
   console.log("[ingest] 刷新大纲 (.outline.json)…");
   execFileSync(
     process.execPath,
-    [join(ROOT, "scripts/extract-outline.mjs")],
+    [join(ROOT, "scripts/kb/extract-outline.mjs")],
     { stdio: "inherit", cwd: ROOT },
   );
 
   console.log("\n✓ 入库完成。建议人工抽检标题/机构/年份与官方一致；随后可跑:");
-  console.log("    node scripts/kb-update.mjs coverage   # 验偏科指数下降");
+  console.log("    node scripts/kb/kb-update.mjs coverage   # 验偏科指数下降");
 } catch (err) {
   console.error(`\n✗ 摄取中止（未落半截文件）: ${err.message}`);
   process.exit(1);

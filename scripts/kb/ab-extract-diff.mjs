@@ -7,7 +7,7 @@
  * 比对中文保真度、章节标记留存率、全角数字占比，判断 Pi 原生抽取是否够格。
  *
  * 只读源目录、只写临时报告，绝不触碰 ~/.pi/knowledge/ 当前知识库。
- * 用法: node scripts/ab-extract-diff.mjs
+ * 用法: node scripts/kb/ab-extract-diff.mjs
  */
 import { createRequire } from "module";
 import { pathToFileURL } from "url";
@@ -56,7 +56,7 @@ function ourPdf(p) {
   });
 }
 function ourDocx(p) {
-  return execFileSync(PY, ["scripts/_docx2txt.py", p]).toString("utf-8");
+  return execFileSync(PY, ["scripts/kb/_docx2txt.py", p]).toString("utf-8");
 }
 
 // ---------- 度量 ----------

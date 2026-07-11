@@ -8,7 +8,7 @@
  *    保证中文保真，供 extract-outline 复用中文层级正则。
  *
  * 只读源目录、只写项目内 medical-raw/ 与 medical-raw-txt/。
- * 用法: node scripts/prepare-raw.mjs
+ * 用法: node scripts/kb/prepare-raw.mjs
  */
 import { createRequire } from "module";
 import { execFileSync } from "child_process";
@@ -22,7 +22,7 @@ const ROOT = process.cwd();
 const RAW_DIR = join(ROOT, "medical-raw");
 const TXT_DIR = join(ROOT, "medical-raw-txt");
 const PY = "C:/Users/JaNiy/.workbuddy/binaries/python/envs/default/Scripts/python.exe";
-const DOCX_BRIDGE = join(ROOT, "scripts", "_docx2txt.py");
+const DOCX_BRIDGE = join(ROOT, "scripts", "kb", "_docx2txt.py");
 
 mkdirSync(RAW_DIR, { recursive: true });
 mkdirSync(TXT_DIR, { recursive: true });

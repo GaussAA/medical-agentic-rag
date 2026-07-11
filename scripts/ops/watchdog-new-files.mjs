@@ -1,4 +1,4 @@
-// scripts/watchdog-new-files.mjs
+// scripts/ops/watchdog-new-files.mjs
 // 知识库新文件看门狗：扫描投放目录，自动检测新指南文件并入库。
 //
 // 流程：
@@ -8,7 +8,7 @@
 //   4. 检测到新版本替换时自动标记旧版已废止
 //
 // 用法：
-//   node scripts/watchdog-new-files.mjs [--dry-run] [--dir <投放目录>]
+//   node scripts/ops/watchdog-new-files.mjs [--dry-run] [--dir <投放目录>]
 //
 // --dry-run: 仅列出新文件，不实际入库
 // --dir:    扫描指定目录（默认 medical-raw/）
@@ -20,7 +20,7 @@ import { execFileSync } from "node:child_process";
 import { join, dirname, extname, basename } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const KB_DIR = join(ROOT, "medical-knowlegde-base");
 const REG_FILE = join(ROOT, "kb-sources.json");
 const dryRun = process.argv.includes("--dry-run");
@@ -92,7 +92,7 @@ async function main() {
   for (const f of updateFiles) console.log(`    ~ ${f.name}`);
 
   if (dryRun) {
-    console.log("\n  演练模式完成。执行 node scripts/watchdog-new-files.mjs 以实际入库。");
+    console.log("\n  演练模式完成。执行 node scripts/ops/watchdog-new-files.mjs 以实际入库。");
     process.exit(0);
   }
 
@@ -109,7 +109,7 @@ async function main() {
       execFileSync(
         process.execPath,
         [
-          join(ROOT, "scripts/ingest-raw.mjs"),
+          join(ROOT, "scripts/kb/ingest-raw.mjs"),
           f.path,
           "--name", basename(f.name).replace(/\.\w+$/, ""),
         ],
@@ -127,7 +127,7 @@ async function main() {
     try {
       execFileSync(
         process.execPath,
-        [join(ROOT, "scripts/build-guide-index.mjs")],
+        [join(ROOT, "scripts/kb/build-guide-index.mjs")],
         { stdio: "inherit", cwd: ROOT },
       );
       console.log("  ✓ 索引已重建（废止标记已自动计算）");

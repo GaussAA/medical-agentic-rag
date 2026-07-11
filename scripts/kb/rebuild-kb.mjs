@@ -1,6 +1,6 @@
 // 重建知识库：清空旧 KB（30 份已删 MD 快照）→ 从 medical-raw/ 的 135 份原始文档重新向量化索引。
 // 复用 pi-knowledge 自带工具链（knowledge_clear / knowledge_add），零自造 chunk/embed 逻辑。
-// 用法：node scripts/rebuild-kb.mjs
+// 用法：node scripts/kb/rebuild-kb.mjs
 import { pathToFileURL } from "node:url";
 
 const PK_URL = pathToFileURL(

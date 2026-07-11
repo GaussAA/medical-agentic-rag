@@ -9,12 +9,12 @@
 //   rollback [path]  回滚 registry；省略 path 则用最新快照
 //   refresh           刷新流程：快照→逐项 ingest→更新 lastChecked/hash→回写（异常回滚）
 //
-// 纯 node 运行，无外部依赖。用法：node scripts/kb-update.mjs <command> [args]
+// 纯 node 运行，无外部依赖。用法：node scripts/kb/kb-update.mjs <command> [args]
 
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { join, dirname } from "node:path";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const kb = await import(MOD);
 
@@ -121,7 +121,7 @@ async function main() {
     default:
       console.log(`知识库更新 CLI
 
-用法: node scripts/kb-update.mjs <command> [args]
+用法: node scripts/kb/kb-update.mjs <command> [args]
 
 命令:
   list              列出登记来源

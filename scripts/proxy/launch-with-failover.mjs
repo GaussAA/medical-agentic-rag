@@ -2,13 +2,13 @@
 // 启动编排：在拉起 Pi 前探测各 Provider 健康态，选出最优者写入 .pi/failover-selection.json，
 // 供 start.bat / start.ps1 读取后注入 --model，实现「每次启动自动避开宕机 Provider」。
 //
-// 纯 node 运行（零依赖，用原生 fetch）。被 start 脚本以 `node scripts/launch-with-failover.mjs` 调用。
+// 纯 node 运行（零依赖，用原生 fetch）。被 start 脚本以 `node scripts/proxy/launch-with-failover.mjs` 调用。
 //
 // 退出码：0 = 已选出（无论是否 degraded）；非 0 = 探测全失败且无法回退（理论上不会发生，selectProvider 总有回退）。
 
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
-import { selectProvider } from "../.pi/extensions/lib/provider-health.mjs";
+import { selectProvider } from "../../.pi/extensions/lib/provider-health.mjs";
 
 const OUT = join(process.cwd(), ".pi", "failover-selection.json");
 

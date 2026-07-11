@@ -21,7 +21,7 @@
  *    提 issue，建议暴露 PI_KNOWLEDGE_RERANKER 环境变量 + 对 cross-encoder 取
  *    raw logits）。上游合入后，本补丁删除，改由 start 脚本注入环境变量即可。
  *
- * 用法: node scripts/apply-reranker-patch.mjs
+ * 用法: node scripts/kb/apply-reranker-patch.mjs
  */
 import { readFile, writeFile } from "node:fs/promises";
 import { readFileSync, writeFileSync } from "node:fs";

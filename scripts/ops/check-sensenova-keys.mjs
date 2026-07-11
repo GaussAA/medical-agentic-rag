@@ -1,11 +1,11 @@
-// scripts/check-sensenova-keys.mjs
+// scripts/ops/check-sensenova-keys.mjs
 // 商汤日日新免费通道 · 多 Key 池健康巡检
 //
 // 用途：实测 SENSENOVA_API_KEYS 池中每枚 Key 的可用性，确认「最多 20 并发」额度可吃满。
 // 安全性：仅输出 #序号 + valid/invalid + 简短错误，绝不回显任何 Key 明文。
 // 并发：经 lib/llm-judge.mjs 的 checkKeyHealth 以 MAX_CONCURRENCY(20) 一次性并发 ping。
 
-import { checkKeyHealth, availableKeyCount, SENSENOVA_CONCURRENCY } from "../.pi/extensions/lib/llm-judge.mjs";
+import { checkKeyHealth, availableKeyCount, SENSENOVA_CONCURRENCY } from "../../.pi/extensions/lib/llm-judge.mjs";
 
 async function main() {
   const total = availableKeyCount();

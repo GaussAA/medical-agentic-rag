@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# scripts/_docx2txt.py —— python-docx 桥接：把 .docx 正文抽取为纯文本到 stdout
+# scripts/kb/_docx2txt.py —— python-docx 桥接：把 .docx 正文抽取为纯文本到 stdout
 import sys
 from docx import Document
 

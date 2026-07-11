@@ -8,9 +8,9 @@
 //   4. 被遗忘权：一键清除所有 PHI 关联数据
 //
 // 用法：
-//   node scripts/data-lifecycle.mjs cleanup    → 清理过期数据
-//   node scripts/data-lifecycle.mjs forget     → 被遗忘权删除
-//   node scripts/data-lifecycle.mjs status     → 查看数据状态
+//   node scripts/kb/data-lifecycle.mjs cleanup    → 清理过期数据
+//   node scripts/kb/data-lifecycle.mjs forget     → 被遗忘权删除
+//   node scripts/kb/data-lifecycle.mjs status     → 查看数据状态
 
 import { existsSync, readdirSync, readFileSync, writeFileSync, unlinkSync, rmSync } from "node:fs";
 import { join } from "node:path";
@@ -122,7 +122,7 @@ async function main() {
 
       // 记审计
       try {
-        const { auditChainLog } = await import("../.pi/extensions/lib/audit-chain.mjs");
+        const { auditChainLog } = await import("../../.pi/extensions/lib/audit-chain.mjs");
         auditChainLog("data.forget", { target: "patient_profile,conversation_state" });
         console.log("审计: ✓ 已记录");
       } catch { console.log("审计: 跳过"); }
@@ -145,9 +145,9 @@ async function main() {
 
     default:
       console.log(`用法:
-  node scripts/data-lifecycle.mjs status   查看数据状态
-  node scripts/data-lifecycle.mjs cleanup  清理过期数据
-  node scripts/data-lifecycle.mjs forget   被遗忘权删除`);
+  node scripts/kb/data-lifecycle.mjs status   查看数据状态
+  node scripts/kb/data-lifecycle.mjs cleanup  清理过期数据
+  node scripts/kb/data-lifecycle.mjs forget   被遗忘权删除`);
   }
 }
 

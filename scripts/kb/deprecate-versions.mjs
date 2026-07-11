@@ -1,4 +1,4 @@
-// scripts/deprecate-versions.mjs
+// scripts/kb/deprecate-versions.mjs
 // 自动检测已废止旧版指南，标记 deprecated 标记并重建索引。
 //
 // 用途：
@@ -6,7 +6,7 @@
 //   2. 自动标记旧版为已废止，更新 guide-index
 //   3. 检测 outline 中是否存在括号重复条目（全角/半角），自动去重
 //
-// 用法：node scripts/deprecate-versions.mjs [--dry-run]
+// 用法：node scripts/kb/deprecate-versions.mjs [--dry-run]
 //
 // 纯 node 运行，无需 API Key。依赖：.outline.json / .guide-index.json
 
@@ -15,7 +15,7 @@ import { existsSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const KB_DIR = join(ROOT, "medical-knowlegde-base");
 const RAW_DIR = join(ROOT, "medical-raw");
 const RAW_TXT_DIR = join(ROOT, "medical-raw-txt");
@@ -117,14 +117,14 @@ async function main() {
   if (dryRun) {
     console.log("\n  演练模式完成，未实际修改。");
     console.log(`  需处理: 去重 ${bracketDups.length} 组 + 废止 ${deprecations.length} 项`);
-    console.log('\n  执行: node scripts/deprecate-versions.mjs');
+    console.log('\n  执行: node scripts/kb/deprecate-versions.mjs');
     process.exit(0);
   }
 
   // 实际模式下重建索引 = 运行 build-guide-index.mjs
   console.log("\n  实际模式：重建指南索引以写入废止标记...");
   const { execFileSync } = await import("node:child_process");
-  execFileSync(process.execPath, [join(ROOT, "scripts/build-guide-index.mjs")], {
+  execFileSync(process.execPath, [join(ROOT, "scripts/kb/build-guide-index.mjs")], {
     stdio: "inherit",
     cwd: ROOT,
   });

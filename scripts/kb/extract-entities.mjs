@@ -3,7 +3,7 @@
  * 优先使用 SenseNova(日日新) 免费模型从指南大纲抽取结构化医学实体与关系，
  * DeepSeek 仅作兜底（成本控制：免费额度优先）。
  *
- * 用法: node scripts/extract-entities.mjs
+ * 用法: node scripts/kb/extract-entities.mjs
  *   - 优先 SENSENOVA_API_KEY (sensenova-6.7-flash-lite, 每日免费额度)
  *   - 缺失/失败则回退 DEEPSEEK_API_KEY
  * 输出: medical-knowlegde-base/.knowledge-graph.json

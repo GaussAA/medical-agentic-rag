@@ -8,7 +8,7 @@
  * 本脚本用 AutoModelForSequenceClassification + AutoTokenizer 直接取 logits，
  * 验证中文医疗场景下相关/无关 passage 的 logits 区分度。
  *
- * 用法: node scripts/verify-reranker.mjs
+ * 用法: node scripts/ops/verify-reranker.mjs
  */
 import { createRequire } from "node:module";
 import { join } from "node:path";

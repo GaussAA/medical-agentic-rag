@@ -16,12 +16,21 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
+// CI 降级开关：知识库原始文档（medical-raw/）与 kb-sources.json 不入库，
+// 纯净 checkout 下相关断言无法执行；CI 环境跳过这些依赖未入库大文件的校验，
+// 仅保留结构/扩展/System Prompt 等不依赖原始文档的门禁。本地（无 CI env）仍全量执行。
+const SKIP_KB = process.env.CI === "true" || process.env.SKIP_KB === "1";
 const KB_DIR = join(ROOT, "medical-knowlegde-base");
 // 方案 B：源真相为 medical-raw/ 下的原始 PDF/DOCX（非 MD）
 const RAW_DIR = join(ROOT, "medical-raw");
 /** 统计原始知识库可抽取文件数（PDF/DOCX，排除临时残留）。 */
 async function countRaw() {
-  return (await readdir(RAW_DIR)).filter((f) => /\.(pdf|docx|txt)$/i.test(f) && !/\.nhc_tmp_/i.test(f)).length;
+  try {
+    return (await readdir(RAW_DIR)).filter((f) => /\.(pdf|docx|txt)$/i.test(f) && !/\.nhc_tmp_/i.test(f)).length;
+  } catch {
+    // 原始知识库未入库（如 CI 纯净 checkout）时返回 0，由 SKIP_KB 门禁跳过相关断言
+    return 0;
+  }
 }
 
 // Test result accumulator
@@ -156,7 +165,9 @@ async function testGuideIndex() {
     {
       name: "指南索引文件存在且格式正确",
       fn: () => {
-        assert(index.totalGuides <= rawCount, `索引指南数 ${index.totalGuides} > 原始文档数 ${rawCount}`);
+        if (!SKIP_KB) {
+          assert(index.totalGuides <= rawCount, `索引指南数 ${index.totalGuides} > 原始文档数 ${rawCount}`);
+        }
         assert(index.totalGuides >= 100, `指南数回退至基线以下: ${index.totalGuides}`);
         assert(index.totalKeywords > 200, `关键词数 ${index.totalKeywords} < 200`);
       },
@@ -218,9 +229,11 @@ async function testOutline() {
 
   await runSuite("大纲数据测试", [
     {
-      name: "全部指南解析且与原始文档一致",
+      name: "全部指南解析（CI 下跳过与原始文档数比对）",
       fn: () => {
-        assert(outline.totalFiles === rawCount, `大纲 ${outline.totalFiles} 份 ≠ 原始文档 ${rawCount} 份`);
+        if (!SKIP_KB) {
+          assert(outline.totalFiles === rawCount, `大纲 ${outline.totalFiles} 份 ≠ 原始文档 ${rawCount} 份`);
+        }
       },
     },
     {
@@ -410,7 +423,11 @@ async function main() {
   await testKnowledgeGraph();
   await testGuideIndex();
   await testOutline();
-  await testKBIntegrity();
+  if (!SKIP_KB) {
+    await testKBIntegrity();
+  } else {
+    console.log("(CI 模式：跳过「知识库文件完整性」套件——原始文档 medical-raw/ 未入库)\n");
+  }
   await testExtensionFiles();
   await testSystemPrompt();
 

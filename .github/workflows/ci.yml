@@ -1,0 +1,56 @@
+# .github/workflows/ci.yml
+# 医疗 Agentic RAG —— 持续集成门禁
+#
+# 触发: 推送到 master / 向 master 开 Pull Request
+#
+# 门禁范围（确定性、零外部依赖，反映「代码正确性 + 项目结构/合规完整性」）:
+#   1) 纯逻辑单测（隔离 tmpdir，无需 API Key / 网络 / 知识库大文件）:
+#      compliance(24) / provider-health(13) / kb-sources(20) / bash-guard(35) / audit-chain(10) / provider-proxy(12)
+#   2) 项目结构与合规门禁 (npm test = run-all-tests，CI 降级):
+#      - 知识图谱 / 指南索引 / 大纲 结构完整性（基于已入库派生索引 JSON）
+#      - 扩展文件完整性（必需扩展存在 + 语法自检）
+#      - System Prompt 合规护栏（循证辅助定位、禁虚假权威、rag_search/guide_finder 引用等）
+#      - CI 下跳过依赖「未入库原始文档」的断言（medical-raw/ 不入库，见 .gitignore）
+#
+# 未纳入主门禁（环境 / 资源限制，非代码缺陷）:
+#   - retrieval-router-test: 需 better-sqlite3 原生模块（未入库，CI 需额外编译），改在本地 / 专用 runner 运行
+#   - eval-bench / answer-eval-bench / answer-quality-judge: 端到端质量评测，需 KB 文本 + LLM API Key，
+#     作为「发布前手动 / 本地门禁」(npm run eval:*)，不在 CI 强制
+#
+# 运行环境: ubuntu-latest + Node 22。项目无 npm 依赖声明，无需 npm install。
+
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  gate:
+    name: 结构 & 逻辑门禁
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 纯逻辑单测（零外部依赖）
+        shell: bash
+        run: |
+          set -euo pipefail
+          for t in compliance-test provider-health-test kb-sources-test bash-guard-test audit-chain-test provider-proxy-test; do
+            echo "::group::unit/$t"
+            node "tests/unit/$t.mjs"
+            echo "::endgroup::"
+          done
+
+      - name: 结构与合规门禁（run-all-tests, CI 降级）
+        env:
+          CI: "true"
+        run: npm test

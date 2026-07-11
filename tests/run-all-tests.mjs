@@ -318,12 +318,12 @@ async function testExtensionFiles() {
       name: "必需的扩展都存在",
       fn: () => {
         const names = extFiles.join(" ");
-        assert(names.includes("agnes-provider"), "缺少 agnes-provider");
-        assert(names.includes("sensenova-provider"), "缺少 sensenova-provider");
-        assert(names.includes("kg-search-tool"), "缺少 kg-search-tool");
-        assert(names.includes("guide-finder"), "缺少 guide-finder");
-        assert(names.includes("query-decomposer"), "缺少 query-decomposer");
-        assert(names.includes("answer-evaluator"), "缺少 answer-evaluator");
+        assert(names.includes("provider.agnes"), "缺少 provider.agnes.ts");
+        assert(names.includes("provider.sensenova"), "缺少 provider.sensenova.ts");
+        assert(names.includes("retrieval.kg-search-tool"), "缺少 retrieval.kg-search-tool.ts");
+        assert(names.includes("retrieval.guide-finder"), "缺少 retrieval.guide-finder.ts");
+        assert(names.includes("retrieval.query-decomposer"), "缺少 retrieval.query-decomposer.ts");
+        assert(names.includes("eval.answer-evaluator"), "缺少 eval.answer-evaluator.ts");
       },
     },
   ]);

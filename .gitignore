@@ -1,5 +1,7 @@
 # ========== 忽略 Pi 源码（单独维护） ==========
 pi/
+# 早期本地知识库数据残留（KB 已迁至用户 HOME 的 .pi/knowledge，此处为废弃本地副本，防污染）
+.pi-knowledge/
 
 # ========== 忽略 API Key 配置 ==========
 start.bat
@@ -15,6 +17,9 @@ node_modules/
 .pnpm-store/
 
 # ========== 忽略运行时数据 ==========
+# 注意：知识库实际位于用户 HOME 的 .pi/knowledge（跨项目共享，不在本仓库内）。
+# 以下 .pi/agent/ 与 .pi/knowledge/ 为防御性预置——当前项目内并无此子目录，
+# 若未来本仓库内生成对应目录则自动忽略，避免误提交运行期数据。
 .pi/agent/
 .pi/knowledge/
 .pi/cache/
@@ -64,3 +69,9 @@ docs/
 
 # ========== 忽略测试报告产物（可重建，不入仓） ==========
 tests/reports/
+
+# ========== 显式保留项说明（不忽略，特此标注以免误加忽略规则） ==========
+# medical-knowlegde-base/ 故意不忽略：其下 .outline.json/.guide-index.json/.knowledge-graph.json
+# 为派生索引，但因上游真相源 medical-raw/ 刻意不入库，故索引入仓以保证 clone 后系统可直接可用。
+# docs/ 下 2 份早期误入仓的生成物报告（全景验收报告.html、抓取管线规划.md）已于本回合
+# 经 git rm --cached 清理出索引，磁盘保留，令 docs/ 忽略规则彻底生效。

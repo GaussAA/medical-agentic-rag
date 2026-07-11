@@ -12,9 +12,19 @@
  *
  * pi-knowledge 升级后需重新执行本脚本。
  *
+ * ⚠️ 技术债声明：本脚本通过字符串替换直接修改 pi-knowledge 的 dist 源码，
+ *    属对第三方包的侵入式补丁。pi-knowledge 一旦原生支持中文 reranker 配置
+ *    （如官方暴露 reranker 模型选择项），本脚本应立即弃用。当前为保中文重排
+ *    质量不得已而为之，并以版本锁(.pi/reranker-patch.lock.json)在升级时告警。
+ *
+ * 📨 上游诉求已起草：docs/pi-knowledge-upstream-issue.md（向 nczz/pi-knowledge
+ *    提 issue，建议暴露 PI_KNOWLEDGE_RERANKER 环境变量 + 对 cross-encoder 取
+ *    raw logits）。上游合入后，本补丁删除，改由 start 脚本注入环境变量即可。
+ *
  * 用法: node scripts/apply-reranker-patch.mjs
  */
 import { readFile, writeFile } from "node:fs/promises";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
 
@@ -29,6 +39,33 @@ const MODEL_WORKER_PATH = join(
   "src",
   "model-worker.js"
 );
+
+const PKG_PATH = join(homedir(), ".pi", "agent", "npm", "node_modules", "pi-knowledge", "package.json");
+const LOCK_PATH = join(homedir(), ".pi", "reranker-patch.lock.json");
+
+function getPiKnowledgeVersion() {
+  try {
+    return JSON.parse(readFileSync(PKG_PATH, "utf-8")).version ?? "unknown";
+  } catch {
+    return "unknown";
+  }
+}
+
+function readPatchLock() {
+  try {
+    return JSON.parse(readFileSync(LOCK_PATH, "utf-8"));
+  } catch {
+    return null;
+  }
+}
+
+function writePatchLock(version) {
+  try {
+    writeFileSync(LOCK_PATH, JSON.stringify({ version, patchedAt: new Date().toISOString() }, null, 2), "utf-8");
+  } catch {
+    // 锁文件仅用于升级告警，写入失败不影响补丁本身
+  }
+}
 
 const OLD_LOAD = `async function loadRerankerPipeline() {
     if (rerankerPipeline)
@@ -88,9 +125,19 @@ async function main() {
     process.exit(1);
   }
 
+  // 版本锁：pi-knowledge 升级后补丁可能失效，给出显性告警
+  const pkVersion = getPiKnowledgeVersion();
+  const lock = readPatchLock();
+  if (lock && pkVersion !== "unknown" && lock.version !== pkVersion) {
+    console.warn(`\n[⚠️ 升级告警] pi-knowledge 已从 ${lock.version} 升级到 ${pkVersion}。`);
+    console.warn("  补丁基于旧版函数签名，可能已失效。请复核下方匹配结果；");
+    console.warn("  若两函数均未匹配，须手动适配或等待上游支持中文 reranker。\n");
+  }
+
   // 幂等检测：已含 AutoModelForSequenceClassification 则视为已 patch
   if (src.includes("AutoModelForSequenceClassification")) {
     console.log("[跳过] model-worker.js 已 patch（含 AutoModelForSequenceClassification）");
+    writePatchLock(pkVersion);
     return;
   }
 
@@ -117,6 +164,7 @@ async function main() {
   }
 
   await writeFile(MODEL_WORKER_PATH, patched, "utf-8");
+  writePatchLock(pkVersion);
 
   console.log(`[完成] 中文重排序 patch 已应用（${applied}/2 函数）`);
   console.log("  模型: Xenova/ms-marco-MiniLM-L-4-v2 (英文) → Xenova/bge-reranker-base (中文)");

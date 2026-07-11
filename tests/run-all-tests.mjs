@@ -359,7 +359,7 @@ async function testSystemPrompt() {
     {
       name: "包含知识库使用规范",
       fn: () => {
-        assert(prompt.includes("knowledge_search"), "缺少 knowledge_search 引用");
+        assert(prompt.includes("rag_search"), "缺少 rag_search 引用");
         assert(prompt.includes("guide_finder"), "缺少 guide_finder 引用");
       },
     },

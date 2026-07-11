@@ -26,6 +26,28 @@ import { join } from "node:path";
 
 const STATE_FILE = join(process.cwd(), ".pi", "conversation-state.json");
 
+// Redis 连接状态（惰性初始化）
+let redisCache: any = null;
+
+async function getRedis() {
+  if (redisCache !== null) return redisCache;
+  const url = process.env.REDIS_URL;
+  if (!url) { redisCache = null; return null; }
+  try {
+    const { createClient } = await import("redis");
+    const client = createClient({ url });
+    client.on("error", () => { redisCache = null; });
+    await client.connect();
+    redisCache = client;
+    return client;
+  } catch {
+    redisCache = null;
+    return null;
+  }
+}
+
+const REDIS_KEY = "rag:session:conversation-state";
+
 interface ConversationState {
   // 核心槽位
   chiefComplaint?: string;
@@ -56,6 +78,16 @@ function defaultState(): ConversationState {
 }
 
 async function loadState(): Promise<ConversationState> {
+  // Redis 优先
+  try {
+    const r = await getRedis();
+    if (r) {
+      const raw = await r.get(REDIS_KEY);
+      if (raw) return { ...defaultState(), ...JSON.parse(raw) };
+    }
+  } catch { /* fallback */ }
+
+  // 文件回退
   try {
     if (!existsSync(STATE_FILE)) return defaultState();
     const raw = await readFile(STATE_FILE, "utf-8");
@@ -68,8 +100,17 @@ async function loadState(): Promise<ConversationState> {
 
 async function saveState(state: ConversationState): Promise<void> {
   state.updatedAt = new Date().toISOString();
+  const json = JSON.stringify(state);
+
+  // Redis
+  try {
+    const r = await getRedis();
+    if (r) await r.setEx(REDIS_KEY, 86400, json); // 24h TTL
+  } catch { /* ignore */ }
+
+  // 文件（双重保险）
   await mkdir(join(process.cwd(), ".pi"), { recursive: true });
-  await writeFile(STATE_FILE, JSON.stringify(state, null, 2), "utf-8");
+  await writeFile(STATE_FILE, json, "utf-8");
 }
 
 /** 格式化状态为可读文本，注入 context。 */
@@ -155,7 +196,7 @@ export default function factory(pi: ExtensionAPI) {
         },
       },
     },
-    execute: async (params: Record<string, unknown>) => {
+    execute: async (_toolCallId: string, params: Record<string, unknown>) => {
       try {
         const state = await loadState();
 

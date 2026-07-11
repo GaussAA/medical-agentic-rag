@@ -4,9 +4,8 @@ import { searchKG, loadGraph } from "./lib/kg-search.mjs";
 /**
  * 医疗知识图谱搜索工具
  *
- * 注册 kg_search 工具，让 Agent 在回答时可查询疾病-药物-症状关系。
- * 检索逻辑已抽取至 ./lib/kg-search.mjs（纯函数 + 文件化缓存），本文件仅作工具封装。
  * 数据来源: medical-knowlegde-base/.knowledge-graph.json（由 extract-entities.mjs 生成）
+ * 检索方式: 本地 JSON 内存扫描（实体-关系扁平表过滤）
  */
 export default function (pi: ExtensionAPI) {
   let graph: any[] = [];
@@ -25,7 +24,7 @@ export default function (pi: ExtensionAPI) {
 
   pi.registerTool({
     name: "kg_search",
-    description: "搜索医学知识图谱，查找疾病、药物、症状、检查之间的关联关系。当需要了解某疾病的相关信息时使用。",
+    description: "搜索医学知识图谱，查找疾病、药物、症状、检查之间的关联关系。当需要了解某疾病的相关信息时使用（基于本地知识图谱 JSON 扫描）。",
     promptSnippet: "Search medical knowledge graph for disease-drug-symptom relationships",
     parameters: {
       type: "object",
@@ -47,13 +46,12 @@ export default function (pi: ExtensionAPI) {
       },
       required: [],
     },
-    execute: async (params: { disease?: string; entityType?: string; relation?: string }) => {
+    execute: async (_toolCallId: string, params: { disease?: string; entityType?: string; relation?: string }) => {
       await ensureLoaded();
 
       if (graph.length === 0) {
         return { content: [{ type: "text", text: "知识图谱尚未生成，请先运行 scripts/extract-entities.mjs" }] };
       }
-
       const res = searchKG(params, { graph });
       return { content: [{ type: "text", text: res.text }] };
     },

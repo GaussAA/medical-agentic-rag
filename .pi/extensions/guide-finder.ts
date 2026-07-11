@@ -27,7 +27,7 @@ export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "guide_finder",
     description:
-      "查找与疾病或症状相关的医疗指南。在调用 knowledge_search 前使用本工具，" +
+      "查找与疾病或症状相关的医疗指南。在调用 rag_search 前使用本工具，" +
       "可确定应查询哪份(或多份)指南。支持语义路由（同义/模糊匹配）。",
     promptSnippet: "Find which medical guideline(s) are relevant to a disease or symptom, with semantic routing",
     parameters: {
@@ -44,9 +44,18 @@ export default function (pi: ExtensionAPI) {
       },
       required: ["query"],
     },
-    execute: async (params: { query?: string; useSemantic?: boolean }) => {
+    execute: async (_toolCallId: string, params: any) => {
       await ensureLoaded();
-      const query = (params.query || "").trim();
+      // 鲁棒解析：Pi 框架可能把参数传为 (a) 直接对象 (b) JSON 字符串 (c) 嵌套 {arguments}
+      // 此前因 params.query 未被正确绑定 → 误走"空查询"分支，语义路由整轮失效。
+      let p = params;
+      if (typeof p === "string") { try { p = JSON.parse(p); } catch { /* 保持原样 */ } }
+      if (p && typeof p === "object" && typeof p.arguments === "string") {
+        try { p = JSON.parse(p.arguments); } catch { /* 保持原样 */ }
+      } else if (p && typeof p === "object" && typeof p.arguments === "object") {
+        p = p.arguments;
+      }
+      const query = ((p && p.query) || "").toString().trim();
       if (!query) {
         return { content: [{ type: "text", text: "请提供查询关键词。" }] };
       }
@@ -58,7 +67,7 @@ export default function (pi: ExtensionAPI) {
         return {
           content: [{
             type: "text",
-            text: `未找到与"${query}"直接相关的指南。建议直接使用 knowledge_search 进行全文搜索。`,
+            text: `未找到与"${query}"直接相关的指南。建议直接使用 rag_search 进行全文搜索。`,
           }],
         };
       }
@@ -73,7 +82,7 @@ export default function (pi: ExtensionAPI) {
         if (g.reasons && g.reasons.length) lines.push(`    命中依据: ${g.reasons.join("；")}`);
       }
 
-      lines.push(`\n建议: 使用 knowledge_search 时指定 kb_id: "医疗指南" 进行定向搜索。`);
+      lines.push(`\n建议: 使用 rag_search 时指定 kb_id: "医疗指南" 进行定向搜索。`);
 
       return { content: [{ type: "text", text: lines.join("\n") }] };
     },

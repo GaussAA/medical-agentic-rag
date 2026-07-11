@@ -23,7 +23,7 @@ export default function (pi: ExtensionAPI) {
       },
       required: ["question"],
     },
-    execute: async (params) => {
+    execute: async (_toolCallId: string, params) => {
       const question = (params.question || "").trim();
       if (!question) {
         return { content: [{ type: "text", text: "请提供需要分解的问题。" }] };
@@ -117,7 +117,7 @@ export default function (pi: ExtensionAPI) {
 
       lines.push("执行建议:\n");
       lines.push("1. 对每个子查询先调 guide_finder 确定目标指南");
-      lines.push("2. 用 knowledge_search 搜索各子查询");
+      lines.push("2. 用 rag_search 搜索各子查询");
       lines.push("3. 搜索时使用对应子查询建议的 searchMode");
       lines.push("4. 汇总各子查询结果，给出综合性回答");
       if (hasCompare) {

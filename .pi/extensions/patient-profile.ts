@@ -134,7 +134,7 @@ export default function (pi: ExtensionAPI) {
         },
       },
     },
-    execute: async (params) => {
+    execute: async (_toolCallId: string, params) => {
       try {
         const profile = await loadProfile();
         if (params.age) profile.age = params.age;

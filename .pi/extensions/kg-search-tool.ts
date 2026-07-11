@@ -50,7 +50,7 @@ export default function (pi: ExtensionAPI) {
       await ensureLoaded();
 
       if (graph.length === 0) {
-        return { content: [{ type: "text", text: "知识图谱尚未生成，请先运行 scripts/extract-entities.mjs" }] };
+        return { content: [{ type: "text", text: "知识图谱尚未生成，请先运行 scripts/kb/extract-entities.mjs" }] };
       }
       const res = searchKG(params, { graph });
       return { content: [{ type: "text", text: res.text }] };

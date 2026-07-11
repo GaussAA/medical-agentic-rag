@@ -21,7 +21,7 @@ import { join } from "node:path";
  *   3. /kb 命令：展示知识库来源登记表的过期情况（扩展战役的可观测入口）。
  *
  * 说明：Pi 运行时无 Provider 调用拦截钩子，真正切换发生在「启动编排」
- *      （scripts/launch-with-failover.mjs 写入 .pi/failover-selection.json，由 start 脚本读入 --model）。
+ *      （scripts/proxy/launch-with-failover.mjs 写入 .pi/failover-selection.json，由 start 脚本读入 --model）。
  *      本扩展负责运行时可见性与审计，与启动编排构成完整故障转移闭环。
  */
 
@@ -79,7 +79,7 @@ export default function (pi: ExtensionAPI) {
       const sel = await readSelection();
       const selLine = sel
         ? `当前选定: ${sel.provider}/${sel.model} (${sel.degraded ? "⚠ 降级" : "✓ 健康"})\n  理由: ${sel.reason}`
-        : "当前选定: (未知，请先运行启动编排 scripts/launch-with-failover.mjs)";
+        : "当前选定: (未知，请先运行启动编排 scripts/proxy/launch-with-failover.mjs)";
       ctx.ui.notify(
         `Provider 健康排行:\n${formatStatus()}\n\n${selLine}`,
         "info",

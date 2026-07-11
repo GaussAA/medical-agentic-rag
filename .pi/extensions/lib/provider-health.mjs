@@ -12,7 +12,7 @@
 // 4. 内存健康态 + 冷却：连续探测不暴打端点；探测结果带 timestamp 供审计/展示。
 //
 // 纯 JavaScript（.mjs）：既能被 Pi 的 jiti 加载（扩展内 import），
-// 也能被原生 node 直接 import（启动编排脚本 scripts/launch-with-failover.mjs 与单测）。
+// 也能被原生 node 直接 import（启动编排脚本 scripts/proxy/launch-with-failover.mjs 与单测）。
 
 /** 探测超时（毫秒）。 */
 export const PROBE_TIMEOUT_MS = 3000;

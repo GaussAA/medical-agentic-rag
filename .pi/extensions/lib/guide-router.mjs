@@ -7,7 +7,7 @@
 //   3) 模糊匹配：对未命中且长度≥3 的词元做 Levenshtein 距离=1 的容错（别字/缩写）。
 // 最终按加权得分排序，并附带「命中依据(reasons)」以提升医疗场景可解释性/可审计性。
 //
-// 纯 JavaScript（.mjs），无 TS 语法：供 guide-finder.ts（经 jiti）与 tests/eval-bench.mjs（原生 node）共用。
+// 纯 JavaScript（.mjs），无 TS 语法：供 guide-finder.ts（经 jiti）与 tests/unit/eval-bench.mjs（原生 node）共用。
 
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";

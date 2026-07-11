@@ -8,7 +8,7 @@
 // 4. 原始 key 经哈希后落盘，敏感查询文本不写入缓存文件。
 //
 // 纯 JavaScript（.mjs），无 TS 语法，故既能被 Pi 的 jiti 加载（扩展内 import），
-// 也能被原生 node 直接 import（评测脚本 tests/eval-bench.mjs）。
+// 也能被原生 node 直接 import（评测脚本 tests/unit/eval-bench.mjs）。
 
 import {
   existsSync,

@@ -166,13 +166,13 @@ knowledge_show
    在关键词/标题字面匹配之上，新增 **IDF 加权词元重叠 + 主体/次要词分层 + 通用词剔除 +
    短语同义词归一**（如「胃部恶性肿瘤」→「胃癌」）。语义路由 top1 召回率由 **58% → 100%**，
    越界查询精度 **100%**。每条命中附「命中依据」便于医疗审计。
-3. **端到端评测基准** (`tests/eval-bench.mjs`)
+3. **端到端评测基准** (`tests/unit/eval-bench.mjs`)
    无需 API Key，原生 node 运行。量化路由召回（字面 top3 100% / top1 92.6%、语义 top1 100%）、
-   越界精度、冷/热检索延迟与 p95，产出 `tests/eval-report.json` 与 `tests/eval-report.html`。
+   越界精度、冷/热检索延迟与 p95，产出 `tests/reports/eval-report.json` 与 `tests/reports/eval-report.html`。
 
 ```bash
 # 跑出当前基线指标
-node tests/eval-bench.mjs
+node tests/unit/eval-bench.mjs
 ```
 
 ## 合规与可观测性（近期）
@@ -195,7 +195,7 @@ node tests/eval-bench.mjs
 
 ```bash
 # 合规基础设施单测（加密往返 / 旧明文迁移 / PII 脱敏 / 审计，24 项）
-node tests/compliance-test.mjs
+node tests/unit/compliance-test.mjs
 ```
 
 > ⚠️ 生产部署请务必通过 `PATIENT_DATA_KEY` 环境变量注入密钥并做密钥轮换管理；
@@ -209,10 +209,10 @@ node tests/compliance-test.mjs
 > 索引重建四步（原生 node，需 `pdftotext` 与 python-docx 桥）：
 >
 > ```bash
-> node scripts/prepare-raw.mjs        # 复制原始文档进项目 + 生成归一化 medical-raw-txt/
-> node scripts/extract-outline.mjs    # 由原始文本重建 .outline.json（中文层级正则）
-> node scripts/build-guide-index.mjs  # 重建 .guide-index.json（语义路由/关键词）
-> node scripts/_rebuild-registry.mjs  # 重建 kb-sources.json（真实 sha256 指纹 + 专科归类）
+> node scripts/kb/prepare-raw.mjs        # 复制原始文档进项目 + 生成归一化 medical-raw-txt/
+> node scripts/kb/extract-outline.mjs    # 由原始文本重建 .outline.json（中文层级正则）
+> node scripts/kb/build-guide-index.mjs  # 重建 .guide-index.json（语义路由/关键词）
+> node scripts/kb/_rebuild-registry.mjs  # 重建 kb-sources.json（真实 sha256 指纹 + 专科归类）
 > ```
 >
 > 向量库 `~/.pi/knowledge/` 由 Pi 运行时 `knowledge_add { source: "medical-raw" }` 重建（见上「首次使用」）。
@@ -225,23 +225,23 @@ node tests/compliance-test.mjs
 2. **内容指纹 + 过期判定** (`.pi/extensions/lib/kb-sources.mjs`)
    `contentHash`（sha256）对 local 源求真实内容指纹；`isStale` 按 cadence 阈值标记「过期待查」，
    供 `/kb` 命令与定时刷新提醒。版本**快照 + 回滚**：刷新前自动快照，异常即回滚，registry 不处半更新态。
-3. **更新 CLI** (`scripts/kb-update.mjs`)
+3. **更新 CLI** (`scripts/kb/kb-update.mjs`)
    `list / status / check / snapshot / rollback / refresh` 六命令。refresh 走
    `快照→摄取→更新 lastChecked/hash→回写`，真实 local 指纹落地（已验证 27 份文件哈希）。
 4. **偏科缓解路径**：外部源（官网/RAG 语料库/内部 PDF）登记即纳入管理，覆写 `ingest` 钩子接抓取管线即可扩面。
 
 ```bash
 # 来源登记与过期概况
-node scripts/kb-update.mjs status
+node scripts/kb/kb-update.mjs status
 # 执行刷新（摄取+回写，异常回滚）
-node scripts/kb-update.mjs refresh
+node scripts/kb/kb-update.mjs refresh
 ```
 
 ## 高可用增强（近期）
 
 针对「Pi 运行时无 Provider 拦截钩子、无内置故障转移」约束，落地**启动编排 + 运行时可观测**两层闭环：
 
-1. **启动编排故障转移** (`scripts/launch-with-failover.mjs` + `start.bat`/`start.ps1`)
+1. **启动编排故障转移** (`scripts/proxy/launch-with-failover.mjs` + `start.bat`/`start.ps1`)
    每次启动前 `selectProvider` 探测各 Provider（`/models` 端点 + 3s 超时 + API Key 缺失判不健康），
    选出健康者写入 `.pi/failover-selection.json`，由启动脚本读入 `--model`，**自动避开宕机 Provider**。
    显式设置 `LLM_PROVIDER` 时尊重用户选择，跳过探测。

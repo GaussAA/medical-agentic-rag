@@ -2,7 +2,7 @@
 // 医疗知识图谱检索纯函数：按疾病/实体类型/关系过滤扁平实体表，并格式化输出。
 //
 // 抽取自原 kg-search-tool.ts，逻辑保持一致；新增文件化缓存，降低重复查询开销。
-// 纯 JavaScript（.mjs），供 kg-search-tool.ts（经 jiti）与 tests/eval-bench.mjs（原生 node）共用。
+// 纯 JavaScript（.mjs），供 kg-search-tool.ts（经 jiti）与 tests/unit/eval-bench.mjs（原生 node）共用。
 
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";

@@ -21,7 +21,7 @@ fi
 
 # 2) 探测健康 Provider，写 failover-selection.json
 echo "[orchestration] 探测健康 Provider..."
-node scripts/launch-with-failover.mjs 2>/dev/null || true
+node scripts/proxy/launch-with-failover.mjs 2>/dev/null || true
 
 # 3) 读 failover 结果（failover-selection.json 字段为 provider/model）
 WIN_ROOT="$(pwd -W)"  # C:/WorkSpace/...（正斜杠，Windows node 原生识别）
@@ -45,7 +45,7 @@ if [ -n "$OLD_PID" ] && [ "$OLD_PID" != "0" ]; then
 fi
 
 echo "[orchestration] 启动本地 LLM Provider 代理网关..."
-node scripts/provider-proxy.mjs --port="$PROXY_PORT" &
+node scripts/proxy/provider-proxy.mjs --port="$PROXY_PORT" &
 PROXY_PID=$!
 
 # 等待代理就绪
@@ -58,7 +58,7 @@ for i in $(seq 1 30); do
 done
 
 # 5) 设置 preload 劫持 fetch → proxy（$WIN_ROOT 为正斜杠 C:/...，无需引号嵌套）
-export NODE_OPTIONS="--require $WIN_ROOT/scripts/preload-fetch-proxy.mjs"
+export NODE_OPTIONS="--require $WIN_ROOT/scripts/proxy/preload-fetch-proxy.mjs"
 export NODE_PATH="$WIN_ROOT/pi/node_modules"
 
 echo ""

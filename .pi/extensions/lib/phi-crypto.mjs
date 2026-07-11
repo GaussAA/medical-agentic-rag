@@ -10,7 +10,7 @@
 // 3. 审计：auditLog 追加到 logs/audit-YYYY-MM-DD.ndjson（与业务日志分离），
 //    记录"谁在何时对 PHI 做了什么"，调用方须先脱敏。
 // 4. 纯 JavaScript（.mjs）：既能被 Pi 的 jiti 加载（扩展内 import），
-//    也能被原生 node 直接 import（单测 tests/compliance-test.mjs）。
+//    也能被原生 node 直接 import（单测 tests/unit/compliance-test.mjs）。
 
 import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 import {

@@ -11,7 +11,7 @@
 //    外部源的真实抓取需凭证/网络，属手动提供认证数据的范畴（契合大帅爬虫规范）。
 //
 // 纯 JavaScript（.mjs）：既能被 Pi 的 jiti 加载（扩展内 import），
-// 也能被原生 node 直接 import（scripts/kb-update.mjs 与单测）。
+// 也能被原生 node 直接 import（scripts/kb/kb-update.mjs 与单测）。
 
 import { createHash } from "node:crypto";
 import {

@@ -5,18 +5,18 @@
 //       冷/热（缓存命中）检索延迟与 p95、以及越界查询的精度（不误召回）。
 //
 // 直接以原生 node 运行（无需 jiti / API Key）：
-//   node tests/eval-bench.mjs
+//   node tests/unit/eval-bench.mjs
 //
-// 输出：tests/eval-report.json（结构化结果）+ 控制台摘要 + tests/eval-report.html（可视化）。
+// 输出：tests/reports/eval-report.json（结构化结果）+ 控制台摘要 + tests/reports/eval-report.html（可视化）。
 
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { writeFileSync } from "node:fs";
-import { routeGuides, loadIndex } from "../.pi/extensions/lib/guide-router.mjs";
-import { searchKG, loadGraph } from "../.pi/extensions/lib/kg-search.mjs";
-import { cacheClear } from "../.pi/extensions/lib/retrieval-cache.mjs";
+import { routeGuides, loadIndex } from "../../.pi/extensions/lib/guide-router.mjs";
+import { searchKG, loadGraph } from "../../.pi/extensions/lib/kg-search.mjs";
+import { cacheClear } from "../../.pi/extensions/lib/retrieval-cache.mjs";
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 
 const index = loadIndex(REPO_ROOT);
 const graph = loadGraph(REPO_ROOT);
@@ -184,7 +184,7 @@ const metrics = {
 };
 
 const report = { metrics, details: routeResults, kgSamples };
-writeFileSync(join(REPO_ROOT, "tests", "eval-report.json"), JSON.stringify(report, null, 2), "utf-8");
+writeFileSync(join(REPO_ROOT, "tests", "reports", "eval-report.json"), JSON.stringify(report, null, 2), "utf-8");
 
 // ---------- 控制台摘要 ----------
 const line = "─".repeat(64);
@@ -213,7 +213,7 @@ for (const r of routeResults) {
   }
 }
 console.log(line);
-console.log(`报告已写出: tests/eval-report.json`);
+console.log(`报告已写出: tests/reports/eval-report.json`);
 
 // ---------- 轻量 HTML 可视化 ----------
 const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
@@ -252,6 +252,6 @@ ${routeResults
   .join("")}
 </tbody></table>
 </body></html>`;
-writeFileSync(join(REPO_ROOT, "tests", "eval-report.html"), html, "utf-8");
-console.log(`可视化已写出: tests/eval-report.html`);
+writeFileSync(join(REPO_ROOT, "tests", "reports", "eval-report.html"), html, "utf-8");
+console.log(`可视化已写出: tests/reports/eval-report.html`);
 console.log(line);

@@ -134,6 +134,6 @@ try { rmSync(workdir, { recursive: true, force: true }); } catch {}
 
 const report = { suite: "kb-sources", ts: new Date().toISOString(), passed, failed, total: passed + failed, results };
 mkdirSync(join(origCwd, "tests"), { recursive: true });
-writeFileSync(join(origCwd, "tests", "kb-sources-report.json"), JSON.stringify(report, null, 2), "utf-8");
-console.log("报告: tests/kb-sources-report.json");
+writeFileSync(join(origCwd, "tests", "reports", "kb-sources-report.json"), JSON.stringify(report, null, 2), "utf-8");
+console.log("报告: tests/reports/kb-sources-report.json");
 process.exit(failed === 0 ? 0 : 1);

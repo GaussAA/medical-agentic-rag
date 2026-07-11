@@ -1,7 +1,7 @@
 /**
  * 医疗 Agentic RAG · 端到端答案质量 CI 卡点
  *
- * 读取 answer-quality-judge.mjs 产出的 answer-quality-report.json，
+ * 读取 answer-quality-judge.mjs 产出的 tests/reports/answer-quality-report.json，
  * 按阈值判定本次发布是否「答案可信」。
  *
  * 双轨设计：
@@ -29,7 +29,7 @@ const ROOT = join(__dirname, "..");
 const args = process.argv.slice(2);
 const STRICT = args.includes("--strict");
 const reportArg = args.find((a) => a.startsWith("--report="));
-const REPORT_PATH = reportArg ? reportArg.split("=")[1] : join(__dirname, "answer-quality-report.json");
+const REPORT_PATH = reportArg ? reportArg.split("=")[1] : join(__dirname, "reports", "answer-quality-report.json");
 
 // ---- 阈值（可被环境变量覆盖，便于不同发布通道调档）----
 const envNum = (k, d) => (process.env[k] != null ? Number(process.env[k]) : d);

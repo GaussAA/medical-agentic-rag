@@ -87,6 +87,6 @@ try { rmSync(workdir, { recursive: true, force: true }); } catch {}
 const report = { suite: "provider-health", ts: new Date().toISOString(), passed, failed, total: passed + failed, results };
 import { writeFileSync, mkdirSync } from "node:fs";
 mkdirSync(join(origCwd, "tests"), { recursive: true });
-writeFileSync(join(origCwd, "tests", "provider-health-report.json"), JSON.stringify(report, null, 2), "utf-8");
-console.log("报告: tests/provider-health-report.json");
+writeFileSync(join(origCwd, "tests", "reports", "provider-health-report.json"), JSON.stringify(report, null, 2), "utf-8");
+console.log("报告: tests/reports/provider-health-report.json");
 process.exit(failed === 0 ? 0 : 1);

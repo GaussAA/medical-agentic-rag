@@ -114,7 +114,7 @@ console.log("\n=== 字段排序稳定性 ===");
 console.log("\n=== CLI 工具集成 ===");
 {
   // 直接调用 audit-verify.mjs 的 verifyChain 功能
-  const { verifyChain, queryAuditLog, auditChainLog } = await import("../.pi/extensions/lib/audit-chain.mjs");
+  const { verifyChain, queryAuditLog, auditChainLog } = await import("../../.pi/extensions/lib/audit-chain.mjs");
 
   // verifyChain 应能对当前日志（如果存在）执行无错误扫描
   const result = verifyChain();

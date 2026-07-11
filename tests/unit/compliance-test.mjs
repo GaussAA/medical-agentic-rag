@@ -2,7 +2,7 @@
 // 合规基础设施单测 —— 验证 lib/phi-crypto.mjs 的加密往返、旧明文迁移、
 // 密钥自动生成、PII 脱敏与审计写入。原生 node 直接运行，无需 API Key / jiti。
 //
-// 运行：node tests/compliance-test.mjs
+// 运行：node tests/unit/compliance-test.mjs
 //
 // 注意：本测试使用独立临时目录作为 cwd，避免污染项目真实 .pi/ 与 logs/。
 
@@ -136,10 +136,10 @@ const report = {
 };
 mkdirSync(join(origCwd, "tests"), { recursive: true });
 writeFileSync(
-  join(origCwd, "tests", "compliance-report.json"),
+  join(origCwd, "tests", "reports", "compliance-report.json"),
   JSON.stringify(report, null, 2),
   "utf-8",
 );
-console.log(`\n报告已写入 tests/compliance-report.json`);
+console.log(`\n报告已写入 tests/reports/compliance-report.json`);
 
 process.exit(failed === 0 ? 0 : 1);

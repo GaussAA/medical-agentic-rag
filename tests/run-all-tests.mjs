@@ -7,7 +7,7 @@
  *  - 知识图谱关系测试
  *
  * 用法: node tests/run-all-tests.mjs
- * 输出: tests/test-report.json
+ * 输出: tests/reports/test-report.json
  */
 import { readFile, writeFile, readdir } from "node:fs/promises";
 import { readFileSync } from "node:fs";
@@ -415,7 +415,7 @@ async function main() {
   await testSystemPrompt();
 
   // Write report
-  const reportPath = join(__dirname, "test-report.json");
+  const reportPath = join(__dirname, "reports", "test-report.json");
   await writeFile(reportPath, JSON.stringify(results, null, 2), "utf-8");
 
   console.log("=".repeat(50));

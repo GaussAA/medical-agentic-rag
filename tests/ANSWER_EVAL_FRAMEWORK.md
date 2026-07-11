@@ -45,7 +45,7 @@
   "allowedClaims": ["须包含的正确断言（如『索拉非尼可用于一线』）"],
   "forbiddenClaims": ["严禁出现的错误断言（如『推荐吉非替尼一线』）"],
   "expectedRefusal": false,         // true=应拒答越界/无指南问题
-  "systemAnswer": null              // 集成点：M2 由 scripts/collect-agent-answers.mjs 驱动真实 Agent 自动填充
+  "systemAnswer": null              // 集成点：M2 由 scripts/ops/collect-agent-answers.mjs 驱动真实 Agent 自动填充
 }
 ```
 
@@ -63,17 +63,17 @@ node tests/answer-quality-judge.mjs
 SENSENOVA_API_KEY=xxx node tests/answer-quality-judge.mjs
 ```
 
-输出：`tests/answer-quality-report.json` + `tests/answer-quality-report.html`。
+输出：`tests/reports/answer-quality-report.json` + `tests/reports/answer-quality-report.html`。
 
 ## 五、端到端采集与 CI 卡点（M2 已落地）
 
 ### 5.1 自动采集真实回答
-`scripts/collect-agent-answers.mjs` 驱动 Pi Agent（`--print` 非交互模式，加载 `prompts/medical-agent.md` + 项目扩展/知识库）对 gold 问题作答，回填 `systemAnswer`：
+`scripts/ops/collect-agent-answers.mjs` 驱动 Pi Agent（`--print` 非交互模式，加载 `prompts/medical-agent.md` + 项目扩展/知识库）对 gold 问题作答，回填 `systemAnswer`：
 
 ```bash
-node scripts/collect-agent-answers.mjs             # 采全部 systemAnswer=null 条目
-node scripts/collect-agent-answers.mjs --only Q01 # 单条补采
-node scripts/collect-agent-answers.mjs --force     # 覆盖重采
+node scripts/ops/collect-agent-answers.mjs             # 采全部 systemAnswer=null 条目
+node scripts/ops/collect-agent-answers.mjs --only Q01 # 单条补采
+node scripts/ops/collect-agent-answers.mjs --force     # 覆盖重采
 ```
 
 采集后重跑 `node tests/answer-quality-judge.mjs` 即自动进入 live 端到端模式（报告动态标注「端到端（live）」）。

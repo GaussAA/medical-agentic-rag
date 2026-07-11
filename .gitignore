@@ -63,5 +63,4 @@ Thumbs.db
 docs/
 
 # ========== 忽略测试报告产物（可重建，不入仓） ==========
-tests/*-report.json
-tests/*-report.html
+tests/reports/

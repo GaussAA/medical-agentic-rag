@@ -8,14 +8,14 @@
 // 免费模型优先（SENSENOVA）→ DeepSeek 兜底，无 API Key 时四维优雅 skipped。
 // 待审回答优先 systemAnswer（端到端 live 模式），为空则 fallback referenceAnswer（reference-self-check）。
 //
-// 输出：tests/answer-quality-report.json + tests/answer-quality-report.html
+// 输出：tests/reports/answer-quality-report.json + tests/reports/answer-quality-report.html
 
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { readFileSync, existsSync, writeFileSync } from "node:fs";
-import { routeGuides, loadIndex, normalize } from "../.pi/extensions/lib/guide-router.mjs";
+import { routeGuides, loadIndex, normalize } from "../../.pi/extensions/lib/guide-router.mjs";
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const index = loadIndex(REPO_ROOT);
 const TXT_DIR = join(REPO_ROOT, "medical-raw-txt");
 
@@ -30,7 +30,7 @@ const GRADE_TOKENS = [
 const REFUSAL_KW = ["超出", "不在范围", "不在服务", "不提供", "无法提供", "非医疗"];
 
 // 免费优先 LLM 客户端与四维 Judge 统一由 lib/llm-judge.mjs 提供（单一真相源，与 /eval 共用）。
-import { isLLMAvailable, judgeAnswer, runWithConcurrency, SENSENOVA_CONCURRENCY } from "../.pi/extensions/lib/llm-judge.mjs";
+import { isLLMAvailable, judgeAnswer, runWithConcurrency, SENSENOVA_CONCURRENCY } from "../../.pi/extensions/lib/llm-judge.mjs";
 const RUN_LLM = isLLMAvailable();
 
 function readGuideText(title) {
@@ -342,10 +342,10 @@ const metrics = {
 };
 
 const report = { metrics, details };
-writeFileSync(join(REPO_ROOT, "tests", "answer-quality-report.json"), JSON.stringify(report, null, 2), "utf-8");
+writeFileSync(join(REPO_ROOT, "tests", "reports", "answer-quality-report.json"), JSON.stringify(report, null, 2), "utf-8");
 
 // ---------- 液态玻璃 HTML 可视化 ----------
-const htmlPath = join(REPO_ROOT, "tests", "answer-quality-report.html");
+const htmlPath = join(REPO_ROOT, "tests", "reports", "answer-quality-report.html");
 writeFileSync(htmlPath, buildHtmlReport(metrics, details), "utf-8");
 
 // ---------- 控制台摘要 ----------
@@ -372,6 +372,6 @@ for (const d of details) {
   console.log(`  [${d.id}] ${d.department}/${d.difficulty} 引${d.citation.hit}/${d.citation.tot} 证${d.evidence.tot ? pct(d.evidence.hit, d.evidence.tot) + "%" : "—"} 级${d.gradeFound ? "✓" : "✗"} 允${a.allowedPass ? "✓" : "✗"} 禁${a.forbiddenCount === 0 ? "✓" : "✗" + a.forbiddenCount} ${d.judge.skipped ? "(judge跳过)" : "J✓"}  ${d.q}`);
 }
 console.log(L);
-console.log("报告已写出: tests/answer-quality-report.json");
-console.log("可视化已写出: tests/answer-quality-report.html");
+console.log("报告已写出: tests/reports/answer-quality-report.json");
+console.log("可视化已写出: tests/reports/answer-quality-report.html");
 console.log(L);

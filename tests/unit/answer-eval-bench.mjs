@@ -12,15 +12,15 @@
 //   - 幻觉检测仅在 SENSENOVA_API_KEYS / SENSENOVA_API_KEY 存在时调用 sensenova 免费通道（多 Key 池并发），否则 skipped；
 //   - 证据短语一律经 normalize 后再做子串匹配，容忍中英文标点/全半角差异。
 //
-// 输出：tests/answer-eval-report.json + tests/answer-eval-report.html
+// 输出：tests/reports/answer-eval-report.json + tests/reports/answer-eval-report.html
 
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { readFileSync, existsSync, writeFileSync } from "node:fs";
-import { routeGuides, loadIndex, normalize } from "../.pi/extensions/lib/guide-router.mjs";
-import { callLLM, isLLMAvailable, runWithConcurrency, SENSENOVA_CONCURRENCY } from "../.pi/extensions/lib/llm-judge.mjs";
+import { routeGuides, loadIndex, normalize } from "../../.pi/extensions/lib/guide-router.mjs";
+import { callLLM, isLLMAvailable, runWithConcurrency, SENSENOVA_CONCURRENCY } from "../../.pi/extensions/lib/llm-judge.mjs";
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const index = loadIndex(REPO_ROOT);
 const TXT_DIR = join(REPO_ROOT, "medical-raw-txt");
 
@@ -218,7 +218,7 @@ const metrics = {
 
 const report = { metrics, details };
 writeFileSync(
-  join(REPO_ROOT, "tests", "answer-eval-report.json"),
+  join(REPO_ROOT, "tests", "reports", "answer-eval-report.json"),
   JSON.stringify(report, null, 2),
   "utf-8",
 );
@@ -245,7 +245,7 @@ for (const d of details) {
   if (d.evidence.missing.length) console.log(`      源缺失: ${d.evidence.missing.join("；")}`);
 }
 console.log(line);
-console.log(`报告已写出: tests/answer-eval-report.json`);
+console.log(`报告已写出: tests/reports/answer-eval-report.json`);
 
 // ---------- 轻量液态玻璃 HTML 可视化 ----------
 const k = metrics.kpi;
@@ -295,6 +295,6 @@ ${details
   .join("")}
 </tbody></table>
 </body></html>`;
-writeFileSync(join(REPO_ROOT, "tests", "answer-eval-report.html"), html, "utf-8");
-console.log(`可视化已写出: tests/answer-eval-report.html`);
+writeFileSync(join(REPO_ROOT, "tests", "reports", "answer-eval-report.html"), html, "utf-8");
+console.log(`可视化已写出: tests/reports/answer-eval-report.html`);
 console.log(line);

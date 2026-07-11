@@ -77,7 +77,7 @@ medical-agentic-rag/
 | 组件       | 技术                         | 说明                          |
 | ---------- | ---------------------------- | ----------------------------- |
 | Agent 框架 | Pi Agent (v0.80.3)           | ReAct 智能体循环 + 工具系统   |
-| RAG 引擎   | pi-knowledge (v0.4.7)        | 本地优先，混合检索 + 重排序   |
+| RAG 引擎   | pi-knowledge (v0.5.1)        | 本地优先，混合检索 + 重排序   |
 | LLM        | DeepSeek V4 Flash            | `api.deepseek.com`            |
 | 嵌入模型   | multilingual-e5-small (本地) | 约 32MB ONNX，零 API Key      |
 | 向量存储   | pi-knowledge 内置向量文件    | 本地存储于 `~/.pi/knowledge/` |
@@ -131,19 +131,18 @@ knowledge_show
 | 精确术语           |   `fast`   | `knowledge_search({ query: "...", mode: "fast" })`     |
 | 概念搜索           | `semantic` | `knowledge_search({ query: "...", mode: "semantic" })` |
 
-## 扩展包
+## 扩展包（组合优先）
 
-已安装：
+系统能力由**现成 Pi 生态包 + 极简手写胶水**构成，不重复造轮子。已安装并运行时加载：
 
-- **pi-knowledge** — RAG 引擎（知识库索引 + 混合检索 + 交叉编码器重排序）
+- **pi-knowledge** — RAG 引擎（知识库索引 + 混合检索 + 交叉编码器重排序），`knowledge_search` 工具
+- **pi-web-access** — 联网检索/网页理解，`web_search` / `fetch_content` 工具（P3：抓取最新指南）
+- **pi-subagents** — 多代理并行/委派/分解，`subagent` 工具（P3：多指南对比诊疗）
+- **@firstpick/pi-package-webui** — 本地浏览器 Web 端，会话内 `/webui-start` 启动（默认 127.0.0.1:31415）
 
-可选安装（按需）：
+> 注：**pi-mcp-adapter 刻意不装**——原规划接 Neo4j/Qdrant 后端，经核查两库从未运行（无 env、launch 不 compose up），纯增依赖无收益；`kg_search` 走本地 `.knowledge-graph.json`，跨文档检索由 pi-knowledge 原生 `knowledge_search` 覆盖。
 
-```bash
-pi install npm:pi-web-access       # 联网搜索增强
-pi install npm:pi-mcp-adapter      # MCP 服务集成
-pi install npm:pi-subagents        # 并行子代理
-```
+如需 Web 端，启动 Pi 后在会话内执行 `/webui-start`，浏览器打开 http://127.0.0.1:31415/ 即可。
 
 ## 检索增强（近期）
 
@@ -210,8 +209,8 @@ node tests/compliance-test.mjs
 
 1. **来源登记表** (`kb-sources.json`)
    每项含 `id/名称/类型(local|web|feed)/地址/cadence/校验方式`。新增外部源只需追加一行，
-   无需改代码——结构化解开「更新机制缺失」死结。当前登记 **27 份本地指南 + 1 个外部示范源**
-   （国家卫健委官网公告，需凭证/网络，默认 `ingest` 显式标记未实现，不假装完成）。
+   无需改代码——结构化解开「更新机制缺失」死结。   当前登记 **135 份本地指南**（原始 PDF/DOCX，方案 B 唯一真相源）。外部官网源（国家卫健委公告）
+   需凭证/网络，默认 `ingest` 显式标记未实现，不假装完成。
 2. **内容指纹 + 过期判定** (`.pi/extensions/lib/kb-sources.mjs`)
    `contentHash`（sha256）对 local 源求真实内容指纹；`isStale` 按 cadence 阈值标记「过期待查」，
    供 `/kb` 命令与定时刷新提醒。版本**快照 + 回滚**：刷新前自动快照，异常即回滚，registry 不处半更新态。
@@ -247,6 +246,16 @@ node scripts/kb-update.mjs refresh
 
 > 注：因 Pi 无运行时 Provider 劫持钩子，「实时会话内切换」需重启（重新走编排）；
 > 若需零重启热切换，须将 Agent 包成服务层（含请求重试/熔断）——属后续可选战役。
+
+## 组合优先架构（P1/P2/P3 终局）
+
+经扩展生态审计（见 `docs/extension-audit-2026-07-10.html`），系统确立「尽量用现成成熟方案、只在真正需要时手写」的架构纪律，分三阶段落地：
+
+- **P1 减负**：删 Kafka/Redis 队列等孤立死代码；`apply-reranker-patch.mjs` 加版本锁防升级静默失效。
+- **P2 删死重**：删未接生产的 `neo4j-search`/`qdrant-search`/`cross-doc-search` 及整个未激活 `scripts/infra/` 七栈（redis/qdrant/postgres/kafka/neo4j/prometheus/nginx 从未 `compose up`）；`kg-search-tool.ts` 移除永不走到的 Neo4j 分支。保留 `query-decomposer`（医学启发式，与 pi-subagents 互补）与 `conversation-state`（Agent 侧槽位追踪，与 pi-interview 关注点不同）。
+- **P3 拼装扩充**：联网抓取最新指南 → `pi-web-access`；多代理对比诊疗 → `pi-subagents`；Web 端服务 → `@firstpick/pi-package-webui`（`/webui-start`）；答案级评测/幻觉检测 → `answer-evaluator.ts` 轻量 LLM-judge 封装（免费模型优先，sensenova-6.7-flash-lite → deepseek-v4-flash 兜底）。
+
+手写代码已压至最小：仅检索路由/缓存/PHI 加密/合规审计等**不可替代的胶水与医疗合规逻辑**为手写，其余一律组合现成包。
 
 ## 设计原则
 

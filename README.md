@@ -50,15 +50,15 @@ medical-agentic-rag/
 │       │   ├── kg-search.mjs    # 知识图谱检索
 │       │   ├── retrieval-cache.mjs # 文件化共享检索缓存
 │       │   └── phi-crypto.mjs   # PHI 加密 + PII 脱敏 + 审计
-│       ├── guide-finder.ts      # 指南路由工具（语义路由版）
-│       ├── kg-search-tool.ts    # 知识图谱检索工具
-│       ├── query-cache.ts       # 检索缓存管理命令（/cache）
-│       ├── query-decomposer.ts  # 复杂问题分解
-│       ├── answer-evaluator.ts  # 回答质量评估
-│       ├── monitor-logger.ts    # 运行日志埋点 + 审计（/logs /audit）
-│       ├── patient-profile.ts   # 患者画像（AES-256-GCM 加密 + 审计）
-│       ├── agnes-provider.ts    # Agnes AI Provider
-│       └── sensenova-provider.ts # 商汤日日新 Provider
+│       ├── retrieval.guide-finder.ts      # 指南路由工具（语义路由版）
+│       ├── retrieval.kg-search-tool.ts    # 知识图谱检索工具
+│       ├── provider.query-cache.ts       # 检索缓存管理命令（/cache）
+│       ├── retrieval.query-decomposer.ts  # 复杂问题分解
+│       ├── eval.answer-evaluator.ts  # 回答质量评估
+│       ├── eval.monitor-logger.ts    # 运行日志埋点 + 审计（/logs /audit）
+│       ├── safety.patient-profile.ts   # 患者画像（AES-256-GCM 加密 + 审计）
+│       ├── provider.agnes.ts    # Agnes AI Provider
+│       └── provider.sensenova.ts # 商汤日日新 Provider
 ├── prompts/
 │   └── medical-agent.md         # 医疗 Agent System Prompt（核心定制）
 ├── scripts/
@@ -247,7 +247,7 @@ node scripts/kb/kb-update.mjs refresh
    显式设置 `LLM_PROVIDER` 时尊重用户选择，跳过探测。
 2. **Provider 注册表** (`lib/provider-health.mjs`)：deepseek(主) → agnes → sensenova×2 四候选，含优先级。
    `selectProvider` 全不健康时降级回退 priority 最小者并标注 degraded（避免启动即崩，但明确告警）。
-3. **运行时可观测** (`provider-failover.ts`)
+3. **运行时可观测** (`provider.failover.ts`)
    周期（5min）健康监控，健康态跃迁记 `logs/audit-*.ndjson`；`/failover` 命令展示健康排行与当前选定；
    `/kb` 命令展示来源过期概况。会话关闭清理定时器。
 4. **deepseek 走内置，无需扩展**：`deepseek` 是 Pi 内置 Provider（`pi/packages/ai/src/providers/deepseek.ts`，随启动经 `loadBuiltInModels` 自动播种），
@@ -263,8 +263,8 @@ node scripts/kb/kb-update.mjs refresh
 经扩展生态审计（见 `docs/extension-audit-2026-07-10.html`），系统确立「尽量用现成成熟方案、只在真正需要时手写」的架构纪律，分三阶段落地：
 
 - **P1 减负**：删 Kafka/Redis 队列等孤立死代码；`apply-reranker-patch.mjs` 加版本锁防升级静默失效。
-- **P2 删死重**：删未接生产的 `neo4j-search`/`qdrant-search`/`cross-doc-search` 及整个未激活 `scripts/infra/` 七栈（redis/qdrant/postgres/kafka/neo4j/prometheus/nginx 从未 `compose up`）；`kg-search-tool.ts` 移除永不走到的 Neo4j 分支。保留 `query-decomposer`（医学启发式，与 pi-subagents 互补）与 `conversation-state`（Agent 侧槽位追踪，与 pi-interview 关注点不同）。
-- **P3 拼装扩充**：联网抓取最新指南 → `pi-web-access`；多代理对比诊疗 → `pi-subagents`；Web 端服务 → `@firstpick/pi-package-webui`（`/webui-start`）；答案级评测/幻觉检测 → `answer-evaluator.ts` 轻量 LLM-judge 封装（免费模型优先，sensenova-6.7-flash-lite → deepseek-v4-flash 兜底）。
+- **P2 删死重**：删未接生产的 `neo4j-search`/`qdrant-search`/`cross-doc-search` 及整个未激活 `scripts/infra/` 七栈（redis/qdrant/postgres/kafka/neo4j/prometheus/nginx 从未 `compose up`）；`retrieval.kg-search-tool.ts` 移除永不走到的 Neo4j 分支。保留 `query-decomposer`（医学启发式，与 pi-subagents 互补）与 `conversation-state`（Agent 侧槽位追踪，与 pi-interview 关注点不同）。
+- **P3 拼装扩充**：联网抓取最新指南 → `pi-web-access`；多代理对比诊疗 → `pi-subagents`；Web 端服务 → `@firstpick/pi-package-webui`（`/webui-start`）；答案级评测/幻觉检测 → `eval.answer-evaluator.ts` 轻量 LLM-judge 封装（免费模型优先，sensenova-6.7-flash-lite → deepseek-v4-flash 兜底）。
 
 手写代码已压至最小：仅检索路由/缓存/PHI 加密/合规审计等**不可替代的胶水与医疗合规逻辑**为手写，其余一律组合现成包。
 

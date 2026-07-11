@@ -9,7 +9,7 @@
  *   - 数组增量合并去重、字符串覆盖更新
  *
  * 前置: esbuild 编译扩展 -> scripts/ops/.patient-profile-compiled.mjs
- *   node pi/node_modules/esbuild/bin/esbuild .pi/extensions/patient-profile.ts \
+ *   node pi/node_modules/esbuild/bin/esbuild .pi/extensions/safety.patient-profile.ts \
  *     --format=esm --platform=node --outfile=scripts/ops/.patient-profile-compiled.mjs
  *
  * 用法: node scripts/ops/verify-patient-profile.mjs
@@ -23,7 +23,7 @@ const projectRoot = process.cwd();
 const compiledPath = join(projectRoot, "scripts", ".patient-profile-compiled.mjs");
 execSync(
   `node "${join(projectRoot, "pi", "node_modules", "esbuild", "bin", "esbuild")}" ` +
-    `"${join(projectRoot, ".pi", "extensions", "patient-profile.ts")}" ` +
+    `"${join(projectRoot, ".pi", "extensions", "safety.patient-profile.ts")}" ` +
     `--format=esm --platform=node --outfile="${compiledPath}"`,
   { stdio: "pipe" }
 );

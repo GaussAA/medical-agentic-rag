@@ -12,8 +12,8 @@
 //
 // 纯 JavaScript（.mjs），无 TS 语法：供 knowledge-search-router.ts（jiti）与 tests（原生 node）共用。
 
-import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync, unlinkSync } from "node:fs";
+import { join, dirname } from "node:path";
 import { createRequire } from "node:module";
 import { normalize, tokenize, routeGuides, loadIndex } from "./guide-router.mjs";
 import { cacheGet, cacheSet } from "./retrieval-cache.mjs";
@@ -196,31 +196,250 @@ function resolveKbId(db, kbId) {
   return null;
 }
 
+// ---------------------------------------------------------------------------
+// FTS5 trigram 中文候选召回
+//
+// 修复：pi-knowledge 既有 chunks_fts 用默认 unicode61 分词器，中文无空格 → MATCH 全失效；
+// 迫使 retrieval-router 对 chunks 全表扫描后再 JS 端 BM25（随 chunks 线性退化：44万→~18s）。
+// 本库自建**独立** FTS5 trigram 虚拟表（不触碰 pi-knowledge 内部库，重建安全），
+// 索引 chunks 原始 content；trigram 对 3+ 字中文短语子串匹配完美，2 字及以下自然降级全扫。
+// 惰性构建 + 失效检测（chunks 行数 + MAX(indexed_at)），零新增依赖。
+// ---------------------------------------------------------------------------
+
+/** 独立 FTS 库路径（与 retrieval-cache 同处 .pi/cache，隔离 pi-knowledge 内部库）。 */
+export function ftsDbPath() {
+  return join(process.cwd(), ".pi", "cache", "retrieval-fts.db");
+}
+
+let _ftsDb = null;
+let _ftsSig = null;
+let _ftsPathOverride = null;
+
+/** 测试/运维钩子：覆盖 FTS 库路径（同时清空已缓存连接）。 */
+export function setFtsDbPath(p) {
+  _ftsPathOverride = p;
+  resetFtsDb();
+}
+/** 测试钩子：清空模块级 FTS 连接缓存。 */
+export function resetFtsDb() {
+  if (_ftsDb) {
+    try {
+      _ftsDb.close();
+    } catch {}
+  }
+  _ftsDb = null;
+  _ftsSig = null;
+}
+
+/**
+ * 候选 IN 上限：超过则收窄收益甚微且逼近 SQLite 单次语句参数上限(999)，
+ * 此时放弃 IN 约束、降级为全表扫描（对 4413 级语料仍仅 ~180ms）。
+ */
+const MAX_FTS_CANDIDATES = 800;
+
+/**
+ * 从查询抽取可用于 trigram 召回的词元：CJK 按 ≥3 字滑窗（覆盖无空格中文短语重叠），
+ * 拉丁/数字按 ≥3 字词元。2 字及以下中文无法构成 trigram → 丢弃（自然降级全扫）。
+ * @param {string} query
+ * @returns {string[]} 去重后的 3+ 字词元
+ */
+export function ftsQueryTokens(query) {
+  const n = normalize(query);
+  if (!n) return [];
+  const tokens = [];
+  for (const w of n.match(/[一-鿿]+/g) || []) {
+    if (w.length < 3) continue;
+    for (let i = 0; i + 3 <= w.length; i++) tokens.push(w.slice(i, i + 3));
+  }
+  for (const m of n.match(/[a-z0-9]+/g) || []) {
+    if (m.length >= 3) tokens.push(m);
+  }
+  return [...new Set(tokens)];
+}
+
+/**
+ * 用 FTS5 trigram 召回与查询相关的 chunk_id 候选集（逐词 MATCH 后取并集，BM25 后再排序）。
+ * @param {object} ftsDb  FTS 库连接
+ * @param {string} query
+ * @returns {string[]|null} chunk_id 列表；null 表示无 3+ 字词元或 FTS 异常（应降级全扫）
+ */
+export function ftsCandidateIds(ftsDb, query) {
+  const tokens = ftsQueryTokens(query);
+  if (tokens.length === 0) return null;
+  const seen = new Set();
+  const out = [];
+  try {
+    const stmt = ftsDb.prepare("SELECT chunk_id FROM chunks_fts WHERE content MATCH ?");
+    for (const t of tokens) {
+      const rows = stmt.all(`"${t.replace(/"/g, '""')}"`);
+      for (const r of rows) if (!seen.has(r.chunk_id)) { seen.add(r.chunk_id); out.push(r.chunk_id); }
+    }
+  } catch (e) {
+    console.error("[retrieval-router] FTS 查询异常，降级全扫:", e.message);
+    return null;
+  }
+  return out;
+}
+
+/**
+ * 从源 DB 重建 FTS5 trigram 索引到 ftsDb（覆盖式，事务批量插入）。
+ * 以 chunks 暗藏整数 rowid 作为 FTS rowid，chunk_id 等元数据以 UNINDEXED 列随行携带。
+ * 同时预建**全局 df 表**（token → 文档频率）与 meta.total（语料总 chunk 数），
+ * 供 FTS 模式下 BM25 使用「全局 IDF」打分，排名与全扫严格一致（杜绝子集 IDF 漂移）。
+ * @param {object} srcDb  knowledge.db 只读连接
+ * @param {object} ftsDb  目标 FTS 库连接（readwrite）
+ * @param {string} sig    源签名（chunks 行数:MAX(indexed_at)），写入 meta 供失效检测
+ */
+export function buildFtsIndex(srcDb, ftsDb, sig) {
+  ftsDb.exec("DROP TABLE IF EXISTS chunks_fts");
+  ftsDb.exec("DROP TABLE IF EXISTS meta");
+  ftsDb.exec("DROP TABLE IF EXISTS df");
+  ftsDb.exec(
+    "CREATE VIRTUAL TABLE chunks_fts USING fts5(content, chunk_id UNINDEXED, file_path UNINDEXED, kb_id UNINDEXED, tokenize='trigram')",
+  );
+  ftsDb.exec("CREATE TABLE meta (k TEXT PRIMARY KEY, v TEXT)");
+  // 全局文档频率表：与 BM25 所用 tokenize 同源，保证 IDF 与全扫完全一致
+  ftsDb.exec("CREATE TABLE df (token TEXT PRIMARY KEY, df INTEGER NOT NULL)");
+  const insFts = ftsDb.prepare(
+    "INSERT INTO chunks_fts(rowid, content, chunk_id, file_path, kb_id) VALUES (?, ?, ?, ?, ?)",
+  );
+  const insMeta = ftsDb.prepare("INSERT OR REPLACE INTO meta(k, v) VALUES (?, ?)");
+  const insDf = ftsDb.prepare("INSERT OR REPLACE INTO df(token, df) VALUES (?, ?)");
+  const total = srcDb.prepare("SELECT COUNT(*) n FROM chunks").get().n;
+  const tx = ftsDb.transaction(() => {
+    const rows = srcDb
+      .prepare("SELECT rowid, id, content, file_path, kb_id FROM chunks")
+      .all();
+    const dfMap = new Map(); // token -> 文档频率（每 chunk 内去重计 1）
+    for (const r of rows) {
+      insFts.run(r.rowid, r.content || "", r.id, r.file_path || "", r.kb_id || "");
+      for (const tk of new Set(tokenize(r.content || ""))) {
+        dfMap.set(tk, (dfMap.get(tk) || 0) + 1);
+      }
+    }
+    for (const [tk, d] of dfMap) insDf.run(tk, d);
+    insMeta.run("sig", sig);
+    insMeta.run("total", String(total));
+  });
+  tx();
+}
+
+/** 计算源库签名：chunks 行数 + MAX(indexed_at)，任一变化即判定需重建。 */
+function sourceSig(srcDb) {
+  const row = srcDb
+    .prepare("SELECT COUNT(*) n, COALESCE(MAX(indexed_at), 0) mx FROM chunks")
+    .get();
+  return `${row.n}:${row.mx}`;
+}
+
+/**
+ * 确保 FTS 索引就绪（惰性构建 + 失效重建），返回 FTS 库连接。
+ * 运行期（getFtsDb）与运维预构建脚本共用。内存库（":memory:"）跳过，降级全扫。
+ * @param {object} srcDb  knowledge.db 只读连接
+ * @param {string} [ftsPathOverride]  覆盖 FTS 库路径（测试/独立实例）
+ * @returns {object|null} FTS 库连接，或 null（源库不可用/构建失败）
+ */
+export function ensureFtsIndex(srcDb, ftsPathOverride) {
+  if (!srcDb) return null;
+  let isMemory = false;
+  try {
+    isMemory = srcDb.name === ":memory:";
+  } catch {}
+  if (isMemory) return null; // 内存库不建持久 FTS（测试场景），降级全扫
+
+  const ftsPath = ftsPathOverride || _ftsPathOverride || ftsDbPath();
+  let sig;
+  try {
+    sig = sourceSig(srcDb);
+  } catch {
+    return null;
+  }
+  const usingDefault = !ftsPathOverride && !_ftsPathOverride;
+  if (usingDefault && _ftsDb && _ftsSig === sig) return _ftsDb;
+
+  let db;
+  try {
+    mkdirSync(dirname(ftsPath), { recursive: true });
+    db = new Database(ftsPath);
+  } catch (e) {
+    console.error("[retrieval-router] 无法打开 FTS 库:", e.message);
+    return null;
+  }
+  let needBuild = true;
+  try {
+    const m = db.prepare("SELECT v FROM meta WHERE k='sig' LIMIT 1").get();
+    if (m && m.v === sig) needBuild = false;
+  } catch {
+    needBuild = true;
+  }
+  if (needBuild) {
+    try {
+      buildFtsIndex(srcDb, db, sig);
+    } catch (e) {
+      console.error("[retrieval-router] FTS 构建失败，降级全扫:", e.message);
+      try {
+        db.close();
+      } catch {}
+      try {
+        unlinkSync(ftsPath);
+      } catch {}
+      return null;
+    }
+  }
+  if (usingDefault) {
+    _ftsDb = db;
+    _ftsSig = sig;
+  }
+  return db;
+}
+
+/** 运行期入口：复用模块级缓存的 FTS 连接（惰性构建 + 失效重建）。 */
+export function getFtsDb(srcDb) {
+  return ensureFtsIndex(srcDb);
+}
+
 /**
  * 纯函数：在候选 chunks 上做 BM25 风格排序。
- * 词元化复用 guide-router 的 tokenize（CJK 单字+二元组、拉丁词、同义词扩展），
- * 与路由同源 → 中英文混合查询的匹配一致。IDF 在当前候选集上计算。
+ * 词元化复用 guide-router 的 tokenize（CJK 单字+二元组、拉丁词、同义词扩展），与路由同源。
+ * IDF 在当前候选集上计算。候选集优先由 FTS5 trigram 中文召回收窄（详见编排注释）。
  *
- * @param {Array} rows  chunk 行 [{id,file_path,content,metadata_json,...}]
+ * @param {object} db  better-sqlite3 连接实例
  * @param {string} query  原始查询
- * @param {object} [opts] { limit, kbFiles }
+ * @param {object} [opts] { limit, kbFiles, kbId, ftsDb }
  * @returns {Array} 排序后的 {file_path,score,snippet,metadata}
  */
 export function lexicalSearch(db, query, opts = {}) {
-  const { limit = 8, kbFiles = null, kbId = null } = opts;
+  const { limit = 8, kbFiles = null, kbId = null, ftsDb = null } = opts;
   const qNorm = normalize(query);
   if (!qNorm) return [];
 
-  // 1) 取候选集（可选：仅路由命中的指南文件）
+  const qTok = tokenize(query);
+  if (qTok.size === 0) return [];
+
+  // 1) 候选集：优先用 FTS5 trigram 中文召回收窄（全语料场景收益最大；2 字词/异常则降级全扫）
+  let candidateIds = null;
+  // ftsDb===false 表示显式禁用 FTS（强制全扫，用于对照/回退比较；生产路径不传）
+  const fdb = opts.ftsDb === false ? null : ftsDb || getFtsDb(db);
+  if (fdb) {
+    const ids = ftsCandidateIds(fdb, query);
+    if (ids && ids.length && ids.length <= MAX_FTS_CANDIDATES) candidateIds = ids;
+  }
+
+  // 2) 组装 SQL：FTS 候选约束 + kb_id + 路由文件名约束（三者取交集，互不冲突）
   let sql = "SELECT id, file_path, content, metadata_json FROM chunks WHERE 1=1";
   const params = [];
+  if (candidateIds) {
+    const ph = candidateIds.map(() => "?").join(",");
+    sql += ` AND id IN (${ph})`;
+    params.push(...candidateIds);
+  }
   if (kbId) {
     const realKb = resolveKbId(db, kbId);
     if (realKb) {
       sql += " AND kb_id = ?";
       params.push(realKb);
     }
-    // realKb 为 null（传入的是未知名字/UUID）→ 不追加过滤，避免 0 行退化
+    // realKb 为 null（传入未知名字/UUID）→ 不追加过滤，避免 0 行退化
   }
   if (kbFiles && kbFiles.length) {
     const ph = kbFiles.map(() => "?").join(",");
@@ -230,17 +449,28 @@ export function lexicalSearch(db, query, opts = {}) {
   const rows = db.prepare(sql).all(...params);
   if (rows.length === 0) return [];
 
-  // 2) 词元与 IDF
-  const qTok = tokenize(query);
-  if (qTok.size === 0) return [];
-  const N = Math.max(1, rows.length);
-  const df = new Map();
-  for (const r of rows) {
-    for (const tk of new Set(tokenize(r.content || ""))) df.set(tk, (df.get(tk) || 0) + 1);
+  // 3) IDF：FTS 模式用**全局** IDF（构建期预存的 df 表 + meta.total），与全扫排名严格一致，
+  //    杜绝「候选子集 IDF」导致的排名漂移；全扫/降级模式则在候选集(=全语料)上计算（原行为）。
+  let N;
+  let df;
+  if (candidateIds && fdb) {
+    N = Number(fdb.prepare("SELECT v FROM meta WHERE k='total'").get().v);
+    df = new Map();
+    const getDf = fdb.prepare("SELECT df FROM df WHERE token = ?");
+    for (const qt of qTok) {
+      const r = getDf.get(qt);
+      if (r) df.set(qt, r.df);
+    }
+  } else {
+    N = rows.length;
+    df = new Map();
+    for (const r of rows) {
+      for (const tk of new Set(tokenize(r.content || ""))) df.set(tk, (df.get(tk) || 0) + 1);
+    }
   }
   const idf = (t) => Math.log(N / Math.max(1, df.get(t) || 0));
 
-  // 3) 逐 chunk 打分
+  // 4) 逐 chunk 打分（仅对候选 chunks tokenize，规模已收敛）
   const scored = [];
   for (const r of rows) {
     const counts = new Map();
@@ -257,7 +487,13 @@ export function lexicalSearch(db, query, opts = {}) {
     }
     if (score > 0) scored.push({ file_path: r.file_path, score, hitCount, content: r.content, metadata: safeJson(r.metadata_json) });
   }
-  scored.sort((a, b) => b.score - a.score);
+  // 同分稳定排序：分数 → 命中词元数 → 文件名（消除 SQLite 任意行序导致的结果抖动）
+  scored.sort(
+    (a, b) =>
+      b.score - a.score ||
+      b.hitCount - a.hitCount ||
+      (a.file_path < b.file_path ? -1 : a.file_path > b.file_path ? 1 : 0),
+  );
 
   const qTokArr = [...qTok];
   return scored.slice(0, limit).map((r) => ({

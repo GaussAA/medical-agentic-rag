@@ -6,6 +6,8 @@ import { engineHybridSearch } from "./lib/knowledge-engine-search.mjs";
 import { buildVersionConflictHint, defaultLoadGuideIndex } from "./lib/conflict-detector.mjs";
 // @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
 import { sanitizeSearchQuery } from "./lib/query-sanitize.mjs";
+// 检索动作落入防篡改审计哈希链（仅记字段名，不记查询原文——合规红线）
+import { auditChainLog } from "./lib/audit-chain.mjs";
 
 /**
  * rag_search 定向召回检索扩展（独立工具名，避免与 pi-knowledge 扩展的 knowledge_search 重名冲突）
@@ -96,6 +98,12 @@ export default function (pi: ExtensionAPI) {
       }
       const limit = typeof p.limit === "number" && p.limit > 0 ? Math.min(p.limit, 30) : 8;
       const kbId = typeof p.kb_id === "string" && p.kb_id ? p.kb_id : null;
+      // 审计：检索动作落入防篡改哈希链（仅字段名，不含查询原文——合规红线）
+      try {
+        auditChainLog("retrieval", { queryLen: query.length, kbId: kbId || null });
+      } catch {
+        /* 审计写入失败绝不阻断检索 */
+      }
       const mode = typeof p.mode === "string" ? p.mode : "hybrid";
       const telemetry: Record<string, any> = {
         query: query.slice(0, 60),

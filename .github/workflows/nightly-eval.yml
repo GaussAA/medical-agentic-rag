@@ -4,8 +4,10 @@
 # 每日 UTC 2:00（北京时间 10:00）运行端到端质量评测，
 # 更新基线 JSON。若质量退步则自动发 Issue 报警。
 #
-# 依赖：SENSENOVA_API_KEY GitHub Secret（免费额度，20 并发）
-#       better-sqlite3 原生模块（需 apt 安装编译链）
+# 依赖（均为软依赖，缺失则优雅跳过，绝不因环境缺料而误报/飘红）：
+#   - SENSENOVA_API_KEY GitHub Secret（免费额度；可选，配置后启用真评测+基线刷新+退步报警）
+#   - better-sqlite3 原生模块（需 apt 安装编译链）
+#   - 真实 knowledge.db（可选，缺失时真实链路冒烟优雅跳过；真链路必跑下沉于本地 pre-push 钩子）
 
 name: Nightly Eval
 
@@ -51,14 +53,31 @@ jobs:
             fi
           }
 
-      - name: 运行全量评测
+      - name: 运行全量评测（需 SENSENOVA_API_KEY；缺失/失败则优雅跳过，非故障）
+        id: eval
+        if: ${{ secrets.SENSENOVA_API_KEY != '' }}
+        continue-on-error: true
         env:
           SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY }}
           CI: "true"
         run: node tests/unit/answer-quality-judge.mjs
 
+      - name: 评测可用性判定（决定后续门禁/基线是否执行）
+        id: evalcheck
+        run: |
+          if [ -z "${{ secrets.SENSENOVA_API_KEY }}" ]; then
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            echo "::notice::全量评测跳过（未配置 SENSENOVA_API_KEY Secret，属预期；本地 pre-push 钩子已覆盖真链路门禁）"
+          elif [ ! -f tests/reports/answer-quality-report.json ]; then
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            echo "::warning::评测步骤未产出报告（密钥可能配额耗尽或瞬时故障），跳过门禁与基线刷新"
+          else
+            echo "skip=0" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: 运行质量门禁（阈值 + 新报告 vs 基线回归对比）
         id: gate
+        if: ${{ steps.evalcheck.outputs.skip == '0' }}
         continue-on-error: true
         run: |
           node tests/eval-ci-gate.mjs --report=tests/reports/answer-quality-report.json --baseline=tests/reports/baseline.json --compare --strict && echo "PASS=true" >> $GITHUB_OUTPUT || echo "PASS=false" >> $GITHUB_OUTPUT

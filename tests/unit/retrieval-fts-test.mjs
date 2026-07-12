@@ -12,6 +12,7 @@ import {
   ftsCandidateIds,
   buildFtsIndex,
   ensureFtsIndex,
+  sourceSig,
   Database,
 } from "../../.pi/extensions/lib/retrieval-router.mjs";
 
@@ -94,12 +95,48 @@ console.log("\n[5] ensureFtsIndex — 惰性构建 + 失效重建");
   const db1 = ensureFtsIndex(src, FTS);
   ok("ensureFtsIndex 返回连接", !!db1);
   const sig1 = db1.prepare("SELECT v FROM meta WHERE k='sig'").get().v;
-  ok("meta sig 写入 4:400", sig1 === "4:400", sig1);
+  ok("meta sig 与 sourceSig 一致", sig1 === sourceSig(src), sig1);
   // 新增 chunk 致 sig 变化 → 重建
   ins.run("c5", KB, "高血压危象的急诊处理流程与降压方案。", "高血压指南.md", 500);
   const db2 = ensureFtsIndex(src, FTS);
   const ids = ftsCandidateIds(db2, "高血压危象");
   ok("失效后重建，新词元召回 c5", ids && ids.includes("c5"), JSON.stringify(ids));
+}
+
+console.log("\n[6] 失效重建 — 内容变更而 COUNT/MAX(indexed_at) 不变（签名漂移回归·长度指纹）");
+{
+  // 前置：c1 当前为「高血压」内容，FTS 已索引。现仅改 c1 正文（保持 indexed_at=100），
+  // 行数与 MAX(indexed_at) 均不变 —— 旧签名（仅 COUNT:MAX）会判定「无需重建」致索引漂移。
+  const db3 = ensureFtsIndex(src, FTS);
+  const before = ftsCandidateIds(db3, "高血压");
+  ok("改前 FTS 含 c1(高血压)", before && before.includes("c1"), JSON.stringify(before));
+
+  // 改为不同长度的新正文（急性心肌梗死…），仅 c1 正文长度/文本变化，行数与时间戳不变
+  src
+    .prepare("UPDATE chunks SET content=? WHERE id='c1'")
+    .run("急性心肌梗死的再灌注治疗策略与并发症防治要点。");
+  const db4 = ensureFtsIndex(src, FTS); // 内容总长指纹变化 → 签名变 → 触发重建
+  ok("内容变更后 ensureFtsIndex 仍返回连接", !!db4);
+
+  const afterOld = ftsCandidateIds(db4, "高血压");
+  ok("旧词元 高血压 不再召回 c1（内容已替换）", afterOld && !afterOld.includes("c1"), JSON.stringify(afterOld));
+  const afterNew = ftsCandidateIds(db4, "心肌梗死");
+  ok("新词元 心肌梗死 召回 c1（FTS 已重建）", afterNew && afterNew.includes("c1"), JSON.stringify(afterNew));
+}
+
+console.log("\n[7] 失效重建 — 等长改写但刷新 indexed_at（双保险·时间戳路径）");
+{
+  // 模拟外部写入：正文等长替换且刷新 indexed_at（MAX 变化）→ 签名变 → 重建。
+  // 验证即便长度指纹未变，MAX(indexed_at) 仍能兜住（rebuild-kb 每次 upsert 须刷新时间戳）。
+  const db5 = ensureFtsIndex(src, FTS);
+  src
+    .prepare("UPDATE chunks SET content=?, indexed_at=99999 WHERE id='c2'")
+    .run("甲亢的药物剂量调整与随访监测指标解读。");
+  const db6 = ensureFtsIndex(src, FTS);
+  const r = ftsCandidateIds(db6, "药物剂量");
+  ok("刷新时间戳后 FTS 重建并召回 c2(药物剂量)", r && r.includes("c2"), JSON.stringify(r));
+  const rOld = ftsCandidateIds(db6, "糖尿病");
+  ok("旧词元 糖尿病 不再召回 c2", rOld && !rOld.includes("c2"), JSON.stringify(rOld));
 }
 
 fts.close();

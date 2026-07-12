@@ -288,7 +288,7 @@ export function ftsCandidateIds(ftsDb, query) {
  * 供 FTS 模式下 BM25 使用「全局 IDF」打分，排名与全扫严格一致（杜绝子集 IDF 漂移）。
  * @param {object} srcDb  knowledge.db 只读连接
  * @param {object} ftsDb  目标 FTS 库连接（readwrite）
- * @param {string} sig    源签名（chunks 行数:MAX(indexed_at)），写入 meta 供失效检测
+ * @param {string} sig    源签名（chunks 行数:MAX(indexed_at):内容总长），写入 meta 供失效检测
  */
 export function buildFtsIndex(srcDb, ftsDb, sig) {
   ftsDb.exec("DROP TABLE IF EXISTS chunks_fts");
@@ -324,12 +324,14 @@ export function buildFtsIndex(srcDb, ftsDb, sig) {
   tx();
 }
 
-/** 计算源库签名：chunks 行数 + MAX(indexed_at)，任一变化即判定需重建。 */
-function sourceSig(srcDb) {
+/** 计算源库签名：chunks 行数 + MAX(indexed_at) + 内容总长指纹，任一变化即判定需重建。 */
+export function sourceSig(srcDb) {
   const row = srcDb
-    .prepare("SELECT COUNT(*) n, COALESCE(MAX(indexed_at), 0) mx FROM chunks")
+    .prepare(
+      "SELECT COUNT(*) n, COALESCE(MAX(indexed_at), 0) mx, COALESCE(SUM(length(content)), 0) cl FROM chunks",
+    )
     .get();
-  return `${row.n}:${row.mx}`;
+  return `${row.n}:${row.mx}:${row.cl}`;
 }
 
 /**

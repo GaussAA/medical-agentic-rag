@@ -3,7 +3,8 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const KB_DIR = join(__dirname, "..", "medical-knowlegde-base");
+const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）
+const KB_DIR = join(ROOT, "medical-knowlegde-base");
 
 async function main() {
   const outline = JSON.parse(

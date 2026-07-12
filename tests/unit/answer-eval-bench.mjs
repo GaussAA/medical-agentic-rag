@@ -19,6 +19,8 @@ import { dirname, join } from "node:path";
 import { readFileSync, existsSync, writeFileSync } from "node:fs";
 import { routeGuides, loadIndex, normalize } from "../../.pi/extensions/lib/guide-router.mjs";
 import { callLLM, isLLMAvailable, runWithConcurrency, SENSENOVA_CONCURRENCY } from "../../.pi/extensions/lib/llm-judge.mjs";
+// GRADE / 推荐强度标记词表（.pi/extensions/lib/grade-markers.mjs 单一真相源）。
+import { hasGradeMarker, hasStrictGrade } from "../../.pi/extensions/lib/grade-markers.mjs";
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const index = loadIndex(REPO_ROOT);
@@ -91,11 +93,9 @@ const SAMPLES = [
 ];
 
 // 证据等级 / 循证标记词（任一命中即视为该指南携带 GRADE 结构）
-const GRADE_TOKENS = [
-  "推荐意见", "证据等级", "强推荐", "弱推荐",
-  "Ⅰ级", "Ⅱ级", "Ⅲ级", "证据质量", "推荐强度",
-  "高质量", "中等质量", "低质量",
-];
+// 原仅识别英文 GRADE 原词（GRADE_TOKENS），误判中文指南为「缺 GRADE 标记」；
+// 现统一由 grade-markers.mjs 的 hasGradeMarker 合并「标准化 GRADE 原词 + 中文推荐强度表述」。
+// GRADE_TOKENS / REC_STRENGTH_TOKENS 仍从 grade-markers 导入，供引用与扩展。
 
 // 读取指南原文（按索引 id 定位 medical-raw-txt/<id>.txt）
 function readGuideText(title) {
@@ -136,7 +136,7 @@ function pct(a, b) {
 
 let citHit = 0, citTot = 0;
 let evHit = 0, evTot = 0;
-let gradeHit = 0, gradeTot = 0;
+let gradeHit = 0, gradeTot = 0, gradeStrictHit = 0;
 let hallYes = 0, hallChecked = 0;
 
 // ---------- 阶段一：离线结构层（串行，零成本） ----------
@@ -149,7 +149,7 @@ for (const s of SAMPLES) {
   citTot += s.gtSources.length;
 
   let evLocalHit = 0, evLocalTot = 0;
-  let gradeLocal = false;
+  let gradeLocal = false, gradeStrictLocal = false;
   const missingSources = [];
   for (const gt of s.gtSources) {
     const { text, missing } = readGuideText(gt);
@@ -163,16 +163,16 @@ for (const s of SAMPLES) {
       evLocalTot++;
       if (ntxt.includes(normalize(ph))) evLocalHit++;
     }
-    if (!gradeLocal && GRADE_TOKENS.some((t) => text.includes(t))) {
-      gradeLocal = true;
-    }
+    if (!gradeLocal && hasGradeMarker(text)) gradeLocal = true;
+    if (!gradeStrictLocal && hasStrictGrade(text)) gradeStrictLocal = true;
   }
   evHit += evLocalHit;
   evTot += evLocalTot;
   if (s.expectGradeLabel !== false) gradeTot++;
   if (gradeLocal) gradeHit++;
+  if (gradeStrictLocal) gradeStrictHit++;
 
-  partials.push({ s, top3, gtHit, evLocalHit, evLocalTot, gradeLocal, missingSources });
+  partials.push({ s, top3, gtHit, evLocalHit, evLocalTot, gradeLocal, gradeStrictLocal, missingSources });
 }
 
 // ---------- 阶段二：幻觉检测（有界并发，吃满 ≤20 免费 Key） ----------
@@ -194,6 +194,7 @@ const details = partials.map((p, i) => {
     citation: { hit: p.gtHit, tot: p.s.gtSources.length },
     evidence: { hit: p.evLocalHit, tot: p.evLocalTot, missing: p.missingSources },
     gradeFound: p.gradeLocal,
+    gradeStrict: p.gradeStrictLocal,
     expectGrade: p.s.expectGradeLabel !== false,
     hallucination: hall,
   };
@@ -209,11 +210,12 @@ const metrics = {
     citationRecall: pct(citHit, citTot),
     evidenceLocatability: pct(evHit, evTot),
     gradeLabelRate: pct(gradeHit, gradeTot),
+    gradeStrictRate: pct(gradeStrictHit, gradeTot),
     hallucinationRate: RUN_LLM
       ? hallChecked === 0 ? "n/a" : pct(hallYes, hallChecked)
       : "skipped (no SENSENOVA_API_KEY)",
   },
-  raw: { citHit, citTot, evHit, evTot, gradeHit, gradeTot, hallYes, hallChecked },
+  raw: { citHit, citTot, evHit, evTot, gradeHit, gradeTot, gradeStrictHit, hallYes, hallChecked },
 };
 
 const report = { metrics, details };
@@ -232,7 +234,8 @@ console.log(`知识库: ${metrics.knowledgeBase.guides} 指南 / ${metrics.knowl
 console.log(line);
 console.log(`引用召回率 (Citation Recall)      : ${metrics.kpi.citationRecall}%  (${citHit}/${citTot})`);
 console.log(`证据可定位率 (Evidence Locat.)    : ${metrics.kpi.evidenceLocatability}%  (${evHit}/${evTot})`);
-console.log(`证据等级标注率 (GRADE Label)    : ${metrics.kpi.gradeLabelRate}%  (${gradeHit}/${gradeTot})`);
+console.log(`证据等级标注率 (GRADE Label)    : ${metrics.kpi.gradeLabelRate}%  (${gradeHit}/${gradeTot})  [含中文推荐强度口径]`);
+console.log(`  其中严格GRADE原词            : ${metrics.kpi.gradeStrictRate}%  (${gradeStrictHit}/${gradeTot})`);
 console.log(`幻觉率 (Hallucination Rate)      : ${metrics.kpi.hallucinationRate}${RUN_LLM ? `  (${hallYes}/${hallChecked})` : ""}`);
 console.log(line);
 for (const d of details) {
@@ -276,7 +279,7 @@ th{color:var(--mut);font-weight:500;background:rgba(255,255,255,.03)}
 <div class="grid">
   ${card("引用召回率", k.citationRecall, `应引指南进入 top3 (${citHit}/${citTot})`)}
   ${card("证据可定位率", k.evidenceLocatability, `关键证据短语见于源文 (${evHit}/${evTot})`)}
-  ${card("证据等级标注率", k.gradeLabelRate, `源文携带 GRADE 标记 (${gradeHit}/${gradeTot})`)}
+  ${card("证据等级标注率", k.gradeLabelRate, `源文携带循证推荐标记 (${gradeHit}/${gradeTot}) · 严格GRADE ${k.gradeStrictRate}%`)}
   ${card("幻觉率", typeof k.hallucinationRate === "number" ? k.hallucinationRate : k.hallucinationRate, RUN_LLM ? `已检测 (${hallYes}/${hallChecked})` : "跳过(无API Key)")}
 </div>
 <table><thead><tr><th>引用</th><th>证据</th><th>等级</th><th>查询</th><th>应引指南(top3)</th></tr></thead><tbody>
@@ -287,7 +290,7 @@ ${details
     return `<tr>
       <td class="${cok ? "ok" : "bad"}">${d.citation.hit}/${d.citation.tot}</td>
       <td class="${d.evidence.tot && d.evidence.hit === d.evidence.tot ? "ok" : "mut"}">${ev}</td>
-      <td class="${d.gradeFound ? "ok" : "bad"}">${d.gradeFound ? "✓" : "✗"}</td>
+      <td class="${d.gradeFound ? "ok" : "bad"}">${d.gradeFound ? "✓" : "✗"}${d.gradeStrict ? "" : "(中)"}</td>
       <td>${d.q}</td>
       <td class="mut">${d.gtSources.join(" | ")}</td>
     </tr>`;

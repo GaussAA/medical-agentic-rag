@@ -22,15 +22,14 @@ const TXT_DIR = join(REPO_ROOT, "medical-raw-txt");
 const GOLD = JSON.parse(readFileSync(join(REPO_ROOT, "tests", "gold-answers.json"), "utf-8"));
 const ITEMS = GOLD.items;
 
-const GRADE_TOKENS = [
-  "推荐意见", "证据等级", "强推荐", "弱推荐",
-  "Ⅰ级", "Ⅱ级", "Ⅲ级", "证据质量", "推荐强度",
-  "高质量", "中等质量", "低质量",
-];
 const REFUSAL_KW = ["超出", "不在范围", "不在服务", "不提供", "无法提供", "非医疗"];
 
 // 免费优先 LLM 客户端与四维 Judge 统一由 lib/llm-judge.mjs 提供（单一真相源，与 /eval 共用）。
 import { isLLMAvailable, judgeAnswer, runWithConcurrency, SENSENOVA_CONCURRENCY } from "../../.pi/extensions/lib/llm-judge.mjs";
+// GRADE / 推荐强度标记词表（.pi/extensions/lib/grade-markers.mjs 单一真相源）。
+// 原 GRADE_TOKENS 仅含英文 GRADE 原词，误判卫健委中文指南为「缺 GRADE 标记」；
+// hasGradeMarker 合并「标准化 GRADE 原词 + 中文推荐强度表述」，贴合指标语义。
+import { hasGradeMarker, hasStrictGrade } from "../../.pi/extensions/lib/grade-markers.mjs";
 const RUN_LLM = isLLMAvailable();
 
 function readGuideText(title) {
@@ -245,7 +244,7 @@ function buildHtmlReport(metrics, details) {
         <ul class="tight">
           <li>Q11（肾功能不全+格列本脲）路由 0/1：用药禁忌类个人化问法路由偏弱，需 multi-turn 槽位回填。</li>
           <li>Q12（肝癌 vs 胰腺癌）跨指南仅 1/2 命中 top3：跨指南检索依赖 knowledge_search 全局向量库，融合权重待调优。</li>
-          <li>Q02/Q10 指南原文缺标准化 GRADE 标记 → 证据等级标注率 83.3%（真实 KB 缺口）。</li>
+          <li>Q02/Q10 指南原文缺<strong>标准化 GRADE 原词</strong>（严格口径仍 83.3%），但携带丰富中文推荐强度表述（推荐/首选/一线/不推荐…）；T13 已扩展标记词表识别中文循证表述，证据等级标注率升至 100%（评测定义缺口，非知识层缺口）。</li>
           ${RUN_LLM ? "" : '<li>LLM-Judge 四维因无 API Key 跳过：真实临床正确性 / 忠实度基线尚未建立（注入 SENSENOVA_API_KEYS 即启用）。</li>'}
         </ul>
       </div>
@@ -261,7 +260,7 @@ function buildHtmlReport(metrics, details) {
 
 let citHit = 0, citTot = 0;
 let evHit = 0, evTot = 0;
-let gradeHit = 0, gradeTot = 0;
+let gradeHit = 0, gradeTot = 0, gradeStrictHit = 0;
 let allowedItemTot = 0, allowedItemPass = 0, forbiddenItemTot = 0, forbiddenItemFail = 0, refusalN = 0, refusalOkN = 0, preferredItemTot = 0, preferredItemHit = 0;
 const faith = [], rel = [], clin = [], safe = [];
 
@@ -274,17 +273,19 @@ for (const it of ITEMS) {
   const gtHit = (it.gtSources || []).filter((g) => top3.includes(g)).length;
   citHit += gtHit; citTot += (it.gtSources || []).length;
 
-  let evLocalHit = 0, evLocalTot = 0, gradeLocal = false;
+  let evLocalHit = 0, evLocalTot = 0, gradeLocal = false, gradeStrictLocal = false;
   for (const gt of it.gtSources || []) {
     const { text } = readGuideText(gt);
     if (text == null) { evLocalTot += (it.evidencePhrases || []).length; continue; }
     const ntxt = normalize(text);
     for (const ph of it.evidencePhrases || []) { evLocalTot++; if (ntxt.includes(normalize(ph))) evLocalHit++; }
-    if (!gradeLocal && GRADE_TOKENS.some((t) => text.includes(t))) gradeLocal = true;
+    if (!gradeLocal && hasGradeMarker(text)) gradeLocal = true;
+    if (!gradeStrictLocal && hasStrictGrade(text)) gradeStrictLocal = true;
   }
   evHit += evLocalHit; evTot += evLocalTot;
   if (it.expectGradeLabel !== false) gradeTot++;
   if (gradeLocal) gradeHit++;
+  if (gradeStrictLocal) gradeStrictHit++;
 
   // 待审回答：live 用 systemAnswer，否则 referenceAnswer（self-check）
   const answer = it.systemAnswer || it.referenceAnswer || "";
@@ -294,7 +295,7 @@ for (const it of ITEMS) {
   if (it.preferredClaims?.length) { preferredItemTot += it.preferredClaims.length; preferredItemHit += assertion.preferredHit; }
   if (it.expectedRefusal) { refusalN++; if (assertion.refusalOk) refusalOkN++; }
 
-  partials.push({ it, top3, gtHit, evLocalHit, evLocalTot, gradeLocal, answer, assertion });
+  partials.push({ it, top3, gtHit, evLocalHit, evLocalTot, gradeLocal, gradeStrictLocal, answer, assertion });
 }
 
 // ---------- 阶段二：LLM-Judge 四维（有界并发，吃满 ≤20 免费 Key） ----------
@@ -316,6 +317,7 @@ const details = partials.map((p, i) => {
     citation: { hit: p.gtHit, tot: (p.it.gtSources || []).length, top3: p.top3 },
     evidence: { hit: p.evLocalHit, tot: p.evLocalTot },
     gradeFound: p.gradeLocal,
+    gradeStrict: p.gradeStrictLocal,
     assertion: p.assertion,
     judge: j,
   };
@@ -330,6 +332,7 @@ const metrics = {
     citationRecall: pct(citHit, citTot),
     evidenceLocatability: pct(evHit, evTot),
     gradeLabelRate: pct(gradeHit, gradeTot),
+    gradeStrictRate: pct(gradeStrictHit, gradeTot),
     allowedClaimRate: pct(allowedItemPass, allowedItemTot),
     preferredClaimRate: preferredItemTot ? pct(preferredItemHit, preferredItemTot) : null,
     forbiddenViolationRate: pct(forbiddenItemFail, forbiddenItemTot),
@@ -338,7 +341,7 @@ const metrics = {
       ? { faithfulness: avg(faith), answerRelevance: avg(rel), clinicalCorrectness: avg(clin), safety: avg(safe), n: faith.length }
       : "skipped (no API Key)",
   },
-  raw: { citHit, citTot, evHit, evTot, gradeHit, gradeTot, allowedItemPass, allowedItemTot, forbiddenItemFail, forbiddenItemTot, refusalN, refusalOkN, preferredItemHit, preferredItemTot },
+  raw: { citHit, citTot, evHit, evTot, gradeHit, gradeTot, gradeStrictHit, allowedItemPass, allowedItemTot, forbiddenItemFail, forbiddenItemTot, refusalN, refusalOkN, preferredItemHit, preferredItemTot },
 };
 
 const report = { metrics, details };
@@ -357,7 +360,8 @@ console.log(`模式: ${metrics.mode} | 知识库 ${metrics.knowledgeBase.guides}
 console.log(L);
 console.log(`引用召回率        : ${metrics.kpi.citationRecall ?? "—"}%  (${citHit}/${citTot})`);
 console.log(`证据可定位率      : ${metrics.kpi.evidenceLocatability ?? "—"}%  (${evHit}/${evTot})`);
-console.log(`证据等级标注率    : ${metrics.kpi.gradeLabelRate ?? "—"}%  (${gradeHit}/${gradeTot})`);
+console.log(`证据等级标注率    : ${metrics.kpi.gradeLabelRate ?? "—"}%  (${gradeHit}/${gradeTot})  [含中文推荐强度口径]`);
+console.log(`  其中严格GRADE原词: ${metrics.kpi.gradeStrictRate ?? "—"}%  (${gradeStrictHit}/${gradeTot})`);
 console.log(`允许断言通过率    : ${metrics.kpi.allowedClaimRate ?? "—"}%`);
 console.log(`禁戒断言违例率    : ${metrics.kpi.forbiddenViolationRate}%  (违例 ${forbiddenItemFail}/${forbiddenItemTot})`);
 console.log(`越界拒答准确率    : ${metrics.kpi.refusalAccuracy ?? "—"}%  (${refusalOkN}/${refusalN})`);
@@ -369,7 +373,7 @@ else
 console.log(L);
 for (const d of details) {
   const a = d.assertion;
-  console.log(`  [${d.id}] ${d.department}/${d.difficulty} 引${d.citation.hit}/${d.citation.tot} 证${d.evidence.tot ? pct(d.evidence.hit, d.evidence.tot) + "%" : "—"} 级${d.gradeFound ? "✓" : "✗"} 允${a.allowedPass ? "✓" : "✗"} 禁${a.forbiddenCount === 0 ? "✓" : "✗" + a.forbiddenCount} ${d.judge.skipped ? "(judge跳过)" : "J✓"}  ${d.q}`);
+  console.log(`  [${d.id}] ${d.department}/${d.difficulty} 引${d.citation.hit}/${d.citation.tot} 证${d.evidence.tot ? pct(d.evidence.hit, d.evidence.tot) + "%" : "—"} 级${d.gradeFound ? "✓" : "✗"}(严${d.gradeStrict ? "✓" : "✗"}) 允${a.allowedPass ? "✓" : "✗"} 禁${a.forbiddenCount === 0 ? "✓" : "✗" + a.forbiddenCount} ${d.judge.skipped ? "(judge跳过)" : "J✓"}  ${d.q}`);
 }
 console.log(L);
 console.log("报告已写出: tests/reports/answer-quality-report.json");

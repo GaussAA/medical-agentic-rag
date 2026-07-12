@@ -1,23 +1,26 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { searchKnowledge } from "./lib/retrieval-router.mjs";
+// 复用内置 KnowledgeEngine 实现真 hybrid + 重排（Opt2：内置优先 / DRY，BM25 作优雅回退）
+import { engineHybridSearch } from "./lib/knowledge-engine-search.mjs";
+// A 层增强：检索期版本冲突前置标注（复用 conflict-detector 零成本内核，单一真相源）
+import { buildVersionConflictHint, defaultLoadGuideIndex } from "./lib/conflict-detector.mjs";
 
 /**
  * rag_search 定向召回检索扩展（独立工具名，避免与 pi-knowledge 扩展的 knowledge_search 重名冲突）
  * -----------------------------------------------------------------------------------
  * 注册独立工具名 `rag_search`（注意：Pi 不允许两个扩展注册同名工具，故不可沿用
  * knowledge_search 去覆盖 pi-knowledge 扩展，否则加载器会拒载其一导致 KB 后端挂掉）。
- * 在检索前先跑 guide_finder 的语义路由，
- * 锁定应检索的指南文件名，再约束到该指南的 chunks 做 BM25 召回，
- * 避免真指南被无关文档压沉（原始会话卡死的根因之一）。
  *
- * 为何自包含实现（不调用 pi-knowledge 引擎）：
- *   - pi-knowledge 仅导出 default 扩展函数，engine 私有，外部无法直连 engine.search；
- *   - jiti 每扩展独立实例化，二次 import 会触发分钟级重型初始化（加载 e5 模型）；
- *   - ExtensionAPI 不提供运行期调用其他工具的接口。
- * 故直接读 pi-knowledge 的 SQLite（chunks 快照）做 BM25，瞬时、零耦合、无二次 init。
+ * 检索策略（Opt2 · 内置优先 / DRY）：
+ *   1) 始终先跑 guide_finder 语义路由 → 约束到命中指南文件（防真指南被压沉，原始卡死根因）；
+ *      该路由 + BM25 召回零 e5 加载、瞬时，并兼作引擎失败时的优雅回退。
+ *   2) dense 模式（hybrid / semantic / deep / adaptive）委托内置 KnowledgeEngine
+ *      （lib/knowledge-engine-search.mjs 懒加载复用 pi-knowledge 的 e5 稠密向量与
+ *      cross-encoder 重排），实现「真 hybrid」；fast 模式与引擎不可用时退回 BM25。
+ *   - 拒绝手搓向量/重排：直接复用引擎与 vectors/<kb_id>.bin，保持单一真相源。
+ *   - 引擎 import / 初始化 / 检索任一失败 → 回退 BM25 并显式告警，无静默失败。
  *
- * 行为保持兼容：沿用内置工具的参数名（query/limit/kb_id/mode…），模型调用方式不变。
- * 路由命中 KB 文件 → 约束召回（高精度）；未命中 → 退化为全语料 BM25（不丢召回）。
+ * 行为保持兼容：沿用内置工具参数名（query/limit/kb_id/mode…），模型调用方式不变。
  */
 
 function normalizeParams(params: any) {
@@ -77,7 +80,8 @@ export default function (pi: ExtensionAPI) {
       },
       required: ["query"],
     },
-    execute: async (_toolCallId: string, params: any) => {
+    // LLM 参数绑定宽松，按既有扩展惯例以 any 承接并显式标注
+    execute: async (_toolCallId: string, params: any, signal?: any) => {
       const p = normalizeParams(params);
       const query = ((p.query || p.q || "") as string).toString().trim();
       if (!query) {
@@ -87,7 +91,9 @@ export default function (pi: ExtensionAPI) {
       }
       const limit = typeof p.limit === "number" && p.limit > 0 ? Math.min(p.limit, 30) : 8;
       const kbId = typeof p.kb_id === "string" && p.kb_id ? p.kb_id : null;
+      const mode = typeof p.mode === "string" ? p.mode : "hybrid";
 
+      // 始终先算 BM25 + 路由（廉价、无 e5 加载）：兼作（1）路由约束来源（2）引擎失败时的回退
       let out;
       try {
         out = searchKnowledge(query, { limit, kbId });
@@ -113,16 +119,41 @@ export default function (pi: ExtensionAPI) {
         };
       }
 
+      const routedFilePaths = out.kbFiles && out.kbFiles.length ? out.kbFiles : null;
+      const DENSE = new Set(["hybrid", "semantic", "deep", "adaptive"]);
+      const dense = !mode || DENSE.has(mode);
+
+      // dense 模式委托内置引擎（真 hybrid / 重排）；失败则回退 BM25，显式告警，无静默失败
+      let engineResult = null;
+      let engineWarn = null;
+      if (dense) {
+        engineResult = await engineHybridSearch(query, { mode, limit, kbId, routedFilePaths, signal });
+        if (!engineResult.ok) engineWarn = engineResult.error;
+      }
+
+      const engineUsed = dense && engineResult?.ok === true && engineResult.results.length > 0;
+      const src = engineUsed ? engineResult : out;
+      if (dense && !engineUsed) {
+        engineWarn = (engineWarn ? engineWarn + "；" : "") + "引擎不可用，已回退 BM25";
+      }
+
       const routed = out.routedTitles.length
         ? out.routedTitles.slice(0, 3).join("、")
         : "（路由未命中，已退化为全语料检索）";
-      const header = [
-        `[路由定向召回] 语义路由命中: ${routed}`,
-        `约束文件: ${out.kbFiles.length} / 全库文件: ${out.totalFiles} | 模式: ${out.constrained ? "约束召回" : "全语料回退"}`,
-        "",
-      ].join("\n");
 
-      if (out.results.length === 0) {
+      // A 层增强：检索期版本冲突前置标注（零成本查 guide-index，不烧 LLM）
+      // 与事后 conflict-detector 的 content-conflict 批注互补：事前让 LLM 感知「多指南并存 + 版本风险」
+      const versionWarn = buildVersionConflictHint(src.results, defaultLoadGuideIndex());
+
+      const headerLines = [
+        `[${engineUsed ? "引擎 hybrid" : "路由约束 BM25"}] 语义路由命中: ${routed}`,
+        `约束文件: ${out.kbFiles.length} / 全库文件: ${out.totalFiles} | 模式: ${engineUsed ? engineResult.modeUsed : "BM25 回退"}${engineWarn ? ` | ⚠️ ${engineWarn}` : ""}`,
+      ];
+      if (versionWarn) headerLines.push(versionWarn);
+      headerLines.push("");
+      const header = headerLines.join("\n");
+
+      if (src.results.length === 0) {
         return {
           content: [
             {
@@ -135,9 +166,10 @@ export default function (pi: ExtensionAPI) {
         };
       }
 
-      const body = out.results
+      const body = src.results
         .map((r: any, i: number) => {
-          return `[${i + 1}] ${r.file_path} (score: ${r.score}${r.hitCount ? `, hits:${r.hitCount}` : ""})\n${r.snippet}`;
+          const cid = r.chunk_id ? ` chunk=${r.chunk_id}` : "";
+          return `[${i + 1}] ${r.file_path} (score: ${r.score}${r.hitCount ? `, hits:${r.hitCount}` : ""}${cid})\n${r.snippet}`;
         })
         .join("\n\n");
 

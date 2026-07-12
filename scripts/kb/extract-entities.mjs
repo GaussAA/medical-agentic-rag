@@ -13,8 +13,9 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUTLINE_FILE = join(__dirname, "..", "medical-knowlegde-base", ".outline.json");
-const GRAPH_FILE = join(__dirname, "..", "medical-knowlegde-base", ".knowledge-graph.json");
+const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）
+const OUTLINE_FILE = join(ROOT, "medical-knowlegde-base", ".outline.json");
+const GRAPH_FILE = join(ROOT, "medical-knowlegde-base", ".knowledge-graph.json");
 
 const SENSENOVA_API_KEY = process.env.SENSENOVA_API_KEY;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;

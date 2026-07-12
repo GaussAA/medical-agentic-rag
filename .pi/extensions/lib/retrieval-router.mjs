@@ -50,6 +50,7 @@ const Database = loadBetterSqlite3();
 /**
  * 解析 pi-knowledge 的 SQLite 路径。
  * 优先级：环境变量 PI_KNOWLEDGE_DIR → 已知默认 (~/.pi/knowledge) → 失败返回 null。
+ * @returns {string|null} 知识库 DB 文件的绝对路径，或 null
  */
 export function resolveKbDbPath() {
   const env = process.env.PI_KNOWLEDGE_DIR || process.env.PICODING_KNOWLEDGE_DIR;
@@ -63,7 +64,10 @@ export function resolveKbDbPath() {
 let _db = null;
 let _dbPathOverride = null;
 
-/** 测试用：注入自定义 DB 连接或路径（切换时互清，避免残留连接导致错库）。 */
+/**
+ * 测试用：注入自定义 DB 连接或路径（切换时互清，避免残留连接导致错库）。
+ * @param {object|string|null} dbOrPath  better-sqlite3 连接实例、DB 路径、或 null（重置）
+ */
 export function setKbDb(dbOrPath) {
   if (dbOrPath == null) {
     _db = null;
@@ -79,7 +83,10 @@ export function setKbDb(dbOrPath) {
   }
 }
 
-/** 获取只读 DB 连接（懒加载、缓存）。 */
+/**
+ * 获取只读 DB 连接（懒加载、缓存）。
+ * @returns {object|null} better-sqlite3 连接实例，或 null
+ */
 export function getDb() {
   if (_db) return _db;
   const p = _dbPathOverride || resolveKbDbPath();
@@ -91,6 +98,8 @@ export function getDb() {
 /**
  * 读取 KB 中所有不同的 file_path（即被索引的 .md / 源文件名）。
  * 这是"路由标题 → 实际文件名"匹配的候选全集。
+ * @param {object} db  better-sqlite3 连接实例
+ * @returns {string[]} 不重复的 file_path 数组
  */
 export function loadKbFilenames(db) {
   const rows = db
@@ -130,6 +139,10 @@ export function resolveKbFiles(routedTitles, kbFilenames) {
 
 /**
  * 从 chunk 内容中抽取一段围绕首个命中词元的摘要。
+ * @param {string} content  chunk 原始内容
+ * @param {string[]} qTok  查询词元数组
+ * @param {number} [len=240]  摘要最大长度
+ * @returns {string} 含上下文片段的摘要
  */
 export function makeSnippet(content, qTok, len = 240) {
   const c = content || "";

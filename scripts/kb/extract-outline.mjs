@@ -10,10 +10,11 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）
 // 输入：归一化纯文本（由 scripts/kb/prepare-raw.mjs 从原始 PDF/DOCX 抽取，复用中文层级正则）
-const TXT_DIR = join(__dirname, "..", "medical-raw-txt");
+const TXT_DIR = join(ROOT, "medical-raw-txt");
 // 输出：索引仍落 medical-knowlegde-base/（扩展硬编码读取，零改动）
-const KB_DIR = join(__dirname, "..", "medical-knowlegde-base");
+const KB_DIR = join(ROOT, "medical-knowlegde-base");
 const OUT_FILE = join(KB_DIR, ".outline.json");
 
 // 章节匹配（兼容两类来源）：

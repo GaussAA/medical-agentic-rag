@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-09T15:02:04.882Z",
-  "totalFiles": 135,
-  "totalSections": 18132,
+  "generatedAt": "2026-07-11T19:19:43.648Z",
+  "totalFiles": 146,
+  "totalSections": 20465,
   "totalKeyParagraphs": 496,
   "guides": [
     {
@@ -246,6 +246,14 @@
       "keyParagraphs": []
     },
     {
+      "id": "WS-T 601—2018 妊娠期糖尿病患者膳食指导",
+      "title": "WS-T 601—2018 妊娠期糖尿病患者膳食指导",
+      "sectionCount": 17,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
       "title": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
       "sectionCount": 137,
@@ -273,6 +281,14 @@
       "id": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
       "title": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
       "sectionCount": 6,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准",
+      "title": "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准",
+      "sectionCount": 4,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -384,9 +400,25 @@
       "keyParagraphs": []
     },
     {
+      "id": "中国克罗恩病诊治指南（2023年·广州）",
+      "title": "中国克罗恩病诊治指南（2023年·广州）",
+      "sectionCount": 63,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
       "title": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
       "sectionCount": 186,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "中国溃疡性结肠炎诊治指南（2023年·西安）",
+      "title": "中国溃疡性结肠炎诊治指南（2023年·西安）",
+      "sectionCount": 49,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -424,6 +456,14 @@
         "年患者的药物使用情况，对于多重用药的患者，尽                                                                                               13.9 mmol/L，同时应避免高血糖危象发生。",
         "压、血脂控制目标，降低治疗强度，但需避免发                                                                                            专科或糖尿病足病相关科室。"
       ]
+    },
+    {
+      "id": "中国脑卒中防治指导规范(2021年版)",
+      "title": "中国脑卒中防治指导规范(2021年版)",
+      "sectionCount": 1836,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
     },
     {
       "id": "中国艾滋病诊疗指南（2024版）",
@@ -491,6 +531,22 @@
       "id": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
       "title": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
       "sectionCount": 89,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "儿童脑胶质瘤诊疗规范(2021年版)",
+      "title": "儿童脑胶质瘤诊疗规范(2021年版)",
+      "sectionCount": 51,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "儿童腺病毒肺炎诊疗规范",
+      "title": "儿童腺病毒肺炎诊疗规范",
+      "sectionCount": 55,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -731,6 +787,14 @@
       "keyParagraphs": []
     },
     {
+      "id": "成人体外膜肺氧合技术操作规范(2024年版)",
+      "title": "成人体外膜肺氧合技术操作规范(2024年版)",
+      "sectionCount": 70,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "成釉细胞瘤诊疗指南（2022年版）",
       "title": "成釉细胞瘤诊疗指南（2022年版）",
       "sectionCount": 23,
@@ -742,6 +806,14 @@
       "id": "新型冠状病毒感染诊疗方案（试行第十版）",
       "title": "新型冠状病毒感染诊疗方案（试行第十版）",
       "sectionCount": 110,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "新型冠状病毒感染重症病例诊疗方案(试行第四版)",
+      "title": "新型冠状病毒感染重症病例诊疗方案(试行第四版)",
+      "sectionCount": 27,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -959,6 +1031,14 @@
       "keyParagraphs": []
     },
     {
+      "id": "肺结核门诊诊疗规范等附件(2012版)",
+      "title": "肺结核门诊诊疗规范等附件(2012版)",
+      "sectionCount": 132,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "肾癌诊疗指南（2022年版）",
       "title": "肾癌诊疗指南（2022年版）",
       "sectionCount": 67,
@@ -986,6 +1066,14 @@
       "id": "胃癌诊疗指南（2022年版）",
       "title": "胃癌诊疗指南（2022年版）",
       "sectionCount": 138,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "胎盘植入性疾病诊断和处理指南（2023）",
+      "title": "胎盘植入性疾病诊断和处理指南（2023）",
+      "sectionCount": 29,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []

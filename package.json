@@ -44,7 +44,9 @@
     "test:kg": "node tests/unit/kg-graph-test.mjs",
     "kb:graph": "node scripts/kb/build-kg-db.mjs",
     "kb:fts": "node scripts/kb/build-retrieval-fts.mjs",
-    "test:ci": "node tests/eval-ci-gate.mjs"
+    "test:ci": "node tests/eval-ci-gate.mjs",
+    "test:real-link": "node scripts/ops/smoke-real-link.mjs",
+    "hooks:install": "node scripts/ops/install-hooks.mjs"
   },
   "engines": {
     "node": ">=22"

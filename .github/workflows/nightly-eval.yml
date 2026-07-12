@@ -36,6 +36,21 @@ jobs:
           sudo apt-get install -y --no-install-recommends python3 make g++
           npm ci
 
+      - name: 真实链路冒烟（需真库；无库 runner 优雅跳过，P2-④）
+        continue-on-error: true
+        env:
+          CI: "true"
+        run: |
+          node scripts/ops/smoke-real-link.mjs --json || {
+            code=$?
+            if [ "$code" -eq 2 ]; then
+              echo "::notice::真实链路冒烟跳过（本 runner 无真库，属预期）"
+            else
+              echo "::error::真实链路冒烟失败（exit $code）"
+              exit 1
+            fi
+          }
+
       - name: 运行全量评测
         env:
           SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY }}

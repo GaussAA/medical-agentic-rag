@@ -76,7 +76,14 @@ tests/reports/
 # 但保留基线 JSON（CI 门禁用，确保 PR 级质量卡点可独立运行）
 !tests/reports/baseline.json
 
-# ========== 显式保留项说明（不忽略，特此标注以免误加忽略规则） ==========
+# ========== 三层知识库目录职责说明 ==========
+# medical-raw/        真相源层 —— 原始 PDF/DOCX（411MB，不可入仓），pi-knowledge 摄取源
+# medical-raw-txt/    文本缓存层 —— pdftotext 提取的归一化纯文本（17MB，可重建不入仓）
+# medical-knowlegde-base/  索引层 —— 派生 JSON 索引（433KB，故意入仓保 clone 即用）
+#
+# 三层的单向数据流：raw/ → pdftotext → raw-txt/ → parser → knowledge-base/ JSON
+# 不宜合并：生命周期不同、入仓策略不同、工具职责不同
+# ========================================================
 # medical-knowlegde-base/ 故意不忽略：其下 .outline.json/.guide-index.json/.knowledge-graph.json
 # 为派生索引，但因上游真相源 medical-raw/ 刻意不入库，故索引入仓以保证 clone 后系统可直接可用。
 # docs/ 下 2 份早期误入仓的生成物报告（全景验收报告.html、抓取管线规划.md）已于本回合

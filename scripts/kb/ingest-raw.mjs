@@ -7,7 +7,9 @@
 // 流程：
 //   1. 读投放的原始文件（PDF→pdftotext 转文本；HTML→去标签留结构；MD→直用）
 //   2. 规范化为带元数据的 Markdown（标题/来源/抓取日期/正文）
-//   3. 写入 medical-knowlegde-base/<指南名>.md
+//   3. 写入 medical-knowlegde-base/<指南名>.md —— 注意：此为中间产物，
+//      2026-07-12 数据治理后该目录已清理 .md 文件（仅保留派生索引 JSON），
+//      ingest 仍写 MD 是为了保持管线向后兼容，后续可考虑去掉此步直接走 TXT 路径
 //   4. 追加登记到 kb-sources.json（type=local + department 自动归类）
 //   5. 触发既有 extract-outline.mjs 刷新大纲（确定性，无需 Key）
 //

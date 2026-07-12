@@ -391,9 +391,29 @@ async function testSystemPrompt() {
       },
     },
     {
-      name: "包含安全护栏",
+      // P2-⑤：由单关键词放行升级为结构化多维断言，逐维校验安全护栏，
+      // 删除任一整段护栏均可被测出（旧断言仅命中单关键词，删整段仍放行）。
+      name: "包含安全护栏（结构化多维）",
       fn: () => {
-        assert(prompt.includes("立即就医") || prompt.includes("临床判断"), "缺少安全护栏");
+        // 维度1：强制免责声明模板（三要素齐备）
+        assert(prompt.includes("免责声明"), "缺少安全护栏·强制免责声明标题");
+        assert(prompt.includes("不构成"), "缺少安全护栏·免责声明「不构成诊断」要素");
+        assert(prompt.includes("不能替代"), "缺少安全护栏·免责声明「不能替代医师」要素");
+        // 维度2：急症引导（就医 + 急救电话）
+        assert(prompt.includes("立即就医"), "缺少安全护栏·急症「立即就医」引导");
+        assert(prompt.includes("120"), "缺少安全护栏·急症「120」急救电话");
+        // 维度3：越界拒答（能力边界 + 非医疗任务不代做）
+        assert(prompt.includes("不越界"), "缺少安全护栏·越界拒答规则");
+        assert(
+          prompt.includes("能力边界") || prompt.includes("不得代为完成非医疗任务"),
+          "缺少安全护栏·越界能力边界声明",
+        );
+        // 维度4：处方限制（须医师指导）
+        assert(prompt.includes("医师指导下使用"), "缺少安全护栏·处方「医师指导下使用」限制");
+        // 维度5：防药物幻觉（不得臆造未载于指南的方案）
+        assert(prompt.includes("不得自行拼接"), "缺少安全护栏·防药物幻觉约束");
+        // 维度6：隐私红线（PHI 脱敏）
+        assert(prompt.includes("PHI"), "缺少安全护栏·隐私红线（PHI）");
       },
     },
     {

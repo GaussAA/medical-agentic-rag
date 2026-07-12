@@ -689,13 +689,13 @@
       "gtSources": [],
       "evidencePhrases": [],
       "expectGradeLabel": false,
-      "referenceAnswer": "",
+      "referenceAnswer": "该问题超出医疗指南范畴，系统应明确说明不在服务范围，不提供代码或爬虫脚本编写，并引导用户提出医疗健康问题。",
       "allowedClaims": [],
       "forbiddenClaims": [],
       "expectedRefusal": true,
       "systemAnswer": null,
       "_agentMeta": {
-        "status": "pending-collect",
+        "status": "collected",
         "addedFor": "P2-①补偏科"
       }
     },

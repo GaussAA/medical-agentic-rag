@@ -72,7 +72,9 @@ docs/
 dev/
 
 # ========== 忽略测试报告产物（可重建，不入仓） ==========
-tests/reports/
+# 注意：须用 tests/reports/**（仅排内容、不排目录本身），
+# 否则父目录被整目录排除时，下方否定无法重新纳入基线文件（git 限制）。
+tests/reports/**
 # 但保留基线 JSON（CI 门禁用，确保 PR 级质量卡点可独立运行）
 !tests/reports/baseline.json
 

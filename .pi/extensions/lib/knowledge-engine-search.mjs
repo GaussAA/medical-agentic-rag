@@ -15,6 +15,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { logEngineFallback } from "./observability.mjs";
+import { diag } from "./diagnostic-log.mjs";
 
 // ---- 解析 pi-knowledge 内部模块路径（与 retrieval-router 同范式，环境变量化）----
 // 版本探测：同时探测两种内部布局（dist/src/<sub> 与 dist/<sub>），
@@ -81,7 +82,7 @@ function loadEngineModule() {
     const engineMod = await import(pathToFileURL(eng).href);
     validateEngineApi(engineMod); // 版本探测：API 面不兼容立即抛清晰错误
     const ver = getEngineVersion();
-    if (ver) console.info(`[engine] pi-knowledge 版本探测：${ver}`);
+    if (ver) diag.info("engine", "pi-knowledge 版本探测：" + ver);
     let dir;
     if (sto) {
       try {
@@ -113,8 +114,9 @@ async function getEngine() {
   // 初始化失败后清空Promise，避免永久缓存拒绝态，下次可重试；同时留痕便于诊断引擎不可用
   _initPromise.catch((e) => {
     _initPromise = null;
-    process.stderr.write(
-      `[knowledge-engine] 引擎懒加载失败，后续检索将回退 BM25: ${e?.message || e}\n`,
+    diag.error(
+      "knowledge-engine",
+      "引擎懒加载失败，后续检索将回退 BM25: " + (e?.message || e),
     );
     // 观测：引擎回退信号落盘（不止 stderr），脆弱点可见化
     logEngineFallback({ reason: "lazy_init_failed:" + (e?.message || e) }).catch(() => {});

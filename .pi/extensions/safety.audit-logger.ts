@@ -1,6 +1,8 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 // @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
 import { lastUserText, isNewUserTurn, auditTurn } from "./lib/audit-logger.mjs";
+// @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
+import { diag } from "./lib/diagnostic-log.mjs";
 
 /**
  * 审计链运行期接线（会话级审计）
@@ -43,7 +45,7 @@ export default function (pi: ExtensionAPI) {
         auditTurn("user_turn", { turn, queryLen: text.length });
       }
     } catch (e: any) {
-      process.stderr.write(`[audit-logger] context 审计异常，跳过: ${e?.message || e}\n`);
+      diag.warn("audit-logger", "context 审计异常，跳过: " + (e?.message || e));
     }
     return; // 原样放行，不修改 messages
   });
@@ -53,7 +55,7 @@ export default function (pi: ExtensionAPI) {
     try {
       auditTurn("agent_response", {});
     } catch (e: any) {
-      process.stderr.write(`[audit-logger] message_end 审计异常，跳过: ${e?.message || e}\n`);
+      diag.warn("audit-logger", "message_end 审计异常，跳过: " + (e?.message || e));
     }
   });
 

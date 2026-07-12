@@ -14,6 +14,7 @@
 
 import { existsSync, mkdirSync, unlinkSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { diag } from "./diagnostic-log.mjs";
 import { createRequire } from "node:module";
 import { normalize, tokenize, routeGuides, loadIndex } from "./guide-router.mjs";
 import { cacheGet, cacheSet } from "./retrieval-cache.mjs";
@@ -275,7 +276,7 @@ export function ftsCandidateIds(ftsDb, query) {
       for (const r of rows) if (!seen.has(r.chunk_id)) { seen.add(r.chunk_id); out.push(r.chunk_id); }
     }
   } catch (e) {
-    console.error("[retrieval-router] FTS 查询异常，降级全扫:", e.message);
+    diag.error("retrieval-router", "FTS 查询异常，降级全扫: " + e.message);
     return null;
   }
   return out;
@@ -347,7 +348,7 @@ export function ensureFtsIndex(srcDb, ftsPathOverride) {
   try {
     isMemory = srcDb.name === ":memory:";
   } catch (e) {
-    console.debug(`[retrieval-router] srcDb.name 读取失败，保守按非内存库处理: ${e?.message || e}`);
+    diag.info("retrieval-router", "srcDb.name 读取失败，保守按非内存库处理: " + (e?.message || e));
   }
   if (isMemory) return null; // 内存库不建持久 FTS（测试场景），降级全扫
 
@@ -356,7 +357,7 @@ export function ensureFtsIndex(srcDb, ftsPathOverride) {
   try {
     sig = sourceSig(srcDb);
   } catch (e) {
-    console.error(`[retrieval-router] 源库签名计算失败，降级全扫: ${e?.message || e}`);
+    diag.error("retrieval-router", "源库签名计算失败，降级全扫: " + (e?.message || e));
     return null;
   }
   const usingDefault = !ftsPathOverride && !_ftsPathOverride;
@@ -367,7 +368,7 @@ export function ensureFtsIndex(srcDb, ftsPathOverride) {
     mkdirSync(dirname(ftsPath), { recursive: true });
     db = new Database(ftsPath);
   } catch (e) {
-    console.error("[retrieval-router] 无法打开 FTS 库:", e.message);
+    diag.error("retrieval-router", "无法打开 FTS 库: " + e.message);
     return null;
   }
   let needBuild = true;
@@ -375,23 +376,23 @@ export function ensureFtsIndex(srcDb, ftsPathOverride) {
     const m = db.prepare("SELECT v FROM meta WHERE k='sig' LIMIT 1").get();
     if (m && m.v === sig) needBuild = false;
   } catch (e) {
-    console.debug(`[retrieval-router] meta 读取失败，强制重建: ${e?.message || e}`);
+    diag.info("retrieval-router", "meta 读取失败，强制重建: " + (e?.message || e));
     needBuild = true;
   }
   if (needBuild) {
     try {
       buildFtsIndex(srcDb, db, sig);
     } catch (e) {
-      console.error("[retrieval-router] FTS 构建失败，降级全扫:", e.message);
+      diag.error("retrieval-router", "FTS 构建失败，降级全扫: " + e.message);
       try {
         db.close();
       } catch (e2) {
-        console.debug(`[retrieval-router] FTS 库关闭失败(可忽略): ${e2?.message || e2}`);
+        diag.info("retrieval-router", "FTS 库关闭失败(可忽略): " + (e2?.message || e2));
       }
       try {
         unlinkSync(ftsPath);
       } catch (e2) {
-        console.debug(`[retrieval-router] FTS 文件删除失败(可忽略): ${e2?.message || e2}`);
+        diag.info("retrieval-router", "FTS 文件删除失败(可忽略): " + (e2?.message || e2));
       }
       return null;
     }

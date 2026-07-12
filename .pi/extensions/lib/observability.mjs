@@ -16,6 +16,7 @@
 
 import { appendFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
+import { diag } from "./diagnostic-log.mjs";
 
 const EVENTS = new Set([
   "guard_hit",
@@ -34,7 +35,7 @@ const EVENTS = new Set([
  */
 async function emit(event, fields = {}, logsDir) {
   if (!EVENTS.has(event)) {
-    process.stderr.write(`[observability] 未知事件类型，跳过: ${event}\n`);
+    diag.warn("observability", "未知事件类型，跳过: " + event);
     return;
   }
   try {

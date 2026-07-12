@@ -1,6 +1,8 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { detectConflicts } from "./lib/conflict-detector.mjs";
 import { logGuardHit } from "./lib/observability.mjs";
+// @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
+import { diag } from "./lib/diagnostic-log.mjs";
 
 /**
  * conflict-detector 跨指南冲突检测扩展（方案 C · 先 B）
@@ -74,8 +76,9 @@ export default function (pi: ExtensionAPI) {
       })
       .catch((e: any) => {
         // 评审超时/失败：放行（不扰用户），服务端留痕便于排障
-        process.stderr.write(
-          `[conflict-detector] 冲突检测失败/超时，降级放行: ${e?.message || e}\n`,
+        diag.warn(
+          "conflict-detector",
+          "冲突检测失败/超时，降级放行: " + (e?.message || e),
         );
       });
   });

@@ -3,6 +3,8 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 // @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
 import { encryptJSON, decryptJSON, auditLog } from "./lib/phi-crypto.mjs";
+// @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
+import { diag } from "./lib/diagnostic-log.mjs";
 
 /**
  * 患者画像记忆扩展
@@ -57,7 +59,7 @@ async function loadProfile(): Promise<PatientProfile> {
   } catch (err) {
     // 解密/解析失败须显式暴露，避免用空画像静默覆盖真实病史（尤其过敏史）
     const msg = err instanceof Error ? err.message : String(err);
-    process.stderr.write(`[patient-profile] 画像解密失败: ${msg}\n`);
+    diag.error("patient-profile", "画像解密失败: " + msg);
     auditLog("patient_profile.decrypt_error", { error: msg });
     throw new Error(`患者画像解密失败，拒绝以空画像继续: ${msg}`);
   }
@@ -196,7 +198,7 @@ export default function (pi: ExtensionAPI) {
     } catch (err) {
       // 不再静默：注入失败会导致过敏史等关键事实缺席，须留痕
       const msg = err instanceof Error ? err.message : String(err);
-      process.stderr.write(`[patient-profile] 画像注入失败: ${msg}\n`);
+      diag.error("patient-profile", "画像注入失败: " + msg);
       auditLog("patient_profile.inject_error", { error: msg });
       return;
     }

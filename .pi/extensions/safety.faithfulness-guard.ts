@@ -1,6 +1,8 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { guardReview, getMessageText } from "./lib/faithfulness-guard.mjs";
 import { logGuardHit, logFaithfulness } from "./lib/observability.mjs";
+// @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
+import { diag } from "./lib/diagnostic-log.mjs";
 
 /**
  * 在线 faithfulness / 安全护栏（维度二「生成可信度」运行时护栏）
@@ -81,8 +83,9 @@ export default function (pi: ExtensionAPI) {
       })
       .catch((e: any) => {
         // 评审失败/超时：放行（不扰用户），服务端留痕便于排障
-        process.stderr.write(
-          `[faithfulness-guard] 评审失败/超时，降级放行: ${e?.message || e}\n`,
+        diag.warn(
+          "faithfulness-guard",
+          "评审失败/超时，降级放行: " + (e?.message || e),
         );
       });
   });

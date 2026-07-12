@@ -9,6 +9,8 @@ import { sanitizeSearchQuery } from "./lib/query-sanitize.mjs";
 // 检索动作落入防篡改审计哈希链（仅记字段名，不记查询原文——合规红线）
 import { auditChainLog } from "./lib/audit-chain.mjs";
 import { logRetrieval, logEngineFallback } from "./lib/observability.mjs";
+// @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
+import { diag } from "./lib/diagnostic-log.mjs";
 
 /**
  * rag_search 定向召回检索扩展（独立工具名，避免与 pi-knowledge 扩展的 knowledge_search 重名冲突）
@@ -121,7 +123,7 @@ export default function (pi: ExtensionAPI) {
         out = searchKnowledge(query, { limit, kbId });
       } catch (e: any) {
         telemetry.error = "searchKnowledge_failed:" + (e?.message || e);
-        console.warn("[rag_search.telemetry]", JSON.stringify(telemetry));
+        diag.warn("rag_search", "telemetry: " + JSON.stringify(telemetry));
         return {
           content: [
             {
@@ -135,7 +137,7 @@ export default function (pi: ExtensionAPI) {
 
       if (out.error) {
         telemetry.error = out.error;
-        console.warn("[rag_search.telemetry]", JSON.stringify(telemetry));
+        diag.warn("rag_search", "telemetry: " + JSON.stringify(telemetry));
         return {
           content: [
             {
@@ -186,7 +188,7 @@ export default function (pi: ExtensionAPI) {
       telemetry.totalMs = +(performance.now() - t0).toFixed(1);
       telemetry.resultCount = src.results.length;
       telemetry.engineWarn = engineWarn || undefined;
-      console.info("[rag_search.telemetry]", JSON.stringify(telemetry));
+      diag.info("rag_search", "telemetry: " + JSON.stringify(telemetry));
       // 观测：检索维度埋点（召回条数/耗时/引擎模式），fire-and-forget 不阻断
       logRetrieval({
         queryLen: query.length,

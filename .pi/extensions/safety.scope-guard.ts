@@ -2,6 +2,8 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 // @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
 import { detectScope, SCOPE_REFUSAL_DIRECTIVE } from "./lib/scope-guard.mjs";
 import { logGuardHit } from "./lib/observability.mjs";
+// @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
+import { diag } from "./lib/diagnostic-log.mjs";
 
 /**
  * 越界（非医疗）请求扩展级拦截
@@ -59,7 +61,7 @@ export default function (pi: ExtensionAPI) {
       }
     } catch (e: any) {
       // 判定异常：放行，不阻断（无静默失败，仅告警）
-      process.stderr.write(`[scope-guard] 判定异常，放行: ${e?.message || e}\n`);
+      diag.warn("scope-guard", "判定异常，放行: " + (e?.message || e));
     }
     return; // 放行（不修改 messages）
   });

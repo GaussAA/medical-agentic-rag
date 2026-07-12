@@ -12,6 +12,7 @@
 //   · 保守护栏：默认仅附批注（不删原回答，防误伤）；仅 HARD 开关 + 安全极低才阻断。
 
 import { judgeAnswer, isLLMAvailable } from "./llm-judge.mjs";
+import { diag } from "./diagnostic-log.mjs";
 
 // ---- 阈值（可调，集中管理）----
 const FAITH_THRESHOLD = 0.6; // 忠实度低于此 → 附「循证核验」批注
@@ -122,7 +123,7 @@ export async function guardReview({ question, answer, judge = judgeAnswer, isAva
     return { action: "pass", reason: "low_risk_skip" };
   }
   if (!isAvailable()) {
-    if (!silent) console.warn("[faithfulness-guard] LLM 不可用，放行（不评审）");
+    if (!silent) diag.warn("faithfulness-guard", "LLM 不可用，放行（不评审）");
     return { action: "pass", skipped: true, reason: "no_llm" };
   }
 
@@ -132,15 +133,15 @@ export async function guardReview({ question, answer, judge = judgeAnswer, isAva
   );
 
   if (res && res.__timeout) {
-    if (!silent) console.warn("[faithfulness-guard] 评审超时，放行");
+    if (!silent) diag.warn("faithfulness-guard", "评审超时，放行");
     return { action: "pass", skipped: true, reason: "timeout" };
   }
   if (res && res.__error) {
-    if (!silent) console.warn("[faithfulness-guard] 评审异常，放行:", res.__error);
+    if (!silent) diag.warn("faithfulness-guard", "评审异常，放行: " + res.__error);
     return { action: "pass", skipped: true, reason: "error:" + res.__error };
   }
   if (res && res.skipped) {
-    if (!silent) console.warn("[faithfulness-guard] judge 跳过（" + res.reason + "），放行");
+    if (!silent) diag.warn("faithfulness-guard", "judge 跳过（" + res.reason + "），放行");
     return { action: "pass", skipped: true, reason: res.reason };
   }
 

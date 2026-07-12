@@ -20,6 +20,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { callLLM, isLLMAvailable as defaultIsLLMAvailable } from "./llm-judge.mjs";
 import { searchKnowledge } from "./retrieval-router.mjs";
+import { diag } from "./diagnostic-log.mjs";
 
 // ---------- 指南名归一 ----------
 /** 去 .md 后缀，取 basename。 */
@@ -224,7 +225,7 @@ export async function detectConflicts({
   try {
     guideMap = loadGuideIndex();
   } catch (e) {
-    console.error(`[conflict-detector] 指南索引加载失败，版本冲突检测降级关闭: ${e?.message || e}`);
+    diag.error("conflict-detector", "指南索引加载失败，版本冲突检测降级关闭: " + (e?.message || e));
     guideMap = null;
   }
   const versionConflicts = guideMap ? detectVersionConflicts(guideNames, guideMap) : [];
@@ -236,7 +237,7 @@ export async function detectConflicts({
   } catch (e) {
     contentConflicts = [];
     // 降级：仅记 reason，不阻断
-    console.warn("[conflict-detector] Layer2 失败，降级 pass:", e?.message || e);
+    diag.warn("conflict-detector", "Layer2 失败，降级 pass: " + (e?.message || e));
   }
 
   const conflicts = [...versionConflicts, ...contentConflicts];

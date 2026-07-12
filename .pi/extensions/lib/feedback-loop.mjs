@@ -19,6 +19,7 @@
 import { readdirSync, readFileSync, existsSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { logFeedbackGen } from "./observability.mjs";
+import { diag } from "./diagnostic-log.mjs";
 
 /** 严重度阈值（与 eval-ci-gate WARN 对齐：四维 <0.8 软、<0.6 硬）。 */
 export const SEVERITY = {
@@ -89,7 +90,7 @@ function scanEval(reportsDir) {
     const items = rep?.items || [];
     for (const it of items) signals.push(...evalDimensionsToSignals(it));
   } catch (e) {
-    process.stderr.write(`[feedback-loop] eval 报告解析失败，跳过: ${e?.message || e}\n`);
+    diag.warn("feedback-loop", "eval 报告解析失败，跳过: " + (e?.message || e));
   }
   return signals;
 }
@@ -106,7 +107,7 @@ function scanPhi(reportsDir) {
       signals.push({ src: "phi", type: "phi_noncompliant", severity: SEVERITY.HIGH, guides: [], detail: f, t: rep?.generatedAt });
     }
   } catch (e) {
-    process.stderr.write(`[feedback-loop] 观测报告解析失败，跳过: ${e?.message || e}\n`);
+    diag.warn("feedback-loop", "观测报告解析失败，跳过: " + (e?.message || e));
   }
   return signals;
 }
@@ -234,7 +235,7 @@ export function readFeedbackQueue(path) {
   try {
     return JSON.parse(readFileSync(p, "utf-8"));
   } catch (e) {
-    process.stderr.write(`[feedback-loop] 队列读取失败，返回 null: ${e?.message || e}\n`);
+    diag.warn("feedback-loop", "队列读取失败，返回 null: " + (e?.message || e));
     return null;
   }
 }

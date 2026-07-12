@@ -3,6 +3,7 @@ import { guardReview, getMessageText } from "./lib/faithfulness-guard.mjs";
 import { logGuardHit, logFaithfulness } from "./lib/observability.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
+import { alert } from "./lib/alert-log.mjs";
 
 /**
  * 在线 faithfulness / 安全护栏（维度二「生成可信度」运行时护栏）
@@ -65,8 +66,9 @@ export default function (pi: ExtensionAPI) {
           score: typeof verdict.score === "number" ? verdict.score : undefined,
           reason: verdict.reasons || verdict.reason || undefined,
         }).catch((e: any) =>
-          process.stderr.write(
-            `[faithfulness-guard] 软信号观测失败，放行仍生效: ${e?.message || e}\n`,
+          alert(
+            "faithfulness-guard",
+            `软信号观测失败，放行仍生效: ${e?.message || e}`,
           ),
         );
         if (verdict.action !== "pass" && verdict.annotatedText) {
@@ -75,8 +77,9 @@ export default function (pi: ExtensionAPI) {
             action: verdict.action,
             reason: verdict.reasons || verdict.reason || undefined,
           }).catch((e: any) =>
-            process.stderr.write(
-              `[faithfulness-guard] 埋点落盘失败，放行仍生效: ${e?.message || e}\n`,
+            alert(
+              "faithfulness-guard",
+              `埋点落盘失败，放行仍生效: ${e?.message || e}`,
             ),
           );
         }

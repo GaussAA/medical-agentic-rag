@@ -4,6 +4,7 @@ import { detectScope, SCOPE_REFUSAL_DIRECTIVE } from "./lib/scope-guard.mjs";
 import { logGuardHit } from "./lib/observability.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
+import { alert } from "./lib/alert-log.mjs";
 
 /**
  * 越界（非医疗）请求扩展级拦截
@@ -48,8 +49,9 @@ export default function (pi: ExtensionAPI) {
           action: "refuse",
           reason: verdict.reason,
         }).catch((e: any) =>
-          process.stderr.write(
-            `[scope-guard] 埋点落盘失败，拒答仍生效: ${e?.message || e}\n`,
+          alert(
+            "scope-guard",
+            `埋点落盘失败，拒答仍生效: ${e?.message || e}`,
           ),
         );
         return {

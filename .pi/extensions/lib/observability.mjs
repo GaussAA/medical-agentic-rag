@@ -17,6 +17,7 @@
 import { appendFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { diag } from "./diagnostic-log.mjs";
+import { alert } from "./alert-log.mjs";
 
 const EVENTS = new Set([
   "guard_hit",
@@ -46,7 +47,7 @@ async function emit(event, fields = {}, logsDir) {
       JSON.stringify({ t: new Date().toISOString(), event, ...fields }) + "\n";
     await appendFile(join(dir, `${date}.ndjson`), entry, "utf-8");
   } catch (e) {
-    process.stderr.write(`[observability] ${event} 日志写入失败: ${e?.message || e}\n`);
+    alert("observability", `${event} 日志写入失败: ${e?.message || e}`);
   }
 }
 

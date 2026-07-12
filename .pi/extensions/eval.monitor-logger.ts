@@ -1,6 +1,7 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { appendFile, mkdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { alert } from "./lib/alert-log.mjs";
 // @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
 import { auditFileToday } from "./lib/phi-crypto.mjs";
 
@@ -29,7 +30,7 @@ export default function (pi: ExtensionAPI) {
     } catch (err) {
       // 显式错误捕获：不静默，写 stderr 便于运维发现日志链路断裂
       const msg = err instanceof Error ? err.message : String(err);
-      process.stderr.write(`[monitor-logger] 日志写入失败: ${msg}\n`);
+      alert("monitor-logger", `日志写入失败: ${msg}`);
     }
   }
 

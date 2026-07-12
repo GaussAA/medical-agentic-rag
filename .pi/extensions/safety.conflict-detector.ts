@@ -3,6 +3,7 @@ import { detectConflicts } from "./lib/conflict-detector.mjs";
 import { logGuardHit } from "./lib/observability.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
+import { alert } from "./lib/alert-log.mjs";
 
 /**
  * conflict-detector 跨指南冲突检测扩展（方案 C · 先 B）
@@ -68,8 +69,9 @@ export default function (pi: ExtensionAPI) {
               .map((c: any) => (c.guide ? c.guide : (c.guides || []).join(" / ")))
               .filter(Boolean),
           }).catch((e: any) =>
-            process.stderr.write(
-              `[conflict-detector] 埋点落盘失败，放行仍生效: ${e?.message || e}\n`,
+            alert(
+              "conflict-detector",
+              `埋点落盘失败，放行仍生效: ${e?.message || e}`,
             ),
           );
         }

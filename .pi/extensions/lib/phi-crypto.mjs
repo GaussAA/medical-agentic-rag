@@ -13,6 +13,7 @@
 //    也能被原生 node 直接 import（单测 tests/unit/compliance-test.mjs）。
 
 import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
+import { alert } from "./alert-log.mjs";
 import {
   existsSync,
   mkdirSync,
@@ -234,8 +235,9 @@ export function auditLog(action, data = {}) {
     appendFileSync(join(LOGS_DIR, `audit-${date}.ndjson`), entry, "utf-8");
   } catch (err) {
     // 审计失败不应吞掉：写 stderr，便于运维发现可观测性断裂
-    process.stderr.write(
-      `[audit] 写入失败: ${err instanceof Error ? err.message : String(err)}\n`,
+    alert(
+      "phi-crypto",
+      `写入失败: ${err instanceof Error ? err.message : String(err)}`,
     );
   }
 }

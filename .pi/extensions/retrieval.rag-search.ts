@@ -11,6 +11,7 @@ import { auditChainLog } from "./lib/audit-chain.mjs";
 import { logRetrieval, logEngineFallback } from "./lib/observability.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
+import { alert } from "./lib/alert-log.mjs";
 
 /**
  * rag_search 定向召回检索扩展（独立工具名，避免与 pi-knowledge 扩展的 knowledge_search 重名冲突）
@@ -176,7 +177,7 @@ export default function (pi: ExtensionAPI) {
         logEngineFallback({
           reason: engineResult?.error || "engine_unavailable",
         }).catch((e: any) =>
-          process.stderr.write(`[rag_search] 引擎回退观测失败: ${e?.message || e}\n`),
+          alert("rag_search", `引擎回退观测失败: ${e?.message || e}`),
         );
       }
 
@@ -199,7 +200,7 @@ export default function (pi: ExtensionAPI) {
         ms: telemetry.totalMs,
         engineMode: engineUsed ? (engineResult as any).modeUsed : "bm25_fallback",
       }).catch((e: any) =>
-        process.stderr.write(`[rag_search] 检索观测写入失败: ${e?.message || e}\n`),
+        alert("rag_search", `检索观测写入失败: ${e?.message || e}`),
       );
 
       const routed = out.routedTitles.length

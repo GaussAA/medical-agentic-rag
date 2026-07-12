@@ -9,6 +9,7 @@
 // 向后兼容：旧格式（无 prevHash/sig）条目自动跳过，不破坏验证
 
 import { createHmac, createHash, randomBytes } from "node:crypto";
+import { alert } from "./alert-log.mjs";
 import {
   existsSync,
   mkdirSync,
@@ -171,8 +172,9 @@ export function auditChainLog(action, data = {}) {
     appendFileSync(logFile, entry, "utf-8");
     return { hash, prevHash };
   } catch (err) {
-    process.stderr.write(
-      `[audit-chain] 写入失败: ${err instanceof Error ? err.message : String(err)}\n`,
+    alert(
+      "audit-chain",
+      `写入失败: ${err instanceof Error ? err.message : String(err)}`,
     );
     return null;
   }

@@ -5,8 +5,8 @@
 // 注意：pi-knowledge 对 >~10MB 文件硬性 oversized skip（knowledge_plan 实测 {oversized:3}），
 //   故三份 oversized 主 PDF 须先拆为小页 PDF（scripts/kb/split_oversized.py）方可被增量纳入。
 // 用法：node scripts/kb/rebuild-kb.mjs [--full]
-import { pathToFileURL } from "node:url";
-import { join } from "node:path";
+import { pathToFileURL, fileURLToPath } from "node:url";
+import { join, dirname } from "node:path";
 
 // ---- 并发安全：SQLite WAL 模式 + busy_timeout ----
 // 确保 KB 写入期间多实例读操作不阻塞。WAL 模式下读写不互斥，
@@ -26,11 +26,15 @@ try {
   console.warn("[sqlite] 未能设置 WAL 模式（数据库可能尚未创建）:", e?.message || e);
 }
 
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+const npmRoot =
+  process.env.PI_AGENT_NPM ||
+  join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "agent", "npm");
 const PK_URL = pathToFileURL(
-  "C:/Users/JaNiy/.pi/agent/npm/node_modules/pi-knowledge/dist/index.js"
+  join(npmRoot, "node_modules/pi-knowledge/dist/index.js")
 ).href;
 
-const SOURCE = "C:/WorkSpace/AgentProject/medical-agentic-rag/medical-raw";
+const SOURCE = join(ROOT, "medical-raw");
 const NAME = "医疗指南";
 const FULL = process.argv.includes("--full");
 

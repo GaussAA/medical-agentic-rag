@@ -5,9 +5,13 @@
 // 可逆：rebuild-kb.mjs 可从 medical-raw 整体重建并自动包含 _oversized_split 子块。
 // 用法：node scripts/kb/add_oversized.mjs
 import { pathToFileURL } from "node:url";
+import { join } from "node:path";
 
+const npmRoot =
+  process.env.PI_AGENT_NPM ||
+  join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "agent", "npm");
 const PK_URL = pathToFileURL(
-  "C:/Users/JaNiy/.pi/agent/npm/node_modules/pi-knowledge/dist/index.js"
+  join(npmRoot, "node_modules/pi-knowledge/dist/index.js")
 ).href;
 
 const NAME = "医疗指南";

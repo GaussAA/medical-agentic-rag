@@ -8,12 +8,13 @@
 // 依赖: 本地需 pi-knowledge@0.5.1 已安装于 ~/.pi/agent/npm 才会执行 live 断言；CI 仅校验错误路径。
 
 import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { engineHybridSearch, isEngineAvailable } from "../../.pi/extensions/lib/knowledge-engine-search.mjs";
 
 // 同步预判：内置引擎是否可达（避免 live 段 await 后才发现不可用）
 const ENGINE_AVAILABLE = (() => {
   const cand = [
-    (process.env.PI_AGENT_NPM || "C:/Users/JaNiy/.pi/agent/npm") + "/node_modules/pi-knowledge/dist/src/engine.js",
+    (process.env.PI_AGENT_NPM || join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "agent", "npm")) + "/node_modules/pi-knowledge/dist/src/engine.js",
     (process.env.USERPROFILE || process.env.HOME || "") + "/.pi/agent/npm/node_modules/pi-knowledge/dist/src/engine.js",
   ];
   return cand.some((p) => existsSync(p));

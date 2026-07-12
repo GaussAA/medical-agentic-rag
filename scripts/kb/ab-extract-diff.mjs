@@ -24,9 +24,14 @@ process.on("uncaughtException", (e) => {
   console.error("  [uncaughtException]", String(e && e.message ? e.message : e).slice(0, 120));
 });
 
-const SRC = "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
-const PK_NM = "C:/Users/JaNiy/.pi/agent/npm/node_modules";
-const PY = "C:/Users/JaNiy/.workbuddy/binaries/python/envs/default/Scripts/python.exe";
+const SRC = process.env.MEDICAL_RAW_SRC || "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
+const npmRoot =
+  process.env.PI_AGENT_NPM ||
+  join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "agent", "npm");
+const PK_NM = join(npmRoot, "node_modules");
+const PY =
+  process.env.PY_VENV ||
+  join(process.env.USERPROFILE || process.env.HOME || "", ".workbuddy", "binaries", "python", "envs", "default", "Scripts", "python.exe");
 const require = createRequire(join(PK_NM, "pi-knowledge/package.json"));
 
 // unpdf 只 resolve/import 一次，避免在循环里反复加载

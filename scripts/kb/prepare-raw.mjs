@@ -17,11 +17,13 @@ import {
 } from "node:fs";
 import { join, extname, basename } from "node:path";
 
-const SRC = "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
+const SRC = process.env.MEDICAL_RAW_SRC || "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
 const ROOT = process.cwd();
 const RAW_DIR = join(ROOT, "medical-raw");
 const TXT_DIR = join(ROOT, "medical-raw-txt");
-const PY = "C:/Users/JaNiy/.workbuddy/binaries/python/envs/default/Scripts/python.exe";
+const PY =
+  process.env.PY_VENV ||
+  join(process.env.USERPROFILE || process.env.HOME || "", ".workbuddy", "binaries", "python", "envs", "default", "Scripts", "python.exe");
 const DOCX_BRIDGE = join(ROOT, "scripts", "kb", "_docx2txt.py");
 
 mkdirSync(RAW_DIR, { recursive: true });

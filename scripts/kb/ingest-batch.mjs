@@ -20,9 +20,11 @@ import { execFileSync } from "node:child_process";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const KB_DIR = join(ROOT, "medical-knowlegde-base");
 const REG_FILE = join(ROOT, "kb-sources.json");
-const PY_VENV = "C:/Users/JaNiy/.workbuddy/binaries/python/envs/default/Scripts/python.exe";
+const PY_VENV =
+  process.env.PY_VENV ||
+  join(process.env.USERPROFILE || process.env.HOME || "", ".workbuddy", "binaries", "python", "envs", "default", "Scripts", "python.exe");
 const DOCX_BRIDGE = join(ROOT, "scripts", "kb", "_docx2txt.py");
-const DEF_SRC = "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
+const DEF_SRC = process.env.MEDICAL_RAW_SRC || "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const kb = await import(MOD);
 

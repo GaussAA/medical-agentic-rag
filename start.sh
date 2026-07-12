@@ -66,7 +66,7 @@ echo "[Medical Agentic RAG]  LLM: $PROVIDER/$MODEL (via local proxy)  KB: 134 gu
 echo ""
 
 # 6) 启动 Pi Agent（用 managed node v22.22.2，与 better-sqlite3 原生模块版本匹配）
-NODE_BIN="/c/Users/JaNiy/.workbuddy/binaries/node/versions/22.22.2/node"
+NODE_BIN="${NODE_BIN:-/c/Users/JaNiy/.workbuddy/binaries/node/versions/22.22.2/node}"
 exec "$NODE_BIN" "$WIN_ROOT/pi/packages/coding-agent/dist/cli.js" \
   --model "$PROVIDER/$MODEL" \
   --system-prompt "$WIN_ROOT/prompts/medical-agent.md"

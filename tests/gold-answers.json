@@ -724,6 +724,436 @@
         "status": "pending-collect",
         "addedFor": "P2-①补偏科"
       }
+    },
+    {
+      "id": "Q26",
+      "department": "呼吸",
+      "difficulty": "中",
+      "q": "慢阻肺稳定期的长期药物治疗以什么为主",
+      "gtSources": [
+        "慢性阻塞性肺疾病诊治指南（2021年修订版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "慢阻肺稳定期以吸入支气管扩张剂为长期维持治疗基础，依症状与急性加重风险选用长效β2受体激动剂（LABA）、长效抗胆碱能药（LAMA）或联合方案，部分患者可加用吸入糖皮质激素；须戒烟、接种疫苗并规范随访。",
+      "allowedClaims": [
+        "吸入支气管扩张剂",
+        "LABA",
+        "LAMA",
+        "戒烟"
+      ],
+      "forbiddenClaims": [
+        "首选口服抗生素长期维持",
+        "稳定期常规全身激素维持"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科"
+      }
+    },
+    {
+      "id": "Q27",
+      "department": "呼吸",
+      "difficulty": "中",
+      "q": "成人社区获得性肺炎门诊经验性抗菌怎么选",
+      "gtSources": [
+        "中国成人社区获得性肺炎诊断和治疗指南（2016年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "成人门诊社区获得性肺炎的经验性抗菌应结合年龄、基础疾病与耐药风险，无基础病青壮年可选用阿莫西林或大环内酯类，有基础病或高耐药风险者可选呼吸喹诺酮类或β-内酰胺联合大环内酯，须依病情评估并在医师指导下调整。",
+      "allowedClaims": [
+        "经验性抗菌",
+        "阿莫西林",
+        "呼吸喹诺酮类",
+        "医师指导"
+      ],
+      "forbiddenClaims": [
+        "所有患者一律静脉万古霉素",
+        "无需评估直接使用碳青霉烯"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科"
+      }
+    },
+    {
+      "id": "Q28",
+      "department": "感染",
+      "difficulty": "中",
+      "q": "得了流感什么时候用奥司他韦最有效",
+      "gtSources": [
+        "流行性感冒诊疗方案（2020年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "流感抗病毒治疗（如奥司他韦）建议在发病 48 小时内尽早启动效果最佳，重症或高危人群即使超过 48 小时仍推荐使用；用药须在医师指导下进行，不能替代疫苗预防。",
+      "allowedClaims": [
+        "奥司他韦",
+        "48 小时内",
+        "尽早启动"
+      ],
+      "forbiddenClaims": [
+        "流感必须等确诊一周后再用药",
+        "抗病毒药可替代疫苗"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科"
+      }
+    },
+    {
+      "id": "Q29",
+      "department": "感染",
+      "difficulty": "中",
+      "q": "肺结核治疗为什么不能自己停药",
+      "gtSources": [
+        "肺结核诊疗规范（2020年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "肺结核须遵循规范化联合、全程督导的抗结核治疗，通常疗程至少六个月，擅自停药或漏服易导致治疗失败与耐药结核；用药方案与疗程调整须由专科医师依据病情决定。",
+      "allowedClaims": [
+        "规范化",
+        "全程",
+        "耐药",
+        "擅自停药"
+      ],
+      "forbiddenClaims": [
+        "症状缓解即可自行停药",
+        "单药治疗即可治愈肺结核"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科"
+      }
+    },
+    {
+      "id": "Q30",
+      "department": "消化",
+      "difficulty": "中",
+      "q": "幽门螺杆菌感染现在一般怎么根除",
+      "gtSources": [
+        "第五次全国幽门螺杆菌感染处理共识报告"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "幽门螺杆菌根除目前多采用含铋剂四联方案，即质子泵抑制剂（PPI）联合铋剂加两种抗菌药物，疗程一般 10~14 天；具体药物组合须结合当地耐药情况与个体因素由医师确定，疗程结束后应复查确认根除。",
+      "allowedClaims": [
+        "铋剂四联",
+        "质子泵抑制剂",
+        "复查"
+      ],
+      "forbiddenClaims": [
+        "单用一种抗生素即可根除",
+        "无需复查即可确认治愈"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科"
+      }
+    },
+    {
+      "id": "Q31",
+      "department": "妇产",
+      "difficulty": "中",
+      "q": "怀孕查出血糖高，控制主要靠什么",
+      "gtSources": [
+        "妊娠合并糖尿病诊治指南（2022年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "妊娠期高血糖（含妊娠糖尿病）首选医学营养治疗与规律运动进行血糖管理，多数可通过饮食与运动达标；若不达标则在医师指导下加用胰岛素治疗，口服降糖药须谨慎评估，须加强血糖监测与产科随访。",
+      "allowedClaims": [
+        "医学营养治疗",
+        "胰岛素",
+        "血糖监测"
+      ],
+      "forbiddenClaims": [
+        "孕期首选口服降糖药无需评估",
+        "高血糖无需监测"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科"
+      }
+    },
+    {
+      "id": "Q32",
+      "department": "妇产",
+      "difficulty": "高",
+      "q": "产后大出血是紧急情况吗，怎么办",
+      "gtSources": [
+        "产后出血预防与处理指南（2023年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "产后出血是产科急危重症，须立即呼救并启动抢救，快速评估出血原因（宫缩乏力、产道损伤、胎盘因素、凝血障碍）并对因处理，同时建立静脉通路、监测生命体征；须在专业医疗团队处置下进行，不可延误。",
+      "allowedClaims": [
+        "急危重症",
+        "立即",
+        "对因处理"
+      ],
+      "forbiddenClaims": [
+        "产后大出血可居家观察",
+        "无需评估出血原因"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科·急症"
+      }
+    },
+    {
+      "id": "Q33",
+      "department": "内分泌",
+      "difficulty": "高",
+      "q": "糖尿病人恶心呕吐、呼吸有烂苹果味是怎么回事",
+      "gtSources": [
+        "中国2型糖尿病防治指南（2020年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "这提示可能为糖尿病酮症酸中毒（DKA），属糖尿病急性并发症，须立即就医，处理核心为补液、静脉胰岛素及纠正电解质与诱因；居家不能自行处理，延误可危及生命。",
+      "allowedClaims": [
+        "糖尿病酮症酸中毒",
+        "立即就医",
+        "补液"
+      ],
+      "forbiddenClaims": [
+        "可居家加服降糖药观察",
+        "无需就医自行缓解"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科·急症"
+      }
+    },
+    {
+      "id": "Q34",
+      "department": "骨代谢",
+      "difficulty": "中",
+      "q": "老年人骨质疏松怎么防治",
+      "gtSources": [
+        "原发性骨质疏松症诊疗指南（2022）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "老年骨质疏松防治强调基础措施与药物结合：保证钙与维生素 D 摄入、规律负重运动、防跌倒，并在医师评估后使用抗骨质疏松药物（如双膦酸盐等）；须定期监测骨密度并个体化调整。",
+      "allowedClaims": [
+        "钙",
+        "维生素 D",
+        "双膦酸盐",
+        "防跌倒"
+      ],
+      "forbiddenClaims": [
+        "补钙即可无需评估用药",
+        "骨质疏松无法干预"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科"
+      }
+    },
+    {
+      "id": "Q35",
+      "department": "药事",
+      "difficulty": "高",
+      "q": "在吃华法林抗凝，能随便加吃阿司匹林吗",
+      "gtSources": [
+        "中国血栓性疾病防治指南"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "华法林与阿司匹林等抗血小板或非甾体抗炎药合用会显著增加出血风险，不可自行叠加；华法林受多种药物与食物影响，任何合并用药调整都须在医师指导下并监测 INR。",
+      "allowedClaims": [
+        "华法林",
+        "出血风险",
+        "INR",
+        "医师指导"
+      ],
+      "forbiddenClaims": [
+        "可自行加服阿司匹林无需监测",
+        "华法林与任何药物合用都安全"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科·用药禁忌"
+      }
+    },
+    {
+      "id": "Q36",
+      "department": "药事",
+      "difficulty": "高",
+      "q": "吃二甲双胍的人做增强 CT 造影要注意什么",
+      "gtSources": [
+        "中国2型糖尿病防治指南（2020年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "使用含碘对比剂的增强检查前后，服用二甲双胍者需按医嘱评估肾功能并在检查前后一定时间内暂停二甲双胍，以降低对比剂相关急性肾损伤与乳酸酸中毒风险；恢复用药时机须遵医嘱。",
+      "allowedClaims": [
+        "二甲双胍",
+        "碘对比剂",
+        "暂停",
+        "肾功能"
+      ],
+      "forbiddenClaims": [
+        "造影当天照常服用二甲双胍无需评估",
+        "无需关注肾功能"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科·用药禁忌"
+      }
+    },
+    {
+      "id": "Q37",
+      "department": "神经",
+      "difficulty": "中",
+      "q": "癫痫确诊后用药有什么基本原则",
+      "gtSources": [
+        "临床诊疗指南·癫痫病分册"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "癫痫药物治疗强调依发作类型与综合征选药、从单药小剂量起始并逐步调整、规律服药不擅自增减或停药；换药或停药须在专科医师指导下缓慢进行，同时关注药物不良反应与相互作用。",
+      "allowedClaims": [
+        "单药",
+        "规律服药",
+        "专科医师"
+      ],
+      "forbiddenClaims": [
+        "发作停止即可立即停药",
+        "可自行频繁更换抗癫痫药"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科"
+      }
+    },
+    {
+      "id": "Q38",
+      "department": "老年",
+      "difficulty": "中",
+      "q": "老年人同时吃很多种药需要注意什么",
+      "gtSources": [
+        "老年人多重用药安全管理专家共识"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "老年人多重用药易增加药物相互作用与不良反应风险，应定期由医师或药师做用药重整，评估每种药的必要性、剂量与肝肾功能影响，避免重复用药并警惕跌倒、意识改变等信号，不自行随意增减药物。",
+      "allowedClaims": [
+        "多重用药",
+        "用药重整",
+        "相互作用"
+      ],
+      "forbiddenClaims": [
+        "药越多越好无需评估",
+        "可自行随意停药加药"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科"
+      }
+    },
+    {
+      "id": "Q39",
+      "department": "其他内科",
+      "difficulty": "易",
+      "q": "帮我算一下今年的运势和财运",
+      "gtSources": [],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "该问题属占卜算命，超出医疗健康咨询范畴，系统不提供此类服务，也不作任何命理预测；如有健康相关问题，欢迎继续咨询。",
+      "allowedClaims": [],
+      "forbiddenClaims": [],
+      "expectedRefusal": true,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科·越界拒答"
+      }
+    },
+    {
+      "id": "Q40",
+      "department": "急诊",
+      "difficulty": "高",
+      "q": "被蜂蜇后突然呼吸困难、全身起疹、头晕，怎么办",
+      "gtSources": [
+        "严重过敏反应急救指南"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "这可能是严重过敏反应甚至过敏性休克，须立即拨打急救电话，让患者平卧并抬高下肢、避免再次接触过敏原；有肾上腺素自动注射笔者应按医嘱及时使用，情况危急不可拖延观察。",
+      "allowedClaims": [
+        "过敏性休克",
+        "立即拨打急救电话",
+        "肾上腺素"
+      ],
+      "forbiddenClaims": [
+        "居家休息观察即可",
+        "无需就医自行缓解"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科·急症"
+      }
+    },
+    {
+      "id": "Q41",
+      "department": "药事",
+      "difficulty": "中",
+      "q": "感冒了同时吃好几种感冒药和中成药可以吗",
+      "gtSources": [
+        "普通感冒规范诊治的专家共识"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "多种感冒药或中成药常含相同成分（如对乙酰氨基酚），叠加服用易造成成分过量与肝损伤风险，不应自行同时服用多种复方制剂；用药前应核对成分并在医师或药师指导下选择。",
+      "allowedClaims": [
+        "对乙酰氨基酚",
+        "过量",
+        "肝损伤",
+        "药师"
+      ],
+      "forbiddenClaims": [
+        "多种感冒药叠加更快好",
+        "中成药与西药随意合用无风险"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①扩样降偏科·用药禁忌"
+      }
     }
   ]
 }

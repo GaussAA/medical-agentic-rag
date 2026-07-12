@@ -14,6 +14,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
+import { logEngineFallback } from "./observability.mjs";
 
 // ---- 解析 pi-knowledge 内部模块路径（与 retrieval-router 同范式，环境变量化）----
 // 版本探测：同时探测两种内部布局（dist/src/<sub> 与 dist/<sub>），
@@ -115,6 +116,8 @@ async function getEngine() {
     process.stderr.write(
       `[knowledge-engine] 引擎懒加载失败，后续检索将回退 BM25: ${e?.message || e}\n`,
     );
+    // 观测：引擎回退信号落盘（不止 stderr），脆弱点可见化
+    logEngineFallback({ reason: "lazy_init_failed:" + (e?.message || e) }).catch(() => {});
   });
   return _initPromise;
 }

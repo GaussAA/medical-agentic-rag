@@ -18,6 +18,7 @@
 
 import { readdirSync, readFileSync, existsSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
+import { logFeedbackGen } from "./observability.mjs";
 
 /** 严重度阈值（与 eval-ci-gate WARN 对齐：四维 <0.8 软、<0.6 硬）。 */
 export const SEVERITY = {
@@ -203,10 +204,22 @@ export function buildFeedbackQueue({ logsDir, reportsDir, generatedAt } = {}) {
  * @param {string} [outPath]  输出路径，默认 logs/feedback-queue.json
  * @returns {string} 实际写入路径
  */
-export function writeFeedbackQueue(queue, outPath) {
+export function writeFeedbackQueue(queue, outPath, logsDir) {
   const dir = outPath || join(process.cwd(), "logs", "feedback-queue.json");
   mkdirSync(join(dir, ".."), { recursive: true });
   writeFileSync(dir, JSON.stringify(queue, null, 2), "utf-8");
+  // 观测：反馈生成计数（fire-and-forget，不阻断写盘）；默认与队列同目录（logs/），单测注入 tmp 则隔离
+  const ld = logsDir || join(dir, "..");
+  logFeedbackGen({
+    signals: queue?.summary?.totalSignals,
+    hotspots: queue?.summary?.hotspotCount,
+    suggestions: Array.isArray(queue?.hotspots) ? queue.hotspots.length : undefined,
+    topSeverity:
+      Array.isArray(queue?.hotspots) && queue.hotspots.length
+        ? queue.hotspots[0].severity
+        : undefined,
+    logsDir: ld,
+  }).catch(() => {});
   return dir;
 }
 

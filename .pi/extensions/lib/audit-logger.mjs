@@ -11,6 +11,7 @@
 //   · 合规：审计仅记字段名/长度等元数据，绝不记查询原文或患者 PII。
 
 import { auditChainLog } from "./audit-chain.mjs";
+import { logAuditEvent } from "./observability.mjs";
 
 /**
  * 从 messages 数组抽取最后一条 user 文本。
@@ -52,6 +53,10 @@ export function isNewUserTurn(prevText, currText) {
  * @returns {{hash:string,prevHash:string}|null}
  */
 export function auditTurn(action, fields = {}) {
+  // 聚合：审计事件同步落 observability ndjson（与护栏同源 schema），便于统一聚合
+  try {
+    logAuditEvent({ action }).catch(() => {});
+  } catch {}
   try {
     return auditChainLog(action, fields);
   } catch {

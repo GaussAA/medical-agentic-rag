@@ -8,6 +8,7 @@ import { buildVersionConflictHint, defaultLoadGuideIndex } from "./lib/conflict-
 import { sanitizeSearchQuery } from "./lib/query-sanitize.mjs";
 // 检索动作落入防篡改审计哈希链（仅记字段名，不记查询原文——合规红线）
 import { auditChainLog } from "./lib/audit-chain.mjs";
+import { logRetrieval, logEngineFallback } from "./lib/observability.mjs";
 
 /**
  * rag_search 定向召回检索扩展（独立工具名，避免与 pi-knowledge 扩展的 knowledge_search 重名冲突）
@@ -169,6 +170,12 @@ export default function (pi: ExtensionAPI) {
       if (dense && !engineUsed) {
         engineWarn = (engineWarn ? engineWarn + "；" : "") + "引擎不可用，已回退 BM25";
         telemetry.engineFallback = true;
+        // 观测：引擎回退 BM25 信号（脆弱点可见化），fire-and-forget 不阻断
+        logEngineFallback({
+          reason: engineResult?.error || "engine_unavailable",
+        }).catch((e: any) =>
+          process.stderr.write(`[rag_search] 引擎回退观测失败: ${e?.message || e}\n`),
+        );
       }
 
       // A 层增强：检索期版本冲突前置标注（零成本）
@@ -180,6 +187,18 @@ export default function (pi: ExtensionAPI) {
       telemetry.resultCount = src.results.length;
       telemetry.engineWarn = engineWarn || undefined;
       console.info("[rag_search.telemetry]", JSON.stringify(telemetry));
+      // 观测：检索维度埋点（召回条数/耗时/引擎模式），fire-and-forget 不阻断
+      logRetrieval({
+        queryLen: query.length,
+        kbId,
+        kbResolved: !!(out && out.kbFiles && out.kbFiles.length),
+        hits: telemetry.resultCount,
+        totalFiles: telemetry.totalFiles,
+        ms: telemetry.totalMs,
+        engineMode: engineUsed ? (engineResult as any).modeUsed : "bm25_fallback",
+      }).catch((e: any) =>
+        process.stderr.write(`[rag_search] 检索观测写入失败: ${e?.message || e}\n`),
+      );
 
       const routed = out.routedTitles.length
         ? out.routedTitles.slice(0, 3).join("、")

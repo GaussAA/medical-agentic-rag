@@ -1,6 +1,6 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { guardReview, getMessageText } from "./lib/faithfulness-guard.mjs";
-import { logGuardHit } from "./lib/observability.mjs";
+import { logGuardHit, logFaithfulness } from "./lib/observability.mjs";
 
 /**
  * 在线 faithfulness / 安全护栏（维度二「生成可信度」运行时护栏）
@@ -57,6 +57,16 @@ export default function (pi: ExtensionAPI) {
       ),
     ])
       .then((verdict: any) => {
+        // 观测：忠实度软信号（含放行的低分），弥补 guard_hit 仅覆盖硬阻断的盲区
+        logFaithfulness({
+          action: verdict.action,
+          score: typeof verdict.score === "number" ? verdict.score : undefined,
+          reason: verdict.reasons || verdict.reason || undefined,
+        }).catch((e: any) =>
+          process.stderr.write(
+            `[faithfulness-guard] 软信号观测失败，放行仍生效: ${e?.message || e}\n`,
+          ),
+        );
         if (verdict.action !== "pass" && verdict.annotatedText) {
           logGuardHit({
             type: "faithfulness",

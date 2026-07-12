@@ -209,3 +209,135 @@ export function writeFeedbackQueue(queue, outPath) {
   writeFileSync(dir, JSON.stringify(queue, null, 2), "utf-8");
   return dir;
 }
+
+/**
+ * 读取已生成的反馈队列（消费端入口）。
+ * @param {string} [path]  队列路径，默认 logs/feedback-queue.json
+ * @returns {object|null}  解析后的队列对象；缺失/损坏返回 null（不静默崩，留痕）
+ */
+export function readFeedbackQueue(path) {
+  const p = path || join(process.cwd(), "logs", "feedback-queue.json");
+  if (!existsSync(p)) return null;
+  try {
+    return JSON.parse(readFileSync(p, "utf-8"));
+  } catch (e) {
+    process.stderr.write(`[feedback-loop] 队列读取失败，返回 null: ${e?.message || e}\n`);
+    return null;
+  }
+}
+
+/**
+ * 读取已解决热点 key 集合（人工/自动标记后跳过，避免重复消费）。
+ * key 格式： `${type}::${guides 排序后 join("|")}`
+ * @param {string} [path]  默认 logs/feedback-resolved.json
+ * @returns {Set<string>}
+ */
+export function loadResolved(path) {
+  const p = path || join(process.cwd(), "logs", "feedback-resolved.json");
+  if (!existsSync(p)) return new Set();
+  try {
+    const arr = JSON.parse(readFileSync(p, "utf-8"));
+    return new Set(Array.isArray(arr) ? arr : arr?.keys || []);
+  } catch {
+    return new Set();
+  }
+}
+
+/**
+ * 标记热点为已解决（追加 key，去重）。
+ * @param {string[]} keys  热点 key 数组
+ * @param {string} [path]  默认 logs/feedback-resolved.json
+ * @returns {string[]}  本次新增的 key
+ */
+export function resolveFeedback(keys, path) {
+  const p = path || join(process.cwd(), "logs", "feedback-resolved.json");
+  const set = loadResolved(p);
+  const added = [];
+  for (const k of keys) {
+    if (!set.has(k)) {
+      set.add(k);
+      added.push(k);
+    }
+  }
+  if (added.length) {
+    mkdirSync(join(p, ".."), { recursive: true });
+    writeFileSync(p, JSON.stringify([...set], null, 2), "utf-8");
+  }
+  return added;
+}
+
+/**
+ * 把可改进的热点派生为 gold 候选（补 P2-① gold 薄偏科素材）。
+ * 仅抽取与"评测/忠实度"直接相关的薄弱点；冲突/PHI 类不构成评测题，跳过。
+ * 纯函数，不写任何文件（写盘由调用方决定，避免污染受控 gold-answers.json）。
+ * @param {{hotspots?:Array}} queue  含 hotspots 数组的对象（或直接传 hotspots）
+ * @param {{existingIds?:string[]}} [opts]  已有候选/题 id，去重
+ * @returns {Array<{id:string, fromType:string, department:string, guides:string[], severity:string, count:number, rationale:string, status:string}>}
+ */
+export function deriveGoldCandidates(queue, { existingIds = [] } = {}) {
+  const hotspots = Array.isArray(queue) ? queue : queue?.hotspots || [];
+  const idSet = new Set(existingIds);
+  const cands = [];
+  for (const h of hotspots) {
+    const isGoldWorthy =
+      h.type.startsWith("eval_low_") ||
+      h.type.startsWith("faithfulness_annotate") ||
+      h.type.startsWith("faithfulness_block");
+    if (!isGoldWorthy) continue;
+    const dept = (h.guides?.[0] || "（未关联指南）").replace(/[（(].*$/, "");
+    const seed = h.guides?.map((g) => g.slice(0, 4)).join("_") || "na";
+    const id = `CAND-${h.type}-${seed}`.replace(/[^A-Za-z0-9_-]/g, "");
+    if (idSet.has(id)) continue;
+    cands.push({
+      id,
+      fromType: h.type,
+      department: dept,
+      guides: h.guides || [],
+      severity: h.severity,
+      count: h.count,
+      rationale: h.suggestion,
+      status: "candidate",
+    });
+  }
+  return cands;
+}
+
+/**
+ * 编排消费：读队列 → 跳已解决 → 派生 gold 候选 → 产出回灌记录。
+ * @param {{queuePath?:string, resolvedPath?:string, existingIds?:string[]}} [opts]
+ * @returns {{consumed:boolean, consumedAt:string, totalHotspots:number, openHotspots:number, resolvedSkipped:number, goldCandidates:Array, reason?:string}}
+ */
+export function consumeFeedback({ queuePath, resolvedPath, existingIds = [] } = {}) {
+  const queue = readFeedbackQueue(queuePath);
+  if (!queue) {
+    return { consumed: false, reason: "no-queue", consumedAt: new Date().toISOString(), totalHotspots: 0, openHotspots: 0, resolvedSkipped: 0, goldCandidates: [] };
+  }
+  const resolved = loadResolved(resolvedPath);
+  const all = queue.hotspots || [];
+  const open = all.filter((h) => {
+    const key = `${h.type}::${[...(h.guides || [])].sort().join("|")}`;
+    return !resolved.has(key);
+  });
+  const goldCandidates = deriveGoldCandidates({ hotspots: open }, { existingIds });
+  return {
+    consumed: true,
+    consumedAt: new Date().toISOString(),
+    totalHotspots: all.length,
+    openHotspots: open.length,
+    resolvedSkipped: all.length - open.length,
+    goldCandidates,
+  };
+}
+
+/**
+ * 写回灌记录（消费端产物，注入路径便于单测）。
+ * @param {object} record  consumeFeedback 返回对象
+ * @param {string} [outPath]  默认 tests/reports/feedback-consumed.json
+ * @returns {string} 实际路径
+ */
+export function writeConsumed(record, outPath) {
+  const p = outPath || join(process.cwd(), "tests", "reports", "feedback-consumed.json");
+  mkdirSync(join(p, ".."), { recursive: true });
+  writeFileSync(p, JSON.stringify(record, null, 2), "utf-8");
+  return p;
+}

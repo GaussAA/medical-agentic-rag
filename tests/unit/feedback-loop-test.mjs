@@ -9,6 +9,10 @@ import {
   buildSuggestions,
   buildFeedbackQueue,
   writeFeedbackQueue,
+  readFeedbackQueue,
+  deriveGoldCandidates,
+  consumeFeedback,
+  resolveFeedback,
   SEVERITY,
 } from "../../.pi/extensions/lib/feedback-loop.mjs";
 
@@ -142,6 +146,63 @@ function fixture() {
   const { root, logsDir, reportsDir } = fixture();
   const q = buildFeedbackQueue({ logsDir, reportsDir });
   ok(q.summary.totalSignals === 0 && q.hotspots.length === 0, "空输入安全返回空队列");
+  rmSync(root, { recursive: true, force: true });
+}
+
+// ── Case 8: 读取 API 读回一致 ──
+{
+  const { root, logsDir, reportsDir } = fixture();
+  const out = join(root, "feedback-queue.json");
+  writeFileSync(
+    join(logsDir, "2026-07-12.ndjson"),
+    JSON.stringify({ t: "T", event: "guard_hit", type: "conflict", action: "annotate", guides: ["A", "B"] }) + "\n",
+  );
+  const q = buildFeedbackQueue({ logsDir, reportsDir });
+  writeFeedbackQueue(q, out);
+  const back = readFeedbackQueue(out);
+  ok(back && back.summary.totalSignals === 1, "readFeedbackQueue 读回一致");
+  ok(readFeedbackQueue(join(root, "nope.json")) === null, "缺失队列返回 null 不崩");
+  rmSync(root, { recursive: true, force: true });
+}
+
+// ── Case 9: 派生 gold 候选仅取评测/忠实度类，existingIds 去重 ──
+{
+  const hotspots = [
+    { type: "eval_low_faithfulness", guides: ["肝癌指南2026"], count: 3, severity: SEVERITY.HIGH, suggestion: "补 faith gold" },
+    { type: "faithfulness_annotate", guides: ["肺炎指南"], count: 2, severity: SEVERITY.MEDIUM, suggestion: "补 anno gold" },
+    { type: "conflict_annotate", guides: ["A", "B"], count: 5, severity: SEVERITY.HIGH, suggestion: "冲突对齐" },
+    { type: "phi_noncompliant", guides: [], count: 1, severity: SEVERITY.HIGH, suggestion: "PHI 排查" },
+  ];
+  const c1 = deriveGoldCandidates({ hotspots });
+  ok(c1.length === 2, "仅 2 条评测/忠实度类转为候选（冲突/PHI 跳过）");
+  ok(c1[0].status === "candidate" && c1[0].department.includes("肝癌"), "候选含 department + status");
+  const c2 = deriveGoldCandidates({ hotspots }, { existingIds: [c1[0].id] });
+  ok(c2.length === 1 && c2[0].id !== c1[0].id, "existingIds 去重生效");
+}
+
+// ── Case 10: 消费编排跳过已解决热点 ──
+{
+  const { root, logsDir, reportsDir } = fixture();
+  const out = join(root, "feedback-queue.json");
+  const resolvedPath = join(root, "feedback-resolved.json");
+  const q = {
+    summary: { totalSignals: 3 },
+    hotspots: [
+      { type: "eval_low_safety", guides: ["G1"], count: 2, severity: SEVERITY.MEDIUM, suggestion: "补 safety gold" },
+      { type: "faithfulness_block", guides: ["G2"], count: 1, severity: SEVERITY.HIGH, suggestion: "补 fb gold" },
+      { type: "conflict_annotate", guides: ["G3"], count: 4, severity: SEVERITY.HIGH, suggestion: "冲突" },
+    ],
+  };
+  writeFeedbackQueue(q, out);
+  const rec1 = consumeFeedback({ queuePath: out, resolvedPath });
+  ok(rec1.consumed && rec1.openHotspots === 3 && rec1.goldCandidates.length === 2, "首轮消费 3 开放、派生 2 候选");
+  // 标记第一条为已解决
+  const key = `eval_low_safety::G1`;
+  resolveFeedback([key], resolvedPath);
+  const rec2 = consumeFeedback({ queuePath: out, resolvedPath });
+  ok(rec2.resolvedSkipped === 1 && rec2.openHotspots === 2 && rec2.goldCandidates.length === 1, "已解决项被跳过，候选减为 1");
+  const rec3 = consumeFeedback({ queuePath: join(root, "missing.json") });
+  ok(rec3.consumed === false && rec3.reason === "no-queue", "无队列返回 consumed:false");
   rmSync(root, { recursive: true, force: true });
 }
 

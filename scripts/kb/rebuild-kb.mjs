@@ -6,6 +6,25 @@
 //   故三份 oversized 主 PDF 须先拆为小页 PDF（scripts/kb/split_oversized.py）方可被增量纳入。
 // 用法：node scripts/kb/rebuild-kb.mjs [--full]
 import { pathToFileURL } from "node:url";
+import { join } from "node:path";
+
+// ---- 并发安全：SQLite WAL 模式 + busy_timeout ----
+// 确保 KB 写入期间多实例读操作不阻塞。WAL 模式下读写不互斥，
+// busy_timeout=5000 使写冲突时自动重试 5s 而非立即抛 SQLITE_BUSY。
+try {
+  const { createRequire } = await import("node:module");
+  const require = createRequire(import.meta.url);
+  const Database = require("better-sqlite3");
+  const home = process.env.USERPROFILE || process.env.HOME || "";
+  const dbPath = join(home, ".pi", "knowledge", "knowledge.db");
+  const db = new Database(dbPath);
+  db.pragma("journal_mode = WAL");
+  db.pragma("busy_timeout = 5000");
+  db.close();
+  console.log("[sqlite] WAL 模式已启用 / busy_timeout=5000");
+} catch (e) {
+  console.warn("[sqlite] 未能设置 WAL 模式（数据库可能尚未创建）:", e?.message || e);
+}
 
 const PK_URL = pathToFileURL(
   "C:/Users/JaNiy/.pi/agent/npm/node_modules/pi-knowledge/dist/index.js"
@@ -72,6 +91,15 @@ if (FULL) {
 
 console.log("\n=== ④ 重建后 KB 状态 ===");
 console.log(tx(await captured["knowledge_status"].execute("knowledge_status", {}, null)));
+
+// ---- 清空检索缓存，使 KB 变更立即生效 ----
+try {
+  const { cacheClear } = await import("../../.pi/extensions/lib/retrieval-cache.mjs");
+  cacheClear();
+  console.log("[cache] 检索缓存已清空");
+} catch (e) {
+  console.warn("[cache] 清空缓存失败:", e?.message || e);
+}
 
 console.log("\n=== 脚本结束，强制退出（释放 watcher 句柄）===");
 process.exit(0);

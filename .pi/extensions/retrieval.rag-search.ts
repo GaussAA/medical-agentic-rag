@@ -82,6 +82,7 @@ export default function (pi: ExtensionAPI) {
     },
     // LLM 参数绑定宽松，按既有扩展惯例以 any 承接并显式标注
     execute: async (_toolCallId: string, params: any, signal?: any) => {
+      const t0 = performance.now();
       const p = normalizeParams(params);
       const query = ((p.query || p.q || "") as string).toString().trim();
       if (!query) {
@@ -92,12 +93,22 @@ export default function (pi: ExtensionAPI) {
       const limit = typeof p.limit === "number" && p.limit > 0 ? Math.min(p.limit, 30) : 8;
       const kbId = typeof p.kb_id === "string" && p.kb_id ? p.kb_id : null;
       const mode = typeof p.mode === "string" ? p.mode : "hybrid";
+      const telemetry: Record<string, any> = {
+        query: query.slice(0, 60),
+        mode,
+        kbId: kbId || null,
+        limit,
+        t0,
+      };
 
       // 始终先算 BM25 + 路由（廉价、无 e5 加载）：兼作（1）路由约束来源（2）引擎失败时的回退
       let out;
+      const t1 = performance.now();
       try {
         out = searchKnowledge(query, { limit, kbId });
       } catch (e: any) {
+        telemetry.error = "searchKnowledge_failed:" + (e?.message || e);
+        console.warn("[rag_search.telemetry]", JSON.stringify(telemetry));
         return {
           content: [
             {
@@ -107,8 +118,11 @@ export default function (pi: ExtensionAPI) {
           ],
         };
       }
+      telemetry.bm25Ms = +(performance.now() - t1).toFixed(1);
 
       if (out.error) {
+        telemetry.error = out.error;
+        console.warn("[rag_search.telemetry]", JSON.stringify(telemetry));
         return {
           content: [
             {
@@ -119,6 +133,9 @@ export default function (pi: ExtensionAPI) {
         };
       }
 
+      telemetry.routedFiles = out.kbFiles.length;
+      telemetry.totalFiles = out.totalFiles;
+
       const routedFilePaths = out.kbFiles && out.kbFiles.length ? out.kbFiles : null;
       const DENSE = new Set(["hybrid", "semantic", "deep", "adaptive"]);
       const dense = !mode || DENSE.has(mode);
@@ -127,7 +144,11 @@ export default function (pi: ExtensionAPI) {
       let engineResult = null;
       let engineWarn = null;
       if (dense) {
+        const t2 = performance.now();
         engineResult = await engineHybridSearch(query, { mode, limit, kbId, routedFilePaths, signal });
+        telemetry.engineMs = +(performance.now() - t2).toFixed(1);
+        telemetry.engineOk = engineResult.ok;
+        telemetry.engineMode = engineResult.ok ? (engineResult as any).modeUsed : null;
         if (!engineResult.ok) engineWarn = engineResult.error;
       }
 
@@ -135,19 +156,28 @@ export default function (pi: ExtensionAPI) {
       const src = engineUsed ? engineResult : out;
       if (dense && !engineUsed) {
         engineWarn = (engineWarn ? engineWarn + "；" : "") + "引擎不可用，已回退 BM25";
+        telemetry.engineFallback = true;
       }
+
+      // A 层增强：检索期版本冲突前置标注（零成本）
+      const t3 = performance.now();
+      const versionWarn = buildVersionConflictHint(src.results, defaultLoadGuideIndex());
+      telemetry.versionHintMs = +(performance.now() - t3).toFixed(1);
+
+      telemetry.totalMs = +(performance.now() - t0).toFixed(1);
+      telemetry.resultCount = src.results.length;
+      telemetry.engineWarn = engineWarn || undefined;
+      console.info("[rag_search.telemetry]", JSON.stringify(telemetry));
 
       const routed = out.routedTitles.length
         ? out.routedTitles.slice(0, 3).join("、")
         : "（路由未命中，已退化为全语料检索）";
 
-      // A 层增强：检索期版本冲突前置标注（零成本查 guide-index，不烧 LLM）
-      // 与事后 conflict-detector 的 content-conflict 批注互补：事前让 LLM 感知「多指南并存 + 版本风险」
-      const versionWarn = buildVersionConflictHint(src.results, defaultLoadGuideIndex());
-
+      const perfLine = `[耗时] BM25:${telemetry.bm25Ms}ms${telemetry.engineMs ? ` 引擎:${telemetry.engineMs}ms` : ""} 总计:${telemetry.totalMs}ms`;
       const headerLines = [
         `[${engineUsed ? "引擎 hybrid" : "路由约束 BM25"}] 语义路由命中: ${routed}`,
-        `约束文件: ${out.kbFiles.length} / 全库文件: ${out.totalFiles} | 模式: ${engineUsed ? engineResult.modeUsed : "BM25 回退"}${engineWarn ? ` | ⚠️ ${engineWarn}` : ""}`,
+        `约束文件: ${out.kbFiles.length} / 全库文件: ${out.totalFiles} | 模式: ${engineUsed ? (engineResult as any).modeUsed : "BM25 回退"}${engineWarn ? ` | ⚠️ ${engineWarn}` : ""}`,
+        perfLine,
       ];
       if (versionWarn) headerLines.push(versionWarn);
       headerLines.push("");

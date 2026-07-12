@@ -11,13 +11,17 @@
 #      - 扩展文件完整性（必需扩展存在 + 语法自检）
 #      - System Prompt 合规护栏（循证辅助定位、禁虚假权威、rag_search/guide_finder 引用等）
 #      - CI 下跳过依赖「未入库原始文档」的断言（medical-raw/ 不入库，见 .gitignore）
+#   3) 基线质量门禁（eval-ci-gate）：基于入仓的 baseline.json 做阈值校验，零外部依赖
+#      基线由夜间评测定时刷新（见 nightly-eval.yml），退步时阻断 PR 合并
 #
 # 未纳入主门禁（环境 / 资源限制，非代码缺陷）:
 #   - retrieval-router-test: 需 better-sqlite3 原生模块（未入库，CI 需额外编译），改在本地 / 专用 runner 运行
 #   - eval-bench / answer-eval-bench / answer-quality-judge: 端到端质量评测，需 KB 文本 + LLM API Key，
 #     作为「发布前手动 / 本地门禁」(npm run eval:*)，不在 CI 强制
 #
-# 运行环境: ubuntu-latest + Node 22。项目无 npm 依赖声明，无需 npm install。
+# 运行环境: ubuntu-latest + Node 22。项目现已声明 better-sqlite3 依赖（package.json + lockfile 入仓），
+# CI 下 npm ci 自动安装。eval-ci-gate 仅读 JSON，零外部依赖。
+# 注意：门禁 job 不安装 native 模块的编译链（无 Python/g++），不影响纯 JSON 读盘。
 
 name: CI
 
@@ -54,3 +58,6 @@ jobs:
         env:
           CI: "true"
         run: npm test
+
+      - name: 基线质量门禁（eval-ci-gate，零 LLM 调用）
+        run: node tests/eval-ci-gate.mjs --report=tests/reports/baseline.json

@@ -71,6 +71,8 @@ docs/
 
 # ========== 忽略测试报告产物（可重建，不入仓） ==========
 tests/reports/
+# 但保留基线 JSON（CI 门禁用，确保 PR 级质量卡点可独立运行）
+!tests/reports/baseline.json
 
 # ========== 显式保留项说明（不忽略，特此标注以免误加忽略规则） ==========
 # medical-knowlegde-base/ 故意不忽略：其下 .outline.json/.guide-index.json/.knowledge-graph.json

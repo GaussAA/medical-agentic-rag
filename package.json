@@ -43,5 +43,24 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GaussAA/medical-agentic-rag.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GaussAA/medical-agentic-rag/issues"
+  },
+  "homepage": "https://github.com/GaussAA/medical-agentic-rag#readme",
+  "dependencies": {
+    "better-sqlite3": "^12.11.1"
   }
 }

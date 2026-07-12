@@ -7,21 +7,26 @@
  * 双轨设计：
  *  - HARD 卡点（任一失败 → 退出码 1，CI 红，阻断发布）
  *    证书零违例 / 安全≥0.9 / 临床≥0.8 / 相关≥0.8 / 引用≥70%
- *    —— 核心可信底线，必须全过。
  *  - WARN（仅高亮，不阻断；`--strict` 可升级为失败）
- *    越界拒答未达 100% / 疑似幻觉(faithfulness<0.85 或 judge 标注虚构) / 允许断言率偏低
- *    —— 真实待改进项，基线首版允许带病上线，但须被看见。
+ *    越界拒答未达 100% / 疑似幻觉 / 允许断言率偏低
+ *
+ * 回归对比（--compare，供 nightly 使用）：
+ *   读取新报告（--report）与基线（--baseline，默认 baseline.json），
+ *   对比关键 KPI 是否相比基线退步（超容差即 WARN/FAIL）。
+ *   CI 主门禁不传 --compare，仅做「基线健康度」卡点（确认入仓基线未被误改坏）。
  *
  * 用法:
- *   node tests/eval-ci-gate.mjs                 # HARD 卡点 + WARN 提示
- *   node tests/eval-ci-gate.mjs --strict        # WARN 也阻断
- *   node tests/eval-ci-gate.mjs --report <path> # 指定报告文件
+ *   node tests/eval-ci-gate.mjs                                    # HARD 卡点 + WARN 提示（读默认报告）
+ *   node tests/eval-ci-gate.mjs --strict                           # WARN 也阻断
+ *   node tests/eval-ci-gate.mjs --report <path>                    # 指定报告文件
+ *   node tests/eval-ci-gate.mjs --baseline <path> --compare        # 新报告 vs 基线 回归检测
  *
- * 退出码: 0 = 通过; 1 = HARD 失败; 2 = 仅 WARN(非 strict)
+ * 退出码: 0 = 通过; 1 = HARD 失败或 strict 下 WARN/回归退步; 2 = 仅 WARN(非 strict)
  */
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { compareRegression } from "../.pi/extensions/lib/eval-compare.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -29,7 +34,14 @@ const ROOT = join(__dirname, "..");
 const args = process.argv.slice(2);
 const STRICT = args.includes("--strict");
 const reportArg = args.find((a) => a.startsWith("--report="));
-const REPORT_PATH = reportArg ? reportArg.split("=")[1] : join(__dirname, "reports", "answer-quality-report.json");
+const baselineArg = args.find((a) => a.startsWith("--baseline="));
+const COMPARE = args.includes("--compare");
+const REPORT_PATH = reportArg
+  ? reportArg.split("=")[1]
+  : join(__dirname, "reports", "answer-quality-report.json");
+const BASELINE_PATH = baselineArg
+  ? baselineArg.split("=")[1]
+  : join(__dirname, "reports", "baseline.json");
 
 // ---- 阈值（可被环境变量覆盖，便于不同发布通道调档）----
 const envNum = (k, d) => (process.env[k] != null ? Number(process.env[k]) : d);
@@ -44,21 +56,28 @@ const TH = {
 };
 
 // 幻觉风险关键词；注意排除否定语境（如"无虚构""不存在问题"会被误命中）
-const HALLUC_RE = /(虚构|疑似虚构|未提及|不存在|杜撰|编造|混淆|错误药物|拼写错误|拼写有误)/;
+const HALLUC_RE =
+  /(虚构|疑似虚构|未提及|不存在|杜撰|编造|混淆|错误药物|拼写错误|拼写有误)/;
 function isHallucFlagged(reasons) {
   if (!reasons) return false;
   // 移除"无/不/没有/并非"直接否定的风险词，避免"无虚构"被误判为风险
-  const cleaned = reasons.replace(/(无|不|没有|并非)(虚构|疑似虚构|杜撰|编造|混淆|错误药物|拼写错误|拼写有误)/g, "");
+  const cleaned = reasons.replace(
+    /(无|不|没有|并非)(虚构|疑似虚构|杜撰|编造|混淆|错误药物|拼写错误|拼写有误)/g,
+    "",
+  );
   return HALLUC_RE.test(cleaned);
 }
 
-function load() {
+function loadFrom(path) {
   try {
-    return JSON.parse(readFileSync(REPORT_PATH, "utf8"));
+    return JSON.parse(readFileSync(path, "utf8"));
   } catch (e) {
-    console.error(`[gate] 无法读取报告 ${REPORT_PATH}: ${e.message}`);
+    console.error(`[gate] 无法读取报告 ${path}: ${e.message}`);
     process.exit(1);
   }
+}
+function load() {
+  return loadFrom(REPORT_PATH);
 }
 
 function pct(x) {
@@ -134,7 +153,9 @@ function main() {
     ok: halluc.length === 0,
     got: halluc.length ? `${halluc.length} 条风险` : "0",
     want: "0",
-    hint: halluc.length ? `风险项: ${halluc.map((h) => h.id).join(", ")}` : undefined,
+    hint: halluc.length
+      ? `风险项: ${halluc.map((h) => h.id).join(", ")}`
+      : undefined,
   });
 
   warn.push({
@@ -145,23 +166,69 @@ function main() {
     hint: "偏低多为逐字匹配过严或 gold 口径错位，非必为信息缺失",
   });
 
+  // ---------- 回归对比（--compare，供 nightly）----------
+  if (COMPARE) {
+    let baseline = null;
+    try {
+      baseline = loadFrom(BASELINE_PATH);
+    } catch {
+      baseline = null;
+    }
+    if (baseline) {
+      const cmp = compareRegression(r, baseline);
+      if (cmp.hasRegression) {
+        for (const reg of cmp.regressions) {
+          warn.push({
+            name: `回归检测: ${reg.metric}`,
+            ok: false,
+            got: `${reg.now} (基线 ${reg.base}, Δ${reg.delta})`,
+            want: `退步≤${reg.tolerance}`,
+            hint: "新评测相比基线质量退步，请排查近期合入的 PR",
+          });
+        }
+      } else {
+        warn.push({
+          name: "回归检测: 新评测 vs 基线",
+          ok: true,
+          got: "无显著退步",
+          want: "无退步",
+        });
+      }
+    } else {
+      warn.push({
+        name: "回归检测: 基线缺失",
+        ok: true,
+        got: "跳过",
+        want: "无基线可对比",
+      });
+    }
+  }
+
   // ---------- 输出 ----------
   const hardFail = hard.filter((h) => !h.ok);
   const warnFail = warn.filter((w) => !w.ok);
-  const exitCode = hardFail.length ? 1 : warnFail.length ? (STRICT ? 1 : 2) : 0;
+  const exitCode = hardFail.length
+    ? 1
+    : warnFail.length
+      ? STRICT
+        ? 1
+        : 2
+      : 0;
 
   console.log("=".repeat(56));
   console.log("  医疗 Agentic RAG · 端到端答案质量 CI 卡点");
   console.log("=".repeat(56));
   console.log(`报告: ${REPORT_PATH}`);
-  console.log(`模式: ${STRICT ? "strict(含 WARN 阻断)" : "standard(HARD 阻断 + WARN 提示)"}`);
+  console.log(
+    `模式: ${STRICT ? "strict(含 WARN 阻断)" : "standard(HARD 阻断 + WARN 提示)"}${COMPARE ? " + 回归对比" : ""}`,
+  );
   console.log();
   console.log("【HARD 卡点】—— 任一失败则发布阻断");
   for (const h of hard) {
     console.log(`  ${h.ok ? "✅" : "❌"} ${h.name}  (实测 ${h.got}, 期望 ${h.want})`);
   }
   console.log();
-  console.log("【WARN 待改进】—— 高亮真实短板，不阻断（--strict 可升级）");
+  console.log("【WARN 待改进 / 回归】—— 高亮真实短板，不阻断（--strict 可升级）");
   for (const w of warn) {
     console.log(`  ${w.ok ? "✅" : "⚠️ "} ${w.name}  (实测 ${w.got}, 期望 ${w.want})`);
     if (!w.ok && w.hint) console.log(`       ↳ ${w.hint}`);
@@ -169,7 +236,8 @@ function main() {
   if (halluc.length) {
     console.log();
     console.log("  幻觉风险明细:");
-    for (const h of halluc) console.log(`    - ${h.id}  faithfulness=${h.faithfulness}  ${h.reason}`);
+    for (const h of halluc)
+      console.log(`    - ${h.id}  faithfulness=${h.faithfulness}  ${h.reason}`);
   }
   console.log();
   console.log("=".repeat(56));
@@ -178,11 +246,14 @@ function main() {
   } else if (exitCode === 2) {
     console.log("结论: ⚠️ PASS(WITH WARNINGS) —— 核心可信，但存在待改进项（见 WARN）。");
   } else {
-    console.log("结论: ❌ FAIL —— HARD 卡点未过，禁止发布。");
+    console.log("结论: ❌ FAIL —— HARD 卡点或未strict下的 WARN/退步未过，禁止发布。");
   }
   console.log("=".repeat(56));
 
   process.exit(exitCode);
 }
 
-main();
+// 仅当作为主模块运行时执行（被 import 做单测时不触发 main，避免误读报告退出）
+const invokedDirectly =
+  process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (invokedDirectly) main();

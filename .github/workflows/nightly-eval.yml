@@ -42,11 +42,11 @@ jobs:
           CI: "true"
         run: node tests/unit/answer-quality-judge.mjs
 
-      - name: 运行质量门禁
+      - name: 运行质量门禁（阈值 + 新报告 vs 基线回归对比）
         id: gate
         continue-on-error: true
         run: |
-          node tests/eval-ci-gate.mjs --strict && echo "PASS=true" >> $GITHUB_OUTPUT || echo "PASS=false" >> $GITHUB_OUTPUT
+          node tests/eval-ci-gate.mjs --report=tests/reports/answer-quality-report.json --baseline=tests/reports/baseline.json --compare --strict && echo "PASS=true" >> $GITHUB_OUTPUT || echo "PASS=false" >> $GITHUB_OUTPUT
 
       - name: 更新基线 JSON
         if: steps.gate.outputs.PASS == 'true'

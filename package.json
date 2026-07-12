@@ -38,7 +38,9 @@
     "observe:ci": "node scripts/ops/observability-report.mjs --strict",
     "feedback": "node scripts/ops/feedback-loop.mjs",
     "feedback:ci": "node scripts/ops/feedback-loop.mjs --strict",
-    "test": "node tests/run-all-tests.mjs",
+    "test": "node tests/run-all-tests.mjs && node tests/unit/kg-graph-test.mjs",
+    "test:kg": "node tests/unit/kg-graph-test.mjs",
+    "kb:graph": "node scripts/kb/build-kg-db.mjs",
     "test:ci": "node tests/eval-ci-gate.mjs"
   },
   "engines": {

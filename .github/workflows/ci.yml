@@ -5,7 +5,7 @@
 #
 # 门禁范围（确定性、零外部依赖，反映「代码正确性 + 项目结构/合规完整性」）:
 #   1) 纯逻辑单测（隔离 tmpdir，无需 API Key / 网络 / 知识库大文件）:
-#      compliance(24) / provider-health(13) / kb-sources(20) / bash-guard(35) / audit-chain(10) / provider-proxy(12)
+#      compliance(24) / provider-health(13) / kb-sources(20) / bash-guard(35) / audit-chain(10) / provider-proxy(12) / kg-graph(12)
 #   2) 项目结构与合规门禁 (npm test = run-all-tests，CI 降级):
 #      - 知识图谱 / 指南索引 / 大纲 结构完整性（基于已入库派生索引 JSON）
 #      - 扩展文件完整性（必需扩展存在 + 语法自检）
@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for t in compliance-test provider-health-test kb-sources-test bash-guard-test audit-chain-test provider-proxy-test; do
+          for t in compliance-test provider-health-test kb-sources-test bash-guard-test audit-chain-test provider-proxy-test kg-graph-test; do
             echo "::group::unit/$t"
             node "tests/unit/$t.mjs"
             echo "::endgroup::"

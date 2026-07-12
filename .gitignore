@@ -86,5 +86,9 @@ tests/reports/
 # ========================================================
 # medical-knowlegde-base/ 故意不忽略：其下 .outline.json/.guide-index.json/.knowledge-graph.json
 # 为派生索引，但因上游真相源 medical-raw/ 刻意不入库，故索引入仓以保证 clone 后系统可直接可用。
+# 但图谱 SQLite（.knowledge-graph.db，由 JSON 构建的二分图多跳索引）属可重建派生产物，忽略：
+medical-knowlegde-base/.knowledge-graph.db
+medical-knowlegde-base/.knowledge-graph.db-wal
+medical-knowlegde-base/.knowledge-graph.db-shm
 # docs/ 下 2 份早期误入仓的生成物报告（全景验收报告.html、抓取管线规划.md）已于本回合
 # 经 git rm --cached 清理出索引，磁盘保留，令 docs/ 忽略规则彻底生效。

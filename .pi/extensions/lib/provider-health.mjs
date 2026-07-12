@@ -14,8 +14,17 @@
 // 纯 JavaScript（.mjs）：既能被 Pi 的 jiti 加载（扩展内 import），
 // 也能被原生 node 直接 import（启动编排脚本 scripts/proxy/launch-with-failover.mjs 与单测）。
 
-/** 探测超时（毫秒）。 */
-export const PROBE_TIMEOUT_MS = 3000;
+/**
+ * 探测超时（毫秒）。
+ * 原 3s 过紧：agnes 等 /models 端点偶发慢响应会触发 AbortController 超时
+ * （"This operation was aborted"），致健康态每 5 分钟在 健康↔异常 间翻转、刷屏终端。
+ * 提至 8s 给足余量；再配合下方滞后逻辑（连续 2 次异常才判死），彻底消除抖动刷屏。
+ */
+export const PROBE_TIMEOUT_MS = 8000;
+
+/** 滞后阈值：连续 N 次异常才判死 / 连续 N 次健康才恢复，吸收瞬时抖动。 */
+const UNHEALTHY_STREAK_TO_FAIL = 2;
+const HEALTHY_STREAK_TO_RECOVER = 2;
 
 /**
  * Provider 探测登记表（高可用编排用，仅作健康探测元数据，不注册 Provider）。
@@ -65,8 +74,16 @@ export const PROVIDERS = [
   },
 ];
 
-/** 进程内健康态缓存：provider|model → { healthy, reason, ts }。 */
+/**
+ * 进程内健康态缓存：provider|model → { healthy, reason, ts, failStreak, okStreak }。
+ * failStreak/okStreak 供滞后逻辑判断连续证据，避免单次抖动翻转。
+ */
 const healthState = new Map();
+
+/** 测试/运维用：清空内存健康态，强制下次探测重建基线（如重启后冷启动即时裁定）。 */
+export function resetHealthState() {
+  healthState.clear();
+}
 
 /**
  * 探测单个 Provider 健康状态（真实 HTTP）。
@@ -76,6 +93,7 @@ const healthState = new Map();
 export async function runProbe(p) {
   const apiKey = process.env[p.authEnv];
   const ts = Date.now();
+  const key = `${p.provider}|${p.model}`;
   if (!apiKey) {
     const r = {
       provider: p.provider,
@@ -84,41 +102,44 @@ export async function runProbe(p) {
       reason: `缺环境变量 ${p.authEnv}`,
       ts,
     };
-    healthState.set(`${p.provider}|${p.model}`, r);
+    healthState.set(key, { ...r, failStreak: 0, okStreak: 0 });
     return r;
   }
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), PROBE_TIMEOUT_MS);
+  let probeOk = false;
+  let reason = "";
   try {
     const res = await fetch(`${p.baseUrl}/models`, {
       method: "GET",
       headers: { Authorization: `Bearer ${apiKey}` },
       signal: controller.signal,
     });
-    const healthy = res.ok;
-    const r = {
-      provider: p.provider,
-      model: p.model,
-      healthy,
-      reason: healthy ? "200 OK" : `HTTP ${res.status}`,
-      ts,
-    };
-    healthState.set(`${p.provider}|${p.model}`, r);
-    return r;
+    probeOk = res.ok;
+    reason = probeOk ? "200 OK" : `HTTP ${res.status}`;
   } catch (err) {
-    const reason = err instanceof Error ? err.message : String(err);
-    const r = {
-      provider: p.provider,
-      model: p.model,
-      healthy: false,
-      reason,
-      ts,
-    };
-    healthState.set(`${p.provider}|${p.model}`, r);
-    return r;
+    reason = err instanceof Error ? err.message : String(err);
+    probeOk = false;
   } finally {
     clearTimeout(timer);
   }
+
+  // ---- 滞后逻辑：单次抖动不翻转，连续阈值才改变健康裁定 ----
+  const prev = healthState.get(key);
+  const failStreak = (prev?.failStreak ?? 0) + (probeOk ? 0 : 1);
+  const okStreak = (prev?.okStreak ?? 0) + (probeOk ? 1 : 0);
+  let healthy;
+  if (!prev) {
+    // 首探：无历史则信任本次探针（启动编排需即时裁定，不做滞后）
+    healthy = probeOk;
+  } else {
+    healthy = prev.healthy;
+    if (failStreak >= UNHEALTHY_STREAK_TO_FAIL) healthy = false;
+    else if (okStreak >= HEALTHY_STREAK_TO_RECOVER) healthy = true;
+  }
+  const r = { provider: p.provider, model: p.model, healthy, reason, ts };
+  healthState.set(key, { ...r, failStreak, okStreak });
+  return r;
 }
 
 /**

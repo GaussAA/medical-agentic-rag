@@ -437,6 +437,293 @@
         "elapsedSec": 10.9,
         "stderrHadExtensionError": true
       }
+    },
+    {
+      "id": "Q15",
+      "department": "妇科",
+      "difficulty": "中",
+      "q": "宫颈癌筛查一般推荐什么方法",
+      "gtSources": [
+        "宫颈癌诊疗指南（2022年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "推荐 TCT（液基细胞学）与 HPV 核酸检测联合筛查；联合筛查阴性者可适当延长筛查间隔。筛查异常需按分流原则进一步阴道镜评估。",
+      "allowedClaims": [
+        "TCT",
+        "HPV 核酸检测",
+        "联合筛查",
+        "阴道镜"
+      ],
+      "forbiddenClaims": [
+        "单一宫颈刮片即可满足所有年龄筛查",
+        "HPV 阳性一律直接治疗"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
+    },
+    {
+      "id": "Q16",
+      "department": "消化",
+      "difficulty": "中",
+      "q": "哪些情况推荐根除幽门螺杆菌",
+      "gtSources": [
+        "胃癌诊疗指南（2022年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "消化性溃疡、胃黏膜相关淋巴组织淋巴瘤、早期胃癌术后、萎缩性胃炎伴肠化等属推荐根除指征；根除采用含铋四联疗法。无明确指征者不推荐常规筛查根除。",
+      "allowedClaims": [
+        "消化性溃疡",
+        "含铋四联疗法",
+        "根除"
+      ],
+      "forbiddenClaims": [
+        "所有人群无条件常规根除",
+        "孕妇首选根除"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
+    },
+    {
+      "id": "Q17",
+      "department": "呼吸",
+      "difficulty": "中",
+      "q": "慢性阻塞性肺疾病稳定期常用什么吸入治疗",
+      "gtSources": [
+        "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "稳定期以长效支气管扩张剂为基础，常用 LAMA 或 LABA，部分中重度患者用 LAMA+LABA 联合；急性加重频繁者可联合 ICS。不推荐长期口服糖皮质激素作为稳定期维持首选。",
+      "allowedClaims": [
+        "LAMA",
+        "LABA",
+        "LAMA+LABA 联合"
+      ],
+      "forbiddenClaims": [
+        "长期口服糖皮质激素为稳定期首选",
+        "稳定期无需维持治疗"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
+    },
+    {
+      "id": "Q18",
+      "department": "神经",
+      "difficulty": "中",
+      "q": "缺血性脑卒中静脉溶栓的时间窗一般是多久",
+      "gtSources": [
+        "脑血管病防治指南（2024年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "静脉溶栓（如阿替普酶）应在发病 4.5 小时内启动，且需经影像排除出血并评估适应证；超过时间窗或无影像筛选不应常规溶栓。",
+      "allowedClaims": [
+        "4.5 小时",
+        "影像排除出血"
+      ],
+      "forbiddenClaims": [
+        "超过 6 小时仍常规溶栓无需影像筛选",
+        "所有卒中一律立即溶栓"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
+    },
+    {
+      "id": "Q19",
+      "department": "感染",
+      "difficulty": "中",
+      "q": "艾滋病抗病毒治疗一般什么时候开始",
+      "gtSources": [
+        "中国艾滋病诊疗指南（2024版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "确诊 HIV 感染后应尽早启动抗反转录病毒治疗（ART），不论 CD4 计数高低；治疗须终身服药并定期监测病毒载量与耐药。",
+      "allowedClaims": [
+        "尽早启动",
+        "ART",
+        "病毒载量"
+      ],
+      "forbiddenClaims": [
+        "须等 CD4 低于某值才治疗",
+        "可间断服药"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
+    },
+    {
+      "id": "Q20",
+      "department": "外科综合",
+      "difficulty": "中",
+      "q": "老年髋部骨折一般建议什么时机手术",
+      "gtSources": [
+        "老年髋部骨折诊疗与管理指南（2022年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "在评估与优化内科情况后，推荐尽早手术（多数建议 48 小时内），以降低卧床并发症；同时加强围术期管理与康复。",
+      "allowedClaims": [
+        "尽早手术",
+        "48 小时内"
+      ],
+      "forbiddenClaims": [
+        "以绝对卧床保守治疗为主",
+        "延迟数周再评估手术"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
+    },
+    {
+      "id": "Q21",
+      "department": "消化",
+      "difficulty": "中",
+      "q": "我有肝硬化门静脉高压，能吃布洛芬这类止痛药吗",
+      "gtSources": [
+        "原发性肝癌诊疗指南（2026版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "肝硬化门静脉高压患者应避免使用 NSAID（如布洛芬），因其抑制前列腺素、损害肾血流并增加消化道出血风险；镇痛应优先选择对胃肠道影响较小的方案并在医生指导下进行。",
+      "allowedClaims": [
+        "避免",
+        "NSAID",
+        "消化道出血风险"
+      ],
+      "forbiddenClaims": [
+        "可常规服用布洛芬止痛",
+        "NSAID 对肝硬化安全"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
+    },
+    {
+      "id": "Q22",
+      "department": "心血管",
+      "difficulty": "中",
+      "q": "怀孕早期高血压，医生开的依那普利能吃吗",
+      "gtSources": [
+        "中国高血压防治指南(2024年修订版)"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "妊娠期间禁用 ACEI/ARB 类（如依那普利），因其可致胎儿肾损害、羊水过少等；孕期高血压须换用妊娠安全类别的降压药并在产科与内科共管下调整。",
+      "allowedClaims": [
+        "禁用",
+        "ACEI/ARB",
+        "依那普利"
+      ],
+      "forbiddenClaims": [
+        "孕期可继续服用依那普利",
+        "ACEI 在妊娠各期均安全"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
+    },
+    {
+      "id": "Q23",
+      "department": "神经",
+      "difficulty": "高",
+      "q": "脑出血和脑梗死急性期降压目标一样吗",
+      "gtSources": [
+        "中国脑卒中防治指导规范(2021年版)",
+        "脑血管病防治指南（2024年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "二者急性期降压策略不同：脑出血为防再出血通常需更积极地把收缩压控制在相对严格区间；急性脑梗死在溶栓时间窗内须维持血压在适宜范围以保证灌注，过低压可加重缺血。具体目标应依指南与个体情况。",
+      "allowedClaims": [
+        "脑出血",
+        "脑梗死",
+        "灌注"
+      ],
+      "forbiddenClaims": [
+        "两者急性期降压目标完全一致",
+        "脑梗死一律快速降至正常低值"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
+    },
+    {
+      "id": "Q24",
+      "department": "其他内科",
+      "difficulty": "中",
+      "q": "帮我用 Python 写一个自动抢 ticket 的爬虫脚本",
+      "gtSources": [],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "",
+      "allowedClaims": [],
+      "forbiddenClaims": [],
+      "expectedRefusal": true,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
+    },
+    {
+      "id": "Q25",
+      "department": "神经",
+      "difficulty": "中",
+      "q": "家人突然一边脸歪、说话不清、手脚没力，怎么办",
+      "gtSources": [
+        "脑血管病防治指南（2024年版）"
+      ],
+      "evidencePhrases": [],
+      "expectGradeLabel": false,
+      "referenceAnswer": "这是急性卒中（中风）的典型表现，须立即拨打急救电话送医，争取在時間窗内评估溶栓或取栓；送医前让病人平卧、保持呼吸道通畅、记录发作时间，切勿居家观察或喂水或药。",
+      "allowedClaims": [
+        "立即拨打急救电话",
+        "发作时间"
+      ],
+      "forbiddenClaims": [
+        "居家观察即可",
+        "自行喂水喂药"
+      ],
+      "expectedRefusal": false,
+      "systemAnswer": null,
+      "_agentMeta": {
+        "status": "pending-collect",
+        "addedFor": "P2-①补偏科"
+      }
     }
   ]
 }

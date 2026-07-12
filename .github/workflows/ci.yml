@@ -6,13 +6,16 @@
 # 门禁范围（确定性、零外部依赖，反映「代码正确性 + 项目结构/合规完整性」）:
 #   1) 纯逻辑单测（隔离 tmpdir，无需 API Key / 网络 / 知识库大文件）:
 #      compliance(24) / provider-health(13) / kb-sources(20) / bash-guard(35) / audit-chain(10) / provider-proxy(12) / kg-graph(12)
+#      / faithfulness-guard(23) / conflict-detector(19) / rag-search-version-hint(10)
+#      —— 后三项为临床安全护栏（忠实度/跨指南冲突/版本冲突标注），纯逻辑 mock 注入、零 LLM，确定性进 CI
 #   2) 项目结构与合规门禁 (npm test = run-all-tests，CI 降级):
 #      - 知识图谱 / 指南索引 / 大纲 结构完整性（基于已入库派生索引 JSON）
 #      - 扩展文件完整性（必需扩展存在 + 语法自检）
 #      - System Prompt 合规护栏（循证辅助定位、禁虚假权威、rag_search/guide_finder 引用等）
 #      - CI 下跳过依赖「未入库原始文档」的断言（medical-raw/ 不入库，见 .gitignore）
-#   3) 基线质量门禁（eval-ci-gate）：基于入仓的 baseline.json 做阈值校验，零外部依赖
-#      基线由夜间评测定时刷新（见 nightly-eval.yml），退步时阻断 PR 合并
+#   3) 基线健康度门禁（eval-ci-gate）：只读校验入仓 baseline.json 的阈值健康度，零外部依赖
+#      本步骤仅确认入仓基线未被误改坏（非 PR 质量卡点）；真实「质量退步」回归检测
+#      在 nightly-eval.yml 中跑新评测报告 vs 基线对比（--compare 模式）完成。
 #
 # 未纳入主门禁（环境 / 资源限制，非代码缺陷）:
 #   - retrieval-router-test: 需 better-sqlite3 原生模块（未入库，CI 需额外编译），改在本地 / 专用 runner 运行
@@ -48,7 +51,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for t in compliance-test provider-health-test kb-sources-test bash-guard-test audit-chain-test provider-proxy-test kg-graph-test; do
+          for t in compliance-test provider-health-test kb-sources-test bash-guard-test audit-chain-test provider-proxy-test kg-graph-test faithfulness-guard-test conflict-detector-test rag-search-version-hint-test; do
             echo "::group::unit/$t"
             node "tests/unit/$t.mjs"
             echo "::endgroup::"

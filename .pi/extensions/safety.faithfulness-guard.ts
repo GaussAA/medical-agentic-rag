@@ -62,11 +62,18 @@ export default function (pi: ExtensionAPI) {
             type: "faithfulness",
             action: verdict.action,
             reason: verdict.reasons || verdict.reason || undefined,
-          }).catch(() => {});
+          }).catch((e: any) =>
+            process.stderr.write(
+              `[faithfulness-guard] 埋点落盘失败，放行仍生效: ${e?.message || e}\n`,
+            ),
+          );
         }
       })
-      .catch(() => {
-        // 评审失败/超时：静默放行（不输出 console.warn 到用户界面）
+      .catch((e: any) => {
+        // 评审失败/超时：放行（不扰用户），服务端留痕便于排障
+        process.stderr.write(
+          `[faithfulness-guard] 评审失败/超时，降级放行: ${e?.message || e}\n`,
+        );
       });
   });
 }

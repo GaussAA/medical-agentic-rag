@@ -65,11 +65,18 @@ export default function (pi: ExtensionAPI) {
             guides: (res.conflicts || [])
               .map((c: any) => (c.guide ? c.guide : (c.guides || []).join(" / ")))
               .filter(Boolean),
-          }).catch(() => {});
+          }).catch((e: any) =>
+            process.stderr.write(
+              `[conflict-detector] 埋点落盘失败，放行仍生效: ${e?.message || e}\n`,
+            ),
+          );
         }
       })
-      .catch(() => {
-        // 评审超时/失败：静默放行，不输出到用户界面
+      .catch((e: any) => {
+        // 评审超时/失败：放行（不扰用户），服务端留痕便于排障
+        process.stderr.write(
+          `[conflict-detector] 冲突检测失败/超时，降级放行: ${e?.message || e}\n`,
+        );
       });
   });
 }

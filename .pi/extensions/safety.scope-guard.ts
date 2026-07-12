@@ -45,7 +45,11 @@ export default function (pi: ExtensionAPI) {
           type: "scope",
           action: "refuse",
           reason: verdict.reason,
-        }).catch(() => {});
+        }).catch((e: any) =>
+          process.stderr.write(
+            `[scope-guard] 埋点落盘失败，拒答仍生效: ${e?.message || e}\n`,
+          ),
+        );
         return {
           messages: [
             { role: "system", content: SCOPE_REFUSAL_DIRECTIVE },

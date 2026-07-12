@@ -68,6 +68,8 @@ Thumbs.db
 # 归档：自动爬取中被判定为「废止/纯扫描无文本层」等不可入库的原始文件（移出扫描目录，留档可溯）
 _archived_raw_doc/
 docs/
+# shell 重定向残留（如 `> dev/null` 勿误写为 `> dev/null`）
+dev/
 
 # ========== 忽略测试报告产物（可重建，不入仓） ==========
 tests/reports/

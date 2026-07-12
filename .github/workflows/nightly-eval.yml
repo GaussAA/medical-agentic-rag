@@ -62,6 +62,23 @@ jobs:
           CI: "true"
         run: node tests/unit/answer-quality-judge.mjs
 
+      - name: 可观测性聚合（P2-③，零依赖，WARN 不阻断）
+        continue-on-error: true
+        run: node scripts/ops/observability-report.mjs
+
+      - name: 反馈闭环消费·派生 gold 候选（P2-②，零依赖；PHI 高危硬失败报警）
+        run: node scripts/ops/consume-feedback.mjs --strict
+
+      - name: 上传观测与候选产物（供人工审阅回灌）
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: observability-and-gold-candidates
+          path: |
+            logs/observability-report.json
+            tests/reports/gold-candidates.json
+          if-no-files-found: ignore
+
       - name: 评测可用性判定（决定后续门禁/基线是否执行）
         id: evalcheck
         run: |

@@ -11,21 +11,63 @@
 //   · 双可测：纯 .mjs，既能被 .ts 扩展经 jiti 加载，也能被原生 node 脚本单测。
 //   · 路径解析沿用 retrieval-router 解析 better-sqlite3 的候选路径范式，不硬编码密钥/绝对路径。
 
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
-// ---- 解析 pi-knowledge 内部模块路径（与 retrieval-router 同范式）----
-function candidates(sub) {
-  return [
-    join(process.env.PI_AGENT_NPM || "", "node_modules", "pi-knowledge", "dist", "src", sub),
-    "C:/Users/JaNiy/.pi/agent/npm/node_modules/pi-knowledge/dist/src/" + sub,
-    join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "agent", "npm", "node_modules", "pi-knowledge", "dist", "src", sub),
-  ].filter(Boolean);
+// ---- 解析 pi-knowledge 内部模块路径（与 retrieval-router 同范式，环境变量化）----
+// 版本探测：同时探测两种内部布局（dist/src/<sub> 与 dist/<sub>），
+// 兼容 pi-knowledge 升级时的内部路径调整，避免「升级即断」。
+export function npmRoots() {
+  const roots = [];
+  if (process.env.PI_AGENT_NPM) roots.push(process.env.PI_AGENT_NPM);
+  const home = process.env.USERPROFILE || process.env.HOME || "";
+  if (home) roots.push(join(home, ".pi", "agent", "npm"));
+  return roots.filter(Boolean);
+}
+export function candidates(sub) {
+  const layouts = ["dist/src", "dist"];
+  const out = [];
+  for (const root of npmRoots()) {
+    for (const layout of layouts) {
+      out.push(join(root, "node_modules", "pi-knowledge", layout, sub));
+    }
+  }
+  return out;
+}
+export function getEngineVersion() {
+  for (const root of npmRoots()) {
+    const pkg = join(root, "node_modules", "pi-knowledge", "package.json");
+    if (existsSync(pkg)) {
+      try {
+        return JSON.parse(readFileSync(pkg, "utf-8")).version || null;
+      } catch {
+        /* 解析失败忽略 */
+      }
+    }
+  }
+  return null;
 }
 function findModule(sub) {
   for (const c of candidates(sub)) if (existsSync(c)) return c;
   return null;
+}
+
+/**
+ * 引擎 API 兼容性断言（版本探测核心）。
+ * pi-knowledge 升级可能改动内部接口（构造器名 / search·initialize 方法 / 响应结构），
+ * 此处显式校验预期 API 面，缺失即抛清晰错误 → 调用方优雅降级 BM25 并告警。
+ * @param {object} engineMod 已 import 的引擎模块
+ */
+export function validateEngineApi(engineMod) {
+  if (!engineMod || typeof engineMod.KnowledgeEngine !== "function") {
+    throw new Error("引擎 API 不兼容：未导出 KnowledgeEngine 构造器（可能 pi-knowledge 已升级内部接口）");
+  }
+  const proto = engineMod.KnowledgeEngine.prototype || {};
+  if (typeof proto.search !== "function" || typeof proto.initialize !== "function") {
+    throw new Error("引擎 API 不兼容：KnowledgeEngine 缺失 search/initialize 方法，可能 pi-knowledge 已升级接口");
+  }
+  return true;
 }
 
 let _modulePromise = null;
@@ -36,7 +78,9 @@ function loadEngineModule() {
     const sto = findModule("storage/sqlite.js");
     if (!eng) throw new Error("pi-knowledge 引擎模块不可达（确认 pi-knowledge@0.5.1 已安装）");
     const engineMod = await import(pathToFileURL(eng).href);
-    if (!engineMod.KnowledgeEngine) throw new Error("engine 模块未导出 KnowledgeEngine");
+    validateEngineApi(engineMod); // 版本探测：API 面不兼容立即抛清晰错误
+    const ver = getEngineVersion();
+    if (ver) console.info(`[engine] pi-knowledge 版本探测：${ver}`);
     let dir;
     if (sto) {
       try {
@@ -113,6 +157,9 @@ export async function engineHybridSearch(query, opts = {}) {
       signal,
     );
     const latencyMs = Date.now() - t0;
+    if (!resp || !Array.isArray(resp.results)) {
+      return { ok: false, error: "引擎响应格式不兼容（缺失 results 数组），可能 pi-knowledge 已升级响应结构" };
+    }
 
     let results = resp.results || [];
     // 路由约束：仅保留命中的指南文件（与原 BM25 约束语义一致；未路由则不过滤）

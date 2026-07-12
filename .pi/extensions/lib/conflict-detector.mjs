@@ -223,7 +223,8 @@ export async function detectConflicts({
   let guideMap = null;
   try {
     guideMap = loadGuideIndex();
-  } catch {
+  } catch (e) {
+    console.error(`[conflict-detector] 指南索引加载失败，版本冲突检测降级关闭: ${e?.message || e}`);
     guideMap = null;
   }
   const versionConflicts = guideMap ? detectVersionConflicts(guideNames, guideMap) : [];

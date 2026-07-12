@@ -109,9 +109,12 @@ async function getEngine() {
     _engine = engine;
     return engine;
   })();
-  // 初始化失败后清空Promise，避免永久缓存拒绝态，下次可重试
-  _initPromise.catch(() => {
+  // 初始化失败后清空Promise，避免永久缓存拒绝态，下次可重试；同时留痕便于诊断引擎不可用
+  _initPromise.catch((e) => {
     _initPromise = null;
+    process.stderr.write(
+      `[knowledge-engine] 引擎懒加载失败，后续检索将回退 BM25: ${e?.message || e}\n`,
+    );
   });
   return _initPromise;
 }

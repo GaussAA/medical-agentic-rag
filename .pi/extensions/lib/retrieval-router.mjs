@@ -346,14 +346,17 @@ export function ensureFtsIndex(srcDb, ftsPathOverride) {
   let isMemory = false;
   try {
     isMemory = srcDb.name === ":memory:";
-  } catch {}
+  } catch (e) {
+    console.debug(`[retrieval-router] srcDb.name 读取失败，保守按非内存库处理: ${e?.message || e}`);
+  }
   if (isMemory) return null; // 内存库不建持久 FTS（测试场景），降级全扫
 
   const ftsPath = ftsPathOverride || _ftsPathOverride || ftsDbPath();
   let sig;
   try {
     sig = sourceSig(srcDb);
-  } catch {
+  } catch (e) {
+    console.error(`[retrieval-router] 源库签名计算失败，降级全扫: ${e?.message || e}`);
     return null;
   }
   const usingDefault = !ftsPathOverride && !_ftsPathOverride;
@@ -371,7 +374,8 @@ export function ensureFtsIndex(srcDb, ftsPathOverride) {
   try {
     const m = db.prepare("SELECT v FROM meta WHERE k='sig' LIMIT 1").get();
     if (m && m.v === sig) needBuild = false;
-  } catch {
+  } catch (e) {
+    console.debug(`[retrieval-router] meta 读取失败，强制重建: ${e?.message || e}`);
     needBuild = true;
   }
   if (needBuild) {
@@ -381,10 +385,14 @@ export function ensureFtsIndex(srcDb, ftsPathOverride) {
       console.error("[retrieval-router] FTS 构建失败，降级全扫:", e.message);
       try {
         db.close();
-      } catch {}
+      } catch (e2) {
+        console.debug(`[retrieval-router] FTS 库关闭失败(可忽略): ${e2?.message || e2}`);
+      }
       try {
         unlinkSync(ftsPath);
-      } catch {}
+      } catch (e2) {
+        console.debug(`[retrieval-router] FTS 文件删除失败(可忽略): ${e2?.message || e2}`);
+      }
       return null;
     }
   }

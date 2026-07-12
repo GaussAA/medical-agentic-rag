@@ -50,22 +50,19 @@ async function monitorOnce() {
       const key = `${r.provider}|${r.model}`;
       const prev = lastHealthy.get(key);
       if (prev !== undefined && prev !== r.healthy) {
-        // 健康态跃迁：记审计
+        // 健康态跃迁：仅记审计日志（落 logs/audit-*.ndjson），不直写终端，避免污染交互 TUI
         auditLog("provider.health_transition", {
           provider: r.provider,
           model: r.model,
           to: r.healthy ? "healthy" : "unhealthy",
           reason: r.reason,
         });
-        process.stderr.write(
-          `[failover] ${r.provider}/${r.model} 状态跃迁 → ${r.healthy ? "健康" : "异常"}: ${r.reason}\n`,
-        );
       }
       lastHealthy.set(key, r.healthy);
     }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    process.stderr.write(`[failover] 周期监控异常: ${msg}\n`);
+    // 监控异常：仅记审计日志，不直写终端
     auditLog("provider.monitor_error", { error: msg });
   }
 }

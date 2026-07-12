@@ -21,7 +21,7 @@ fi
 
 # 2) 探测健康 Provider，写 failover-selection.json
 echo "[orchestration] 探测健康 Provider..."
-node scripts/proxy/launch-with-failover.mjs 2>/dev/null || true
+node scripts/proxy/launch-with-failover.mjs >/dev/null 2>&1 || true
 
 # 3) 读 failover 结果（failover-selection.json 字段为 provider/model）
 WIN_ROOT="$(pwd -W)"  # C:/WorkSpace/...（正斜杠，Windows node 原生识别）
@@ -45,7 +45,8 @@ if [ -n "$OLD_PID" ] && [ "$OLD_PID" != "0" ]; then
 fi
 
 echo "[orchestration] 启动本地 LLM Provider 代理网关..."
-node scripts/proxy/provider-proxy.mjs --port="$PROXY_PORT" &
+mkdir -p logs   # 确保日志目录存在；proxy 输出重定向至 logs/proxy.log，避免污染交互终端
+node scripts/proxy/provider-proxy.mjs --port="$PROXY_PORT" >> "logs/proxy.log" 2>&1 &
 PROXY_PID=$!
 
 # 等待代理就绪

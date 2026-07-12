@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { cacheClear } from "../../.pi/extensions/lib/retrieval-cache.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）
@@ -184,6 +185,16 @@ async function main() {
   console.log(`\n示例 - "肝癌" 关联的指南:`);
   const matches = keywordIndex["肝癌"] || keywordIndex["原发性肝癌"] || [];
   for (const m of matches) console.log(`  → ${m}`);
+
+  // 根因修复（P2 后续）：指南路由结果经 retrieval-cache 持久化缓存（仅 TTL 失效，不随索引重建失效）。
+  // 索引重生后若不清缓存，最长 10 分钟内路由仍返回旧候选集 → 新指南被姊妹篇"截胡"、永不浮现。
+  // 故索引落地即清路由缓存，强制下次查询重算路由。
+  try {
+    cacheClear();
+    console.log("已清空路由缓存（retrieval-cache），避免陈旧路由遮蔽新指南");
+  } catch (e) {
+    console.error("清空路由缓存失败（非致命）:", e?.message || e);
+  }
 }
 
 main().catch(console.error);

@@ -4,6 +4,8 @@ import { searchKnowledge } from "./lib/retrieval-router.mjs";
 import { engineHybridSearch } from "./lib/knowledge-engine-search.mjs";
 // A 层增强：检索期版本冲突前置标注（复用 conflict-detector 零成本内核，单一真相源）
 import { buildVersionConflictHint, defaultLoadGuideIndex } from "./lib/conflict-detector.mjs";
+// @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
+import { sanitizeSearchQuery } from "./lib/query-sanitize.mjs";
 
 /**
  * rag_search 定向召回检索扩展（独立工具名，避免与 pi-knowledge 扩展的 knowledge_search 重名冲突）
@@ -84,7 +86,9 @@ export default function (pi: ExtensionAPI) {
     execute: async (_toolCallId: string, params: any, signal?: any) => {
       const t0 = performance.now();
       const p = normalizeParams(params);
-      const query = ((p.query || p.q || "") as string).toString().trim();
+      const rawQuery = ((p.query || p.q || "") as string).toString().trim();
+      // 强制脱敏：避免患者 PII 进入检索上下文与查询日志（合规红线）
+      const query = sanitizeSearchQuery(rawQuery);
       if (!query) {
         return {
           content: [{ type: "text", text: "请提供检索内容（query）。" }],

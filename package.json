@@ -38,7 +38,7 @@
     "observe:ci": "node scripts/ops/observability-report.mjs --strict",
     "feedback": "node scripts/ops/feedback-loop.mjs",
     "feedback:ci": "node scripts/ops/feedback-loop.mjs --strict",
-    "test": "node tests/run-all-tests.mjs && node tests/unit/kg-graph-test.mjs && node tests/unit/retrieval-router-test.mjs && node tests/unit/retrieval-fts-test.mjs && node tests/unit/faithfulness-guard-test.mjs && node tests/unit/conflict-detector-test.mjs && node tests/unit/rag-search-version-hint-test.mjs && node tests/unit/scope-guard-test.mjs",
+    "test": "node tests/run-all-tests.mjs && node tests/unit/kg-graph-test.mjs && node tests/unit/retrieval-router-test.mjs && node tests/unit/retrieval-fts-test.mjs && node tests/unit/faithfulness-guard-test.mjs && node tests/unit/conflict-detector-test.mjs && node tests/unit/rag-search-version-hint-test.mjs && node tests/unit/scope-guard-test.mjs && node tests/unit/query-sanitize-test.mjs",
     "test:kg": "node tests/unit/kg-graph-test.mjs",
     "kb:graph": "node scripts/kb/build-kg-db.mjs",
     "kb:fts": "node scripts/kb/build-retrieval-fts.mjs",

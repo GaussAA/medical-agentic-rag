@@ -134,13 +134,15 @@ knowledge_show
 
 ## 搜索模式速查
 
-| 场景               |    模式    | 示例                                                   |
-| ------------------ | :--------: | ------------------------------------------------------ |
-| 常规问答           |  `hybrid`  | `knowledge_search({ query: "...", mode: "hybrid" })`   |
-| 高精度（用药剂量） |   `deep`   | `knowledge_search({ query: "...", mode: "deep" })`     |
-| 多指南对比         | `adaptive` | `knowledge_search({ query: "...", mode: "adaptive" })` |
-| 精确术语           |   `fast`   | `knowledge_search({ query: "...", mode: "fast" })`     |
-| 概念搜索           | `semantic` | `knowledge_search({ query: "...", mode: "semantic" })` |
+> 本项目因工具名冲突（pi-knowledge 扩展已注册 `knowledge_search`），实际注册独立工具 **`rag_search`** 替代之；以下示例以 `rag_search` 为准（`mode` 参数语义与 pi-knowledge 一致）。
+
+| 场景               |    模式    | 示例                                              |
+| ------------------ | :--------: | ------------------------------------------------- |
+| 常规问答           |  `hybrid`  | `rag_search({ query: "...", mode: "hybrid" })`    |
+| 高精度（用药剂量） |   `deep`   | `rag_search({ query: "...", mode: "deep" })`      |
+| 多指南对比         | `adaptive` | `rag_search({ query: "...", mode: "adaptive" })`  |
+| 精确术语           |   `fast`   | `rag_search({ query: "...", mode: "fast" })`      |
+| 概念搜索           | `semantic` | `rag_search({ query: "...", mode: "semantic" })`  |
 
 ## 扩展包（组合优先）
 
@@ -185,8 +187,10 @@ node tests/unit/eval-bench.mjs
    零配置也密文存储。历史明文首次读取时**透明迁移**为密文；密文被篡改时解密抛错（GCM 认证）。
 2. **PII 脱敏** —— 手机号 / 身份证 / 邮箱 / 结构化姓名脱敏工具，供日志埋点在写盘前调用；
    业务日志只记 `promptLength` 等结构化计数，**绝不记录 prompt 原文**，从源头杜绝 PII 入日志。
-3. **合规审计留痕** —— 患者画像的每次写入 / 读取注入均记 `logs/audit-YYYY-MM-DD.ndjson`
-   （只记动作与字段名，不记原值），与业务日志分离。`/audit` 命令查看今日审计，`/logs` 查看业务日志。
+3. **合规审计留痕（防篡改哈希链）** —— 审计哈希链（`lib/audit-chain.mjs`）已接入 Agent 运行时
+   （`session_start` / 用户轮次 / `message_end` / `session_shutdown` / `rag_search` 检索动作均落链），
+   并保留患者画像每次写入 / 读取注入 `logs/audit-YYYY-MM-DD.ndjson`（只记动作与字段名，不记原值），
+   与业务日志分离。`npm run audit:verify` 校验链完整性，`/audit` 查看今日审计，`/logs` 查看业务日志。
 4. **System Prompt 合规化** (`prompts/medical-agent.md`)
    删除「三甲医院主任医师级别」虚假权威表述，重定位为**循证医学信息辅助工具**；
    强制每次回答附免责声明（非诊断、不替代医师、紧急拨 120）；不越界下诊断结论。

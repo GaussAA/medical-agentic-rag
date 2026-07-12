@@ -18,7 +18,7 @@
 | ------------------------------- | ---------------------------------- | ----------------- | ------------------ |
 | `retrieval.guide-finder.ts`     | 指南路由（语义路由定位应查指南）   | `guide_finder`    | `guide-router`     |
 | `retrieval.kg-search-tool.ts`   | 知识图谱检索                       | `kg_search`       | `kg-search`        |
-| `retrieval.rag-search.ts`       | 定向召回（约束 KB 文件 BM25 排序） | `rag_search`      | `retrieval-router` |
+| `retrieval.rag-search.ts`       | 定向召回（语义路由约束 + 真 hybrid：BM25 回退 / dense 委托 KnowledgeEngine + bge 重排） | `rag_search` | `retrieval-router`,`knowledge-engine-search` |
 | `retrieval.query-decomposer.ts` | 复杂问题分解为子查询               | `decompose_query` | （启发式，无 lib） |
 
 ### `provider`（Provider 与高可用）

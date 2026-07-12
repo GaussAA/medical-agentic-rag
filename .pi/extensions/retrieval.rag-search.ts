@@ -79,7 +79,7 @@ export default function (pi: ExtensionAPI) {
         mode: {
           type: "string",
           description:
-            "兼容占位参数（hybrid/semantic/fast/adaptive/deep）；本覆盖版统一使用路由约束 BM25",
+            "检索模式：hybrid/semantic/deep/adaptive 走 dense 委托 KnowledgeEngine 真 hybrid（含 bge 重排），fast 退回路由约束 BM25；引擎不可用自动回退 BM25",
         },
       },
       required: ["query"],

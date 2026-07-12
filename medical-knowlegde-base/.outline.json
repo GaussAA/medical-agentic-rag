@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-11T19:19:43.648Z",
-  "totalFiles": 146,
-  "totalSections": 20465,
+  "generatedAt": "2026-07-12T17:45:03.226Z",
+  "totalFiles": 148,
+  "totalSections": 20524,
   "totalKeyParagraphs": 496,
   "guides": [
     {
@@ -779,6 +779,14 @@
       "keyParagraphs": []
     },
     {
+      "id": "慢性阻塞性肺疾病患者健康服务规范（试行）",
+      "title": "慢性阻塞性肺疾病患者健康服务规范（试行）",
+      "sectionCount": 33,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "慢性髓性白血病诊疗指南（2022年版）",
       "title": "慢性髓性白血病诊疗指南（2022年版）",
       "sectionCount": 21,
@@ -949,6 +957,14 @@
       "id": "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
       "title": "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
       "sectionCount": 35,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "结核病分类 WS 196—2017",
+      "title": "结核病分类 WS 196—2017",
+      "sectionCount": 26,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []

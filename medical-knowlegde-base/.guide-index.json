@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-12T17:47:03.306Z",
-  "totalGuides": 147,
-  "totalKeywords": 855,
+  "generatedAt": "2026-07-13T07:57:07.788Z",
+  "totalGuides": 149,
+  "totalKeywords": 859,
   "guideMap": {
     "1.2026年国家医疗质量安全改进目标": {
       "id": "1.2026年国家医疗质量安全改进目标",
@@ -704,6 +704,38 @@
         "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则"
       ],
       "sectionCount": 29,
+      "keyParagraphCount": 0
+    },
+    "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "cvd-ami__EuropePMCOA__PMC13293799",
+      "disease": "急性心梗",
+      "version": null,
+      "normalizedDisease": "急性心梗",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "急性心梗"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
+    "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "cvd-hf__EuropePMCOA__PMC13094103",
+      "disease": "心力衰竭",
+      "version": null,
+      "normalizedDisease": "心力衰竭",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "心力衰竭"
+      ],
+      "sectionCount": 1,
       "keyParagraphCount": 0
     },
     "三踝骨折切开复位内固定术加速康复临床路径（2023年版）": {
@@ -3463,6 +3495,18 @@
     ],
     "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则": [
       "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则"
+    ],
+    "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "急性心梗": [
+      "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "心力衰竭": [
+      "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
     ],
     "三踝骨折切开复位内固定术加速康复临床路径（2023年版）": [
       "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"

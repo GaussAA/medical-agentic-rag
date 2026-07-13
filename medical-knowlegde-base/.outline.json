@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-12T17:45:03.226Z",
-  "totalFiles": 148,
-  "totalSections": 20524,
+  "generatedAt": "2026-07-13T07:57:07.685Z",
+  "totalFiles": 151,
+  "totalSections": 20527,
   "totalKeyParagraphs": 496,
   "guides": [
     {
@@ -353,6 +353,30 @@
       "id": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
       "title": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
       "sectionCount": 29,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "cvd-ami__EuropePMCOA__PMC13293799",
+      "title": "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "cvd-ami__EuropePMCOA__PMC13297194",
+      "title": "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "cvd-hf__EuropePMCOA__PMC13094103",
+      "title": "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []

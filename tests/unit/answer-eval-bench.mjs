@@ -24,7 +24,7 @@ import { hasGradeMarker, hasStrictGrade } from "../../.pi/extensions/lib/grade-m
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const index = loadIndex(REPO_ROOT);
-const TXT_DIR = join(REPO_ROOT, "medical-raw-txt");
+const TXT_DIR = join(REPO_ROOT, "raw-txt");
 
 // ---------- 10 条真实问答样本（证据短语均取自对应指南原文） ----------
 const SAMPLES = [
@@ -97,7 +97,7 @@ const SAMPLES = [
 // 现统一由 grade-markers.mjs 的 hasGradeMarker 合并「标准化 GRADE 原词 + 中文推荐强度表述」。
 // GRADE_TOKENS / REC_STRENGTH_TOKENS 仍从 grade-markers 导入，供引用与扩展。
 
-// 读取指南原文（按索引 id 定位 medical-raw-txt/<id>.txt）
+// 读取指南原文（按索引 id 定位 raw-txt/<id>.txt）
 function readGuideText(title) {
   const info = index.guideMap[title];
   if (!info) return { text: null, missing: "not_in_index" };

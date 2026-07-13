@@ -1,12 +1,12 @@
 // 由盘上真实原始文档反推重建 kb-sources.json（去重、归类、对齐）
-// 方案 B：源真相为 medical-raw/ 下的 PDF/DOCX（不再有 MD 中间层）。
+// 方案 B：源真相为 raw/ 下的 PDF/DOCX（不再有 MD 中间层）。
 // 修正：contentHash 对真实原始文件字节求 sha256（旧版传空串等于没算指纹）。
 import { readdirSync, writeFileSync, readFileSync, statSync } from "node:fs";
 import { join, dirname, extname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const RAW = join(ROOT, "medical-raw");
+const RAW = join(ROOT, "raw");
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const kb = await import(MOD);
 
@@ -26,7 +26,7 @@ const out = files.map((f) => {
   const p = join(RAW, f);
   return {
     id: n, name: n, type: "local",
-    localPath: `medical-raw\\${f}`,
+    localPath: `raw\\${f}`,
     cadenceDays: 30, validate: "sha256",
     department: kb.inferDepartment(n),
     lastChecked: new Date().toISOString(),
@@ -39,4 +39,4 @@ writeFileSync(
   JSON.stringify({ sources: out, meta: { lastFullCheck: new Date().toISOString() } }, null, 2),
   "utf-8"
 );
-console.log("registry rebuilt:", out.length, "sources (from medical-raw/)");
+console.log("registry rebuilt:", out.length, "sources (from raw/)");

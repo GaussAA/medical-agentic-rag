@@ -2,7 +2,7 @@
 // 知识库新文件看门狗：扫描投放目录，自动检测新指南文件并入库。
 //
 // 流程：
-//   1. 扫描 medical-raw/ 目录，找出所有 .pdf/.docx/.doc 文件
+//   1. 扫描 raw/ 目录，找出所有 .pdf/.docx/.doc 文件
 //   2. 与 kb-sources.json 已登记来源比对（按文件名 baseline 匹配）
 //   3. 未登记的新文件自动走 ingest-raw.mjs 管线入库
 //   4. 检测到新版本替换时自动标记旧版已废止
@@ -11,7 +11,7 @@
 //   node scripts/ops/watchdog-new-files.mjs [--dry-run] [--dir <投放目录>]
 //
 // --dry-run: 仅列出新文件，不实际入库
-// --dir:    扫描指定目录（默认 medical-raw/）
+// --dir:    扫描指定目录（默认 raw/）
 //
 // 纯 node 运行，无外部依赖。PDF 抽取依赖 poppler-utils (pdftotext)。
 
@@ -21,13 +21,13 @@ import { join, dirname, extname, basename } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const KB_DIR = join(ROOT, "medical-knowlegde-base");
+const KB_DIR = join(ROOT, "knowledge-base");
 const REG_FILE = join(ROOT, "kb-sources.json");
 const dryRun = process.argv.includes("--dry-run");
 
 // 取投放目录
 const dirIdx = process.argv.indexOf("--dir");
-const WATCH_DIR = dirIdx >= 0 ? process.argv[dirIdx + 1] : join(ROOT, "medical-raw");
+const WATCH_DIR = dirIdx >= 0 ? process.argv[dirIdx + 1] : join(ROOT, "raw");
 
 // 加载 kb-sources
 async function loadRegistry() {

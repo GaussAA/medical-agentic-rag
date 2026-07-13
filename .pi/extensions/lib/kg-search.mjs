@@ -18,9 +18,9 @@ const ENTITY_LABEL = {
   treatment: "治疗",
 };
 
-/** 读取知识图谱实体（默认项目根下的 medical-knowlegde-base/.knowledge-graph.json）。 */
+/** 读取知识图谱实体（默认项目根下的 knowledge-base/.knowledge-graph.json）。 */
 export function loadGraph(baseDir = process.cwd()) {
-  const p = join(baseDir, "medical-knowlegde-base", ".knowledge-graph.json");
+  const p = join(baseDir, "knowledge-base", ".knowledge-graph.json");
   const data = JSON.parse(readFileSync(p, "utf-8"));
   return data.entities || [];
 }

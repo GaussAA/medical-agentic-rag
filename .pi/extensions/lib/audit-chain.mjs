@@ -23,7 +23,7 @@ import { join } from "node:path";
 
 const PI_DIR = join(process.cwd(), ".pi");
 const KEY_FILE = join(PI_DIR, ".audit-key");
-const LOGS_DIR = join(process.cwd(), "logs");
+const LOGS_DIR = join(process.cwd(), ".pi/logs");
 const HMAC_ALGO = "sha256";
 
 /** 进程内缓存密钥。 */

@@ -1,5 +1,5 @@
 // 重建知识库：增量优先，全量可选。
-// 默认（无参数）：knowledge_update 增量同步 retained source(medical-raw)，只加新/删源无/留未变 —— 省 20~40 分钟。
+// 默认（无参数）：knowledge_update 增量同步 retained source(raw)，只加新/删源无/留未变 —— 省 20~40 分钟。
 //   engine.update 返回 {added, removed, unchanged}，即真增量 diff（对应大帅「为何每次全量」之问）。
 // --full：knowledge_clear + knowledge_add 全量重建（库损坏/大改时用，保留兜底）。
 // 注意：pi-knowledge 对 >~10MB 文件硬性 oversized skip（knowledge_plan 实测 {oversized:3}），
@@ -34,7 +34,7 @@ const PK_URL = pathToFileURL(
   join(npmRoot, "node_modules/pi-knowledge/dist/index.js")
 ).href;
 
-const SOURCE = join(ROOT, "medical-raw");
+const SOURCE = join(ROOT, "raw");
 const NAME = "医疗指南";
 const FULL = process.argv.includes("--full");
 

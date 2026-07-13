@@ -1,12 +1,12 @@
 # scripts/kb/split_oversized.py
 # 把三份 >10MB 的 oversized 主 PDF 用 pypdf 逐页重写拆分为小页 PDF（保留文本层），
 # 绕过 pi-knowledge 的 oversized technical skip（阈值 <~11.48MB）。
-# 输出：medical-raw/_oversized_split/{guide_key}/part_{NNN}.pdf
+# 输出：raw/_oversized_split/{guide_key}/part_{NNN}.pdf
 # 与已归档的「无文本层残次拆分」区分：本脚本源 PDF 有完整文本层，pypdf 重写保留文本。
 import os, sys
 from pypdf import PdfReader, PdfWriter
 
-BASE = "C:/WorkSpace/AgentProject/medical-agentic-rag/medical-raw"
+BASE = "C:/WorkSpace/AgentProject/medical-agentic-rag/raw"
 OUT = os.path.join(BASE, "_oversized_split")
 PER = 10  # 每 10 页一份；单份约 <1MB，远低于 ~11MB 阈值
 

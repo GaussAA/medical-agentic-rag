@@ -118,7 +118,7 @@ function scanPhi(reportsDir) {
  * @returns {Array<{src:string, type:string, severity:string, guides:string[], detail:string, t?:string}>}
  */
 export function collectSignals({ logsDir, reportsDir } = {}) {
-  const ld = logsDir || join(process.cwd(), "logs");
+  const ld = logsDir || join(process.cwd(), ".pi/logs");
   const rd = reportsDir || join(process.cwd(), "tests", "reports");
   return [...scanGuardHits(ld), ...scanEval(rd), ...scanPhi(rd)];
 }
@@ -206,7 +206,7 @@ export function buildFeedbackQueue({ logsDir, reportsDir, generatedAt } = {}) {
  * @returns {string} 实际写入路径
  */
 export function writeFeedbackQueue(queue, outPath, logsDir) {
-  const dir = outPath || join(process.cwd(), "logs", "feedback-queue.json");
+  const dir = outPath || join(process.cwd(), ".pi/logs", "feedback-queue.json");
   mkdirSync(join(dir, ".."), { recursive: true });
   writeFileSync(dir, JSON.stringify(queue, null, 2), "utf-8");
   // 观测：反馈生成计数（fire-and-forget，不阻断写盘）；默认与队列同目录（logs/），单测注入 tmp 则隔离
@@ -230,7 +230,7 @@ export function writeFeedbackQueue(queue, outPath, logsDir) {
  * @returns {object|null}  解析后的队列对象；缺失/损坏返回 null（不静默崩，留痕）
  */
 export function readFeedbackQueue(path) {
-  const p = path || join(process.cwd(), "logs", "feedback-queue.json");
+  const p = path || join(process.cwd(), ".pi/logs", "feedback-queue.json");
   if (!existsSync(p)) return null;
   try {
     return JSON.parse(readFileSync(p, "utf-8"));
@@ -247,7 +247,7 @@ export function readFeedbackQueue(path) {
  * @returns {Set<string>}
  */
 export function loadResolved(path) {
-  const p = path || join(process.cwd(), "logs", "feedback-resolved.json");
+  const p = path || join(process.cwd(), ".pi/logs", "feedback-resolved.json");
   if (!existsSync(p)) return new Set();
   try {
     const arr = JSON.parse(readFileSync(p, "utf-8"));
@@ -264,7 +264,7 @@ export function loadResolved(path) {
  * @returns {string[]}  本次新增的 key
  */
 export function resolveFeedback(keys, path) {
-  const p = path || join(process.cwd(), "logs", "feedback-resolved.json");
+  const p = path || join(process.cwd(), ".pi/logs", "feedback-resolved.json");
   const set = loadResolved(p);
   const added = [];
   for (const k of keys) {

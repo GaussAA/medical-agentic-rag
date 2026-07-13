@@ -40,7 +40,7 @@ async function emit(event, fields = {}, logsDir) {
     return;
   }
   try {
-    const dir = logsDir || join(process.cwd(), "logs");
+    const dir = logsDir || join(process.cwd(), ".pi/logs");
     await mkdir(dir, { recursive: true });
     const date = new Date().toISOString().slice(0, 10);
     const entry =

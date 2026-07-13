@@ -4,7 +4,7 @@ import { searchKG, loadGraph } from "./lib/kg-search.mjs";
 /**
  * 医疗知识图谱搜索工具
  *
- * 数据来源: medical-knowlegde-base/.knowledge-graph.json（由 extract-entities.mjs 生成）
+ * 数据来源: knowledge-base/.knowledge-graph.json（由 extract-entities.mjs 生成）
  * 检索方式: 本地 JSON 内存扫描（实体-关系扁平表过滤）
  */
 export default function (pi: ExtensionAPI) {

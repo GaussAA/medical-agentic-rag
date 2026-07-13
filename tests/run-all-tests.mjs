@@ -16,13 +16,13 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
-// CI 降级开关：知识库原始文档（medical-raw/）与 kb-sources.json 不入库，
+// CI 降级开关：知识库原始文档（raw/）与 kb-sources.json 不入库，
 // 纯净 checkout 下相关断言无法执行；CI 环境跳过这些依赖未入库大文件的校验，
 // 仅保留结构/扩展/System Prompt 等不依赖原始文档的门禁。本地（无 CI env）仍全量执行。
 const SKIP_KB = process.env.CI === "true" || process.env.SKIP_KB === "1";
-const KB_DIR = join(ROOT, "medical-knowlegde-base");
-// 方案 B：源真相为 medical-raw/ 下的原始 PDF/DOCX（非 MD）
-const RAW_DIR = join(ROOT, "medical-raw");
+const KB_DIR = join(ROOT, "knowledge-base");
+// 方案 B：源真相为 raw/ 下的原始 PDF/DOCX（非 MD）
+const RAW_DIR = join(ROOT, "raw");
 /** 统计原始知识库可抽取文件数（PDF/DOCX，排除临时残留）。 */
 async function countRaw() {
   try {
@@ -282,9 +282,9 @@ async function testKBIntegrity() {
       },
     },
     {
-      name: "归一化文本已生成（medical-raw-txt 与原始一一对应且非空）",
+      name: "归一化文本已生成（raw-txt 与原始一一对应且非空）",
       fn: async () => {
-        const txtDir = join(ROOT, "medical-raw-txt");
+        const txtDir = join(ROOT, "raw-txt");
         const txtFiles = (await readdir(txtDir)).filter((f) => f.endsWith(".txt"));
         assert(txtFiles.length === files.length, `归一化文本数 ${txtFiles.length} ≠ 原始 ${files.length}`);
         for (const file of files) {
@@ -346,7 +346,7 @@ async function testExtensionFiles() {
 // 测试套件 6: System Prompt 完整性
 // ============================================================
 async function testSystemPrompt() {
-  const prompt = await readFile(join(ROOT, "prompts", "medical-agent.md"), "utf-8");
+  const prompt = await readFile(join(ROOT, ".pi", "prompts", "medical-agent.md"), "utf-8");
 
   await runSuite("System Prompt 完整性", [
     {
@@ -446,7 +446,7 @@ async function main() {
   if (!SKIP_KB) {
     await testKBIntegrity();
   } else {
-    console.log("(CI 模式：跳过「知识库文件完整性」套件——原始文档 medical-raw/ 未入库)\n");
+    console.log("(CI 模式：跳过「知识库文件完整性」套件——原始文档 raw/ 未入库)\n");
   }
   await testExtensionFiles();
   await testSystemPrompt();

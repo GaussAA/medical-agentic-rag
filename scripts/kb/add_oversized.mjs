@@ -1,8 +1,8 @@
 // scripts/kb/add_oversized.mjs
-// 增量刷新「医疗指南」KB：knowledge_update 重扫其 retained source (medical-raw 含 _oversized_split 子目录)，
+// 增量刷新「医疗指南」KB：knowledge_update 重扫其 retained source (raw 含 _oversized_split 子目录)，
 // 收录 331 个子块（罕见病/乳腺癌/肝癌拆分补录），消除原 3 份 oversized 的覆盖空洞。
 // 为何不用 knowledge_add：add 是"创建新 KB"语义，KB 已存在会报 already exists。
-// 可逆：rebuild-kb.mjs 可从 medical-raw 整体重建并自动包含 _oversized_split 子块。
+// 可逆：rebuild-kb.mjs 可从 raw 整体重建并自动包含 _oversized_split 子块。
 // 用法：node scripts/kb/add_oversized.mjs
 import { pathToFileURL } from "node:url";
 import { join } from "node:path";
@@ -44,7 +44,7 @@ const logUpdate = (u) => {
 console.log("=== ① 刷新前 KB 状态 ===");
 console.log(su(await captured["knowledge_status"].execute("knowledge_status", {}, null)));
 
-console.log(`\n=== ② 增量刷新 KB「${NAME}」（重扫 medical-raw 含 _oversized_split 子目录，收录 331 子块）===`);
+console.log(`\n=== ② 增量刷新 KB「${NAME}」（重扫 raw 含 _oversized_split 子目录，收录 331 子块）===`);
 console.log("（将加载 e5 嵌入模型并逐块索引，请耐心等待滚动进度）");
 const upRes = await captured["knowledge_update"].execute(
   "knowledge_update",

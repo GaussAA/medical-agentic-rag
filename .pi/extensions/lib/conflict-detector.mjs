@@ -269,7 +269,7 @@ export function buildAnnotation(conflicts) {
 
 // ---------- 默认 guide-index 加载 ----------
 export function defaultLoadGuideIndex(baseDir = process.cwd()) {
-  const p = join(baseDir, "medical-knowlegde-base", ".guide-index.json");
+  const p = join(baseDir, "knowledge-base", ".guide-index.json");
   if (!existsSync(p)) return null;
   const data = JSON.parse(readFileSync(p, "utf-8"));
   return data.guideMap || null;

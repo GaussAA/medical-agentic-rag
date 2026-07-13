@@ -12,7 +12,7 @@
 #      - 知识图谱 / 指南索引 / 大纲 结构完整性（基于已入库派生索引 JSON）
 #      - 扩展文件完整性（必需扩展存在 + 语法自检）
 #      - System Prompt 合规护栏（循证辅助定位、禁虚假权威、rag_search/guide_finder 引用等）
-#      - CI 下跳过依赖「未入库原始文档」的断言（medical-raw/ 不入库，见 .gitignore）
+#      - CI 下跳过依赖「未入库原始文档」的断言（raw/ 不入库，见 .gitignore）
 #   3) 基线健康度门禁（eval-ci-gate）：只读校验入仓 baseline.json 的阈值健康度，零外部依赖
 #      本步骤仅确认入仓基线未被误改坏（非 PR 质量卡点）；真实「质量退步」回归检测
 #      在 nightly-eval.yml 中跑新评测报告 vs 基线对比（--compare 模式）完成。

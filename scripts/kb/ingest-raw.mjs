@@ -7,7 +7,7 @@
 // 流程：
 //   1. 读投放的原始文件（PDF→pdftotext 转文本；HTML→去标签留结构；MD→直用）
 //   2. 规范化为带元数据的 Markdown（标题/来源/抓取日期/正文）
-//   3. 写入 medical-knowlegde-base/<指南名>.md —— 注意：此为中间产物，
+//   3. 写入 knowledge-base/<指南名>.md —— 注意：此为中间产物，
 //      2026-07-12 数据治理后该目录已清理 .md 文件（仅保留派生索引 JSON），
 //      ingest 仍写 MD 是为了保持管线向后兼容，后续可考虑去掉此步直接走 TXT 路径
 //   4. 追加登记到 kb-sources.json（type=local + department 自动归类）
@@ -23,7 +23,7 @@ import { join, dirname, extname, basename } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const KB_DIR = join(ROOT, "medical-knowlegde-base");
+const KB_DIR = join(ROOT, "knowledge-base");
 const REG_FILE = join(ROOT, "kb-sources.json");
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const kb = await import(MOD);
@@ -134,7 +134,7 @@ try {
   }
   const md = normalizeToMarkdown(text, name, src);
   const mdPath = join(KB_DIR, `${name}.md`);
-  const mdRel = `medical-knowlegde-base\\${name}.md`;
+  const mdRel = `knowledge-base\\${name}.md`;
   if (existsSync(mdPath)) {
     console.error(`✗ 目标已存在: ${mdPath}（避免覆盖既有指南，请换名或先删）`);
     process.exit(1);

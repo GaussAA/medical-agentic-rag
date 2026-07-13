@@ -18,7 +18,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const KB_DIR = join(ROOT, "medical-knowlegde-base");
+const KB_DIR = join(ROOT, "knowledge-base");
 const REG_FILE = join(ROOT, "kb-sources.json");
 const PY_VENV =
   process.env.PY_VENV ||
@@ -101,7 +101,7 @@ async function main() {
         if (!text || text.trim().length < 80) throw new Error("正文过短/空，疑似非指南，拒绝落库");
         const md = normalize(text, baseName, p);
         const mdPath = join(KB_DIR, `${baseName}.md`);
-        const mdRel = `medical-knowlegde-base\\${baseName}.md`;
+        const mdRel = `knowledge-base\\${baseName}.md`;
         const inKb = kbCanon.has(canon) || regCanon.has(canon);
         const inKbFile = existsSync(mdPath);
         if (inKb || inKbFile) {

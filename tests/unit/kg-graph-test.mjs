@@ -90,8 +90,8 @@ async function testKgGraph() {
   console.log("\n[知识图谱多跳推理]");
 
   const { ensureGraphDb, traverseGraph, graphDbPath } = await import(pathToFileURL(KG_DB_LIB).href);
-  const jsonPath = pjoin(ROOT, "medical-knowlegde-base", ".knowledge-graph.json");
-  const dbPath = pjoin(ROOT, "medical-knowlegde-base", ".knowledge-graph.db");
+  const jsonPath = pjoin(ROOT, "knowledge-base", ".knowledge-graph.json");
+  const dbPath = pjoin(ROOT, "knowledge-base", ".knowledge-graph.db");
 
   // 确保 DB 已构建（本地应有；CI 若缺则即时构建）
   if (!existsSync(dbPath)) {

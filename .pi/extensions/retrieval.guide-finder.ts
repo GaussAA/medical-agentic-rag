@@ -7,7 +7,7 @@ import { routeGuides, loadIndex } from "./lib/guide-router.mjs";
  * 根据用户问题，先定位应查询哪份(或多份)指南，然后定向搜索，提高检索精度。
  * 路由逻辑已抽取至 ./lib/guide-router.mjs（纯函数 + 文件化缓存），本文件仅作工具封装。
  *
- * 数据来源: medical-knowlegde-base/.guide-index.json
+ * 数据来源: knowledge-base/.guide-index.json
  */
 export default function (pi: ExtensionAPI) {
   let index: any = null;

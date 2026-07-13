@@ -30,7 +30,7 @@ diag.warn("scope-b", "告警消息", { k: 1 });
 diag.error("scope-c", "错误消息");
 
 const today = new Date().toISOString().slice(0, 10);
-const logPath = join(workdir, "logs", `diagnostics-${today}.ndjson`);
+const logPath = join(workdir, ".pi", "logs", `diagnostics-${today}.ndjson`);
 check("日志文件已生成", existsSync(logPath));
 const lines = readFileSync(logPath, "utf-8").trim().split("\n").filter(Boolean);
 check("写入 3 条诊断", lines.length === 3, "got " + lines.length);

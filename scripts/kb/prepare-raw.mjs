@@ -2,12 +2,12 @@
  * 准备原始知识库（方案 B：保大脑）
  *
  * 1. 把原始目录（D:/JaNiy/.../medical-knowlegde-origin）下可抽取的 PDF/DOCX
- *    复制进项目内 medical-raw/（排除 .doc 老格式与 .nhc_tmp_ 残留）。
- * 2. 对每份生成归一化纯文本 medical-raw-txt/<同名>.txt，
+ *    复制进项目内 raw/（排除 .doc 老格式与 .nhc_tmp_ 残留）。
+ * 2. 对每份生成归一化纯文本 raw-txt/<同名>.txt，
  *    抽取方式与 ingest-batch 同款（pdftotext -enc UTF-8 / python-docx 桥），
  *    保证中文保真，供 extract-outline 复用中文层级正则。
  *
- * 只读源目录、只写项目内 medical-raw/ 与 medical-raw-txt/。
+ * 只读源目录、只写项目内 raw/ 与 raw-txt/。
  * 用法: node scripts/kb/prepare-raw.mjs
  */
 import { createRequire } from "module";
@@ -19,8 +19,8 @@ import { join, extname, basename } from "node:path";
 
 const SRC = process.env.MEDICAL_RAW_SRC || "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
 const ROOT = process.cwd();
-const RAW_DIR = join(ROOT, "medical-raw");
-const TXT_DIR = join(ROOT, "medical-raw-txt");
+const RAW_DIR = join(ROOT, "raw");
+const TXT_DIR = join(ROOT, "raw-txt");
 const PY =
   process.env.PY_VENV ||
   join(process.env.USERPROFILE || process.env.HOME || "", ".workbuddy", "binaries", "python", "envs", "default", "Scripts", "python.exe");
@@ -67,7 +67,7 @@ for (const f of files) {
       txt = extractDocx(srcP);
     } else if (ext === ".doc") {
       // 老格式 .doc：mammoth/Pi 均无法摄取。经 antiword 抽文本，
-      // 落为 medical-raw/<base>.txt（Pi 原生 TXT 摄取），不复制二进制 .doc 以免 ingest 失败。
+      // 落为 raw/<base>.txt（Pi 原生 TXT 摄取），不复制二进制 .doc 以免 ingest 失败。
       txt = extractDoc(srcP);
       writeFileSync(join(RAW_DIR, base + ".txt"), txt, "utf-8");
     }

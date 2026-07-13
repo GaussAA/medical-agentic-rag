@@ -70,4 +70,5 @@ echo ""
 NODE_BIN="${NODE_BIN:-/c/Users/JaNiy/.workbuddy/binaries/node/versions/22.22.2/node}"
 exec "$NODE_BIN" "$WIN_ROOT/pi/packages/coding-agent/dist/cli.js" \
   --model "$PROVIDER/$MODEL" \
-  --system-prompt "$WIN_ROOT/prompts/medical-agent.md"
+  --system-prompt "$WIN_ROOT/.pi/prompts/medical-agent.md" \
+  --session-dir "$WIN_ROOT/.pi/sessions"

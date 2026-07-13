@@ -2,7 +2,7 @@
 // 自动检测已废止旧版指南，标记 deprecated 标记并重建索引。
 //
 // 用途：
-//   1. 检测 medical-raw/ 中新入文件，判断是否属既有指南的更新版本
+//   1. 检测 raw/ 中新入文件，判断是否属既有指南的更新版本
 //   2. 自动标记旧版为已废止，更新 guide-index
 //   3. 检测 outline 中是否存在括号重复条目（全角/半角），自动去重
 //
@@ -16,9 +16,9 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const KB_DIR = join(ROOT, "medical-knowlegde-base");
-const RAW_DIR = join(ROOT, "medical-raw");
-const RAW_TXT_DIR = join(ROOT, "medical-raw-txt");
+const KB_DIR = join(ROOT, "knowledge-base");
+const RAW_DIR = join(ROOT, "raw");
+const RAW_TXT_DIR = join(ROOT, "raw-txt");
 
 const dryRun = process.argv.includes("--dry-run");
 

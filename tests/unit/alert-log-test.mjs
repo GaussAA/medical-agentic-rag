@@ -29,7 +29,7 @@ alert("monitor-logger", "日志写入失败: EACCES");
 alert("observability", "session_start 日志写入失败: EBADF", { event: "session_start" });
 
 const today = new Date().toISOString().slice(0, 10);
-const logPath = join(workdir, "logs", `alerts-${today}.ndjson`);
+const logPath = join(workdir, ".pi", "logs", `alerts-${today}.ndjson`);
 check("告警日志文件已生成", existsSync(logPath));
 const lines = readFileSync(logPath, "utf-8").trim().split("\n").filter(Boolean);
 check("写入 2 条告警", lines.length === 2, "got " + lines.length);

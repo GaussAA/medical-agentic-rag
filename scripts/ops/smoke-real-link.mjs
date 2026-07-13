@@ -2,7 +2,7 @@
 // 真实链路冒烟：在「有真库」的运行环境（本地开发机 / 自托管 nightly runner）跑通
 // 『FTS 构建 → 路由约束 → hybrid 检索 → 真引擎』全链路，而非仅内存逻辑单测。
 //
-// 背景（P2-④）：CI 为纯逻辑门禁（SKIP_KB，medical-raw-txt 不入库、无原生引擎），
+// 背景（P2-④）：CI 为纯逻辑门禁（SKIP_KB，raw-txt 不入库、无原生引擎），
 // retrieval-fts-test / knowledge-engine-search-test 仅用内存临时库验证「函数正确性」，
 // 从未在真实 knowledge.db + 真实引擎上跑过端到端。本脚本补足该缺口。
 //

@@ -14,7 +14,7 @@
 import { mkdirSync, appendFileSync } from "node:fs";
 import { join } from "node:path";
 
-const LOGS_DIR = join(process.cwd(), "logs");
+const LOGS_DIR = join(process.cwd(), ".pi/logs");
 
 // 落盘自身失败极罕见；仅进程内告警一次，不向终端刷屏（避免噪声复现）
 let _sinkBrokenWarned = false;

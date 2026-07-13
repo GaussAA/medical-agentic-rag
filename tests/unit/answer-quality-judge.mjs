@@ -17,7 +17,7 @@ import { routeGuides, loadIndex, normalize } from "../../.pi/extensions/lib/guid
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const index = loadIndex(REPO_ROOT);
-const TXT_DIR = join(REPO_ROOT, "medical-raw-txt");
+const TXT_DIR = join(REPO_ROOT, "raw-txt");
 
 const GOLD = JSON.parse(readFileSync(join(REPO_ROOT, "tests", "gold-answers.json"), "utf-8"));
 const ITEMS = GOLD.items;

@@ -13,14 +13,19 @@
 #      - 扩展文件完整性（必需扩展存在 + 语法自检）
 #      - System Prompt 合规护栏（循证辅助定位、禁虚假权威、rag_search/guide_finder 引用等）
 #      - CI 下跳过依赖「未入库原始文档」的断言（raw/ 不入库，见 .gitignore）
-#   3) 基线健康度门禁（eval-ci-gate）：只读校验入仓 baseline.json 的阈值健康度，零外部依赖
-#      本步骤仅确认入仓基线未被误改坏（非 PR 质量卡点）；真实「质量退步」回归检测
-#      在 nightly-eval.yml 中跑新评测报告 vs 基线对比（--compare 模式）完成。
+#   3) 基线健康度门禁（eval-ci-gate，gate job 内）：只读校验入仓 baseline.json 的阈值健康度，零外部依赖；
+#      本步骤仅确认入仓基线未被误改坏（非 PR 质量卡点）。
+#      真实「质量退步」回归检测双轨：①有 SENSENOVA_API_KEY Secret 时，由新增 quality-gate job 跑
+#        新评测报告 vs 基线对比（--compare）并 --strict 硬卡（merge/master 前质量退步即红）；
+#      ②无 Key 时 quality-gate job 内步骤整体跳过（不阻塞）；夜间仍由 nightly-eval.yml 软跑 + Issue 兜底。
 #
 # 未纳入主门禁（环境 / 资源限制，非代码缺陷）:
 #   - retrieval-router-test: 需 better-sqlite3 原生模块（未入库，CI 需额外编译），改在本地 / 专用 runner 运行
-#   - eval-bench / answer-eval-bench / answer-quality-judge: 端到端质量评测，需 KB 文本 + LLM API Key，
+#   - eval-bench / answer-eval-bench: 端到端评测基准，需 KB 文本 + LLM API Key，
 #     作为「发布前手动 / 本地门禁」(npm run eval:*)，不在 CI 强制
+#   - answer-quality-judge: 端到端答案质量评测，仅需 LLM API Key（KB 文本经 raw-txt 本地可选，CI/nightly runner 缺则降级）；
+#     现经 quality-gate job 在「配置 SENSENOVA_API_KEY Secret」时强制卡点（merge/master 前质量退步即红）；
+#     无 Key 时该 job 内评测/门禁步整体跳过（不误报、不阻塞无 Key 环境）。仍可用 npm run eval:* 本地手动跑。
 #
 # 运行环境: ubuntu-latest + Node 22。项目现已声明 better-sqlite3 依赖（package.json + lockfile 入仓），
 # CI 下 npm ci 自动安装。eval-ci-gate 仅读 JSON，零外部依赖。
@@ -64,3 +69,36 @@ jobs:
 
       - name: 基线质量门禁（eval-ci-gate，零 LLM 调用）
         run: node tests/eval-ci-gate.mjs --report=tests/reports/baseline.json
+
+  quality-gate:
+    name: 端到端质量门禁（有 SENSENOVA Key 才激活）
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 端到端答案质量评测（需 Key；缺失/失败则优雅跳过，非故障）
+        if: ${{ secrets.SENSENOVA_API_KEY != '' }}
+        continue-on-error: true
+        env:
+          SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY }}
+          CI: "true"
+        run: node tests/unit/answer-quality-judge.mjs
+      - name: 评测可用性判定（决定门禁是否执行）
+        id: evalcheck
+        run: |
+          if [ -z "${{ secrets.SENSENOVA_API_KEY }}" ]; then
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            echo "::notice::全量评测跳过（未配置 SENSENOVA_API_KEY Secret，属预期；本地 pre-push 钩子已覆盖真链路门禁）"
+          elif [ ! -f tests/reports/answer-quality-report.json ]; then
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            echo "::warning::评测步骤未产出报告（密钥可能配额耗尽或瞬时故障），跳过门禁"
+          else
+            echo "skip=0" >> "$GITHUB_OUTPUT"
+          fi
+      - name: 质量门禁（阈值 + 新报告 vs 基线回归对比）·硬卡
+        if: ${{ steps.evalcheck.outputs.skip == '0' }}
+        run: node tests/eval-ci-gate.mjs --report=tests/reports/answer-quality-report.json --baseline=tests/reports/baseline.json --compare --strict

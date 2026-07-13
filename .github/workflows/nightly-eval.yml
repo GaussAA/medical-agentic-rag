@@ -53,6 +53,36 @@ jobs:
             fi
           }
 
+      - name: 真实多轮澄清复现（B0-b 真·07-13；需外联，降级跳过）
+        continue-on-error: true
+        env:
+          CI: "true"
+        run: |
+          node scripts/ops/clarification-real-link.mjs --json || {
+            code=$?
+            if [ "$code" -eq 2 ]; then
+              echo "::notice::真实多轮澄清跳过（本 runner 无外联/降级，属预期）"
+            else
+              echo "::error::真实多轮澄清失败（exit $code）"
+              exit 1
+            fi
+          }
+
+      - name: 多轮评测 harness（B3；需外联，降级跳过）
+        continue-on-error: true
+        env:
+          CI: "true"
+        run: |
+          node scripts/ops/eval-bench-multiturn.mjs --json || {
+            code=$?
+            if [ "$code" -eq 2 ]; then
+              echo "::notice::多轮评测跳过（本 runner 无外联/降级，属预期）"
+            else
+              echo "::error::多轮评测失败（exit $code）"
+              exit 1
+            fi
+          }
+
       - name: 运行全量评测（需 SENSENOVA_API_KEY；缺失/失败则优雅跳过，非故障）
         id: eval
         if: ${{ secrets.SENSENOVA_API_KEY != '' }}

@@ -283,9 +283,13 @@ for (const it of ITEMS) {
     if (!gradeStrictLocal && hasStrictGrade(text)) gradeStrictLocal = true;
   }
   evHit += evLocalHit; evTot += evLocalTot;
-  if (it.expectGradeLabel !== false) gradeTot++;
-  if (gradeLocal) gradeHit++;
-  if (gradeStrictLocal) gradeStrictHit++;
+  // 证据等级标注率：仅「期望标注」条目计入分母，命中亦限同口径 → 封顶 100%
+  // （修复原口径错配：分子对 expectGradeLabel=false 但指南含 marker 的条目也累加，致 >100% 虚高）
+  if (it.expectGradeLabel !== false) {
+    gradeTot++;
+    if (gradeLocal) gradeHit++;
+    if (gradeStrictLocal) gradeStrictHit++;
+  }
 
   // 待审回答：live 用 systemAnswer，否则 referenceAnswer（self-check）
   const answer = it.systemAnswer || it.referenceAnswer || "";

@@ -14,8 +14,8 @@
     "kpi": {
       "citationRecall": 75,
       "evidenceLocatability": 93.1,
-      "gradeLabelRate": 183.3,
-      "gradeStrictRate": 133.3,
+      "gradeLabelRate": 100,
+      "gradeStrictRate": 83.3,
       "allowedClaimRate": 100,
       "preferredClaimRate": 0,
       "forbiddenViolationRate": 0,

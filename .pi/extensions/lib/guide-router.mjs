@@ -200,6 +200,27 @@ export function buildIdf(idx) {
 const MIN_SCORE = 4;
 
 /**
+ * CJK 单字语义权重系数（P0-1 根治「单字跨指南噪声误召回」）。
+ * 单字（如"心""瘤""肺"）在众多指南中泛在出现，区分度极低——会话实证
+ * guide_finder("心梗") 因"心"单字重叠误命中流感/血透/放射病/乳腺癌。
+ * 故单字仅作辅助信号（×0.25），让二元组/多字词主导语义定位。
+ */
+const W_SINGLE_CHAR = 0.25;
+
+/**
+ * 路由置信阈值：top1 分低于此值判定为「低置信」（知识库可能无对应专项指南，
+ * 仅靠零散词元矮中选将）。返回结果附 lowConfidence 标记，供调用方（rag_search）
+ * 决定放弃硬路由约束、改走全库检索，与 knowledge-engine 软约束兜底配合根治 P0-1/P0-2。
+ * env 可调（ROUTE_CONFIDENCE_MIN）。
+ *
+ * 阈值标定依据（2026-07-13 实测）：真实匹配 top1 分均 ≥36（妊糖膳食 36.5 /
+ * 支原体肺炎 44.2），而临床无关的表层误命中「急性心梗→急性放射病」仅 7.76
+ * （共享"急性""病"二元组）。取 12 稳居二者真空带——既把无专项指南的弱命中
+ * 判为低置信（退约束全语料），又不误伤真实匹配。
+ */
+const ROUTE_CONFIDENCE_MIN = Number(process.env.ROUTE_CONFIDENCE_MIN) || 12;
+
+/**
  * 预计算每个指南的主体词元（标题+疾病，标识性最强）与次要词元（关键词表，支撑性）。
  * 语义重叠时主体词元全权、次要词元降权（W_SECONDARY），避免「在某指南关键词里顺带提及某器官」
  * 的泛癌指南（如弥漫性大B细胞淋巴瘤）盖过「该器官即为主体疾病」的专科指南（如胃癌）。
@@ -263,6 +284,7 @@ export function routeGuides(query, opts = {}) {
     useSemantic = true,
     useCache = true,
     baseDir,
+    confidenceMin = ROUTE_CONFIDENCE_MIN,
   } = opts;
   const idx = index || loadIndex(baseDir);
   const idf = buildIdf(idx);
@@ -270,7 +292,9 @@ export function routeGuides(query, opts = {}) {
   const qAliased = applyPhraseAliases(query);
   const qNorm = normalize(qAliased);
   const qYear = extractYear(qAliased);
-  const cacheKey = `route:${qNorm}`;
+  // 缓存键纳入置信阈值：阈值变更后旧条目自动失效（否则文件化持久缓存会回喂
+  // 旧阈值的 lowConfidence 标志，导致部署阈值改动后路由置信至多陈旧一个 TTL）。
+  const cacheKey = `route:${ROUTE_CONFIDENCE_MIN}:${qNorm}`;
 
   if (useCache) {
     const hit = cacheGet(cacheKey);
@@ -284,6 +308,8 @@ export function routeGuides(query, opts = {}) {
       totalMatched: 0,
       semantic: useSemantic,
       cached: false,
+      topScore: 0,
+      lowConfidence: true,
     };
   }
 
@@ -338,7 +364,10 @@ export function routeGuides(query, opts = {}) {
           w = 1; // 主体词元全权
         else if (toks.secondary.has(t)) w = W_SECONDARY; // 次要词元降权
         if (w > 0) {
-          semScore += w * (1 + (idf.get(t) || 0)); // 稀有词元权重更高
+          // 单字降权(P0-1)：CJK 单字跨指南噪声大，仅作辅助信号，
+          // 让二元组/多字词主导语义定位，消除"心/瘤"等单字误召回。
+          const charW = t.length === 1 && /[\u4e00-\u9fff]/.test(t) ? W_SINGLE_CHAR : 1;
+          semScore += w * charW * (1 + (idf.get(t) || 0)); // 稀有词元权重更高
           if (hitTokens.length < 5) hitTokens.push(t);
         }
       }
@@ -437,12 +466,18 @@ export function routeGuides(query, opts = {}) {
   });
 
   const top = scored.slice(0, topK);
+  // 低置信标记（P0-1）：top1 分低于阈值或无候选 → 知识库可能无对应专项指南，
+  // 供调用方放弃硬路由约束改走全库检索（与 knowledge-engine 软约束兜底配合）。
+  const topScore = top.length ? top[0].score : 0;
+  const lowConfidence = top.length === 0 || topScore < confidenceMin;
   const result = {
     query,
     top,
     totalMatched: scored.length,
     semantic: useSemantic,
     cached: false,
+    topScore,
+    lowConfidence,
   };
   if (useCache) cacheSet(cacheKey, result);
   return result;

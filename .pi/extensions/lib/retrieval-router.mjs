@@ -523,7 +523,7 @@ export function lexicalSearch(db, query, opts = {}) {
  *
  * @param {string} query
  * @param {object} [opts] { limit=8, kbId=null, useRouting=true, index=null, baseDir=null }
- * @returns {{results:Array, routedTitles:string[], kbFiles:string[], constrained:boolean, totalFiles:number, error?:string}}
+ * @returns {{results:Array, routedTitles:string[], kbFiles:string[], constrained:boolean, lowConfidence:boolean, topScore:number, totalFiles:number, error?:string}}
  */
 export function searchKnowledge(query, opts = {}) {
   const { limit = 8, kbId = null, useRouting = true, index = null, baseDir = null } = opts;
@@ -535,12 +535,20 @@ export function searchKnowledge(query, opts = {}) {
   const kbFilesAll = loadKbFilenames(db);
   let kbFiles = null;
   let routedTitles = [];
+  let lowConfidence = false;
+  let topScore = 0;
 
   if (useRouting) {
     const idx = index || loadIndex(baseDir || undefined);
     const rr = routeGuides(query, { index: idx });
     routedTitles = rr.top.map((g) => g.title);
-    kbFiles = resolveKbFiles(routedTitles, kbFilesAll);
+    lowConfidence = !!rr.lowConfidence;
+    topScore = rr.topScore || 0;
+    // 低置信路由：知识库很可能无该主题专项指南（如急性心梗）。
+    // 不再用错误路由文件约束 BM25（与 knowledge-engine-search 软约束同源治理，
+    // 根治「约束锁死错文件、dense 只捞到 0.4~1.3 低分碎片」），退化为全语料检索，
+    // 由上层 rag_search 显式告警提示 LLM 勿空转（P1）。
+    kbFiles = lowConfidence ? null : resolveKbFiles(routedTitles, kbFilesAll);
   }
 
   const constrained = !!(kbFiles && kbFiles.length);
@@ -553,6 +561,8 @@ export function searchKnowledge(query, opts = {}) {
     routedTitles,
     kbFiles,
     constrained,
+    lowConfidence,
+    topScore,
     totalFiles: kbFilesAll.length,
   };
 }

@@ -149,8 +149,9 @@ export default function (pi: ExtensionAPI) {
         };
       }
 
-      telemetry.routedFiles = out.kbFiles.length;
+      telemetry.routedFiles = out.kbFiles ? out.kbFiles.length : 0;
       telemetry.totalFiles = out.totalFiles;
+      telemetry.lowConfidence = out.lowConfidence || undefined;
 
       const routedFilePaths = out.kbFiles && out.kbFiles.length ? out.kbFiles : null;
       const DENSE = new Set(["hybrid", "semantic", "deep", "adaptive"]);
@@ -203,16 +204,26 @@ export default function (pi: ExtensionAPI) {
         alert("rag_search", `检索观测写入失败: ${e?.message || e}`),
       );
 
-      const routed = out.routedTitles.length
+      const routedLabel = out.lowConfidence
+        ? "（低置信：路由未锁定高相关指南，已退化为全语料检索）"
+        : out.routedTitles.length
         ? out.routedTitles.slice(0, 3).join("、")
         : "（路由未命中，已退化为全语料检索）";
 
       const perfLine = `[耗时] BM25:${telemetry.bm25Ms}ms${telemetry.engineMs ? ` 引擎:${telemetry.engineMs}ms` : ""} 总计:${telemetry.totalMs}ms`;
       const headerLines = [
-        `[${engineUsed ? "引擎 hybrid" : "路由约束 BM25"}] 语义路由命中: ${routed}`,
-        `约束文件: ${out.kbFiles.length} / 全库文件: ${out.totalFiles} | 模式: ${engineUsed ? (engineResult as any).modeUsed : "BM25 回退"}${engineWarn ? ` | ⚠️ ${engineWarn}` : ""}`,
+        `[${engineUsed ? "引擎 hybrid" : "路由约束 BM25"}] 语义路由: ${routedLabel}`,
+        `约束文件: ${out.kbFiles ? out.kbFiles.length : 0} / 全库文件: ${out.totalFiles} | 模式: ${engineUsed ? (engineResult as any).modeUsed : "BM25 回退"}${engineWarn ? ` | ⚠️ ${engineWarn}` : ""}`,
         perfLine,
       ];
+      if (out.lowConfidence) {
+        // P1 根治：弱分空转。显式告诉 LLM 路由未锁定高相关指南，下方结果相关性存疑，
+        // 勿再换近义词反复重搜，应据实告知用户「该主题知识库可能未收录专项指南」。
+        headerLines.push(
+          "⚠️ 低置信召回：语义路由未锁定高相关指南，下方结果相关性存疑。" +
+          "若多次检索均弱相关，请据实告知用户「该主题知识库可能未收录专项指南」，切勿反复换词空转。",
+        );
+      }
       if (versionWarn) headerLines.push(versionWarn);
       headerLines.push("");
       const header = headerLines.join("\n");

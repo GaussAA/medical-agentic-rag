@@ -124,11 +124,81 @@ async function getEngine() {
   return _initPromise;
 }
 
+// ---- 健壮性常量（env 可调，跨机可移植）----
+// 引擎检索超时(ms)：超时即熔断回退 BM25，根治 dense 引擎卡死（P0-3，会话实测单次 665s≈11min）。
+export const ENGINE_TIMEOUT_MS = Number(process.env.ENGINE_TIMEOUT_MS) || 20000;
+// 软约束采信比例：过滤集最高分 ≥ 全库最高分 × 此比例 时才采信路由约束，
+// 否则判定路由失准（约束砍掉了更相关文件），回退全库不过滤（P0-2）。
+export const SOFT_CONSTRAINT_RATIO = Number(process.env.SOFT_CONSTRAINT_RATIO) || 0.6;
+
+/**
+ * 软约束兜底（P0-2 根治「约束锁死错文件」）。
+ * 原逻辑对引擎结果按路由命中文件做**硬过滤**：路由一旦失准，正确文件被一刀砍，
+ * 只剩错文件低分碎片（会话实测 score 仅 0.4–1.3）。改为软约束：
+ *   · 过滤集为空 → 直接回退全库（绝不返回空，除非全库本就空）；
+ *   · 过滤集最高分 < 全库最高分 × ratio → 判定路由把更相关文件砍掉了 → 回退全库；
+ *   · 否则采信过滤集（保留「防真指南被压沉」的原意）。
+ * 纯函数，无需真引擎即可单测。
+ * @param {Array} results 引擎原始结果（含 score/file_path）
+ * @param {Array<string>|null} routedFilePaths 路由命中文件路径
+ * @param {object} [opts] { ratio=SOFT_CONSTRAINT_RATIO }
+ * @returns {{results:Array, constraintApplied:boolean}}
+ */
+export function applySoftConstraint(results, routedFilePaths, opts = {}) {
+  const ratio = typeof opts.ratio === "number" ? opts.ratio : SOFT_CONSTRAINT_RATIO;
+  if (!Array.isArray(results) || !results.length) {
+    return { results: Array.isArray(results) ? results : [], constraintApplied: false };
+  }
+  if (!routedFilePaths || !routedFilePaths.length) {
+    return { results, constraintApplied: false };
+  }
+  const set = new Set(routedFilePaths);
+  const scoreOf = (r) => (typeof r?.score === "number" ? r.score : 0);
+  const filtered = results.filter((r) => set.has(r.file_path));
+  if (!filtered.length) {
+    return { results, constraintApplied: false }; // 过滤集空 → 回退全库
+  }
+  const fullTop = Math.max(...results.map(scoreOf));
+  const filtTop = Math.max(...filtered.map(scoreOf));
+  // fullTop<=0：全库无有效分数信号，保守采信过滤集（退化保护，避免误判）
+  if (fullTop <= 0 || filtTop >= fullTop * ratio) {
+    return { results: filtered, constraintApplied: true };
+  }
+  return { results, constraintApplied: false }; // 约束砍掉了更相关文件 → 回退全库
+}
+
+/**
+ * 引擎检索超时熔断（P0-3 根治「665s 卡死无兜底」）。
+ * Promise.race 竞速：超时即抛 Error("ENGINE_TIMEOUT")，调用方回退 BM25 秒回，
+ * 不再干等。同时合并外部 signal 与 AbortSignal.timeout，best-effort 通知引擎中断。
+ * 纯函数，可注入 mock 引擎单测（无需真 e5/rerank）。
+ * @param {{search:Function}} engine
+ * @param {string} query
+ * @param {object} searchOpts 透传引擎 search 的第二参
+ * @param {AbortSignal|null} externalSignal 外部取消信号
+ * @param {number} [timeoutMs=ENGINE_TIMEOUT_MS]
+ * @returns {Promise<any>} 引擎响应；超时抛 Error("ENGINE_TIMEOUT")
+ */
+export async function searchWithTimeout(engine, query, searchOpts, externalSignal, timeoutMs = ENGINE_TIMEOUT_MS) {
+  const timeoutSignal = AbortSignal.timeout(timeoutMs);
+  const mergedSignal = externalSignal ? AbortSignal.any([externalSignal, timeoutSignal]) : timeoutSignal;
+  let timer = null;
+  const timeoutPromise = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error("ENGINE_TIMEOUT")), timeoutMs);
+    if (timer && typeof timer.unref === "function") timer.unref(); // 不阻止进程自然退出
+  });
+  try {
+    return await Promise.race([engine.search(query, searchOpts, mergedSignal), timeoutPromise]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
 /**
  * 调用内置引擎做 hybrid / semantic / deep(重排) 检索。
  * @param {string} query
  * @param {object} [opts] { mode='hybrid', limit=8, kbId=null, routedFilePaths=null, offset=0, diversity='balanced', signal=null }
- * @returns {Promise<{ok:true, results:Array, modeUsed:string, totalCount:number, latencyMs:number}
+ * @returns {Promise<{ok:true, results:Array, modeUsed:string, totalCount:number, latencyMs:number, constraintApplied:boolean}
  *                  |{ok:false, error:string}>}
  */
 export async function engineHybridSearch(query, opts = {}) {
@@ -153,29 +223,38 @@ export async function engineHybridSearch(query, opts = {}) {
     // 路由约束时多取候选，过滤后仍有余量；未路由则按请求数取
     const fetchLimit = routedFilePaths && routedFilePaths.length ? Math.max(limit * 3, 20) : limit;
     const t0 = Date.now();
-    const resp = await engine.search(
-      query,
-      {
-        mode,
-        limit: fetchLimit,
-        offset,
-        kb_id: kbId || undefined,
-        diversity,
-      },
-      signal,
-    );
+    let resp;
+    try {
+      // 超时熔断（P0-3）：Promise.race 竞速，>ENGINE_TIMEOUT_MS 即抛 ENGINE_TIMEOUT
+      resp = await searchWithTimeout(
+        engine,
+        query,
+        { mode, limit: fetchLimit, offset, kb_id: kbId || undefined, diversity },
+        signal,
+        ENGINE_TIMEOUT_MS,
+      );
+    } catch (e) {
+      if (e && e.message === "ENGINE_TIMEOUT") {
+        const latencyMs = Date.now() - t0;
+        diag.warn("knowledge-engine", `引擎检索超时(>${ENGINE_TIMEOUT_MS}ms)，熔断回退 BM25`);
+        // 观测：超时熔断落盘（reason 内联实测延迟，logEngineFallback 仅取 reason 字段）
+        logEngineFallback({ reason: `engine_timeout:${ENGINE_TIMEOUT_MS}ms@${latencyMs}ms` }).catch(() => {});
+        return { ok: false, error: `引擎检索超时(>${ENGINE_TIMEOUT_MS}ms)，已熔断回退 BM25` };
+      }
+      throw e; // 其他异常交由外层 catch 统一处理
+    }
     const latencyMs = Date.now() - t0;
     if (!resp || !Array.isArray(resp.results)) {
       return { ok: false, error: "引擎响应格式不兼容（缺失 results 数组），可能 pi-knowledge 已升级响应结构" };
     }
 
-    let results = resp.results || [];
-    // 路由约束：仅保留命中的指南文件（与原 BM25 约束语义一致；未路由则不过滤）
-    if (routedFilePaths && routedFilePaths.length) {
-      const set = new Set(routedFilePaths);
-      results = results.filter((r) => set.has(r.file_path));
+    // 软约束兜底（P0-2）：路由失准时回退全库，不再硬过滤砍掉正确文件
+    const { results: constrained, constraintApplied } = applySoftConstraint(resp.results || [], routedFilePaths);
+    if (routedFilePaths && routedFilePaths.length && !constraintApplied) {
+      // 观测：路由约束被软兜底放弃（路由失准信号，可见化便于路由层复盘）
+      diag.info("knowledge-engine", "路由约束未采信（过滤集空或分数显著偏低），已回退全库");
     }
-    results = results.slice(0, limit).map((r) => ({
+    const results = constrained.slice(0, limit).map((r) => ({
       file_path: r.file_path,
       score: typeof r.score === "number" ? Number(r.score.toFixed(3)) : 0,
       snippet: r.snippet || "",
@@ -188,6 +267,7 @@ export async function engineHybridSearch(query, opts = {}) {
       modeUsed: resp.mode_used || mode,
       totalCount: resp.total_count || results.length,
       latencyMs,
+      constraintApplied,
     };
   } catch (e) {
     return { ok: false, error: "引擎检索失败：" + (e?.message || String(e)) };

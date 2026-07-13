@@ -258,6 +258,60 @@ export default function factory(pi: ExtensionAPI) {
     },
   });
 
+  // ---------- 澄清反问工具：代码层强制 ≤3 轮上限（B1 硬化） ----------
+  // 背景：原 clarificationCount 仅有 reset_clarification_count 置零 + formatState 渲染，
+  // 全代码路径无自增 → 「连续澄清≤3轮」仅写于注释/prompt，运行时永不约束（死代码）。
+  // 现改为：反问必须走本工具，由代码在调用点自增并硬卡上限，
+  // 与项目「代码层强制护栏（非 LLM 依赖）」原则一致——LLM 无法用文字反问绕过上限。
+  pi.registerTool({
+    name: "ask_clarification",
+    description:
+      "向用户提出澄清问题（多轮对话专用）。每次准备反问用户以缩小范围时**必须**调用此工具，而非仅用文字反问。系统自动累计澄清轮次，达 3 轮上限时强制停止澄清。",
+    promptSnippet:
+      "## ask_clarification\n\n需要反问用户以澄清（多候选歧义 / 部位模糊 / 人群缺失 / 版本冲突）时，**必须**调用此工具提出问题，而非仅用文字反问。达 3 轮上限后工具返回「已达上限」，此时停止追问，基于现有信息作答并标注局限性，或坦诚告知知识库可能未收录该主题专项指南。",
+    parameters: {
+      type: "object",
+      properties: {
+        question: { type: "string", description: "向用户提出的澄清问题" },
+      },
+    },
+    execute: async (_toolCallId: string, params: Record<string, unknown>) => {
+      try {
+        const state = await loadState();
+        if (state.clarificationCount >= 3) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text:
+                  "⚠️ 澄清轮次已达上限（3/3）。请停止追问，基于现有信息作答并标注局限性，或坦诚告知知识库可能未收录该主题专项指南。",
+              },
+            ],
+          };
+        }
+        state.clarificationCount += 1;
+        const q = typeof params.question === "string" ? params.question : "";
+        if (q && !state.askedQuestions.includes(q)) {
+          state.askedQuestions.push(q);
+        }
+        await saveState(state);
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: `已记录澄清问题（第 ${state.clarificationCount}/3 轮）：${q}`,
+            },
+          ],
+        };
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        return {
+          content: [{ type: "text" as const, text: `澄清记录失败: ${msg}` }],
+        };
+      }
+    },
+  });
+
   // ---------- 读端：on("context") 每轮注入 ----------
   pi.on("context", async (event) => {
     try {

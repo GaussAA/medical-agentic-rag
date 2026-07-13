@@ -38,8 +38,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends python3 make g++
           npm ci
 
-      - name: 真实链路冒烟（需真库；无库 runner 优雅跳过，P2-④）
-        continue-on-error: true
+      - name: 真实链路冒烟（需真库；无库 runner 优雅跳过，P2-④）·硬卡
         env:
           CI: "true"
         run: |
@@ -53,8 +52,7 @@ jobs:
             fi
           }
 
-      - name: 真实多轮澄清复现（B0-b 真·07-13；需外联，降级跳过）
-        continue-on-error: true
+      - name: 真实多轮澄清复现（B0-b 真·07-13；需外联，降级跳过）·硬卡
         env:
           CI: "true"
         run: |
@@ -68,8 +66,7 @@ jobs:
             fi
           }
 
-      - name: 多轮评测 harness（B3；需外联，降级跳过）
-        continue-on-error: true
+      - name: 多轮评测 harness（B3；需外联，降级跳过）·硬卡
         env:
           CI: "true"
         run: |
@@ -122,12 +119,11 @@ jobs:
             echo "skip=0" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 运行质量门禁（阈值 + 新报告 vs 基线回归对比）
+      - name: 运行质量门禁（阈值 + 新报告 vs 基线回归对比）·硬卡
         id: gate
         if: ${{ steps.evalcheck.outputs.skip == '0' }}
-        continue-on-error: true
         run: |
-          node tests/eval-ci-gate.mjs --report=tests/reports/answer-quality-report.json --baseline=tests/reports/baseline.json --compare --strict && echo "PASS=true" >> $GITHUB_OUTPUT || echo "PASS=false" >> $GITHUB_OUTPUT
+          node tests/eval-ci-gate.mjs --report=tests/reports/answer-quality-report.json --baseline=tests/reports/baseline.json --compare --strict && echo "PASS=true" >> $GITHUB_OUTPUT || { echo "PASS=false" >> $GITHUB_OUTPUT; exit 1; }
 
       - name: 更新基线 JSON
         if: steps.gate.outputs.PASS == 'true'
@@ -139,8 +135,8 @@ jobs:
           git commit -m "chore: 夜间评测基线刷新 $(date +'%Y-%m-%d')"
           git push
 
-      - name: 质量退步 → 创建 Issue 报警
-        if: steps.gate.outputs.PASS == 'false'
+      - name: 质量退步 → 创建 Issue 报警（硬卡后仍触发）
+        if: ${{ always() && steps.gate.outputs.PASS == 'false' }}
         uses: actions/github-script@v7
         with:
           script: |

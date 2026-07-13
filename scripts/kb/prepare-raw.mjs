@@ -19,8 +19,8 @@ import { join, extname, basename } from "node:path";
 
 const SRC = process.env.MEDICAL_RAW_SRC || "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
 const ROOT = process.cwd();
-const RAW_DIR = join(ROOT, "raw");
-const TXT_DIR = join(ROOT, "raw-txt");
+const RAW_DIR = join(ROOT, "data", "raw");
+const TXT_DIR = join(ROOT, "data", "raw-txt");
 const PY =
   process.env.PY_VENV ||
   join(process.env.USERPROFILE || process.env.HOME || "", ".workbuddy", "binaries", "python", "envs", "default", "Scripts", "python.exe");

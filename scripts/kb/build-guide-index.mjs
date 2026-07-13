@@ -5,7 +5,7 @@ import { cacheClear } from "../../.pi/extensions/lib/retrieval-cache.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）
-const KB_DIR = join(ROOT, "knowledge-base");
+const KB_DIR = join(ROOT, "data", "kb");
 
 async function main() {
   const outline = JSON.parse(

@@ -60,7 +60,7 @@ ok("放行相对 find .", assessCommand("find . -name '*.ts'").blocked === false
 ok("放行 node 脚本", assessCommand("node scripts/kb/kb-update.mjs check").blocked === false);
 ok("放行 grep 具体文件", assessCommand("grep -n foo scripts/x.mjs").blocked === false);
 ok("放行空命令", assessCommand("").blocked === false);
-ok("放行 raw find", assessCommand("find raw -name '*.pdf'").blocked === false);
+ok("放行 raw find", assessCommand("find data/raw -name '*.pdf'").blocked === false);
 
 console.log(`\n结果：${pass} 通过 / ${fail} 失败`);
 process.exit(fail === 0 ? 0 : 1);

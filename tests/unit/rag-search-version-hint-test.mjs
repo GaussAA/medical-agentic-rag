@@ -29,20 +29,20 @@ ok(buildVersionConflictHint([{ file_path: "x.txt" }], null) === "", "guideMap nu
 
 // 3. 单指南无冲突 → ""
 ok(
-  buildVersionConflictHint([{ file_path: "raw-txt/1.原发性肝癌诊疗指南（2026版）.txt" }], GM) === "",
+  buildVersionConflictHint([{ file_path: "data/raw-txt/1.原发性肝癌诊疗指南（2026版）.txt" }], GM) === "",
   "正常现行指南 → 空提示",
 );
 
 // 4. 命中已废止指南 → 含「已废止」
 {
-  const h = buildVersionConflictHint([{ file_path: "raw-txt/2.原发性肝癌诊疗指南（2019版）.txt" }], GM);
+  const h = buildVersionConflictHint([{ file_path: "data/raw-txt/2.原发性肝癌诊疗指南（2019版）.txt" }], GM);
   ok(h.includes("已废止"), "已废止指南 → 含「已废止」");
   ok(h.includes("建议优先《1.原发性肝癌诊疗指南（2026版）》"), "已废止 → 含 supersededBy 建议");
 }
 
 // 5. 命中有 supersededBy（未 deprecated）→ 含「有更新版」
 {
-  const h = buildVersionConflictHint([{ file_path: "raw-txt/3.肺炎诊疗指南（2023版）.txt" }], GM);
+  const h = buildVersionConflictHint([{ file_path: "data/raw-txt/3.肺炎诊疗指南（2023版）.txt" }], GM);
   ok(h.includes("有更新版"), "有更新版（未 deprecated）→ 含「有更新版」");
   ok(h.includes("建议优先《4.肺炎诊疗指南（2025版）》"), "含更新版建议");
 }
@@ -51,8 +51,8 @@ ok(
 {
   const h = buildVersionConflictHint(
     [
-      { file_path: "raw-txt/1.原发性肝癌诊疗指南（2026版）.txt" },
-      { file_path: "raw-txt/2.原发性肝癌诊疗指南（2019版）.txt" },
+      { file_path: "data/raw-txt/1.原发性肝癌诊疗指南（2026版）.txt" },
+      { file_path: "data/raw-txt/2.原发性肝癌诊疗指南（2019版）.txt" },
     ],
     GM,
   );

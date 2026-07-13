@@ -23,7 +23,7 @@ import { join, dirname, extname, basename } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const KB_DIR = join(ROOT, "knowledge-base");
+const KB_DIR = join(ROOT, "data", "kb");
 const REG_FILE = join(ROOT, "kb-sources.json");
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const kb = await import(MOD);
@@ -134,7 +134,7 @@ try {
   }
   const md = normalizeToMarkdown(text, name, src);
   const mdPath = join(KB_DIR, `${name}.md`);
-  const mdRel = `knowledge-base\\${name}.md`;
+  const mdRel = `data\kb\\${name}.md`;
   if (existsSync(mdPath)) {
     console.error(`✗ 目标已存在: ${mdPath}（避免覆盖既有指南，请换名或先删）`);
     process.exit(1);

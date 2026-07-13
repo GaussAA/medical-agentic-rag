@@ -6,7 +6,7 @@ import { join, dirname, extname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const RAW = join(ROOT, "raw");
+const RAW = join(ROOT, "data", "raw");
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const kb = await import(MOD);
 
@@ -26,7 +26,7 @@ const out = files.map((f) => {
   const p = join(RAW, f);
   return {
     id: n, name: n, type: "local",
-    localPath: `raw\\${f}`,
+    localPath: `data\raw\\${f}`,
     cadenceDays: 30, validate: "sha256",
     department: kb.inferDepartment(n),
     lastChecked: new Date().toISOString(),

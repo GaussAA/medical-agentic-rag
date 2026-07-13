@@ -21,13 +21,13 @@ import { join, dirname, extname, basename } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const KB_DIR = join(ROOT, "knowledge-base");
+const KB_DIR = join(ROOT, "data", "kb");
 const REG_FILE = join(ROOT, "kb-sources.json");
 const dryRun = process.argv.includes("--dry-run");
 
 // 取投放目录
 const dirIdx = process.argv.indexOf("--dir");
-const WATCH_DIR = dirIdx >= 0 ? process.argv[dirIdx + 1] : join(ROOT, "raw");
+const WATCH_DIR = dirIdx >= 0 ? process.argv[dirIdx + 1] : join(ROOT, "data", "raw");
 
 // 加载 kb-sources
 async function loadRegistry() {

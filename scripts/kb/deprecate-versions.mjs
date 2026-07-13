@@ -16,9 +16,9 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const KB_DIR = join(ROOT, "knowledge-base");
-const RAW_DIR = join(ROOT, "raw");
-const RAW_TXT_DIR = join(ROOT, "raw-txt");
+const KB_DIR = join(ROOT, "data", "kb");
+const RAW_DIR = join(ROOT, "data", "raw");
+const RAW_TXT_DIR = join(ROOT, "data", "raw-txt");
 
 const dryRun = process.argv.includes("--dry-run");
 

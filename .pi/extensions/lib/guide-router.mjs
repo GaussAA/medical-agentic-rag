@@ -260,9 +260,9 @@ export function lev(a, b) {
   return d[m][n];
 }
 
-/** 读取指南索引（默认项目根下的 knowledge-base/.guide-index.json）。 */
+/** 读取指南索引（默认项目根下的 data/kb/.guide-index.json）。 */
 export function loadIndex(baseDir = process.cwd()) {
-  const p = join(baseDir, "knowledge-base", ".guide-index.json");
+  const p = join(baseDir, "data", "kb", ".guide-index.json");
   return JSON.parse(readFileSync(p, "utf-8"));
 }
 

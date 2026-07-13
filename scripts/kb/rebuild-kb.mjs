@@ -34,7 +34,7 @@ const PK_URL = pathToFileURL(
   join(npmRoot, "node_modules/pi-knowledge/dist/index.js")
 ).href;
 
-const SOURCE = join(ROOT, "raw");
+const SOURCE = join(ROOT, "data", "raw");
 const NAME = "医疗指南";
 const FULL = process.argv.includes("--full");
 

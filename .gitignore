@@ -36,9 +36,9 @@ node_modules/
 # 知识库来源登记表（含运行元数据/时间戳）+ 快照
 kb-sources.json
 .pi/kb-snapshots/
-# 原始知识库（方案B：弃MD中间层，原始PDF/DOCX为唯一真相源；可经管线重建，体积大不入仓）
-raw/
-raw-txt/
+# ========== 知识库数据 — 原始文档（不入仓，可经管线重建） ==========
+data/raw/
+data/raw-txt/
 # 故障转移选择结果（运行期生成）
 .pi/failover-selection.json
 # 业务日志 + 合规审计日志（audit-*.ndjson）+ 运行时日志
@@ -85,18 +85,18 @@ tests/reports/**
 !tests/reports/baseline.json
 
 # ========== 三层知识库目录职责说明 ==========
-# raw/        真相源层 —— 原始 PDF/DOCX（411MB，不可入仓），pi-knowledge 摄取源
-# raw-txt/    文本缓存层 —— pdftotext 提取的归一化纯文本（17MB，可重建不入仓）
-# knowledge-base/  索引层 —— 派生 JSON 索引（433KB，故意入仓保 clone 即用）
+# data/raw/    真相源层 —— 原始 PDF/DOCX（411MB，不可入仓），pi-knowledge 摄取源
+# data/raw-txt/ 文本缓存层 —— pdftotext 提取的归一化纯文本（17MB，可重建不入仓）
+# data/kb/     索引层 —— 派生 JSON 索引（433KB，故意入仓保 clone 即用）
 #
-# 三层的单向数据流：raw/ → pdftotext → raw-txt/ → parser → knowledge-base/ JSON
+# 三层的单向数据流：data/raw/ → pdftotext → data/raw-txt/ → parser → data/kb/ JSON
 # 不宜合并：生命周期不同、入仓策略不同、工具职责不同
 # ========================================================
-# knowledge-base/ 故意不忽略：其下 .outline.json/.guide-index.json/.knowledge-graph.json
-# 为派生索引，但因上游真相源 raw/ 刻意不入库，故索引入仓以保证 clone 后系统可直接可用。
+# data/kb/ 故意不忽略：其下 .outline.json/.guide-index.json/.knowledge-graph.json
+# 为派生索引，但因上游真相源 data/raw/ 刻意不入库，故索引入仓以保证 clone 后系统可直接可用。
 # 但图谱 SQLite（.knowledge-graph.db，由 JSON 构建的二分图多跳索引）属可重建派生产物，忽略：
-knowledge-base/.knowledge-graph.db
-knowledge-base/.knowledge-graph.db-wal
-knowledge-base/.knowledge-graph.db-shm
+data/kb/.knowledge-graph.db
+data/kb/.knowledge-graph.db-wal
+data/kb/.knowledge-graph.db-shm
 # docs/ 下 2 份早期误入仓的生成物报告（全景验收报告.html、抓取管线规划.md）已于本回合
 # 经 git rm --cached 清理出索引，磁盘保留，令 docs/ 忽略规则彻底生效。

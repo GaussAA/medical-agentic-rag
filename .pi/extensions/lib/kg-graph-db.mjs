@@ -63,7 +63,7 @@ function getDatabase() {
  * @returns {string}
  */
 export function graphDbPath(baseDir = process.cwd()) {
-  return join(baseDir, "knowledge-base", ".knowledge-graph.db");
+  return join(baseDir, "data", "kb", ".knowledge-graph.db");
 }
 
 /**
@@ -72,7 +72,7 @@ export function graphDbPath(baseDir = process.cwd()) {
  * @returns {string}
  */
 export function graphJsonPath(baseDir = process.cwd()) {
-  return join(baseDir, "knowledge-base", ".knowledge-graph.json");
+  return join(baseDir, "data", "kb", ".knowledge-graph.json");
 }
 
 /**

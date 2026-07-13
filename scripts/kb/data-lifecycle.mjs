@@ -18,7 +18,7 @@ import { join } from "node:path";
 const ROOT = process.cwd();
 const LOGS_DIR = join(ROOT, "logs");
 const PI_DIR = join(ROOT, ".pi");
-const KB_DIR = join(ROOT, "knowledge-base");
+const KB_DIR = join(ROOT, "data", "kb");
 
 const PHI_RETENTION_DAYS = 30; // 患者画像保留 30 天
 const AUDIT_RETENTION_DAYS = 90; // 审计日志保留 90 天

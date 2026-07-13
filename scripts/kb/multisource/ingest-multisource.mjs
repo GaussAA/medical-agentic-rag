@@ -22,8 +22,8 @@ import { renderZhEntry } from "./lib/render-zh.mjs";
 import * as epmc from "./adapters/papers-europepmc.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
-const RAW_DIR = join(ROOT, "raw");
-const TXT_DIR = join(ROOT, "raw-txt");
+const RAW_DIR = join(ROOT, "data", "raw");
+const TXT_DIR = join(ROOT, "data", "raw-txt");
 const REG_FILE = join(ROOT, "kb-sources.json");
 const KB_SOURCES = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const dryRun = process.argv.includes("--dry-run");
@@ -252,7 +252,7 @@ async function main() {
           id: name,
           name,
           type: "local",
-          localPath: `raw\\${name}.txt`,
+          localPath: `data\raw\\${name}.txt`,
           cadenceDays: 30,
           validate: "sha256",
           department: gap.department,

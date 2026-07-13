@@ -6,7 +6,7 @@
  * 用法: node scripts/kb/extract-entities.mjs
  *   - 优先 SENSENOVA_API_KEY (sensenova-6.7-flash-lite, 每日免费额度)
  *   - 缺失/失败则回退 DEEPSEEK_API_KEY
- * 输出: knowledge-base/.knowledge-graph.json
+ * 输出: data/kb/.knowledge-graph.json
  */
 import { readFile, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
@@ -14,8 +14,8 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）
-const OUTLINE_FILE = join(ROOT, "knowledge-base", ".outline.json");
-const GRAPH_FILE = join(ROOT, "knowledge-base", ".knowledge-graph.json");
+const OUTLINE_FILE = join(ROOT, "data", "kb", ".outline.json");
+const GRAPH_FILE = join(ROOT, "data", "kb", ".knowledge-graph.json");
 
 const SENSENOVA_API_KEY = process.env.SENSENOVA_API_KEY;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;

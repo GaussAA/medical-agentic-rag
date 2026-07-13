@@ -58,8 +58,9 @@ for i in $(seq 1 30); do
   sleep 1
 done
 
-# 5) 设置 preload 劫持 fetch → proxy（$WIN_ROOT 为正斜杠 C:/...，无需引号嵌套）
-export NODE_OPTIONS="--require $WIN_ROOT/scripts/proxy/preload-fetch-proxy.mjs"
+# 5) 设置 preload 劫持 fetch → proxy
+# 注意：此处以 --require 传入 exec 命令行参数而非环境变量 NODE_OPTIONS，
+# 以免子进程（如 webui）继承 preload 脚本导致启动失败。
 export NODE_PATH="$WIN_ROOT/pi/node_modules"
 
 echo ""
@@ -68,7 +69,9 @@ echo ""
 
 # 6) 启动 Pi Agent（用 managed node v22.22.2，与 better-sqlite3 原生模块版本匹配）
 NODE_BIN="${NODE_BIN:-/c/Users/JaNiy/.workbuddy/binaries/node/versions/22.22.2/node}"
-exec "$NODE_BIN" "$WIN_ROOT/pi/packages/coding-agent/dist/cli.js" \
+exec "$NODE_BIN" \
+  --require "$WIN_ROOT/scripts/proxy/preload-fetch-proxy.mjs" \
+  "$WIN_ROOT/pi/packages/coding-agent/dist/cli.js" \
   --model "$PROVIDER/$MODEL" \
   --system-prompt "$WIN_ROOT/.pi/prompts/medical-agent.md" \
   --session-dir "$WIN_ROOT/.pi/sessions"

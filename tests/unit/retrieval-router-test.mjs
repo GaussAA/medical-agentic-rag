@@ -151,6 +151,16 @@ if (!existsSync(REAL)) {
   const routed = (await import("../../.pi/extensions/lib/guide-router.mjs")).routeGuides("骨质疏松", { index: idx });
   const hitOsteo = routed.top.some((g) => g.title.includes("骨质疏松"));
   ok("语义路由正确识别骨质疏松指南", hitOsteo, JSON.stringify(routed.top.map(g=>g.title).slice(0,3)));
+
+  // ── P1 低置信透出 + 退约束（根源治理「弱分空转 / 约束锁死错文件」）──
+  // 急性心梗缺口已通过多源摄取(Europe PMC OA)补录，故改用「知识库确无专项指南」的查询
+  // 验证退约束：非医疗领域查询在路由层零命中 → lowConfidence=true 且退约束(全语料兜底)。
+  const rLc = searchKnowledge("足球 世界杯 决赛 比分", { limit: 5 });
+  ok("无专项指南主题(非医疗领域) → lowConfidence=true", rLc.lowConfidence === true, JSON.stringify({lowConfidence:rLc.lowConfidence, top:rLc.routedTitles.slice(0,3)}));
+  ok("低置信 → 不约束 BM25(constrained=false, 全语料兜底)", rLc.constrained === false, JSON.stringify({constrained:rLc.constrained}));
+  ok("低置信仍返回结果数组(不崩溃)", Array.isArray(rLc.results));
+  // 有专项指南的主题应 lowConfidence=false（不误伤正常查询）
+  ok("前列腺癌专项指南 → lowConfidence=false", r1.lowConfidence === false, JSON.stringify({lowConfidence:r1.lowConfidence}));
 }
 
 // ─────────────────────────────────────────────

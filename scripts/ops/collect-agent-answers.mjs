@@ -30,8 +30,8 @@ import { spawn } from 'node:child_process';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..');
 const GOLD_PATH = join(ROOT, 'tests', 'gold-answers.json');
-const SP_PATH = join(ROOT, 'prompts', 'medical-agent.md');
-const LOG_DIR = join(ROOT, 'logs');
+const SP_PATH = join(ROOT, '.pi', 'prompts', 'medical-agent.md');
+const LOG_DIR = join(ROOT, '.pi', 'logs');
 const PER_ITEM_TIMEOUT_MS = 280_000;
 
 // ---------- 极简 .env 加载（与 lib/llm-judge.mjs 同范式） ----------

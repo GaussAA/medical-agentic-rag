@@ -78,7 +78,7 @@ function checkGuardsDeployed(cwd) {
   const extDir = join(cwd, ".pi", "extensions");
   const faithFile = join(extDir, "safety.faithfulness-guard.ts");
   const conflictFile = join(extDir, "safety.conflict-detector.ts");
-  const spFile = join(cwd, "prompts", "medical-agent.md");
+  const spFile = join(cwd, ".pi", "prompts", "medical-agent.md");
 
   const faithfulnessFile = existsSync(faithFile);
   const conflictFileOk = existsSync(conflictFile);

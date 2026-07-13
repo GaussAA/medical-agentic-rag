@@ -355,3 +355,68 @@ export function writeConsumed(record, outPath) {
   writeFileSync(p, JSON.stringify(record, null, 2), "utf-8");
   return p;
 }
+
+/**
+ * 受控并入：把一条经人工审阅的 gold 候选并入受控 gold-answers.json。
+ * 默认 OFF（不被调用即不触发；即便被调用也层层守卫，绝不污染受控基准）。
+ *
+ * 设计意图（C3）：feedback 闭环只产候选（deriveGoldCandidates 纯函数不写文件），
+ * 受控 gold 须「人工审阅后并入」。本函数把"自动并入"显式化为一个**默认关闭、
+ * 带审阅闸**的能力，杜绝错误候选污染评测金标准导致后续回归误判。
+ *
+ * 守卫链（任一不满足 → 拒绝，绝不写 gold）：
+ *   1) opts.enabled !== true 且 process.env.GOLD_AUTO_MERGE !== '1' → guard-off
+ *   2) candidate 非对象 / 缺 id                                          → bad-candidate
+ *   3) candidate.reviewedBy 缺失（未人工审阅签名）                       → needs-review
+ *   4) candidate.id 不在 candidatesPath 清单中（须先经候选确认流程）      → not-in-candidates
+ *   5) candidate.id 已存在于受控 gold                                    → already-exists
+ *
+ * @param {object} candidate  候选对象（须含 id；必须含 reviewedBy 审阅签名）
+ * @param {{goldPath?:string, candidatesPath?:string, enabled?:boolean, fs?:object}} [opts]
+ *        goldPath        受控基准路径，默认 tests/gold-answers.json
+ *        candidatesPath  候选清单路径，默认 tests/reports/gold-candidates.json
+ *        enabled         显式开关（也可走 env GOLD_AUTO_MERGE=1）
+ *        fs              注入文件系统（默认 node:fs 顶层具名导入），便于单测隔离
+ * @returns {{merged:boolean, reason?:string, id?:string, total?:number}}
+ */
+export function mergeIntoGold(candidate, opts = {}) {
+  const F = opts.fs || { existsSync, readFileSync, writeFileSync, mkdirSync };
+  const enabled = opts.enabled === true || process.env.GOLD_AUTO_MERGE === "1";
+  if (!enabled) return { merged: false, reason: "guard-off" };
+  if (!candidate || typeof candidate !== "object" || !candidate.id) {
+    return { merged: false, reason: "bad-candidate" };
+  }
+  if (!candidate.reviewedBy) return { merged: false, reason: "needs-review" };
+
+  const goldPath = opts.goldPath || join(process.cwd(), "tests", "gold-answers.json");
+  const candPath = opts.candidatesPath || join(process.cwd(), "tests", "reports", "gold-candidates.json");
+
+  // 守卫 4：候选须先存在于候选清单（人工确认流程的产物）
+  let candList = [];
+  if (F.existsSync(candPath)) {
+    try {
+      candList = JSON.parse(F.readFileSync(candPath, "utf-8"));
+    } catch {
+      candList = [];
+    }
+  }
+  const inCand = Array.isArray(candList) && candList.some((c) => c.id === candidate.id);
+  if (!inCand) return { merged: false, reason: "not-in-candidates" };
+
+  // 读受控基准，去重追加
+  let gold = [];
+  if (F.existsSync(goldPath)) {
+    try {
+      gold = JSON.parse(F.readFileSync(goldPath, "utf-8"));
+    } catch {
+      gold = [];
+    }
+  }
+  if (Array.isArray(gold) && gold.some((g) => g.id === candidate.id)) {
+    return { merged: false, reason: "already-exists" };
+  }
+  gold.push(candidate);
+  F.mkdirSync(join(goldPath, ".."), { recursive: true });
+  F.writeFileSync(goldPath, JSON.stringify(gold, null, 2), "utf-8");
+  return { merged: true, id: candidate.id, total: gold.length };
+}

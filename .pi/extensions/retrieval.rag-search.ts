@@ -63,7 +63,7 @@ export default function (pi: ExtensionAPI) {
     promptGuidelines: [
       "先用 guide_finder 定位相关疾病/症状对应的指南（语义路由），本工具会自动据此约束召回范围",
       "对医疗领域问题默认使用本工具获取依据，再作答",
-      "若返回结果明显偏弱，可换用更具体的查询词重试一次",
+      "⚠️ 禁用多次检索：rag_search 默认 fast 模式（<1s）。若返回结果不理想，不得换词重试——直接如实告知用户该主题知识库可能未收录专项指南。dense 模式(hybrid/semantic/deep/adaptive)仅限极少数需要语义排名的场景，单次 24-130s。",
     ],
     parameters: {
       type: "object",
@@ -83,7 +83,7 @@ export default function (pi: ExtensionAPI) {
         mode: {
           type: "string",
           description:
-            "检索模式：hybrid/semantic/deep/adaptive 走 dense 委托 KnowledgeEngine 真 hybrid（含 bge 重排），fast 退回路由约束 BM25；引擎不可用自动回退 BM25",
+            "检索模式：默认 fast（BM25+路由，<1s）。hybrid/semantic/deep/adaptive 走 dense 委托 KnowledgeEngine 真 hybrid（含 bge 重排，单次 24-130s），仅在极少数需要语义排名时使用；引擎不可用自动回退 BM25。性能提示：dense 模式在 e5 本地嵌入时间不长，请优先 fast。",
         },
       },
       required: ["query"],
@@ -108,7 +108,8 @@ export default function (pi: ExtensionAPI) {
       } catch {
         /* 审计写入失败绝不阻断检索 */
       }
-      const mode = typeof p.mode === "string" ? p.mode : "hybrid";
+      // P0 性能优化：默认 fast（BM25+路由，<1s），dense 模式由 LLM 按需指定
+      const mode = typeof p.mode === "string" ? p.mode : "fast";
       const telemetry: Record<string, any> = {
         query: query.slice(0, 60),
         mode,

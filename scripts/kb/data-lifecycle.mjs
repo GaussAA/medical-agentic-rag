@@ -16,7 +16,7 @@ import { existsSync, readdirSync, readFileSync, writeFileSync, unlinkSync, rmSyn
 import { join } from "node:path";
 
 const ROOT = process.cwd();
-const LOGS_DIR = join(ROOT, "logs");
+const LOGS_DIR = join(ROOT, ".pi", "logs");
 const PI_DIR = join(ROOT, ".pi");
 const KB_DIR = join(ROOT, "data", "kb");
 

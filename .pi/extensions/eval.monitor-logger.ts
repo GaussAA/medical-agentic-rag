@@ -18,7 +18,7 @@ import { auditFileToday } from "./lib/phi-crypto.mjs";
  *   - 显式错误：写日志失败不再静默吞掉，改写 stderr，避免可观测性断裂无人知晓。
  */
 export default function (pi: ExtensionAPI) {
-  const logsDir = join(process.cwd(), "logs");
+  const logsDir = join(process.cwd(), ".pi", "logs");
 
   async function logEntry(event: string, data: Record<string, unknown>) {
     try {

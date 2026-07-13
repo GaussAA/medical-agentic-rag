@@ -220,7 +220,7 @@ function printSummary(r) {
 const isMain = import.meta.url === pathToFileURL(resolve(process.argv[1])).href;
 if (isMain) {
   const cwd = process.cwd();
-  const logsDir = join(cwd, "logs");
+  const logsDir = join(cwd, ".pi", "logs");
   const reportsDir = join(cwd, "tests", "reports");
   const report = aggregate(logsDir, reportsDir, cwd);
   try {

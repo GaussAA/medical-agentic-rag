@@ -45,8 +45,8 @@ if [ -n "$OLD_PID" ] && [ "$OLD_PID" != "0" ]; then
 fi
 
 echo "[orchestration] 启动本地 LLM Provider 代理网关..."
-mkdir -p logs   # 确保日志目录存在；proxy 输出重定向至 logs/proxy.log，避免污染交互终端
-node scripts/proxy/provider-proxy.mjs --port="$PROXY_PORT" >> "logs/proxy.log" 2>&1 &
+mkdir -p .pi/logs   # 确保日志目录存在；proxy 输出重定向至 .pi/logs/proxy.log，避免污染交互终端
+node scripts/proxy/provider-proxy.mjs --port="$PROXY_PORT" >> ".pi/logs/proxy.log" 2>&1 &
 PROXY_PID=$!
 
 # 等待代理就绪

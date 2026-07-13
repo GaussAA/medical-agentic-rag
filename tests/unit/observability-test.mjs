@@ -24,7 +24,7 @@ function ok(c, m) {
 
 async function main() {
   const root = mkdtempSync(join(tmpdir(), "obs-"));
-  const logsDir = join(root, "logs");
+  const logsDir = join(root, ".pi", "logs");
 
   // 各事件落盘
   await logGuardHit({ type: "faithfulness", action: "block", reason: "R", guides: ["g1"], logsDir });

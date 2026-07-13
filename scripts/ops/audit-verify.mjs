@@ -83,7 +83,7 @@ function cmdQuery(args) {
 function cmdStatus() {
   const result = verifyChain();
   const today = new Date().toISOString().slice(0, 10);
-  const todayFile = join(ROOT, "logs", `audit-${today}.ndjson`);
+  const todayFile = join(ROOT, ".pi", "logs", `audit-${today}.ndjson`);
 
   console.log("审计系统状态:\n");
   console.log(`  审计文件: ${existsSync(todayFile) ? todayFile : "（今日空）"}`);

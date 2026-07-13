@@ -32,7 +32,7 @@ function ok(cond, msg) {
 /** 构造隔离 fixture 目录。 */
 function fixture() {
   const root = mkdtempSync(join(tmpdir(), "fb-"));
-  const logsDir = join(root, "logs");
+  const logsDir = join(root, ".pi", "logs");
   const reportsDir = join(root, "reports");
   mkdirSync(logsDir, { recursive: true });
   mkdirSync(reportsDir, { recursive: true });

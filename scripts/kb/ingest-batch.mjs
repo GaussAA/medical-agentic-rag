@@ -138,7 +138,7 @@ async function main() {
     execFileSync(process.execPath, [join(ROOT, "scripts", "kb", "extract-outline.mjs")], { stdio: "inherit", cwd: ROOT });
   }
   report.summary = { total: files.length, added, upgraded, skipped, failed };
-  writeFileSync(join(ROOT, "logs", "kb-batch-report.json"), JSON.stringify(report, null, 2), "utf-8");
+  writeFileSync(join(ROOT, ".pi", "logs", "kb-batch-report.json"), JSON.stringify(report, null, 2), "utf-8");
   console.log(`\n=== 批量完成 === 新增 ${added} / 升级 ${upgraded} / 跳过 ${skipped} / 失败 ${failed}`);
   if (failed) console.log("⚠ 失败份请检查源文件是否损坏；.doc 请先转 docx");
 }

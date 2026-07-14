@@ -1,5 +1,5 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { detectConflicts } from "./lib/conflict-detector.mjs";
+import { detectConflicts, buildReplacementMessage } from "./lib/conflict-detector.mjs";
 import { logGuardHit } from "./lib/observability.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
@@ -11,7 +11,8 @@ import { alert } from "./lib/alert-log.mjs";
  * 在 Agent 生成最终回答后（on("message_end")）、回传前端前，自动检测「跨指南冲突」：
  *   Layer 1（零成本）：引用指南在 guide-index.json 中被标记 deprecated / supersededBy → 版本冲突批注；
  *   Layer 2（免费 LLM）：同一 query 命中 ≥2 份指南且推荐意见相左 → 内容冲突批注。
- * 命中冲突时仅「附加批注」而非拦截（保守分级，避免误伤），与原 faithfulness-guard 同构。
+ * 命中冲突时经 buildReplacementMessage 真替换回答末尾（保留原回答，防误伤），
+ *   与原 faithfulness-guard 同构——async return { message } 由 Pi 框架消费（_replaceMessageInPlace）落地。
  *
  * 复用 lib/llm-judge 的 callLLM（免费优先），不在此自写端点；searchKnowledge 零成本。
  * 任一环节失败 → 放行（不阻断回答），仅记日志（无静默失败、也不误伤）。
@@ -41,7 +42,7 @@ export default function (pi: ExtensionAPI) {
     }
   });
 
-  pi.on("message_end", (event: any, ctx?: any) => {
+  pi.on("message_end", async (event: any, ctx?: any) => {
     const message = event?.message;
     if (!message || message.role !== "assistant") return;
     const text = extractText(message.content);
@@ -52,37 +53,44 @@ export default function (pi: ExtensionAPI) {
     const question = (questionFromEvent || _lastUserQuestion || "").toString().trim();
     if (!question) return;
 
-    // 【关键】异步冲突检测：fire-and-forget，不阻塞 working 释放
-    // 结果仅落地埋点，不修改 Pi 内部消息内容
-    Promise.race([
-      detectConflicts({ question, answer: text }),
-      new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error("conflict detection timeout")), 3000),
-      ),
-    ])
-      .then((res: any) => {
-        if (res.action === "annotate" && res.annotation) {
-          logGuardHit({
-            type: "conflict",
-            action: "annotate",
-            guides: (res.conflicts || [])
-              .map((c: any) => (c.guide ? c.guide : (c.guides || []).join(" / ")))
-              .filter(Boolean),
-          }).catch((e: any) =>
-            alert(
-              "conflict-detector",
-              `埋点落盘失败，放行仍生效: ${e?.message || e}`,
-            ),
-          );
-        }
-      })
-      .catch((e: any) => {
-        // 评审超时/失败：放行（不扰用户），服务端留痕便于排障
-        diag.warn(
+    // 异步冲突检测：await 结果，经 buildReplacementMessage 转为替换消息并 return，
+    // Pi 框架消费返回值（_replaceMessageInPlace）真落地到最终回答。
+    let res: any;
+    try {
+      res = await Promise.race([
+        detectConflicts({ question, answer: text }),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("conflict detection timeout")), 3000),
+        ),
+      ]);
+    } catch (e: any) {
+      // 检测超时/失败：放行（不扰用户），服务端留痕便于排障
+      diag.warn(
+        "conflict-detector",
+        "冲突检测失败/超时，降级放行: " + (e?.message || e),
+      );
+      return; // 放行（不替换）
+    }
+
+    if (res.action === "annotate" && res.annotation) {
+      logGuardHit({
+        type: "conflict",
+        action: "annotate",
+        guides: (res.conflicts || [])
+          .map((c: any) => (c.guide ? c.guide : (c.guides || []).join(" / ")))
+          .filter(Boolean),
+      }).catch((e: any) =>
+        alert(
           "conflict-detector",
-          "冲突检测失败/超时，降级放行: " + (e?.message || e),
-        );
-      });
+          `埋点落盘失败，替换仍生效: ${e?.message || e}`,
+        ),
+      );
+      // 真替换：在回答末尾附冲突批注（保持 role:assistant）
+      return { message: buildReplacementMessage(message, res) };
+    }
+
+    // pass / 其他：放行（不替换）
+    return;
   });
 }
 
@@ -112,21 +120,4 @@ function extractLastUserQuestionFromCtx(ctx: any): string {
   }
 }
 
-/** 在回答末尾追加批注（保留原回答，仅附加）。 */
-function appendAnnotation(content: any, annotation: string): any {
-  const sep = "\n\n";
-  if (typeof content === "string") {
-    return content + sep + annotation;
-  }
-  if (Array.isArray(content)) {
-    return [
-      ...content,
-      { type: "text", text: sep + annotation },
-    ];
-  }
-  // 兜底：包成数组
-  return [
-    { type: "text", text: extractText(content) },
-    { type: "text", text: sep + annotation },
-  ];
-}
+// （appendAnnotation 已下沉至 lib/conflict-detector.mjs 的 buildReplacementMessage，避免跨文件重复实现）

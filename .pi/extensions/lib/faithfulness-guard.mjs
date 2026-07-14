@@ -174,3 +174,30 @@ export async function guardReview({ question, answer, judge = judgeAnswer, isAva
     annotatedText: buildAnnotated(answer, parts),
   };
 }
+
+/**
+ * 将评审 verdict 转为 Pi message_end 的替换消息（纯函数，可单测，零 LLM）。
+ * 仅当 action 为 annotate / block 且含批注文本时返回 { role:"assistant", content }，
+ * 其余（pass / 无批注）→ 返回 undefined（调用方据此放行，不替换消息）。
+ * 约束：replacement 必须保持同 role（Pi 框架要求），故恒为 "assistant"，
+ * 避免扰动 agent state / 会话持久化（维持与 _replaceMessageInPlace 同步）。
+ */
+export function buildReplacementMessage(msg, verdict) {
+  if (!verdict || verdict.action === "pass") return undefined;
+  const text = getMessageText(msg);
+  if (verdict.action === "block" && verdict.annotatedText) {
+    return { role: "assistant", content: verdict.annotatedText };
+  }
+  if (verdict.action === "annotate" && verdict.annotatedText) {
+    const sep = "\n\n";
+    if (typeof msg?.content === "string") {
+      return { role: "assistant", content: text + sep + verdict.annotatedText };
+    }
+    const base = Array.isArray(msg?.content) ? msg.content : [{ type: "text", text }];
+    return {
+      role: "assistant",
+      content: [...base, { type: "text", text: sep + verdict.annotatedText }],
+    };
+  }
+  return undefined;
+}

@@ -1,5 +1,5 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { guardReview, getMessageText } from "./lib/faithfulness-guard.mjs";
+import { guardReview, getMessageText, buildReplacementMessage } from "./lib/faithfulness-guard.mjs";
 import { logGuardHit, logFaithfulness } from "./lib/observability.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
@@ -14,12 +14,17 @@ import { alert } from "./lib/alert-log.mjs";
  *      供 message_end 评审时作为 question（复用 patient-profile 已验证的 context 缓存模式）。
  *   2) on("message_end") 仅对 assistant 回答评审（role!=="assistant" 直接放行，避免误改工具结果）：
  *      - 调 lib/faithfulness-guard 的 guardReview（复用 lib/llm-judge 免费优先四维评审）。
- *      - action:"annotate" → 在回答末尾附「循证核验/安全护栏」批注（保留原回答，防误伤）。
- *      - action:"block"（仅 FAITHFULNESS_GUARD_HARD=1 且 safety 极低）→ 替换为纯护栏提示。
- *      - action:"pass" / 评审失败 / 超时 / 无 Key → 放行，不卡死回答（无静默失败，仅告警日志）。
+ *      - action:"annotate" → 经 buildReplacementMessage 在回答末尾附「循证核验/安全护栏」批注
+ *        （保留原回答，防误伤），return { message } 真替换。
+ *      - action:"block"（仅 FAITHFULNESS_GUARD_HARD=1 且 safety 极低）→ 替换为纯护栏拦截提示，return { message } 真替换。
+ *      - action:"pass" / 评审失败 / 超时 / 无 Key → 返回 undefined 放行，不卡死回答（无静默失败，仅告警日志）。
  *   3) 旁路开关：env FAITHFULNESS_GUARD=off 整体关闭；FAITHFULNESS_GUARD_HARD=1 开启硬阻断。
  *
- * 原则契合：免费优先（复用 llm-judge）、无静默失败、显式错误捕获、双可测（.mjs 层）、
+ * 真生效机制：Pi 框架 await message_end 返回值并 _replaceMessageInPlace 同步 agent state / 会话持久化
+ *   （见 pi/packages/coding-agent 的 emitMessageEnd），故 annotate/block 批注/拦截直接落到最终回答，
+ *   而非仅埋点丢弃（旧版 fire-and-forget 导致评审结果永不生效，即 G1 根因）。
+ *
+ * 原则契合：免费优先（复用 llm-judge）、无静默失败、显式错误捕获、双可测（.mjs 层 / .ts 扩展层）、
  *          依赖注入（judge 默认 judgeAnswer，单测可替换）。
  */
 
@@ -41,55 +46,65 @@ export default function (pi: ExtensionAPI) {
     }
   });
 
-  // 回答定稿后评审 + 护栏（异步 fire-and-forget，不阻塞 working 释放）
-  // 注意：handler 非 async——不 await 任何评审，让 emitMessageEnd 立即完成
-  pi.on("message_end", (event: any) => {
+  // 回答定稿后评审 + 护栏（async：Pi 框架 await message_end 返回值，
+  // 经 _replaceMessageInPlace 同步 agent state / 会话持久化，annotate/block 真生效）
+  pi.on("message_end", async (event: any) => {
     if (process.env.FAITHFULNESS_GUARD === "off") return;
     const msg = event && event.message;
     if (!msg || msg.role !== "assistant") return;
     const answer = getMessageText(msg);
     if (!answer || answer.trim().length < 20) return;
 
-    // 【关键】异步评审：fire-and-forget，不阻塞 emitMessageEnd
-    // 评审结果仅落地埋点，不替换消息内容（避免扰动 Pi 内部状态机）
     const question = lastUserQuestion;
-    Promise.race([
-      guardReview({ question, answer }, { silent: true }),
-      new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error("guard review timeout")), 3000),
+    let verdict: any;
+    try {
+      // 异步评审：await 结果，经 buildReplacementMessage 转为替换消息并 return
+      verdict = await Promise.race([
+        guardReview({ question, answer }, { silent: true }),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("guard review timeout")), 3000),
+        ),
+      ]);
+    } catch (e: any) {
+      // 评审失败/超时：放行（不扰用户），服务端留痕便于排障
+      diag.warn(
+        "faithfulness-guard",
+        "评审失败/超时，降级放行: " + (e?.message || e),
+      );
+      return; // 放行（不替换消息）
+    }
+
+    // 观测：忠实度软信号（含放行的低分），弥补 guard_hit 仅覆盖硬阻断的盲区
+    logFaithfulness({
+      action: verdict.action,
+      score: typeof verdict.score === "number" ? verdict.score : undefined,
+      reason: verdict.reasons || verdict.reason || undefined,
+    }).catch((e: any) =>
+      alert(
+        "faithfulness-guard",
+        `软信号观测失败，放行仍生效: ${e?.message || e}`,
       ),
-    ])
-      .then((verdict: any) => {
-        // 观测：忠实度软信号（含放行的低分），弥补 guard_hit 仅覆盖硬阻断的盲区
-        logFaithfulness({
+    );
+
+    // 真生效：annotate/block 档经 buildReplacementMessage 转替换消息并 return，
+    // Pi 框架消费返回值（_replaceMessageInPlace）落地到最终回答；pass/无批注 → undefined 放行。
+    if (verdict.action === "block" || verdict.action === "annotate") {
+      const replacement = buildReplacementMessage(msg, verdict);
+      if (replacement) {
+        logGuardHit({
+          type: "faithfulness",
           action: verdict.action,
-          score: typeof verdict.score === "number" ? verdict.score : undefined,
           reason: verdict.reasons || verdict.reason || undefined,
         }).catch((e: any) =>
           alert(
             "faithfulness-guard",
-            `软信号观测失败，放行仍生效: ${e?.message || e}`,
+            `埋点落盘失败，替换仍生效: ${e?.message || e}`,
           ),
         );
-        if (verdict.action !== "pass" && verdict.annotatedText) {
-          logGuardHit({
-            type: "faithfulness",
-            action: verdict.action,
-            reason: verdict.reasons || verdict.reason || undefined,
-          }).catch((e: any) =>
-            alert(
-              "faithfulness-guard",
-              `埋点落盘失败，放行仍生效: ${e?.message || e}`,
-            ),
-          );
-        }
-      })
-      .catch((e: any) => {
-        // 评审失败/超时：放行（不扰用户），服务端留痕便于排障
-        diag.warn(
-          "faithfulness-guard",
-          "评审失败/超时，降级放行: " + (e?.message || e),
-        );
-      });
+        return { message: replacement };
+      }
+    }
+    // pass / 评审未触发批注：放行（不替换）
+    return;
   });
 }

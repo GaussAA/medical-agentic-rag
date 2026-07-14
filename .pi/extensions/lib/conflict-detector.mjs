@@ -274,3 +274,33 @@ export function defaultLoadGuideIndex(baseDir = process.cwd()) {
   const data = JSON.parse(readFileSync(p, "utf-8"));
   return data.guideMap || null;
 }
+
+/** 从 content（string | [{type,text}] | other）抽取纯文本（与 faithfulness 同构，独立避免跨文件耦合）。 */
+function msgText(content) {
+  if (!content) return "";
+  if (typeof content === "string") return content;
+  if (Array.isArray(content)) {
+    return content.map((p) => (p && p.type === "text" ? p.text || "" : "")).join("\n");
+  }
+  return "";
+}
+
+/**
+ * 将冲突检测 res 转为 Pi message_end 的替换消息（纯函数，可单测，零 LLM）。
+ * 仅 action==="annotate" 且含 annotation 时返回 { role:"assistant", content }，
+ * 其余（pass / 无批注）→ 返回 undefined（调用方据此放行，不替换消息）。
+ * 约束：replacement 必须保持同 role（Pi 框架要求），故恒为 "assistant"。
+ */
+export function buildReplacementMessage(msg, res) {
+  if (!res || res.action !== "annotate" || !res.annotation) return undefined;
+  const text = msgText(msg?.content);
+  const sep = "\n\n";
+  if (typeof msg?.content === "string") {
+    return { role: "assistant", content: text + sep + res.annotation };
+  }
+  const base = Array.isArray(msg?.content) ? msg.content : [{ type: "text", text }];
+  return {
+    role: "assistant",
+    content: [...base, { type: "text", text: sep + res.annotation }],
+  };
+}

@@ -2,7 +2,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 // @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
-import { encryptJSON, decryptJSON, auditLog } from "./lib/phi-crypto.mjs";
+import { encryptJSON, decryptJSON, auditLog, secureWipeFile } from "./lib/phi-crypto.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
 
@@ -24,6 +24,7 @@ import { diag } from "./lib/diagnostic-log.mjs";
  *   - PHI 静态加密：AES-256-GCM 密文落盘，明文绝不驻留磁盘（详见 lib/phi-crypto.mjs）
  *   - 旧明文自动迁移：读到历史明文时透明解析并回写为密文
  *   - 审计留痕：画像的写入/读取注入均记 logs/audit-*.ndjson（仅记字段名与动作，不记原值）
+ *   - 被遗忘权：forget_patient 工具经 secureWipeFile 覆写+删除密文文件，彻底移除 PHI（须显式 confirm=true）
  *
  * 数据存储：.pi/patient-profile.json（密文，含 PHI，已加入 .gitignore）
  */
@@ -177,6 +178,56 @@ export default function (pi: ExtensionAPI) {
           content: [{ type: "text", text: `患者画像更新失败: ${msg}` }],
         };
       }
+    },
+  });
+
+  // 被遗忘权：安全擦除本地患者画像（密文文件覆写随机字节后删除）
+  pi.registerTool({
+    name: "forget_patient",
+    description:
+      "【被遗忘权】安全擦除本地患者画像（AES-256-GCM 密文文件覆写随机字节后删除），" +
+      "彻底移除患者 PHI。仅当用户明确行使被遗忘权时调用，须显式传 confirm=true，防止误触发。",
+    promptSnippet: "Erase patient PHI profile (right to be forgotten)",
+    parameters: {
+      type: "object",
+      properties: {
+        confirm: {
+          type: "boolean",
+          description: "须显式传 true 方执行擦除，防止误触发",
+        },
+      },
+      required: ["confirm"],
+    },
+    execute: async (_toolCallId: string, params) => {
+      if (params.confirm !== true) {
+        // 未确认 → 中止并留痕，绝不静默擦除
+        auditLog("patient_profile.forget_denied", { reason: "confirm!=true" });
+        return {
+          content: [
+            {
+              type: "text",
+              text: "未确认，已中止擦除。行使被遗忘权须显式 confirm=true。",
+            },
+          ],
+        };
+      }
+      const res = secureWipeFile(PROFILE_FILE);
+      if (!res.wiped) {
+        auditLog("patient_profile.forget_error", { error: res.reason });
+        return {
+          content: [{ type: "text", text: `患者画像擦除失败: ${res.reason}` }],
+        };
+      }
+      // 审计：仅记动作，不记 PHI 原值
+      auditLog("patient_profile.forget", { action: "secure_wipe", wiped: true });
+      return {
+        content: [
+          {
+            type: "text",
+            text: "患者画像已安全擦除（覆写+删除），本地 PHI 已彻底移除。后续对话将不再注入该画像。",
+          },
+        ],
+      };
     },
   });
 

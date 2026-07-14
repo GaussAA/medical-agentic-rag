@@ -21,6 +21,8 @@ import {
   writeFileSync,
   appendFileSync,
   chmodSync,
+  unlinkSync,
+  statSync,
 } from "node:fs";
 import { join } from "node:path";
 
@@ -165,6 +167,35 @@ export function decryptJSON(payload) {
   // 旧明文兼容：尝试直接 parse
   const data = JSON.parse(payload);
   return { data, migrated: true };
+}
+
+// ==================== 安全擦除（被遗忘权） ====================
+
+/**
+ * 安全擦除文件：覆写随机字节 N 次后 unlink，避免密文/明文残留可被恢复（GDPR 类被遗忘权）。
+ * 仅对存在的文件生效；不存在则视为已删除（幂等，便于重试与并发防护）。
+ * 失败（权限/IO）不抛，返回 { wiped:false, reason } 由调用方决定降级，避免静默丢失「已擦除」语义。
+ * @param {string} filePath
+ * @param {number} [passes=3] 覆写轮数
+ * @returns {{ wiped: boolean, reason?: string }}
+ */
+export function secureWipeFile(filePath, passes = 3) {
+  if (!existsSync(filePath)) {
+    return { wiped: true, reason: "absent" }; // 幂等：已不存在即视为已擦除
+  }
+  try {
+    const size = Math.max(statSync(filePath).size, 1);
+    for (let i = 0; i < passes; i++) {
+      writeFileSync(filePath, randomBytes(size));
+    }
+    unlinkSync(filePath);
+    return { wiped: true };
+  } catch (err) {
+    return {
+      wiped: false,
+      reason: err instanceof Error ? err.message : String(err),
+    };
+  }
 }
 
 // ==================== PII 脱敏 ====================

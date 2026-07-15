@@ -68,10 +68,11 @@ function getApiKey(p) {
   return process.env[p.authEnv] || null;
 }
 
-// ---- sensenova 20 Key 池并发轮询 ----
-// SENSENOVA_API_KEYS 为逗号/换行分隔的免费 Key 池（最多 20 并发）；
-// SENSENOVA_API_KEY 为向后兼容的单 Key 形式。合并为一池，按轮询分发，
-// 使所有经 proxy 路由至 sensenova 的请求（P1 免费 / P2 免费深搜）都能利用并发额度。
+// ---- sensenova 20 Key 池轮询（容错，非并发） ----
+// SENSENOVA_API_KEYS 为逗号/换行分隔的免费 Key 池。
+// SENSENOVA_API_KEY 为向后兼容的单 Key 形式。
+// 多 Key 的作用是故障转移：单 Key 触发 429 限速时轮询到下一个 Key 绕过。
+// sensenova 的并发上限是账户级的（约 20 路），与 Key 数量无关，多 Key 不叠加并发。
 function parseKeys(raw) {
   if (!raw) return [];
   return raw

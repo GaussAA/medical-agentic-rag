@@ -36,8 +36,11 @@ const SENSENOVA_KEYS = (() => {
 })();
 
 const ALLOW_PAID = process.env.ALLOW_PAID_FALLBACK === "true";
-const MAX_CONCURRENCY = 20;
-const CONCURRENCY = Math.max(1, Math.min(MAX_CONCURRENCY, SENSENOVA_KEYS.length || 1));
+// 并发数：sensenova 免费账户固定支撑约 20 路并发，与 Key 数量无关。
+// 多 Key 的作用是故障转移（单 Key 429 限速时换 Key 绕过），而非叠加并发。
+// LLM_CONCURRENCY 环境变量可覆盖（默认 20）。
+const LLM_CONCURRENCY = Number(process.env.LLM_CONCURRENCY) || 20;
+const CONCURRENCY = Math.max(1, Math.min(LLM_CONCURRENCY, 20));
 const MAX_KEY_ATTEMPTS = Math.max(1, Math.min(3, SENSENOVA_KEYS.length));
 
 // 轮询 Key

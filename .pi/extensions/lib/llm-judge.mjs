@@ -110,12 +110,12 @@ function deepseekEndpoint() {
     : null;
 }
 
-// 实际可用并发数 = min(免费 Key 数, 20)；无免费 Key 则退化为仅 DeepSeek（并发 1）。
-/** @type {number} 免费 Key 批处理的最大并发数（≥1, ≤20）。 */
-export const SENSENOVA_CONCURRENCY = Math.max(
-  1,
-  Math.min(MAX_CONCURRENCY, SENSENOVA_KEYS.length || 1),
-);
+// 实际可用并发数：sensenova 免费账户固定支撑约 20 路并发，与 Key 数量无关。
+// 多 Key 的作用是故障转移（单 Key 429 限速时换 Key 绕过），而非叠加并发。
+// LLM_CONCURRENCY 环境变量可覆盖（默认 20）。
+/** @type {number} 批处理最大并发数（≥1, ≤20）。 */
+const LLM_CONCURRENCY = Number(process.env.LLM_CONCURRENCY) || 20;
+export const SENSENOVA_CONCURRENCY = Math.max(1, Math.min(LLM_CONCURRENCY, 20));
 
 /** 是否已显式授权使用付费 deepseek 兜底。默认关闭，防自动耗费。 */
 const ALLOW_PAID = process.env.ALLOW_PAID_FALLBACK === "true";

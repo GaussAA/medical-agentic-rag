@@ -57,9 +57,16 @@ export default function (pi: ExtensionAPI) {
         );
         // 🔐 强护栏：替换原用户消息为拒答指令，LLM 看不见原问题→杜绝回答/编造
         // （此前仅注入 system 指令但 LLM 仍可见原问题，Q39 因此编造了肝硬化病史）
+        // 注意：Pi 的消息 content 可能是字符串或数组格式，须兼容两者
+        function msgText(m: any): string {
+          const c = m.content;
+          return Array.isArray(c) && c[0]
+            ? typeof c[0] === "string" ? c[0] : (c[0].text || "")
+            : typeof c === "string" ? c : "";
+        }
         return {
           messages: msgs.map((m: any) => {
-            if (m.role === "user" && m.content === userText) {
+            if (m.role === "user" && msgText(m) === userText) {
               return {
                 role: "user" as const,
                 content: `【护栏拦截】用户的问题已被系统安全护栏拦截，原因：${verdict.reason}。请用一句中文礼貌拒绝：说明本系统只处理医疗健康问题，不提供此类服务。严禁回答原问题，严禁编造无关的医疗信息。`,

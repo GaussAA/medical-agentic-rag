@@ -28,16 +28,18 @@ const PI_DIR = join(process.cwd(), ".pi");
 const FAILOVER_FILE = join(PI_DIR, "failover-selection.json");
 
 // Provider 注册表（复用 provider-health.mjs 定义，独立副本防循环依赖）
-// ⚠️ 优先级 = 成本优先级：P1 免费 → P2 免费深搜通道 → P3 agnes → P4 付费 deepseek（末位兜底仅已授权）
+// ⚠️ 优先级 = 成本优先级：P1 免费 → P2 免费深搜 → P3 Agnes2.5(新) → P4 Agnes2.0 → P5 付费 deepseek（末位兜底）
 const PROVIDERS = [
   // P1: sensenova 免费主力
   { provider: "sensenova", model: "sensenova-6.7-flash-lite", baseUrl: "https://token.sensenova.cn/v1", authEnv: "SENSENOVA_API_KEY", priority: 1, label: "SenseNova 6.7 Flash Lite" },
   // P2: sensenova deepseek 免费通道（经 sensenova 接入，不消耗 deepseek 付费配额）
   { provider: "sensenova", model: "deepseek-v4-flash", baseUrl: "https://token.sensenova.cn/v1", authEnv: "SENSENOVA_API_KEY", priority: 2, label: "DeepSeek V4 Flash (免费通道)" },
-  // P3: agnes
-  { provider: "agnes", model: "agnes-2.0-flash", baseUrl: "https://apihub.agnes-ai.com/v1", authEnv: "AGNES_API_KEY", priority: 3, label: "Agnes 2.0 Flash" },
-  // P4: deepseek 付费（末位兜底——仅全部免费通道不可用且大帅授权时选中，选中时启动日志必有醒目警告）
-  { provider: "deepseek", model: "deepseek-v4-flash", baseUrl: "https://api.deepseek.com", authEnv: "DEEPSEEK_API_KEY", priority: 4, label: "⚠️ DeepSeek V4 Flash (付费)" },
+  // P3: Agnes 2.5 Flash（2026-07-13 发布，免费，更强）
+  { provider: "agnes", model: "agnes-2.5-flash", baseUrl: "https://apihub.agnes-ai.com/v1", authEnv: "AGNES_API_KEY", priority: 3, label: "Agnes 2.5 Flash (免费·新)" },
+  // P4: Agnes 2.0 Flash（免费，1M 上下文）
+  { provider: "agnes", model: "agnes-2.0-flash", baseUrl: "https://apihub.agnes-ai.com/v1", authEnv: "AGNES_API_KEY", priority: 4, label: "Agnes 2.0 Flash (免费)" },
+  // P5: deepseek 付费（末位兜底——仅全部免费通道不可用且大帅授权时选中，选中时启动日志必有醒目警告）
+  { provider: "deepseek", model: "deepseek-v4-flash", baseUrl: "https://api.deepseek.com", authEnv: "DEEPSEEK_API_KEY", priority: 5, label: "⚠️ DeepSeek V4 Flash (付费)" },
 ];
 
 const PROBE_TIMEOUT = 3000;
@@ -351,7 +353,7 @@ async function start() {
   await selectProvider();
   console.log(`[proxy] Provider 初始选择: ${currentProvider?.label} (${currentProvider?.provider}/${currentModelName})`);
 
-  // ⚠️ 付费 deepseek 告警：若选中 P4（付费），醒目警示大帅预算
+  // ⚠️ 付费 deepseek 告警：若选中付费 deepseek（provider=deepseek），醒目警示大帅预算
   if (currentProvider?.provider === "deepseek" && currentModelName === "deepseek-v4-flash") {
     console.warn("=".repeat(70));
     console.warn("⚠  ⚠  ⚠  ⚠  注  意  ⚠  ⚠  ⚠  ⚠");

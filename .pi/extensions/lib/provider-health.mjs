@@ -36,9 +36,16 @@ const HEALTHY_STREAK_TO_RECOVER = 2;
  *
  * 成本控制优先级（2026-07-15 遵大帅指令重排）：
  *   P1 免费主力(sensenova-6.7-flash-lite) > P2 免费深搜通道(sensenova/deepseek-v4-flash)
- *   > P3 agnes > P4 原生 deepseek(付费，仅全部免费通道不可用且大帅明确授权时才选)
+ *   > P3 agnes-2.5-flash(免费·更新更强) > P4 agnes-2.0-flash(免费)
+ *   > P5 原生 deepseek(付费，仅全部免费通道不可用且大帅明确授权时才选)
  * selectProvider 取首个 healthy；全不健康回退 priority 最小者并标 degraded。
- * 若最终选中付费深搜(P4)，启动日志必有醒目告警（付费 deepseek 已启用，预算请关注）。
+ * 若最终选中付费深搜(P5)，启动日志必有醒目告警（付费 deepseek 已启用，预算请关注）。
+ *
+ * Agnes AI 免费文本模型信息（2026-07-15 确认）：
+ * - agnes-2.5-flash：2026-07-13 发布，Agent/Coding 优化，免费，支持 1M 上下文
+ * - agnes-2.0-flash：2026-06-01 起无限期免费，支持 1M 上下文 / Function Calling / Tool Use
+ * - 免费用户 RPM=30（实际 20），低并发适合兜底/低频场景，不适用于批量高并发
+ * - 另有免费图模(agnes-image-2.1-flash)和视频模(agnes-video-v2.0)，与系统无关暂不纳入路由
  */
 export const PROVIDERS = [
   {
@@ -59,11 +66,19 @@ export const PROVIDERS = [
   },
   {
     provider: "agnes",
-    model: "agnes-2.0-flash",
-    label: "Agnes 2.0 Flash",
+    model: "agnes-2.5-flash",
+    label: "Agnes 2.5 Flash (免费·新)",
     baseUrl: "https://apihub.agnes-ai.com/v1",
     authEnv: "AGNES_API_KEY",
     priority: 3,
+  },
+  {
+    provider: "agnes",
+    model: "agnes-2.0-flash",
+    label: "Agnes 2.0 Flash (免费)",
+    baseUrl: "https://apihub.agnes-ai.com/v1",
+    authEnv: "AGNES_API_KEY",
+    priority: 4,
   },
   {
     provider: "deepseek",
@@ -71,7 +86,7 @@ export const PROVIDERS = [
     label: "DeepSeek V4 Flash (付费·末位兜底)",
     baseUrl: "https://api.deepseek.com",
     authEnv: "DEEPSEEK_API_KEY",
-    priority: 4,
+    priority: 5,
   },
 ];
 

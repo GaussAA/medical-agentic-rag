@@ -1,11 +1,13 @@
 /**
- * 医学实体提取脚本
+ * 医学实体提取脚本（并发加速版 v2）
  * 优先使用 SenseNova(日日新) 免费模型从指南大纲抽取结构化医学实体与关系，
- * DeepSeek 仅作兜底（成本控制：免费额度优先）。
+ * 利用 SENSENOVA_API_KEYS 20 Key 池并发抽取，每指南换 Key，充分利用免费并发额度。
+ * DeepSeek 付费仅当 ALLOW_PAID_FALLBACK=true 时作最后兜底。
  *
  * 用法: node scripts/kb/extract-entities.mjs
- *   - 优先 SENSENOVA_API_KEY (sensenova-6.7-flash-lite, 每日免费额度)
- *   - 缺失/失败则回退 DEEPSEEK_API_KEY
+ *   - 优先 SENSENOVA_API_KEYS（20 Key 池，轮询并发）
+ *   - 回退 SENSENOVA_API_KEY（单 Key 向后兼容）
+ *   - 付费 deepseek 仅当 ALLOW_PAID_FALLBACK=true
  * 输出: data/kb/.knowledge-graph.json
  */
 import { readFile, writeFile } from "node:fs/promises";
@@ -17,38 +19,48 @@ const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两
 const OUTLINE_FILE = join(ROOT, "data", "kb", ".outline.json");
 const GRAPH_FILE = join(ROOT, "data", "kb", ".knowledge-graph.json");
 
-const SENSENOVA_API_KEY = process.env.SENSENOVA_API_KEY;
-const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
-if (!SENSENOVA_API_KEY && !DEEPSEEK_API_KEY) {
-  console.error("请至少设置 SENSENOVA_API_KEY 或 DEEPSEEK_API_KEY 环境变量");
-  process.exit(1);
+// ---------- 20 Key 池并发机制（复用 llm-judge 命名惯例） ----------
+function parseKeys(raw) {
+  if (!raw) return [];
+  return raw.split(/[\s,]+/).map((s) => s.trim()).filter(Boolean);
+}
+const SENSENOVA_KEYS = (() => {
+  const pool = parseKeys(process.env.SENSENOVA_API_KEYS || "");
+  const single = process.env.SENSENOVA_API_KEY;
+  if (single && !pool.includes(single)) pool.push(single);
+  if (!pool.length && !process.env.DEEPSEEK_API_KEY) {
+    console.error("请至少设置 SENSENOVA_API_KEYS 或 SENSENOVA_API_KEY");
+    process.exit(1);
+  }
+  return pool;
+})();
+
+const ALLOW_PAID = process.env.ALLOW_PAID_FALLBACK === "true";
+const MAX_CONCURRENCY = 20;
+const CONCURRENCY = Math.max(1, Math.min(MAX_CONCURRENCY, SENSENOVA_KEYS.length || 1));
+const MAX_KEY_ATTEMPTS = Math.max(1, Math.min(3, SENSENOVA_KEYS.length));
+
+// 轮询 Key
+let rrIdx = 0;
+function nextSensenovaKey() {
+  if (!SENSENOVA_KEYS.length) return null;
+  const key = SENSENOVA_KEYS[rrIdx % SENSENOVA_KEYS.length];
+  rrIdx = (rrIdx + 1) % SENSENOVA_KEYS.length;
+  return key;
 }
 
-// 免费模型优先（商汤日日新，每日免费额度），DeepSeek 付费通道仅作兜底
-const ENDPOINTS = [
-  {
-    name: "SenseNova 6.7 Flash Lite (免费)",
-    url: "https://token.sensenova.cn/v1/chat/completions",
-    key: SENSENOVA_API_KEY,
-    model: "sensenova-6.7-flash-lite",
-  },
-  {
-    name: "DeepSeek V4 Flash (兜底)",
-    url: "https://api.deepseek.com/chat/completions",
-    key: DEEPSEEK_API_KEY,
-    model: "deepseek-v4-flash",
-  },
-];
-
-async function callOne(ep, prompt) {
-  const res = await fetch(ep.url, {
+/**
+ * 单次提取调用（用指定 Key 请求 sensenova）。
+ */
+async function callOne(key, prompt) {
+  const res = await fetch("https://token.sensenova.cn/v1/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${ep.key}`,
+      Authorization: `Bearer ${key}`,
     },
     body: JSON.stringify({
-      model: ep.model,
+      model: "sensenova-6.7-flash-lite",
       messages: [
         {
           role: "system",
@@ -71,7 +83,7 @@ async function callOne(ep, prompt) {
 
   if (!res.ok) {
     const err = await res.text().catch(() => "");
-    throw new Error(`[${ep.name}] API error ${res.status}: ${err.slice(0, 200)}`);
+    throw new Error(`API error ${res.status}: ${err.slice(0, 200)}`);
   }
 
   const data = await res.json();
@@ -86,87 +98,87 @@ async function callOne(ep, prompt) {
   }
 }
 
-// 免费模型优先；当前端点无凭证或调用失败则依次回退到下一可用端点
-// 付费 deepseek 仅当 ALLOW_PAID_FALLBACK=true 时才启用（防自动耗费）
-const ALLOW_PAID = process.env.ALLOW_PAID_FALLBACK === "true";
-async function callLLM(prompt) {
+/**
+ * 为单指南提取实体——轮询取 Key，失败后换 Key 重试 MAX_KEY_ATTEMPTS 次。
+ */
+async function processGuide(guide) {
+  const hierarchyText = guide.hierarchy
+    .map((h1) => {
+      const subs = h1.children
+        .map((h2) => {
+          const subs3 = h2.children.map((h3) => `    - ${h3.title}`).join("\n");
+          return `  - ${h2.title}${subs3 ? "\n" + subs3 : ""}`;
+        })
+        .join("\n");
+      return `- ${h1.title}${subs ? "\n" + subs : ""}`;
+    })
+    .join("\n");
+
+  const keyParas = guide.keyParagraphs.slice(0, 5).join("\n");
+  const prompt = `指南名称: ${guide.title}\n\n章节结构:\n${hierarchyText}\n\n关键段落:\n${keyParas}\n\n请提取以下实体关系：\n1. 该疾病的主要症状\n2. 推荐药物\n3. 诊断检查方法\n4. 危险因素\n5. 治疗方案`;
+
   let lastErr;
-  for (const ep of ENDPOINTS) {
-    // 跳过付费 deepseek（除非已授权），自动只走免费通道
-    if (ep.url.includes("api.deepseek.com") && !ALLOW_PAID) {
-      if (process.env.DEEPSEEK_API_KEY)
-        console.warn("  ℹ 付费 deepseek 跳过（未授权，需 ALLOW_PAID_FALLBACK=true）");
-      continue;
-    }
-    if (!ep.key) continue;
+  for (let attempt = 0; attempt < MAX_KEY_ATTEMPTS; attempt++) {
+    const key = nextSensenovaKey();
+    if (!key) break;
     try {
-      const entities = await callOne(ep, prompt);
-      if (ep !== ENDPOINTS[0]) console.log(`  ↳ 回退至 ${ep.name}`);
-      return entities;
+      const entities = await callOne(key, prompt);
+      for (const e of entities) {
+        if (!e.source) e.source = guide.title;
+      }
+      return { entities, ok: true };
     } catch (err) {
       lastErr = err;
-      console.warn(`  ⚠ ${ep.name} 调用失败: ${String(err.message).slice(0, 80)}`);
+      // 换 Key 重试
     }
   }
-  console.error(`  ✗ 全部 LLM 端点不可用: ${String(lastErr?.message || "").slice(0, 100)}`);
-  return [];
+  return { entities: [], ok: false, error: lastErr?.message || "未知错误" };
+}
+
+/** 有界并发执行器（同 llm-judge.runWithConcurrency）。 */
+async function runWithConcurrency(tasks, limit) {
+  const results = new Array(tasks.length);
+  let idx = 0;
+  async function worker() {
+    while (idx < tasks.length) {
+      const cur = idx++;
+      results[cur] = await tasks[cur]();
+    }
+  }
+  const n = Math.max(1, Math.min(limit, tasks.length));
+  await Promise.all(Array.from({ length: n }, worker));
+  return results;
 }
 
 async function main() {
   const outline = JSON.parse(await readFile(OUTLINE_FILE, "utf-8"));
 
-  const activeChain = ENDPOINTS.filter((e) => e.key).map((e) => e.name).join(" > ");
-  console.log(`LLM 优先级: ${activeChain || "（无可用凭证）"}`);
-  console.log(`开始从 ${outline.totalFiles} 份指南提取实体...\n`);
+  console.log(`Key 池大小: ${SENSENOVA_KEYS.length || "(无免费 Key)"}  |  并发数: ${CONCURRENCY}`);
+  console.log(`付费兜底: ${ALLOW_PAID ? "已授权" : "未授权（默认关闭）"}`);
+  console.log(`开始从 ${outline.guides.length} 份指南并发提取实体...\n`);
+
+  const results = await runWithConcurrency(
+    outline.guides.map((guide) => () => processGuide(guide)),
+    CONCURRENCY,
+  );
 
   const allEntities = [];
-
-  for (const guide of outline.guides) {
-    // Build hierarchy text for LLM
-    const hierarchyText = guide.hierarchy
-      .map((h1) => {
-        const subs = h1.children
-          .map((h2) => {
-            const subs3 = h2.children
-              .map((h3) => `    - ${h3.title}`)
-              .join("\n");
-            return `  - ${h2.title}${subs3 ? "\n" + subs3 : ""}`;
-          })
-          .join("\n");
-        return `- ${h1.title}${subs ? "\n" + subs : ""}`;
-      })
-      .join("\n");
-
-    const keyParas = guide.keyParagraphs.slice(0, 5).join("\n");
-
-    const prompt = `指南名称: ${guide.title}\n\n章节结构:\n${hierarchyText}\n\n关键段落:\n${keyParas}\n\n请提取以下实体关系：\n1. 该疾病的主要症状\n2. 推荐药物\n3. 诊断检查方法\n4. 危险因素\n5. 治疗方案`;
-
-    try {
-      const entities = await callLLM(prompt);
-      // Attach source
-      for (const e of entities) {
-        if (!e.source) e.source = guide.title;
-      }
-      allEntities.push(...entities);
-      console.log(`  ✅ ${guide.title} → ${entities.length} 条实体`);
-    } catch (err) {
-      console.error(`  ❌ ${guide.title} → ${err.message}`);
+  for (let i = 0; i < outline.guides.length; i++) {
+    const r = results[i];
+    if (r.ok) {
+      allEntities.push(...r.entities);
+      console.log(`  ✅ ${outline.guides[i].title} → ${r.entities.length} 条实体`);
+    } else {
+      console.error(`  ❌ ${outline.guides[i].title} → ${r.error}`);
     }
-
-    // Rate limiting: 短暂延迟避免触发限额
-    await new Promise((r) => setTimeout(r, 500));
   }
 
   // 去重合并
   const unique = new Map();
   for (const e of allEntities) {
     const key = `${e.disease}|${e.entityType}|${e.entityName}|${e.relation}`;
-    if (!unique.has(key)) {
-      unique.set(key, e);
-    }
+    if (!unique.has(key)) unique.set(key, e);
   }
-
-  // 统一口径：所有统计均基于去重后的实体集，确保 totalEntities == uniqueEntities == entities.length
   const uniqueEntities = Array.from(unique.values());
 
   const graph = {

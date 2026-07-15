@@ -332,11 +332,25 @@ for (const it of ITEMS) {
   partials.push({ it, top3, gtHit, evLocalHit, evLocalTot, gradeLocal, gradeStrictLocal, answer, assertion });
 }
 
-// ---------- 阶段二：LLM-Judge 四维（有界并发，吃满 ≤20 免费 Key） ----------
-const judges = await runWithConcurrency(
-  partials.map((p) => () => llmJudge(p.it, p.answer)),
-  SENSENOVA_CONCURRENCY,
-);
+// ---------- 阶段二：LLM-Judge 四维（有界并发；整体看门狗防网络悬挂致进程卡死） ----------
+// 无 Key / 网络不可达 / 代理 TLS 拦截导致 fetch 无法中止时，单条 callOne 虽有 15s AbortController，
+// 极端情况下 Promise 仍可能不 settle；故阶段二整体加 120s 看门狗，超时即降级 skipped 并照常出报告。
+const EVAL_LLM_TIMEOUT_MS = Number(process.env.EVAL_LLM_TIMEOUT_MS) || 120000;
+let judges;
+try {
+  judges = await Promise.race([
+    runWithConcurrency(
+      partials.map((p) => () => llmJudge(p.it, p.answer)),
+      SENSENOVA_CONCURRENCY,
+    ),
+    new Promise((_, rej) =>
+      setTimeout(() => rej(new Error("llm-judge 阶段超时")), EVAL_LLM_TIMEOUT_MS),
+    ),
+  ]);
+} catch (e) {
+  console.error(`⚠ LLM-Judge 阶段超时/异常，降级 skipped：${e.message}`);
+  judges = partials.map(() => ({ skipped: true, reason: "watchdog_timeout" }));
+}
 
 const details = partials.map((p, i) => {
   const j = judges[i];

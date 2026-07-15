@@ -82,10 +82,9 @@ jobs:
 
       - name: 运行全量评测（需 SENSENOVA_API_KEY；缺失/失败则优雅跳过，非故障）
         id: eval
-        if: ${{ secrets.SENSENOVA_API_KEY != '' }}
         continue-on-error: true
         env:
-          SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY }}
+          SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY || '' }}
           CI: "true"
         run: node tests/unit/answer-quality-judge.mjs
 

@@ -408,12 +408,28 @@ export function routeGuides(query, opts = {}) {
     }
 
     // 仅当具备实质性信号（关键词/标题命中，或语义加权分达标）才计入候选，
-    // 避免越界查询因若干高频词元噪声被误召回。
+    // 避免越界查询因若干高频词元噪声被误召回。准入用原始 score，降权仅影响排序。
     const hasStrong =
       matchedKw.length > 0 ||
       titleL.includes(qNorm) ||
       disease.includes(qNorm) ||
       score >= MIN_SCORE;
+    // ④ 非疾病诊治类指南(WS/GBZ 标准·质量控制等)在疾病问法下排序降权，
+    //    抑制其语义词元(患者/控制/妊娠…)漂移抢占；仅当确有真实关键词命中时保留。
+    //    注意：正则收窄为 ^ws|^gbz|质量控制，避免误伤「XX诊疗规范」等疾病指南。
+    const isNonDiseaseGuide =
+      /^(ws|gbz)|质量控制/.test(title) ||
+      (info.disease && info.disease.length > 12);
+    if (isNonDiseaseGuide && matchedKw.length === 0) {
+      score *= 0.4;
+      reasons.push("非疾病类降权");
+    }
+    // ⑤ 纯语义/模糊命中(无关键词·无标题/疾病字面命中)排序降权，抑制 IDF 语义漂移
+    //    (如「控制」漂到 WS 射线标准、「功能/开」漂到甲状腺)，让有强信号的指南上浮。
+    if (matchedKw.length === 0 && !titleL.includes(qNorm) && !disease.includes(qNorm)) {
+      score *= 0.6;
+      reasons.push("纯语义降权");
+    }
     // 显式年份硬约束：用户明确要某年版时，仅保留该年版候选
     // （同行若无匹配则 totalMatched=0，由越界/澄清逻辑接管，优于误推他版）。
     if (qYear != null && candYear != null && candYear !== qYear) {

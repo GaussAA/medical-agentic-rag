@@ -32,12 +32,28 @@ ok("无年份不拒", gateRecency({ year: null }).pass);
 console.log("[quality-gate] 相关闸门");
 ok("命中中文关键词", gateRelevance({ title: "急性心梗管理", disease: "急性心梗", text: "再灌注治疗" }, { disease: "急性心梗" }).pass);
 ok("未命中拒绝", !gateRelevance({ title: "Diabetes care", text: "insulin" }, { disease: "急性心梗", keywords: ["急性心梗"] }).pass);
-ok("英文词元可命中", gateRelevance({ title: "myocardial infarction management" }, { disease: "x", keywords: ["myocardial", "infarction"] }).pass);
+ok("英文核心词可命中标题", gateRelevance({ title: "myocardial infarction management" }, { disease: "心肌梗死", coreEn: "myocardial infarction" }).pass);
+ok("低权威仅蹭弱词拒(COPD论文蹭哮喘词)", !gateRelevance(
+  { title: "Discharge Practices After Hospitalization for COPD Exacerbation", authority: "paper", text: "asthma inhaler laba exacerbation of asthma" },
+  { disease: "哮喘", keywords: ["哮喘", "asthma", "exacerbation"], coreEn: "asthma" },
+).pass);
+ok("高权威正文含病名可放(肺炎指南不以病名冠标题)", gateRelevance(
+  { title: "Assessment of Compliance with National Guidelines", authority: "guideline", text: "pneumonia antibiotic empiric pneumonia therapy" },
+  { disease: "肺炎", keywords: ["肺炎", "pneumonia"], coreEn: "pneumonia" },
+).pass);
+ok("排歧:肺动脉高压不误判为系统性高血压", !gateRelevance(
+  { title: "Exercise Training in Patients with Pulmonary Hypertension", authority: "paper", text: "pulmonary hypertension blood pressure" },
+  { disease: "高血压", keywords: ["高血压", "hypertension"], coreEn: "hypertension", excludeTerms: ["pulmonary"] },
+).pass);
+ok("亚型排歧不误伤真系统性高血压", gateRelevance(
+  { title: "2023 Hypertension Clinical Practice Guideline", authority: "guideline", text: "systemic hypertension blood pressure" },
+  { disease: "高血压", keywords: ["高血压", "hypertension"], coreEn: "hypertension", excludeTerms: ["pulmonary"] },
+).pass);
 
 console.log("[quality-gate] 聚合裁决");
 const good = evaluateCandidate(
   { title: "Acute Myocardial Infarction Guideline", license: "cc-by", openAccess: true, authority: "guideline", year: 2023, disease: "急性心梗", text: "ST-elevation myocardial infarction reperfusion" },
-  { disease: "急性心梗", keywords: ["急性心梗", "myocardial", "infarction"], minAuthority: 1 },
+  { disease: "急性心梗", keywords: ["急性心梗", "myocardial", "infarction"], coreEn: "myocardial infarction", minAuthority: 1 },
 );
 ok("优质候选通过且高分", good.pass && good.score > 0, JSON.stringify(good));
 const bad = evaluateCandidate(

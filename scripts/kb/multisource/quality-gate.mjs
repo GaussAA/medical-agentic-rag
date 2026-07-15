@@ -120,12 +120,69 @@ export function gateRelevance(cand, diseaseOpts = {}) {
     .filter(Boolean)
     .map((k) => k.trim())
     .filter((k) => k.length >= 2);
-  const hay = `${cand.title || ""}\n${cand.text ? cand.text.slice(0, 4000) : ""}`.toLowerCase();
-  const hits = kws.filter((k) => hay.includes(k.toLowerCase()));
+  const title = (cand.title || "").toLowerCase();
+  const body = cand.text ? cand.text.slice(0, 4000).toLowerCase() : "";
+  // 排歧词：命中词若落入排歧词上下文窗口(±40字)内，视为无效命中
+  // 例：高血压排除 "pulmonary" → "Pulmonary Hypertension" 不误判为系统性高血压
+  const exclude = (diseaseOpts.excludeTerms || []).map((e) => e.toLowerCase()).filter(Boolean);
+
+  const inExcludeContext = (hit, hay) => {
+    if (!exclude.length) return false;
+    let idx = hay.indexOf(hit);
+    while (idx !== -1) {
+      for (const ex of exclude) {
+        const exIdx = hay.indexOf(ex, Math.max(0, idx - 40));
+        if (exIdx !== -1 && exIdx <= idx + hit.length + 40) return true;
+      }
+      idx = hay.indexOf(hit, idx + 1);
+    }
+    return false;
+  };
+
+  // 强相关词：疾病中文名 + 英文核心词(coreEn，可为字符串或数组) + 各核心词尾词。
+  // 仅强词命中方可代表「主题明确」；弱词(症状/药物/检验)不放低权威文献串味。
+  const coreEnRaw = diseaseOpts.coreEn;
+  const coreEnList = Array.isArray(coreEnRaw)
+    ? coreEnRaw
+    : (coreEnRaw ? [coreEnRaw] : []);
+  const strong = [target].filter((k) => k.length >= 2);
+  for (const ce of coreEnList) {
+    const ceLower = String(ce || "").trim().toLowerCase();
+    if (!ceLower) continue;
+    strong.push(ceLower);
+    const lw = ceLower.split(/\s+/).pop();
+    if (lw && lw !== ceLower) strong.push(lw);
+  }
+  const strongSet = [...new Set(strong.map((k) => k.toLowerCase()).filter(Boolean))];
+
+  const titleHasStrong = strongSet.some((k) => title.includes(k) && !inExcludeContext(k, title));
+  const bodyStrongHits = [...new Set(strongSet.filter((k) => body.includes(k) && !inExcludeContext(k, body)))].length;
+
+  const auth = gateAuthority({ authority: diseaseOpts.authority || cand.authority });
+  const authLevel = auth.score;
+
+  // 相关阈值（精度优先，防串味）：
+  //   ① 标题含强词（主题明确）→ 入仓；
+  //   ② 高权威(guideline/consensus/society) 且正文含≥1强词 → 入仓（指南常以「依从性/共识」冠标题而非病名）；
+  //   ③ 正文含≥6强词（低权威但深度论述该病）→ 入仓；
+  //   低权威文献仅正文偶提(如 COPD 论文蹭哮喘词、肥大细胞增多症偶提骨质疏松) → 拒。
+  const pass = titleHasStrong
+    || (authLevel >= AUTHORITY.SOCIETY && bodyStrongHits >= 1)
+    || bodyStrongHits >= 6;
+
+  const hits = [...new Set([
+    ...strongSet.filter((k) => title.includes(k) || body.includes(k)),
+    ...kws.filter((k) => title.includes(k.toLowerCase()) || body.includes(k.toLowerCase())),
+  ])];
   return {
-    pass: hits.length > 0,
+    pass,
     hits,
-    reason: hits.length ? `命中关键词: ${hits.join("、")}` : "未命中目标疾病关键词",
+    titleHasStrong,
+    bodyStrongHits,
+    authority: auth.label,
+    reason: pass
+      ? `强相关命中: ${hits.slice(0, 6).join("、")}`
+      : "未达强相关阈值(低权威文献须标题含病名/英文核心词；高权威须正文含病名)",
   };
 }
 

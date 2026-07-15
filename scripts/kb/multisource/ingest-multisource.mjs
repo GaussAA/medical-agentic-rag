@@ -48,7 +48,7 @@ const GAP_TARGETS = [
     enKeywords: ["myocardial", "infarction", "stemi", "acute coronary", "reperfusion", "st-segment", "pci", "anticoagul", "thromboly"],
     adapter: "europepmc",
     department: "心血管",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   {
     id: "cvd-hf",
@@ -58,7 +58,7 @@ const GAP_TARGETS = [
     enKeywords: ["heart failure", "ejection fraction", "diuretic", "arni", "beta blocker", "aldosterone"],
     adapter: "europepmc",
     department: "心血管",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   // ── 第二批：呼吸/神经/消化/感染/内分泌缺口（扩展现有 PMC OA 源覆盖范围）──
   {
@@ -69,7 +69,7 @@ const GAP_TARGETS = [
     enKeywords: ["stroke", "ischemic", "cerebrovascular", "thrombolysis", "tissue plasminogen", "thrombectomy"],
     adapter: "europepmc",
     department: "神经内科",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   {
     id: "resp-copd",
@@ -79,7 +79,7 @@ const GAP_TARGETS = [
     enKeywords: ["copd", "chronic obstructive", "pulmonary", "bronchodilator", "inhaled corticosteroid", "pulmonary rehabilitation"],
     adapter: "europepmc",
     department: "呼吸内科",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   {
     id: "neuro-epilepsy",
@@ -89,7 +89,7 @@ const GAP_TARGETS = [
     enKeywords: ["epilepsy", "seizure", "antiepileptic", "anticonvulsant", "status epilepticus", "eeg"],
     adapter: "europepmc",
     department: "神经内科",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   {
     id: "infect-tb",
@@ -99,7 +99,7 @@ const GAP_TARGETS = [
     enKeywords: ["tuberculosis", "tb", "mycobacterium", "isoniazid", "rifampicin", "mdr-tb"],
     adapter: "europepmc",
     department: "感染科",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   {
     id: "gi-cirrhosis",
@@ -109,7 +109,7 @@ const GAP_TARGETS = [
     enKeywords: ["cirrhosis", "liver", "portal hypertension", "ascites", "variceal", "hepatic encephalopathy"],
     adapter: "europepmc",
     department: "消化内科",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   // ── 第三批：内分泌/风湿/肾内/血液/消化余量 —— 持续深化 PMC OA 覆盖 ──
   {
@@ -120,7 +120,7 @@ const GAP_TARGETS = [
     enKeywords: ["diabetic ketoacidosis", "dka", "hyperglycemic crisis", "insulin", "intravenous fluid", "electrolyte"],
     adapter: "europepmc",
     department: "内分泌科",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   {
     id: "endo-hyperthyroid",
@@ -130,7 +130,7 @@ const GAP_TARGETS = [
     enKeywords: ["hyperthyroidism", "graves", "antithyroid", "methimazole", "propylthiouracil", "thyrotoxicosis"],
     adapter: "europepmc",
     department: "内分泌科",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   {
     id: "rheum-rheumatoid",
@@ -140,7 +140,7 @@ const GAP_TARGETS = [
     enKeywords: ["rheumatoid arthritis", "dmard", "methotrexate", "biologic", "jak inhibitor", "anti-tnf"],
     adapter: "europepmc",
     department: "风湿免疫科",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   {
     id: "gi-pancreatitis",
@@ -150,7 +150,7 @@ const GAP_TARGETS = [
     enKeywords: ["pancreatitis", "pancreatic necrosis", "ercp", "fluid resuscitation", "enteral nutrition", "gallstone"],
     adapter: "europepmc",
     department: "消化内科",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   {
     id: "nephro-ckd",
@@ -160,7 +160,7 @@ const GAP_TARGETS = [
     enKeywords: ["chronic kidney disease", "ckd", "renal failure", "dialysis", "egfr", "uremic"],
     adapter: "europepmc",
     department: "肾内科",
-    maxDocs: 2,
+    maxDocs: 4,
   },
   {
     id: "hemo-anemia",
@@ -170,13 +170,144 @@ const GAP_TARGETS = [
     enKeywords: ["anemia", "iron deficiency", "ferritin", "hemoglobin", "erythropoietin", "iron supplement"],
     adapter: "europepmc",
     department: "血液内科",
-    maxDocs: 2,
+    maxDocs: 4,
+  },
+  // ── 第四批：加厚现有 13 病种 + 扩至新高发病种（深化 PMC OA 覆盖）──
+  // 注：现有 13 病种 maxDocs 已由 2 提至 4（见上），此处新增未覆盖的高发大病种。
+  {
+    id: "htn-hypertension",
+    disease: "高血压",
+    query: "hypertension management clinical practice guideline",
+    keywords: ["高血压", "降压", "ARB", "ACEI", "钙通道阻滞剂", "CCB", "利尿剂", "血压控制目标"],
+    enKeywords: ["hypertension", "antihypertensive", "arb", "ace inhibitor", "calcium channel blocker", "blood pressure"],
+    adapter: "europepmc",
+    department: "心血管内科",
+    maxDocs: 3,
+    excludeTerms: ["pulmonary"], // 排歧：排除肺动脉高压亚型误入系统性高血压
+  },
+  {
+    id: "cardio-af",
+    disease: "心房颤动",
+    query: "atrial fibrillation management guideline anticoagulation",
+    keywords: ["房颤", "心房颤动", "抗凝", "华法林", "NOAC", "室率控制", "节律控制", "卒中预防"],
+    enKeywords: ["atrial fibrillation", "anticoagul", "warfarin", "noac", "rate control", "rhythm control", "stroke prevention"],
+    adapter: "europepmc",
+    department: "心血管内科",
+    maxDocs: 3,
+  },
+  {
+    id: "endo-t2dm",
+    disease: "2型糖尿病",
+    query: "type 2 diabetes management clinical guideline",
+    keywords: ["2型糖尿病", "糖尿病", "降糖", "二甲双胍", "GLP-1", "SGLT2抑制剂", "血糖目标", "并发症筛查"],
+    enKeywords: ["type 2 diabetes", "metformin", "glp-1", "sglt2", "glycemic", "antidiabetic", "complication"],
+    adapter: "europepmc",
+    department: "内分泌科",
+    maxDocs: 3,
+  },
+  {
+    id: "resp-asthma",
+    disease: "哮喘",
+    query: "asthma management clinical guideline",
+    keywords: ["哮喘", "支气管哮喘", "吸入激素", "ICS", "长效β2激动剂", "LABA", "峰流速", "急性发作"],
+    enKeywords: ["asthma", "inhaled corticosteroid", "ics", "laba", "bronchodilator", "exacerbation", "peak flow"],
+    adapter: "europepmc",
+    department: "呼吸内科",
+    maxDocs: 3,
+  },
+  {
+    id: "rheum-gout",
+    disease: "痛风",
+    query: "gout hyperuricemia management clinical guideline",
+    keywords: ["痛风", "高尿酸血症", "别嘌醇", "非布司他", "秋水仙碱", "急性发作", "降尿酸"],
+    enKeywords: ["gout", "hyperuricemia", "allopurinol", "febuxostat", "colchicine", "urate", "flare"],
+    adapter: "europepmc",
+    department: "风湿免疫科",
+    maxDocs: 3,
+  },
+  {
+    id: "infect-chb",
+    disease: "慢性乙型肝炎",
+    query: "chronic hepatitis B management clinical guideline",
+    keywords: ["慢性乙肝", "乙肝", "抗病毒治疗", "恩替卡韦", "替诺福韦", "核苷类似物", "核苷(酸)类似物", "HBV"],
+    enKeywords: ["chronic hepatitis b", "antiviral", "entecavir", "tenofovir", "nucleotide", "hbv", "surface antigen"],
+    adapter: "europepmc",
+    department: "感染科",
+    maxDocs: 3,
+  },
+  {
+    id: "resp-cap",
+    disease: "社区获得性肺炎",
+    query: "community acquired pneumonia management guideline",
+    keywords: ["社区获得性肺炎", "肺炎", "抗感染", "经验性治疗", "CURB-65", "耐药", "初始治疗"],
+    enKeywords: ["community acquired pneumonia", "pneumonia", "antibiotic", "empiric", "curb-65", "antimicrobial", "initial therapy"],
+    adapter: "europepmc",
+    department: "呼吸内科",
+    maxDocs: 3,
+  },
+  {
+    id: "crit-sepsis",
+    disease: "脓毒症",
+    query: "sepsis management guideline surviving sepsis campaign",
+    keywords: ["脓毒症", "败血症", "感染性休克", "集束化", "液体复苏", "血管活性药", "早期目标治疗", "qSOFA"],
+    enKeywords: ["sepsis", "septic shock", "bundle", "fluid resuscitation", "vasopressor", "early goal", "qsofa", "surviving sepsis"],
+    adapter: "europepmc",
+    department: "重症医学科",
+    maxDocs: 3,
+  },
+  {
+    id: "meta-dyslipid",
+    disease: "血脂异常",
+    query: "dyslipidemia management clinical guideline statin",
+    keywords: ["血脂异常", "高脂血症", "他汀", "LDL-C", "降脂", "ASCVD", "他汀不耐受", "PCSK9"],
+    enKeywords: ["dyslipidemia", "statin", "ldl cholesterol", "lipid", "ascvd", "pcsk9", "cholesterol"],
+    adapter: "europepmc",
+    department: "心血管内科",
+    maxDocs: 3,
+  },
+  {
+    id: "rheum-osteop",
+    disease: "骨质疏松",
+    query: "osteoporosis management clinical guideline",
+    keywords: ["骨质疏松", "骨密度", "双膦酸盐", "钙", "维生素D", "骨折风险", "FRAX", "抗骨质疏松"],
+    enKeywords: ["osteoporosis", "bone mineral density", "bisphosphonate", "calcium", "vitamin d", "frax", "fracture risk"],
+    adapter: "europepmc",
+    department: "风湿免疫科",
+    maxDocs: 3,
   },
 ];
 
 function sanitizeName(s) {
   return String(s).replace(/[\\/:*?"<>|\s]+/g, "_").slice(0, 120);
 }
+
+// 各病种英文核心词（数组，用于相关闸门的「强相关」判定；标题须含任一词，低权威文献方入仓）
+// 复合病名/标题近义词须显式列出（避免从 query 自动抽取失真，且覆盖标题常用变体）。
+const CORE_EN = {
+  "cvd-ami": ["myocardial infarction", "stemi"],
+  "cvd-hf": ["heart failure"],
+  "cvd-stroke": ["stroke", "ischemic stroke"],
+  "resp-copd": ["copd", "chronic obstructive"],
+  "neuro-epilepsy": ["epilepsy", "seizure"],
+  "infect-tb": ["tuberculosis", "tb"],
+  "gi-cirrhosis": ["cirrhosis", "liver cirrhosis"],
+  "endo-dka": ["diabetic ketoacidosis", "dka"],
+  "endo-hyperthyroid": ["hyperthyroidism", "graves disease", "graves"],
+  "rheum-rheumatoid": ["rheumatoid arthritis", "ra"],
+  "gi-pancreatitis": ["pancreatitis"],
+  "nephro-ckd": ["chronic kidney disease", "ckd"],
+  "hemo-anemia": ["anemia", "iron deficiency", "ferritin", "hemoglobin"],
+  "htn-hypertension": ["hypertension"],
+  "cardio-af": ["atrial fibrillation", "afib"],
+  "endo-t2dm": ["diabetes", "type 2 diabetes"],
+  "resp-asthma": ["asthma"],
+  "rheum-gout": ["gout", "hyperuricemia"],
+  "infect-chb": ["hepatitis b", "hepatitis"],
+  "resp-cap": ["pneumonia", "community acquired pneumonia"],
+  "crit-sepsis": ["sepsis", "septic"],
+  "meta-dyslipid": ["dyslipidemia", "cholesterol", "statin"],
+  "rheum-osteop": ["osteoporosis", "bone mineral density"],
+};
 
 async function main() {
   const targets = targetArg ? GAP_TARGETS.filter((t) => t.id === targetArg) : GAP_TARGETS;
@@ -210,6 +341,9 @@ async function main() {
       const verdict = evaluateCandidate(c, {
         disease: gap.disease,
         keywords: [...(gap.keywords || []), ...(gap.enKeywords || [])],
+        excludeTerms: gap.excludeTerms || [],
+        coreEn: CORE_EN[gap.id] || gap.coreEn || "",
+        authority: c.authority,
         minAuthority: 1,
       });
       const tag = verdict.pass ? `✓${verdict.score}` : `✗`;

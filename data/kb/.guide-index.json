@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-13T09:13:52.746Z",
-  "totalGuides": 160,
-  "totalKeywords": 878,
+  "generatedAt": "2026-07-14T19:14:13.709Z",
+  "totalGuides": 170,
+  "totalKeywords": 894,
   "guideMap": {
     "1.2026年国家医疗质量安全改进目标": {
       "id": "1.2026年国家医疗质量安全改进目标",
@@ -706,8 +706,40 @@
       "sectionCount": 29,
       "keyParagraphCount": 0
     },
+    "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "cardio-af__EuropePMCOA__PMC12985568",
+      "disease": "心房颤动",
+      "version": null,
+      "normalizedDisease": "心房颤动",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "心房颤动"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
+    "脓毒症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "crit-sepsis__EuropePMCOA__PMC12979551",
+      "disease": "脓毒症",
+      "version": null,
+      "normalizedDisease": "脓毒症",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "脓毒症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "脓毒症"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
     "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
-      "id": "cvd-ami__EuropePMCOA__PMC13135418",
+      "id": "cvd-ami__EuropePMCOA__PMC12948573",
       "disease": "急性心梗",
       "version": null,
       "normalizedDisease": "急性心梗",
@@ -739,7 +771,7 @@
       "keyParagraphCount": 0
     },
     "脑卒中诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
-      "id": "cvd-stroke__EuropePMCOA__PMC13144870",
+      "id": "cvd-stroke__EuropePMCOA__PMC12985467",
       "disease": "脑卒中",
       "version": null,
       "normalizedDisease": "脑卒中",
@@ -786,6 +818,22 @@
       "sectionCount": 1,
       "keyParagraphCount": 0
     },
+    "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "endo-t2dm__EuropePMCOA__PMC13232412",
+      "disease": "2型糖尿病",
+      "version": null,
+      "normalizedDisease": "2型糖尿病",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "2型糖尿病"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
     "肝硬化诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "gi-cirrhosis__EuropePMCOA__PMC12986046",
       "disease": "肝硬化",
@@ -819,7 +867,7 @@
       "keyParagraphCount": 0
     },
     "贫血诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
-      "id": "hemo-anemia__EuropePMCOA__PMC12985792",
+      "id": "hemo-anemia__EuropePMCOA__PMC12940362",
       "disease": "贫血",
       "version": null,
       "normalizedDisease": "贫血",
@@ -834,8 +882,40 @@
       "sectionCount": 1,
       "keyParagraphCount": 0
     },
+    "高血压诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "htn-hypertension__EuropePMCOA__PMC13299701",
+      "disease": "高血压",
+      "version": null,
+      "normalizedDisease": "高血压",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "高血压诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "高血压"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
+    "慢性乙型肝炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "infect-chb__EuropePMCOA__PMC12986096",
+      "disease": "慢性乙型肝炎",
+      "version": null,
+      "normalizedDisease": "慢性乙型肝炎",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "慢性乙型肝炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "慢性乙型肝炎"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
     "结核病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
-      "id": "infect-tb__EuropePMCOA__PMC13226504",
+      "id": "infect-tb__EuropePMCOA__PMC12942670",
       "disease": "结核病",
       "version": null,
       "normalizedDisease": "结核病",
@@ -850,8 +930,24 @@
       "sectionCount": 1,
       "keyParagraphCount": 0
     },
+    "血脂异常诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "meta-dyslipid__EuropePMCOA__PMC12984414",
+      "disease": "血脂异常",
+      "version": null,
+      "normalizedDisease": "血脂异常",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "血脂异常诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "血脂异常"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
     "慢性肾脏病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
-      "id": "nephro-ckd__EuropePMCOA__PMC13244302",
+      "id": "nephro-ckd__EuropePMCOA__PMC12941503",
       "disease": "慢性肾脏病",
       "version": null,
       "normalizedDisease": "慢性肾脏病",
@@ -867,7 +963,7 @@
       "keyParagraphCount": 0
     },
     "癫痫诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
-      "id": "neuro-epilepsy__EuropePMCOA__PMC12941532",
+      "id": "neuro-epilepsy__EuropePMCOA__PMC11815099",
       "disease": "癫痫",
       "version": null,
       "normalizedDisease": "癫痫",
@@ -882,8 +978,40 @@
       "sectionCount": 1,
       "keyParagraphCount": 0
     },
+    "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "resp-asthma__EuropePMCOA__PMC12941637",
+      "disease": "哮喘",
+      "version": null,
+      "normalizedDisease": "哮喘",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "哮喘"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
+    "社区获得性肺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "resp-cap__EuropePMCOA__PMC12791840",
+      "disease": "社区获得性肺炎",
+      "version": null,
+      "normalizedDisease": "社区获得性肺炎",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "社区获得性肺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "社区获得性肺炎"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
     "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
-      "id": "resp-copd__EuropePMCOA__PMC13185618",
+      "id": "resp-copd__EuropePMCOA__PMC12986395",
       "disease": "慢性阻塞性肺疾病",
       "version": null,
       "normalizedDisease": "慢性阻塞性肺疾病",
@@ -894,6 +1022,38 @@
       "keywords": [
         "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "慢性阻塞性肺疾病"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
+    "痛风诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "rheum-gout__EuropePMCOA__PMC11842343",
+      "disease": "痛风",
+      "version": null,
+      "normalizedDisease": "痛风",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "痛风诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "痛风"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
+    "骨质疏松诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
+      "id": "rheum-osteop__EuropePMCOA__PMC12413664",
+      "disease": "骨质疏松",
+      "version": null,
+      "normalizedDisease": "骨质疏松",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "骨质疏松诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+        "骨质疏松"
       ],
       "sectionCount": 1,
       "keyParagraphCount": 0
@@ -3672,6 +3832,18 @@
     "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则": [
       "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则"
     ],
+    "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "心房颤动": [
+      "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "脓毒症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "脓毒症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "脓毒症": [
+      "脓毒症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
     "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
       "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
     ],
@@ -3702,6 +3874,13 @@
     "甲状腺功能亢进症": [
       "甲状腺功能亢进症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
     ],
+    "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "2型糖尿病": [
+      "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "中国糖尿病防治指南（2024版）"
+    ],
     "肝硬化诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
       "肝硬化诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
     ],
@@ -3724,11 +3903,33 @@
       "自身免疫性溶血性贫血诊疗指南（2022年版）",
       "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）"
     ],
+    "高血压诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "高血压诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "高血压": [
+      "高血压诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "中国高血压防治指南(2024年修订版)",
+      "基层血液透析室（中心）建设与服务指南（试行）",
+      "脑血管病防治指南（2024年版）"
+    ],
+    "慢性乙型肝炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "慢性乙型肝炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "慢性乙型肝炎": [
+      "慢性乙型肝炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "慢性乙型肝炎防治指南（2022年版）"
+    ],
     "结核病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
       "结核病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
     ],
     "结核病": [
       "结核病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "血脂异常诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "血脂异常诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "血脂异常": [
+      "血脂异常诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
     ],
     "慢性肾脏病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
       "慢性肾脏病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
@@ -3742,12 +3943,39 @@
     "癫痫": [
       "癫痫诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
     ],
+    "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "哮喘": [
+      "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "社区获得性肺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "社区获得性肺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "社区获得性肺炎": [
+      "社区获得性肺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
     "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
       "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
     ],
     "慢性阻塞性肺疾病": [
       "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）"
+    ],
+    "痛风诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "痛风诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "痛风": [
+      "痛风诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "骨质疏松诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
+      "骨质疏松诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+    ],
+    "骨质疏松": [
+      "骨质疏松诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
+      "老年髋部骨折诊疗与管理指南（2022年版）",
+      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
     ],
     "类风湿关节炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
       "类风湿关节炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
@@ -3790,11 +4018,6 @@
       "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
       "胰腺癌诊治指南（2022年版）",
       "舌癌诊疗指南（2022年版）"
-    ],
-    "骨质疏松": [
-      "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
-      "老年髋部骨折诊疗与管理指南（2022年版）",
-      "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）"
     ],
     "高能量损伤": [
       "三踝骨折切开复位内固定术加速康复临床路径（2023年版）"
@@ -4022,9 +4245,6 @@
     "中国糖尿病防治指南": [
       "中国糖尿病防治指南（2024版）"
     ],
-    "2型糖尿病": [
-      "中国糖尿病防治指南（2024版）"
-    ],
     "医学营养治疗": [
       "中国糖尿病防治指南（2024版）"
     ],
@@ -4135,11 +4355,6 @@
     ],
     "中国高血压防治指南": [
       "中国高血压防治指南(2024年修订版)"
-    ],
-    "高血压": [
-      "中国高血压防治指南(2024年修订版)",
-      "基层血液透析室（中心）建设与服务指南（试行）",
-      "脑血管病防治指南（2024年版）"
     ],
     "起始小剂量降压治疗": [
       "中国高血压防治指南(2024年修订版)"
@@ -4808,9 +5023,6 @@
       "慢性乙型肝炎防治指南（2022年版）"
     ],
     "慢性乙型肝炎防治指南": [
-      "慢性乙型肝炎防治指南（2022年版）"
-    ],
-    "慢性乙型肝炎": [
       "慢性乙型肝炎防治指南（2022年版）"
     ],
     "TAF": [

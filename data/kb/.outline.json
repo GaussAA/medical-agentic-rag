@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-13T09:13:52.601Z",
-  "totalFiles": 181,
-  "totalSections": 20557,
+  "generatedAt": "2026-07-14T19:14:13.594Z",
+  "totalFiles": 232,
+  "totalSections": 20608,
   "totalKeyParagraphs": 496,
   "guides": [
     {
@@ -358,6 +358,62 @@
       "keyParagraphs": []
     },
     {
+      "id": "cardio-af__EuropePMCOA__PMC12985568",
+      "title": "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "cardio-af__EuropePMCOA__PMC12986385",
+      "title": "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "cardio-af__EuropePMCOA__PMC13226576",
+      "title": "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "crit-sepsis__EuropePMCOA__PMC12979551",
+      "title": "脓毒症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "crit-sepsis__EuropePMCOA__PMC12984809",
+      "title": "脓毒症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "crit-sepsis__EuropePMCOA__PMC12985712",
+      "title": "脓毒症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "cvd-ami__EuropePMCOA__PMC12948573",
+      "title": "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "cvd-ami__EuropePMCOA__PMC13135418",
       "title": "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "sectionCount": 1,
@@ -390,6 +446,14 @@
       "keyParagraphs": []
     },
     {
+      "id": "cvd-ami__EuropePMCOA__PMC13300913",
+      "title": "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "cvd-ami__EuropePMCOA__PMC13301706",
       "title": "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "sectionCount": 1,
@@ -408,6 +472,38 @@
     {
       "id": "cvd-hf__EuropePMCOA__PMC13094103",
       "title": "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "cvd-hf__EuropePMCOA__PMC13297177",
+      "title": "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "cvd-hf__EuropePMCOA__PMC13302568",
+      "title": "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "cvd-stroke__EuropePMCOA__PMC12985467",
+      "title": "脑卒中诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "cvd-stroke__EuropePMCOA__PMC13095198",
+      "title": "脑卒中诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "sectionCount": 1,
       "keyParagraphCount": 0,
       "hierarchy": [],
@@ -462,6 +558,54 @@
       "keyParagraphs": []
     },
     {
+      "id": "endo-hyperthyroid__EuropePMCOA__PMC6553312",
+      "title": "甲状腺功能亢进症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "endo-hyperthyroid__EuropePMCOA__PMC8089649",
+      "title": "甲状腺功能亢进症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "endo-hyperthyroid__EuropePMCOA__PMC8265957",
+      "title": "甲状腺功能亢进症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "endo-t2dm__EuropePMCOA__PMC13232412",
+      "title": "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "endo-t2dm__EuropePMCOA__PMC13300920",
+      "title": "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "endo-t2dm__EuropePMCOA__PMC13301490",
+      "title": "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "gi-cirrhosis__EuropePMCOA__PMC12986046",
       "title": "肝硬化诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "sectionCount": 1,
@@ -494,6 +638,22 @@
       "keyParagraphs": []
     },
     {
+      "id": "hemo-anemia__EuropePMCOA__PMC12940362",
+      "title": "贫血诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "hemo-anemia__EuropePMCOA__PMC12941927",
+      "title": "贫血诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "hemo-anemia__EuropePMCOA__PMC12985792",
       "title": "贫血诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "sectionCount": 1,
@@ -504,6 +664,54 @@
     {
       "id": "hemo-anemia__EuropePMCOA__PMC13302344",
       "title": "贫血诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "htn-hypertension__EuropePMCOA__PMC13299701",
+      "title": "高血压诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "htn-hypertension__EuropePMCOA__PMC13300920",
+      "title": "高血压诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "infect-chb__EuropePMCOA__PMC12986096",
+      "title": "慢性乙型肝炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "infect-chb__EuropePMCOA__PMC13244871",
+      "title": "慢性乙型肝炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "infect-chb__EuropePMCOA__PMC13298158",
+      "title": "慢性乙型肝炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "infect-tb__EuropePMCOA__PMC12942670",
+      "title": "结核病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "sectionCount": 1,
       "keyParagraphCount": 0,
       "hierarchy": [],
@@ -526,7 +734,39 @@
       "keyParagraphs": []
     },
     {
+      "id": "meta-dyslipid__EuropePMCOA__PMC12984414",
+      "title": "血脂异常诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "meta-dyslipid__EuropePMCOA__PMC13226597",
+      "title": "血脂异常诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "nephro-ckd__EuropePMCOA__PMC12941503",
+      "title": "慢性肾脏病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "nephro-ckd__EuropePMCOA__PMC13244302",
+      "title": "慢性肾脏病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "nephro-ckd__EuropePMCOA__PMC13301278",
       "title": "慢性肾脏病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "sectionCount": 1,
       "keyParagraphCount": 0,
@@ -536,6 +776,14 @@
     {
       "id": "nephro-ckd__EuropePMCOA__PMC13301456",
       "title": "慢性肾脏病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "neuro-epilepsy__EuropePMCOA__PMC11815099",
+      "title": "癫痫诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "sectionCount": 1,
       "keyParagraphCount": 0,
       "hierarchy": [],
@@ -574,7 +822,79 @@
       "keyParagraphs": []
     },
     {
+      "id": "resp-asthma__EuropePMCOA__PMC12941637",
+      "title": "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "resp-asthma__EuropePMCOA__PMC13244500",
+      "title": "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "resp-asthma__EuropePMCOA__PMC13296869",
+      "title": "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "resp-cap__EuropePMCOA__PMC12791840",
+      "title": "社区获得性肺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "resp-cap__EuropePMCOA__PMC12792569",
+      "title": "社区获得性肺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "resp-cap__EuropePMCOA__PMC13295471",
+      "title": "社区获得性肺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "resp-copd__EuropePMCOA__PMC12986395",
+      "title": "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "resp-copd__EuropePMCOA__PMC12995176",
+      "title": "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "resp-copd__EuropePMCOA__PMC13185618",
+      "title": "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "resp-copd__EuropePMCOA__PMC13243137",
       "title": "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "sectionCount": 1,
       "keyParagraphCount": 0,
@@ -606,7 +926,95 @@
       "keyParagraphs": []
     },
     {
+      "id": "resp-copd__EuropePMCOA__PMC13300697",
+      "title": "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "rheum-gout__EuropePMCOA__PMC11842343",
+      "title": "痛风诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "rheum-gout__EuropePMCOA__PMC11843587",
+      "title": "痛风诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "rheum-gout__EuropePMCOA__PMC13094756",
+      "title": "痛风诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "rheum-osteop__EuropePMCOA__PMC12413664",
+      "title": "骨质疏松诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "rheum-osteop__EuropePMCOA__PMC13297382",
+      "title": "骨质疏松诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "rheum-osteop__EuropePMCOA__PMC13298390",
+      "title": "骨质疏松诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "rheum-rheumatoid__EuropePMCOA__PMC12607838",
+      "title": "类风湿关节炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "rheum-rheumatoid__EuropePMCOA__PMC12941371",
+      "title": "类风湿关节炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "rheum-rheumatoid__EuropePMCOA__PMC12942644",
+      "title": "类风湿关节炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "rheum-rheumatoid__EuropePMCOA__PMC13249321",
+      "title": "类风湿关节炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "sectionCount": 1,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "rheum-rheumatoid__EuropePMCOA__PMC13296711",
       "title": "类风湿关节炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "sectionCount": 1,
       "keyParagraphCount": 0,

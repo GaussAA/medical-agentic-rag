@@ -4,11 +4,10 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
  * Agnes AI provider extension
  *
  * API Endpoint: https://apihub.agnes-ai.com/v1
- * 可用模型（共2个，均免费）:
- *   1. agnes-2.5-flash ← 2026-07-13 新发布，Agent/Coding 优化，更强
- *   2. agnes-2.0-flash ← 原免费模型，1M 上下文/FC/Tool Use
+ * 模型: agnes-2.0-flash（免费，1M 上下文/FC/Tool Use，RPM=20）
+ * 注：agnes-2.5-flash 2026-07-13 发布但当前 Key（default group）返回 503 model_not_found，
+ *     暂不可用，待官方开放后补回。
  * Auth: AGNES_API_KEY environment variable
- * 免费用户 RPM=20，不适于高并发批量（sensenova 20 Key 池负责主力并发）
  */
 export default function (pi: ExtensionAPI) {
   pi.registerProvider("agnes", {
@@ -18,21 +17,12 @@ export default function (pi: ExtensionAPI) {
     api: "openai-completions",
     models: [
       {
-        id: "agnes-2.5-flash",
-        name: "Agnes 2.5 Flash",
-        api: "openai-completions",
-        input: ["text"],
-        contextWindow: 256_000, // 新版，与 2.0 同规格
-        maxTokens: 65536,
-        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-      },
-      {
         id: "agnes-2.0-flash",
         name: "Agnes 2.0 Flash",
         api: "openai-completions",
         input: ["text"],
-        contextWindow: 256_000, // Agnes 官方文档：2026年6月从 1M 回滚到 256K
-        maxTokens: 65536, // Agnes API 限制最大 65536
+        contextWindow: 256_000,
+        maxTokens: 65536,
         cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
       },
     ],

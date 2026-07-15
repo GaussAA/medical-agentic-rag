@@ -88,11 +88,17 @@ export function resetHealthState() {
 
 /**
  * 探测单个 Provider 健康状态（真实 HTTP）。
+ * sensenova 类（authEnv=SENSENOVA_API_KEY）若只有 Key 池(SENSENOVA_API_KEYS)无单 Key 时，从池取首个。
  * @param {object} p PROVIDERS 中的一项
  * @returns {Promise<{provider:string,model:string,healthy:boolean,reason:string,ts:number}>}
  */
 export async function runProbe(p) {
-  const apiKey = process.env[p.authEnv];
+  let apiKey = process.env[p.authEnv];
+  // sensenova Key 池兜底：若单 Key 不存在但有 SENSENOVA_API_KEYS 池，取首个
+  if (!apiKey && p.authEnv === "SENSENOVA_API_KEY") {
+    const pool = (process.env.SENSENOVA_API_KEYS || "").split(/[\s,]+/).map(s => s.trim()).filter(Boolean);
+    if (pool.length) apiKey = pool[0];
+  }
   const ts = Date.now();
   const key = `${p.provider}|${p.model}`;
   if (!apiKey) {

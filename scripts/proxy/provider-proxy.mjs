@@ -62,14 +62,45 @@ let metrics = { requests: 0, errors: 0, failovers: 0, byProvider: {} };
 // 核心逻辑
 // ============================================================
 
-/** 获取 provider 的 API Key（环境变量）。 */
+/** 获取 provider 的 API Key（环境变量）。单 Key 模式（非 sensenova）。 */
 function getApiKey(p) {
   return process.env[p.authEnv] || null;
 }
 
-/** 探测单个 Provider 健康。 */
+// ---- sensenova 20 Key 池并发轮询 ----
+// SENSENOVA_API_KEYS 为逗号/换行分隔的免费 Key 池（最多 20 并发）；
+// SENSENOVA_API_KEY 为向后兼容的单 Key 形式。合并为一池，按轮询分发，
+// 使所有经 proxy 路由至 sensenova 的请求（P1 免费 / P2 免费深搜）都能利用并发额度。
+function parseKeys(raw) {
+  if (!raw) return [];
+  return raw
+    .split(/[\s,]+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+const SENSENOVA_KEY_POOL = (() => {
+  const keys = parseKeys(process.env.SENSENOVA_API_KEYS || process.env.SENSENOVA_API_KEY || "");
+  if (process.env.SENSENOVA_API_KEY && !keys.includes(process.env.SENSENOVA_API_KEY)) {
+    keys.push(process.env.SENSENOVA_API_KEY);
+  }
+  return keys;
+})();
+let rrKeyIdx = 0;
+/** 轮询取下一个 sensenova Key。 */
+function nextSensenovaKey() {
+  if (!SENSENOVA_KEY_POOL.length) return null;
+  const key = SENSENOVA_KEY_POOL[rrKeyIdx % SENSENOVA_KEY_POOL.length];
+  rrKeyIdx = (rrKeyIdx + 1) % SENSENOVA_KEY_POOL.length;
+  return key;
+}
+
+/** 探测单个 Provider 健康。sensenova 类回退到 Key 池取首个 Key。 */
 async function probeProvider(p) {
-  const apiKey = getApiKey(p);
+  // sensenova 类：先试单 Key，若无则从 Key 池取首个
+  let apiKey = getApiKey(p);
+  if (!apiKey && p.authEnv === "SENSENOVA_API_KEY" && SENSENOVA_KEY_POOL.length) {
+    apiKey = SENSENOVA_KEY_POOL[0];
+  }
   if (!apiKey) return { ...p, healthy: false, reason: `缺 ${p.authEnv}` };
   try {
     const ctrl = new AbortController();
@@ -149,18 +180,22 @@ function onSuccess() {
   consecutiveFailures = 0;
 }
 
-/** 转发请求到当前 Provider。 */
+/** 转发请求到当前 Provider，sensenova 路由走 Key 池轮询助力并发。 */
 async function forwardRequest(body) {
   if (!currentProvider) await selectProvider();
 
-  const apiKey = getApiKey(currentProvider);
-  if (!apiKey) throw new Error(`当前 Provider ${currentProvider.label} 缺 API Key`);
-
+  const isSensenova = () => currentProvider.baseUrl.includes("token.sensenova.cn");
   const model = body.model || currentModelName;
-  const url = `${currentProvider.baseUrl}/chat/completions`;
+  const prevBaseUrl = currentProvider.baseUrl;
 
   let lastErr;
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    // 每次尝试（含重试）都轮询 Key 池——sensenova 换 Key 缓解单 Key 限速
+    const apiKey = isSensenova() ? nextSensenovaKey() : getApiKey(currentProvider);
+    if (!apiKey) throw new Error(`当前 Provider ${currentProvider.label} 缺 API Key`);
+
+    const url = `${currentProvider.baseUrl}/chat/completions`;
+
     if (attempt > 0) {
       console.log(`[proxy] 重试 ${attempt}/${MAX_RETRIES}...`);
       await new Promise((r) => setTimeout(r, RETRY_DELAY * attempt));
@@ -189,13 +224,10 @@ async function forwardRequest(body) {
     } catch (err) {
       lastErr = err;
       await onError(err);
-      // 如果切换了 Provider，用新 Provider 重试
-      if (currentProvider.provider !== PROVIDERS.find(p => p.provider === currentProvider.provider)?.provider) {
-        // provider 已变，用新 provider 重试
-        const newKey = getApiKey(currentProvider);
-        if (newKey) {
-          body = { ...body, model: currentModelName };
-        }
+      // 断路器切换 Provider 后，baseUrl 已变，重试用新 endpoint
+      if (currentProvider.baseUrl !== prevBaseUrl) {
+        // 新 Provider 无需保留旧 body 中的 model 名
+        body = { ...body, model: currentModelName };
       }
     }
   }

@@ -77,6 +77,8 @@ Thumbs.db
 # ========== 忽略其他 ==========
 # 归档：自动爬取中被判定为「废止/纯扫描无文本层」等不可入库的原始文件（移出扫描目录，留档可溯）
 _archived_raw_doc/
+# 信息图生成产物（generate_medical_infographic 工具输出，可重建，不入仓）
+data/infographics/
 docs/*
 # 合规治理交付件（E3）刻意入仓，不被 docs 忽略吞掉
 !docs/compliance/

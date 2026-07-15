@@ -11,6 +11,8 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-path: "/"
     # 仅 TLS（等保/合规要求）
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # cert-manager 自动签发 TLS 证书（须先安装 cert-manager + 创建 k8s/cert-manager-issuer.yaml）
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
   tls:

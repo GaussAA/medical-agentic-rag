@@ -127,14 +127,22 @@ docker compose down              # 停止
 node scripts/ops/metrics-exporter.mjs      # 默认 :19100，读 .pi/logs/audit-*.ndjson
 ```
 
-Prometheus 抓取配置示例：
+### 监控栈（Prometheus + Grafana，docker-compose 集成）
 
-```yaml
-scrape_configs:
-  - job_name: medical-rag
-    static_configs:
-      - targets: ["localhost:19100"]
-```
+`docker compose up --build` 后自动拉起三服务：
+
+| 服务 | 端口 | 说明 |
+|------|------|------|
+| Prometheus | `:9090` | 抓取 `medical-rag:19100` + `medical-api:19100`，保留 30 天 |
+| Grafana | `:3000` | 预配置 Prometheus 数据源 + 「审计与安全监控」仪表盘（免登录只读视图） |
+
+仪表盘包含：
+- 审计事件率（5m 滑动，按类型区分）
+- 安全护栏命中率（越界拦截用红色突出）
+- 最后事件距现在（秒，感知进程健康）
+- 审计事件分布（1h 率堆叠柱状图，按 Web / API 分）
+
+如需修改 Grafana 配置，编辑 `deploy/grafana/` 下对应文件，`docker compose restart grafana` 生效。
 
 ### 镜像构成
 

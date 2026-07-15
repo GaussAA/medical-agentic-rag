@@ -144,19 +144,26 @@ function killTree(pid) {
 }
 
 // ---------- 驱动 Pi 非交互作答（直接 spawn node25 + cli.js）----------
+const PRELOAD_PATH = join(ROOT, "scripts", "proxy", "preload-fetch-proxy.mjs");
 function runPi(argsArray) {
   return new Promise((resolve, reject) => {
     const rt = findPiRuntime();
     const spawnOpts = {
-      env: process.env,
+      env: {
+        ...process.env,
+        NODE_PATH: join(ROOT, "pi", "node_modules"),
+      },
       cwd: ROOT,
       windowsHide: true,
       shell: false,
       detached: process.platform !== 'win32', // Linux: 使 Pi 成进程组组长，kill(-pid) 可诛整树
       stdio: ['ignore', 'pipe', 'pipe'], // stdin 忽略，避免非交互下读 stdin 阻塞
     };
+    // 注入 preload-fetch-proxy，使 Pi 的 LLM 调用经 proxy 路由到免费后端
+    //（proxy 由 start.sh 启动，若未运行则 Pi 直呼 deepseek.com 付费 API）
+    const nodeArgs = ["--require", PRELOAD_PATH, rt.cli, ...argsArray];
     const child = rt
-      ? spawn(rt.node, [rt.cli, ...argsArray], spawnOpts)
+      ? spawn(rt.node, nodeArgs, spawnOpts)
       : spawn('pi', argsArray, { ...spawnOpts, shell: process.platform === 'win32' });
     let stdout = '';
     let stderr = '';

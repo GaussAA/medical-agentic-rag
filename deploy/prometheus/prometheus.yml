@@ -1,0 +1,28 @@
+# Prometheus 抓取配置 —— 医疗 Agentic RAG 监控
+#
+# 用法（docker-compose）：
+#   docker compose 已集成 prometheus 服务，自动加载本配置。
+#   访问 http://localhost:9090/ 查看控制台
+#
+# 用法（k8s）：
+#   若使用 kube-prometheus-stack / Prometheus Operator，创建 ServiceMonitor 而非使用此文件；
+#   裸 Prometheus 则可将本文件挂载为 ConfigMap。
+#
+# 指标端点说明：
+#   medical-rag:19100 — Web 服务指标（审计事件计数、护栏命中、最近事件时间）
+#   medical-api:19101 — API 服务指标（同上，但来自 API 进程）
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "medical-rag-web"
+    static_configs:
+      - targets: ["medical-rag:19100"]
+        labels:
+          service: "web-ui"
+  - job_name: "medical-rag-api"
+    static_configs:
+      - targets: ["medical-api:19100"]
+        labels:
+          service: "api-server"

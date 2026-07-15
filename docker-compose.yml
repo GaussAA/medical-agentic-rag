@@ -62,8 +62,52 @@ services:
       retries: 5
       start_period: 60s
 
+  # ============================================================
+  # 监控栈：Prometheus + Grafana（指标可视化）
+  # 访问：http://localhost:9090/ (Prometheus) / http://localhost:3000/ (Grafana)
+  # ============================================================
+  prometheus:
+    image: prom/prometheus:v2.55.0
+    container_name: medical-rag-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+      - --web.console.libraries=/etc/prometheus/console_libraries
+      - --web.console.templates=/etc/prometheus/consoles
+      - --web.enable-lifecycle
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - medical-rag-prometheus-data:/prometheus
+    restart: unless-stopped
+    depends_on:
+      - medical-rag
+      - medical-api
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: medical-rag-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./deploy/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml:ro
+      - ./deploy/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml:ro
+      - ./deploy/grafana/medical-rag-dashboard.json:/var/lib/grafana/dashboards/medical-rag-dashboard.json:ro
+      - medical-rag-grafana-data:/var/lib/grafana
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/medical-rag-dashboard.json
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
 volumes:
   medical-rag-sessions:
   medical-rag-logs:
   medical-api-sessions:
   medical-api-logs:
+  medical-rag-prometheus-data:
+  medical-rag-grafana-data:

@@ -1,0 +1,33 @@
+# cert-manager ClusterIssuer —— Let's Encrypt 自动 TLS 证书
+#
+# 依赖：
+#   - 集群已安装 cert-manager（helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set installCRDs=true）
+#   - Ingress 域名（medical-rag.example.com）的 DNS A/AAAA 记录已指向 Ingress Controller 的公网 IP
+#
+# 用法：
+#   kubectl apply -f k8s/cert-manager-issuer.yaml
+#   # cert-manager 自动发现 ingress.yaml 中 tls.secretName=medical-rag-tls 并签发证书
+#
+# 生产建议：
+#   - 先用 staging 验证配置：改 spec.acme.server 为 https://acme-staging-v02.api.letsencrypt.org/directory
+#   - 确认证书签发成功后切回 production
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+  namespace: cert-manager
+spec:
+  acme:
+    # Let's Encrypt 生产环境
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@example.com  # TODO: 替换为真实运维邮箱
+    privateKeySecretRef:
+      name: letsencrypt-prod-account-key
+    solvers:
+      - selector:
+          dnsZones:
+            - "example.com"  # TODO: 替换为真实域名
+        # HTTP-01 挑战（默认）：cert-manager 自动修改 Ingress 以完成验证
+        http01:
+          ingress:
+            class: nginx

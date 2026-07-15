@@ -21,8 +21,9 @@
  *   node scripts/ops/collect-agent-answers.mjs --limit 3       # 仅采前 3 条
  *   node scripts/ops/collect-agent-answers.mjs --force         # 覆盖已有 systemAnswer
  *   node scripts/ops/collect-agent-answers.mjs --model deepseek/deepseek-v4-flash
+ *   node scripts/ops/collect-agent-answers.mjs --skip-ids Q23,Q31   # 跳过顽固/已失败条目
  */
-import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
@@ -32,7 +33,9 @@ const ROOT = join(__dirname, '..', '..');
 const GOLD_PATH = join(ROOT, 'tests', 'gold-answers.json');
 const SP_PATH = join(ROOT, '.pi', 'prompts', 'medical-agent.md');
 const LOG_DIR = join(ROOT, '.pi', 'logs');
-const PER_ITEM_TIMEOUT_MS = 280_000;
+// 单条超时：每条均冷启动一个 Pi（加载 72MB KB ~60-90s）+ 免费模型多轮工具调用较慢，
+// 280s 对慢速免费通道偏紧，故默认上调至 420s，并允许经 COLLECT_ITEM_TIMEOUT_MS 覆盖。
+const PER_ITEM_TIMEOUT_MS = Number(process.env.COLLECT_ITEM_TIMEOUT_MS) || 420_000;
 
 // ---------- 极简 .env 加载（与 lib/llm-judge.mjs 同范式） ----------
 function loadEnv() {
@@ -63,13 +66,14 @@ function loadEnv() {
 
 // ---------- 参数解析 ----------
 function parseArgs(argv) {
-  const out = { dryRun: false, only: null, limit: null, force: false, model: 'deepseek/deepseek-v4-flash' };
+  const out = { dryRun: false, only: null, limit: null, force: false, model: 'deepseek/deepseek-v4-flash', skipIds: [] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--dry-run') out.dryRun = true;
     else if (a === '--force') out.force = true;
     else if (a === '--only') out.only = argv[++i];
     else if (a === '--limit') out.limit = parseInt(argv[++i], 10);
+    else if (a === '--skip-ids') out.skipIds = argv[++i].split(',').map((s) => s.trim()).filter(Boolean);
     else if (a === '--model') out.model = argv[++i];
   }
   return out;
@@ -82,19 +86,61 @@ function stripAnsi(s) {
 }
 
 // ---------- Pi 运行时定位 ----------
-// pi 全局命令是 POSIX shell 脚本（/e/nvm4w/nodejs/pi），其内部优先 exec
-// "$basedir/node"（即 nvm4w 的 node v25.8.1）运行 cli.js。脚本式经 shell 包装
-// 易触发 stdin 阻塞 / 环境歧义导致超时，故直接定位 node25 + cli.js 调用，
-// 最贴近交互式 `pi --print` 的成功路径。
-function findPiRuntime() {
-  if (process.env.PI_NODE && process.env.PI_CLI) return { node: process.env.PI_NODE, cli: process.env.PI_CLI };
-  const bases = ['/e/nvm4w/nodejs', 'C:\\nvm4w\\nodejs'];
-  for (const base of bases) {
-    const node = join(base, 'node');
-    const cli = join(base, 'node_modules', '@earendil-works', 'pi-coding-agent', 'dist', 'cli.js');
-    if (existsSync(node) && existsSync(cli)) return { node, cli };
+// pi 全局命令是 POSIX shell 脚本（/e/nvm4w/nodejs/pi），其内部 exec "$basedir/node"
+// （即 nvm4w 的 node v25.8.1 / ABI 141）运行 cli.js。但 pi-knowledge 内嵌的
+// better-sqlite3(v11.9.1) 仅有 ABI 127(node22) 预编译产物、node25 无 VS 构建链无法现编，
+// 用 node25 拉起会 "NODE_MODULE_VERSION 141 vs 127" 崩 KB 加载。生产 start.sh 真运行时
+// 亦锁 node22，故此处必须用 node22(ABI 127) 运行 cli.js 以匹配 KB 绑定，仅 cli.js 仍取自
+// nvm4w 安装位。node 路径：PI_NODE > NODE_BIN > managed node22(经 USERPROFILE 推导) > 报错。
+function resolveNode22() {
+  if (process.env.PI_NODE) return process.env.PI_NODE;
+  if (process.env.NODE_BIN) return process.env.NODE_BIN;
+  const home = process.env.USERPROFILE || process.env.HOME || '';
+  if (home) {
+    const verRoot = join(home, '.workbuddy', 'binaries', 'node', 'versions');
+    if (existsSync(verRoot)) {
+      // 选取 22.x managed node（跨机版本号可能微调，故按前缀匹配取最新）
+      const v22 = readdirSync(verRoot).filter((d) => d.startsWith('22.')).sort().pop();
+      if (v22) {
+        const p = join(verRoot, v22, process.platform === 'win32' ? 'node.exe' : 'bin/node');
+        if (existsSync(p)) return p;
+      }
+    }
   }
   return null;
+}
+
+function findPiRuntime() {
+  const node22 = resolveNode22();
+  // cli.js 位置：优先 PI_CLI env；否则按常见安装位探测。注意本脚本由 Windows Node 运行，
+  // existsSync 须用盘符正斜杠路径（"E:/..."），git-bash 风格 "/e/..." 不被识别。
+  const cliCandidates = [];
+  if (process.env.PI_CLI) cliCandidates.push(process.env.PI_CLI);
+  const REL = ['node_modules', '@earendil-works', 'pi-coding-agent', 'dist', 'cli.js'];
+  for (const base of ['E:/nvm4w/nodejs', 'E:/nvm/v25.8.1', 'C:/nvm4w/nodejs']) {
+    cliCandidates.push(join(base, ...REL));
+  }
+  for (const cli of cliCandidates) {
+    if (existsSync(cli)) {
+      const node = node22 || 'node'; // node22 缺失则退回 PATH node（有 ABI 风险，日志告警）
+      if (!node22) console.warn('[warn] 未定位到 node22(ABI 127)，退回 PATH node，KB 加载可能因 ABI 不匹配失败');
+      return { node, cli };
+    }
+  }
+  return null;
+}
+
+// ---------- 进程树诛杀（对齐 T15 pi-bridge，根治孤儿 Pi 持 KB 锁饿死新实例）----------
+// Win: taskkill /T /F 杀整棵子树；Linux: 需 detached 使 Pi 成进程组组长，kill(-pid) 杀全组。
+function killTree(pid) {
+  if (!pid) return;
+  try {
+    if (process.platform === 'win32') {
+      spawn('taskkill', ['/PID', String(pid), '/T', '/F'], { stdio: 'ignore', windowsHide: true });
+    } else {
+      process.kill(-pid, 'SIGKILL');
+    }
+  } catch { /* 进程已退出则忽略 */ }
 }
 
 // ---------- 驱动 Pi 非交互作答（直接 spawn node25 + cli.js）----------
@@ -106,6 +152,7 @@ function runPi(argsArray) {
       cwd: ROOT,
       windowsHide: true,
       shell: false,
+      detached: process.platform !== 'win32', // Linux: 使 Pi 成进程组组长，kill(-pid) 可诛整树
       stdio: ['ignore', 'pipe', 'pipe'], // stdin 忽略，避免非交互下读 stdin 阻塞
     };
     const child = rt
@@ -113,23 +160,34 @@ function runPi(argsArray) {
       : spawn('pi', argsArray, { ...spawnOpts, shell: process.platform === 'win32' });
     let stdout = '';
     let stderr = '';
+    let settled = false;
     child.stdout.on('data', (d) => (stdout += d));
     child.stderr.on('data', (d) => (stderr += d));
     const timer = setTimeout(() => {
-      try { child.kill('SIGKILL'); } catch { /* ignore */ }
-      reject(new Error(`timeout ${PER_ITEM_TIMEOUT_MS}ms`));
+      killTree(child.pid); // 诛整棵子树，防孤儿 Pi 持 KB 锁饿死后续采集
+      if (!settled) {
+        settled = true;
+        reject(new Error(`timeout ${PER_ITEM_TIMEOUT_MS}ms`));
+      }
     }, PER_ITEM_TIMEOUT_MS);
     child.on('error', (e) => {
-      clearTimeout(timer);
-      reject(e);
+      if (!settled) {
+        settled = true;
+        clearTimeout(timer);
+        reject(e);
+      }
     });
     child.on('close', (code) => {
-      clearTimeout(timer);
-      resolve({
-        answer: stripAnsi(stdout).trim(),
-        stderr,
-        code,
-      });
+      killTree(child.pid); // 兜底：即便正常退出也诛残留子树
+      if (!settled) {
+        settled = true;
+        clearTimeout(timer);
+        resolve({
+          answer: stripAnsi(stdout).trim(),
+          stderr,
+          code,
+        });
+      }
     });
   });
 }
@@ -158,6 +216,9 @@ async function main() {
   let items = gold.items.filter((it) =>
     args.only ? it.id === args.only : args.force || it.systemAnswer == null
   );
+  if (args.skipIds.length) {
+    items = items.filter((it) => !args.skipIds.includes(it.id));
+  }
   if (args.limit != null && Number.isFinite(args.limit)) {
     items = items.slice(0, args.limit);
   }

@@ -34,10 +34,11 @@ const HEALTHY_STREAK_TO_RECOVER = 2;
  * 注：deepseek 为 Pi 内置 Provider，此处只存其探测所需 baseUrl+authEnv；
  *     agnes/sensenova 非内置，其 Provider 由各自扩展 registerProvider 注册。
  *
- * 成本控制优先级（与用户「免费模型优先」规范一致）：
- *   P1 免费主力(sensenova-6.7-flash-lite) > P2 原生 deepseek(付费兜底)
- *   > P3 agnes > P4 免费 deepseek 通道(sensenova/deepseek-v4-flash, 亦免费)
+ * 成本控制优先级（2026-07-15 遵大帅指令重排）：
+ *   P1 免费主力(sensenova-6.7-flash-lite) > P2 免费深搜通道(sensenova/deepseek-v4-flash)
+ *   > P3 agnes > P4 原生 deepseek(付费，仅全部免费通道不可用且大帅明确授权时才选)
  * selectProvider 取首个 healthy；全不健康回退 priority 最小者并标 degraded。
+ * 若最终选中付费深搜(P4)，启动日志必有醒目告警（付费 deepseek 已启用，预算请关注）。
  */
 export const PROVIDERS = [
   {
@@ -49,11 +50,11 @@ export const PROVIDERS = [
     priority: 1,
   },
   {
-    provider: "deepseek",
+    provider: "sensenova",
     model: "deepseek-v4-flash",
-    label: "DeepSeek V4 Flash (付费兜底)",
-    baseUrl: "https://api.deepseek.com",
-    authEnv: "DEEPSEEK_API_KEY",
+    label: "DeepSeek V4 Flash (免费通道)",
+    baseUrl: "https://token.sensenova.cn/v1",
+    authEnv: "SENSENOVA_API_KEY",
     priority: 2,
   },
   {
@@ -65,11 +66,11 @@ export const PROVIDERS = [
     priority: 3,
   },
   {
-    provider: "sensenova",
+    provider: "deepseek",
     model: "deepseek-v4-flash",
-    label: "DeepSeek V4 Flash (免费通道)",
-    baseUrl: "https://token.sensenova.cn/v1",
-    authEnv: "SENSENOVA_API_KEY",
+    label: "DeepSeek V4 Flash (付费·末位兜底)",
+    baseUrl: "https://api.deepseek.com",
+    authEnv: "DEEPSEEK_API_KEY",
     priority: 4,
   },
 ];

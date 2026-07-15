@@ -87,9 +87,17 @@ async function callOne(ep, prompt) {
 }
 
 // 免费模型优先；当前端点无凭证或调用失败则依次回退到下一可用端点
+// 付费 deepseek 仅当 ALLOW_PAID_FALLBACK=true 时才启用（防自动耗费）
+const ALLOW_PAID = process.env.ALLOW_PAID_FALLBACK === "true";
 async function callLLM(prompt) {
   let lastErr;
   for (const ep of ENDPOINTS) {
+    // 跳过付费 deepseek（除非已授权），自动只走免费通道
+    if (ep.url.includes("api.deepseek.com") && !ALLOW_PAID) {
+      if (process.env.DEEPSEEK_API_KEY)
+        console.warn("  ℹ 付费 deepseek 跳过（未授权，需 ALLOW_PAID_FALLBACK=true）");
+      continue;
+    }
     if (!ep.key) continue;
     try {
       const entities = await callOne(ep, prompt);

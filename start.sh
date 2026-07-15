@@ -23,17 +23,22 @@ fi
 echo "[orchestration] 探测健康 Provider..."
 node scripts/proxy/launch-with-failover.mjs >/dev/null 2>&1 || true
 
-# 3) 读 failover 结果（failover-selection.json 字段为 provider/model）
+# 3) 读 failover 结果——仅用于日志和 proxy 路由决策，
+#    Pi 的 --model 必须用 Pi 内置认识的模型名（deepseek），
+#    实际后端由 provider-proxy 根据 failover 路由（preload-fetch-proxy 劫持所有 deepseek 请求 → proxy）。
 WIN_ROOT="$(pwd -W)"  # C:/WorkSpace/...（正斜杠，Windows node 原生识别）
 SEL_FILE=".pi/failover-selection.json"
+BACKEND_LABEL=""
 if [ -f "$SEL_FILE" ]; then
-  PROVIDER=$(node -e "const j=require('./.pi/failover-selection.json');console.log(j.provider||'')")
-  MODEL=$(node -e "const j=require('./.pi/failover-selection.json');console.log(j.model||'')")
-else
-  PROVIDER="${LLM_PROVIDER:-deepseek}"
-  MODEL="${LLM_MODEL:-deepseek-v4-flash}"
+  BACKEND_PROVIDER=$(node -e "const j=require('./.pi/failover-selection.json');console.log(j.provider||'')")
+  BACKEND_MODEL=$(node -e "const j=require('./.pi/failover-selection.json');console.log(j.model||'')")
+  BACKEND_LABEL="${BACKEND_PROVIDER}/${BACKEND_MODEL}"
 fi
-echo "[orchestration]   → 选定 Provider: $PROVIDER/$MODEL"
+# Pi 始终使用 deepseek 内置模型（proxy 拦截并路由至免费后端）
+PROVIDER="deepseek"
+MODEL="deepseek-v4-flash"
+echo "[orchestration]   → Proxy 实际后端: ${BACKEND_LABEL:-（无 failover 文件，默认 sensenova）}"
+echo "[orchestration]   → Pi --model: $PROVIDER/$MODEL（proxy 劫持路由至后端）"
 
 # 4) 清理残留 proxy（避免端口冲突）
 PROXY_PORT="${PROXY_PORT:-18880}"

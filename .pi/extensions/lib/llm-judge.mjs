@@ -117,12 +117,15 @@ export const SENSENOVA_CONCURRENCY = Math.max(
   Math.min(MAX_CONCURRENCY, SENSENOVA_KEYS.length || 1),
 );
 
+/** 是否已显式授权使用付费 deepseek 兜底。默认关闭，防自动耗费。 */
+const ALLOW_PAID = process.env.ALLOW_PAID_FALLBACK === "true";
+
 /**
- * 至少有一个 LLM 端点可用（免费 Key 或 DeepSeek 兜底）。
+ * 至少有一个免费 LLM 端点可用，或已显式授权付费兜底。
  * @returns {boolean}
  */
 export function isLLMAvailable() {
-  return SENSENOVA_KEYS.length > 0 || !!process.env.DEEPSEEK_API_KEY;
+  return SENSENOVA_KEYS.length > 0 || (ALLOW_PAID && !!process.env.DEEPSEEK_API_KEY);
 }
 
 /**
@@ -204,7 +207,8 @@ export async function callLLM(messagesOrString, opts = {}) {
     }
   }
   const d = deepseekEndpoint();
-  if (d) {
+  if (d && ALLOW_PAID) {
+    console.warn("[llm-judge] 免费 Key 均不可用，已启用付费 deepseek 兜底（ALLOW_PAID_FALLBACK=true）");
     try {
       return await callOne(d, messages, opts);
     } catch (e) {
@@ -212,9 +216,9 @@ export async function callLLM(messagesOrString, opts = {}) {
     }
   }
   throw new Error(
-    `所有 LLM 端点不可用（请设置 SENSENOVA_API_KEYS 或 DEEPSEEK_API_KEY）：${
-      lastErr?.message || ""
-    }`,
+    ALLOW_PAID
+      ? `所有 LLM 端点不可用（免费 Key + 付费兜底均已尝试）：${lastErr?.message || ""}`
+      : `所有免费 LLM 端点不可用，且付费兜底未授权。如需使用付费 deepseek，请设置环境变量 ALLOW_PAID_FALLBACK=true（或补充 SENSENOVA_API_KEYS）：${lastErr?.message || ""}`,
   );
 }
 

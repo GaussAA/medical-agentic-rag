@@ -15,11 +15,12 @@ function assert(cond, msg) {
   else { failed++; console.error(`  ✗ ${msg}`); }
 }
 
-// 模拟 Provider 注册表
+// 模拟 Provider 注册表（与 provider-health.mjs 优先级一致，2026-07-15 重排：免费优先）
 const PROVIDERS = [
   { provider: "sensenova", model: "sensenova-6.7-flash-lite", baseUrl: "https://token.sensenova.cn/v1", authEnv: "SENSENOVA_API_KEY", priority: 1, label: "SenseNova" },
-  { provider: "deepseek", model: "deepseek-v4-flash", baseUrl: "https://api.deepseek.com", authEnv: "DEEPSEEK_API_KEY", priority: 2, label: "DeepSeek" },
+  { provider: "sensenova", model: "deepseek-v4-flash", baseUrl: "https://token.sensenova.cn/v1", authEnv: "SENSENOVA_API_KEY", priority: 2, label: "DeepSeek Free" },
   { provider: "agnes", model: "agnes-2.0-flash", baseUrl: "https://apihub.agnes-ai.com/v1", authEnv: "AGNES_API_KEY", priority: 3, label: "Agnes" },
+  { provider: "deepseek", model: "deepseek-v4-flash", baseUrl: "https://api.deepseek.com", authEnv: "DEEPSEEK_API_KEY", priority: 4, label: "DeepSeek Paid" },
 ];
 
 // 测试 1：proxy 核心逻辑 —— Provider 选择
@@ -27,9 +28,11 @@ console.log("\n=== Provider 选择 ===");
 {
   // 模拟 selectProvider 逻辑
   const sorted = [...PROVIDERS].sort((a, b) => a.priority - b.priority);
-  assert(sorted[0].provider === "sensenova", "P1 优先 sensenova");
-  assert(sorted[1].provider === "deepseek", "P2 deepseek");
+  assert(sorted[0].provider === "sensenova", "P1 sensenova 免费");
+  assert(sorted[0].model === "sensenova-6.7-flash-lite", "P1 模型 = sensenova-6.7-flash-lite");
+  assert(sorted[1].provider === "sensenova" && sorted[1].model === "deepseek-v4-flash", "P2 sensenova 免费深搜通道");
   assert(sorted[2].provider === "agnes", "P3 agnes");
+  assert(sorted[3].provider === "deepseek" && sorted[3].model === "deepseek-v4-flash", "P4 deepseek 付费（末位兜底）");
 }
 
 // 测试 2：断路器阈值

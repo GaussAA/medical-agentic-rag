@@ -1,6 +1,6 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 // @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
-import { detectScope, SCOPE_REFUSAL_DIRECTIVE } from "./lib/scope-guard.mjs";
+import { detectScope } from "./lib/scope-guard.mjs";
 import { logGuardHit } from "./lib/observability.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
@@ -16,8 +16,9 @@ import { alert } from "./lib/alert-log.mjs";
  * 行为：
  *   1) on("context") 取 messages 最后一条 user，调 lib/scope-guard 的 detectScope
  *      （纯确定性、零 LLM、医疗白名单 + 非医疗黑名单，保守放行避免误伤）。
- *   2) 越界 → 在上下文最前注入 system 拒答指令（保留原对话，引导 LLM 仅礼貌拒答），
- *      并 logGuardHit({type:"scope", action:"refuse"}) 埋点（可观测、可审计）。
+ *   2) 越界 → 将原用户消息**替换**为护栏拒答指令，使 LLM 彻底看不见原问题，
+ *      从根本上杜绝回答/编造。并 logGuardHit 埋点。
+ *      （此前为注入 system 指令，但 Q39 证实 LLM 仍可见原问题并编造病史）
  *   3) 不越界 / 判定异常 → 原样放行，零开销（无静默失败，异常仅告警）。
  *
  * 原则契合：免费优先（无 LLM 调用）、无静默失败、双可测（.mjs 纯函数单测）、显式错误捕获。
@@ -54,11 +55,19 @@ export default function (pi: ExtensionAPI) {
             `埋点落盘失败，拒答仍生效: ${e?.message || e}`,
           ),
         );
+        // 🔐 强护栏：替换原用户消息为拒答指令，LLM 看不见原问题→杜绝回答/编造
+        // （此前仅注入 system 指令但 LLM 仍可见原问题，Q39 因此编造了肝硬化病史）
         return {
-          messages: [
-            { role: "system", content: SCOPE_REFUSAL_DIRECTIVE },
-            ...msgs,
-          ],
+          messages: msgs.map((m: any) => {
+            if (m.role === "user" && m.content === userText) {
+              return {
+                role: "user" as const,
+                content: `【护栏拦截】用户的问题已被系统安全护栏拦截，原因：${verdict.reason}。请用一句中文礼貌拒绝：说明本系统只处理医疗健康问题，不提供此类服务。严禁回答原问题，严禁编造无关的医疗信息。`,
+                timestamp: Date.now(),
+              };
+            }
+            return m;
+          }),
         };
       }
     } catch (e: any) {

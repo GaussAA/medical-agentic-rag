@@ -22,6 +22,31 @@ const TXT_DIR = join(REPO_ROOT, "data", "raw-txt");
 const GOLD = JSON.parse(readFileSync(join(REPO_ROOT, "tests", "gold-answers.json"), "utf-8"));
 const ITEMS = GOLD.items;
 
+// ---------- 病种主题解析（引用召回容错匹配） ----------
+// gold 的 gtSources 用「标准指南名」体系，KB 指南 title 含来源/版本噪声（如
+// EuropePMC OA 的「（开放获取英文指南·中文结构化摘引）」后缀），二者字符串常不等；
+// 且部分 gtSources 标注的指南 KB 实际以同主题不同来源指南存在。故引用召回改为
+// 「病种主题匹配」：gtSources 解析为核心病种，判断路由 top3 是否覆盖该病种。
+// 这修正了「同主题异名指南」造成的假阴性，同时不掩盖「路由错排病种」的真错路。
+const DISEASE_VOCAB = (() => {
+  const set = new Set();
+  const gm = index.guideMap || {};
+  for (const k of Object.keys(gm)) {
+    if (gm[k].disease) set.add(gm[k].disease);
+    if (gm[k].normalizedDisease) set.add(gm[k].normalizedDisease);
+  }
+  return [...set].filter((d) => d && d.length >= 2).sort((a, b) => b.length - a.length);
+})();
+function resolveGtDisease(gt) {
+  if (!gt) return null;
+  if (index.guideMap && index.guideMap[gt]) return index.guideMap[gt].disease || null;
+  const n = normalize(gt);
+  for (const d of DISEASE_VOCAB) {
+    if (n.includes(normalize(d))) return d;
+  }
+  return null;
+}
+
 const REFUSAL_KW = ["超出", "不在范围", "不在服务", "不提供", "无法提供", "非医疗"];
 
 // 免费优先 LLM 客户端与四维 Judge 统一由 lib/llm-judge.mjs 提供（单一真相源，与 /eval 共用）。
@@ -270,7 +295,12 @@ for (const it of ITEMS) {
   // 离线结构层
   const route = routeGuides(it.q, { index, useCache: false });
   const top3 = route.top.slice(0, 3).map((g) => g.title);
-  const gtHit = (it.gtSources || []).filter((g) => top3.includes(g)).length;
+  // 引用召回：病种主题匹配（容错标题/来源/版本差异，不掩盖真错路）
+  const top3Diseases = route.top.slice(0, 3).map((g) => g.disease).filter(Boolean);
+  const gtHit = (it.gtSources || []).filter((g) => {
+    const d = resolveGtDisease(g);
+    return d && top3Diseases.includes(d);
+  }).length;
   citHit += gtHit; citTot += (it.gtSources || []).length;
 
   let evLocalHit = 0, evLocalTot = 0, gradeLocal = false, gradeStrictLocal = false;

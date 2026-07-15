@@ -1,19 +1,20 @@
 {
-  "generatedAt": "2026-07-14T19:14:13.709Z",
-  "totalGuides": 170,
-  "totalKeywords": 894,
+  "generatedAt": "2026-07-15T12:21:02.054Z",
+  "totalGuides": 178,
+  "totalKeywords": 938,
   "guideMap": {
     "1.2026年国家医疗质量安全改进目标": {
       "id": "1.2026年国家医疗质量安全改进目标",
-      "disease": "1.2026年国家医疗质量安全改进目标",
+      "disease": "1.年国家医疗质量安全改进目标",
       "version": null,
-      "normalizedDisease": "1.2026年国家医疗质量安全改进目标",
+      "normalizedDisease": "1.年国家医疗质量安全改进目标",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "1.2026年国家医疗质量安全改进目标"
+        "1.2026年国家医疗质量安全改进目标",
+        "1.年国家医疗质量安全改进目标"
       ],
       "sectionCount": 76,
       "keyParagraphCount": 0
@@ -82,31 +83,32 @@
     },
     "1.紧密型县域医共体医学影像中心建设与服务指南（试行）": {
       "id": "1.紧密型县域医共体医学影像中心建设与服务指南（试行）",
-      "disease": "1.紧密型县域医共体医学影像中心建设与服务指南",
+      "disease": "1.紧密型县域医共体医学影像中心建设与服务",
       "version": null,
-      "normalizedDisease": "1.紧密型县域医共体医学影像中心建设与服务指南",
+      "normalizedDisease": "1.紧密型县域医共体医学影像中心建设与服务",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "1.紧密型县域医共体医学影像中心建设与服务指南（试行）",
-        "1.紧密型县域医共体医学影像中心建设与服务指南"
+        "1.紧密型县域医共体医学影像中心建设与服务"
       ],
       "sectionCount": 51,
       "keyParagraphCount": 0
     },
     "2.2026年各专业质控工作改进目标": {
       "id": "2.2026年各专业质控工作改进目标",
-      "disease": "2.2026年各专业质控工作改进目标",
+      "disease": "2.年各专业质控工作改进目标",
       "version": null,
-      "normalizedDisease": "2.2026年各专业质控工作改进目标",
+      "normalizedDisease": "2.年各专业质控工作改进目标",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "2.2026年各专业质控工作改进目标",
+        "2.年各专业质控工作改进目标",
         "流感",
         "流感病原学诊断"
       ],
@@ -177,16 +179,16 @@
     },
     "2.紧密型县域医共体医学检验中心建设与服务指南（试行）": {
       "id": "2.紧密型县域医共体医学检验中心建设与服务指南（试行）",
-      "disease": "2.紧密型县域医共体医学检验中心建设与服务指南",
+      "disease": "2.紧密型县域医共体医学检验中心建设与服务",
       "version": null,
-      "normalizedDisease": "2.紧密型县域医共体医学检验中心建设与服务指南",
+      "normalizedDisease": "2.紧密型县域医共体医学检验中心建设与服务",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "2.紧密型县域医共体医学检验中心建设与服务指南（试行）",
-        "2.紧密型县域医共体医学检验中心建设与服务指南"
+        "2.紧密型县域医共体医学检验中心建设与服务"
       ],
       "sectionCount": 74,
       "keyParagraphCount": 0
@@ -208,16 +210,16 @@
     },
     "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）": {
       "id": "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）",
-      "disease": "3.紧密型县域医共体心电诊断中心建设与服务指南",
+      "disease": "3.紧密型县域医共体心电诊断中心建设与服务",
       "version": null,
-      "normalizedDisease": "3.紧密型县域医共体心电诊断中心建设与服务指南",
+      "normalizedDisease": "3.紧密型县域医共体心电诊断中心建设与服务",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）",
-        "3.紧密型县域医共体心电诊断中心建设与服务指南"
+        "3.紧密型县域医共体心电诊断中心建设与服务"
       ],
       "sectionCount": 52,
       "keyParagraphCount": 0
@@ -240,16 +242,16 @@
     },
     "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）": {
       "id": "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）",
-      "disease": "4.紧密型县域医共体消毒供应中心建设与服务指南",
+      "disease": "4.紧密型县域医共体消毒供应中心建设与服务",
       "version": null,
-      "normalizedDisease": "4.紧密型县域医共体消毒供应中心建设与服务指南",
+      "normalizedDisease": "4.紧密型县域医共体消毒供应中心建设与服务",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）",
-        "4.紧密型县域医共体消毒供应中心建设与服务指南"
+        "4.紧密型县域医共体消毒供应中心建设与服务"
       ],
       "sectionCount": 30,
       "keyParagraphCount": 0
@@ -272,15 +274,16 @@
     },
     "GBZ 104—2026 职业性外照射急性放射病诊断标准": {
       "id": "GBZ 104—2026 职业性外照射急性放射病诊断标准",
-      "disease": "GBZ 104—2026 职业性外照射急性放射病诊断标准",
+      "disease": "GBZ104职业性外照射急性放射病诊断标准",
       "version": null,
-      "normalizedDisease": "GBZ 104—2026 职业性外照射急性放射病诊断标准",
+      "normalizedDisease": "GBZ104职业性外照射急性放射病诊断标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "GBZ 104—2026 职业性外照射急性放射病诊断标准",
+        "GBZ104职业性外照射急性放射病诊断标准",
         "职业性外照射急性放射病",
         "呕吐",
         "外周血淋巴细胞计数",
@@ -293,15 +296,16 @@
     },
     "GBZ 105—2026 职业性外照射慢性放射病诊断标准": {
       "id": "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
-      "disease": "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
+      "disease": "GBZ105职业性外照射慢性放射病诊断标准",
       "version": null,
-      "normalizedDisease": "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
+      "normalizedDisease": "GBZ105职业性外照射慢性放射病诊断标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
+        "GBZ105职业性外照射慢性放射病诊断标准",
         "职业性外照射慢性放射病",
         "乏力",
         "头痛",
@@ -321,15 +325,16 @@
     },
     "GBZ 97—2026 职业性放射性肿瘤病因判断标准": {
       "id": "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
-      "disease": "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
+      "disease": "GBZ97职业性放射性肿瘤病因判断标准",
       "version": null,
-      "normalizedDisease": "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
+      "normalizedDisease": "GBZ97职业性放射性肿瘤病因判断标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
+        "GBZ97职业性放射性肿瘤病因判断标准",
         "职业性放射性肿瘤",
         "职业性电离辐射暴露",
         "辐射剂量估算",
@@ -345,30 +350,32 @@
     },
     "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准": {
       "id": "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
-      "disease": "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
+      "disease": "GBZT244电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
       "version": null,
-      "normalizedDisease": "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
+      "normalizedDisease": "GBZT244电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准"
+        "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
+        "GBZT244电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准"
       ],
       "sectionCount": 517,
       "keyParagraphCount": 0
     },
     "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准": {
       "id": "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
-      "disease": "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
+      "disease": "GBZT344放射工作人员甲状腺中131I的直接测量方法标准",
       "version": null,
-      "normalizedDisease": "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
+      "normalizedDisease": "GBZT344放射工作人员甲状腺中131I的直接测量方法标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
+        "GBZT344放射工作人员甲状腺中131I的直接测量方法标准",
         "甲状腺放射性碘污染",
         "直接测量法",
         "放射工作"
@@ -394,75 +401,80 @@
     },
     "WS 890—2026 浅层X射线治疗机质量控制检测标准": {
       "id": "WS 890—2026 浅层X射线治疗机质量控制检测标准",
-      "disease": "WS 890—2026 浅层X射线治疗机质量控制检测标准",
+      "disease": "WS890浅层X射线治疗机质量控制检测标准",
       "version": null,
-      "normalizedDisease": "WS 890—2026 浅层X射线治疗机质量控制检测标准",
+      "normalizedDisease": "WS890浅层X射线治疗机质量控制检测标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS 890—2026 浅层X射线治疗机质量控制检测标准"
+        "WS 890—2026 浅层X射线治疗机质量控制检测标准",
+        "WS890浅层X射线治疗机质量控制检测标准"
       ],
       "sectionCount": 37,
       "keyParagraphCount": 0
     },
     "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分": {
       "id": "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
-      "disease": "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
+      "disease": "WST404.9临床常用生化检验项目参考区间第9部分",
       "version": null,
-      "normalizedDisease": "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
+      "normalizedDisease": "WST404.9临床常用生化检验项目参考区间第9部分",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分"
+        "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
+        "WST404.9临床常用生化检验项目参考区间第9部分"
       ],
       "sectionCount": 6,
       "keyParagraphCount": 0
     },
     "WS-T 477—2026 D-二聚体定量检测标准": {
       "id": "WS-T 477—2026 D-二聚体定量检测标准",
-      "disease": "WS-T 477—2026 D-二聚体定量检测标准",
+      "disease": "WST477D二聚体定量检测标准",
       "version": null,
-      "normalizedDisease": "WS-T 477—2026 D-二聚体定量检测标准",
+      "normalizedDisease": "WST477D二聚体定量检测标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 477—2026 D-二聚体定量检测标准"
+        "WS-T 477—2026 D-二聚体定量检测标准",
+        "WST477D二聚体定量检测标准"
       ],
       "sectionCount": 59,
       "keyParagraphCount": 0
     },
     "WS-T 497—2026 侵袭性真菌病实验诊断标准": {
       "id": "WS-T 497—2026 侵袭性真菌病实验诊断标准",
-      "disease": "WS-T 497—2026 侵袭性真菌病实验诊断标准",
+      "disease": "WST497侵袭性真菌病实验诊断标准",
       "version": null,
-      "normalizedDisease": "WS-T 497—2026 侵袭性真菌病实验诊断标准",
+      "normalizedDisease": "WST497侵袭性真菌病实验诊断标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 497—2026 侵袭性真菌病实验诊断标准"
+        "WS-T 497—2026 侵袭性真菌病实验诊断标准",
+        "WST497侵袭性真菌病实验诊断标准"
       ],
       "sectionCount": 121,
       "keyParagraphCount": 0
     },
     "WS-T 498—2026 感染性腹泻实验诊断标准": {
       "id": "WS-T 498—2026 感染性腹泻实验诊断标准",
-      "disease": "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "disease": "WST498感染性腹泻实验诊断标准",
       "version": null,
-      "normalizedDisease": "WS-T 498—2026 感染性腹泻实验诊断标准",
+      "normalizedDisease": "WST498感染性腹泻实验诊断标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "WS-T 498—2026 感染性腹泻实验诊断标准",
+        "WST498感染性腹泻实验诊断标准",
         "感染性腹泻",
         "腹泻",
         "腹痛",
@@ -482,226 +494,244 @@
     },
     "WS-T 503—2026 临床微生物实验室血培养操作标准": {
       "id": "WS-T 503—2026 临床微生物实验室血培养操作标准",
-      "disease": "WS-T 503—2026 临床微生物实验室血培养操作标准",
+      "disease": "WST503临床微生物实验室血培养操作标准",
       "version": null,
-      "normalizedDisease": "WS-T 503—2026 临床微生物实验室血培养操作标准",
+      "normalizedDisease": "WST503临床微生物实验室血培养操作标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 503—2026 临床微生物实验室血培养操作标准"
+        "WS-T 503—2026 临床微生物实验室血培养操作标准",
+        "WST503临床微生物实验室血培养操作标准"
       ],
       "sectionCount": 104,
       "keyParagraphCount": 0
     },
     "WS-T 601—2018 妊娠期糖尿病患者膳食指导": {
       "id": "WS-T 601—2018 妊娠期糖尿病患者膳食指导",
-      "disease": "WS-T 601—2018 妊娠期糖尿病患者膳食指导",
+      "disease": "WST601妊娠期糖尿病患者膳食指导",
       "version": null,
-      "normalizedDisease": "WS-T 601—2018 妊娠期糖尿病患者膳食指导",
+      "normalizedDisease": "WST601妊娠期糖尿病患者膳食指导",
       "audience": "妊娠",
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 601—2018 妊娠期糖尿病患者膳食指导"
+        "WS-T 601—2018 妊娠期糖尿病患者膳食指导",
+        "WST601妊娠期糖尿病患者膳食指导",
+        "糖尿病",
+        "二甲双胍"
       ],
       "sectionCount": 17,
       "keyParagraphCount": 0
     },
     "WS-T 640—2026 临床微生物学检验标本的采集和转运标准": {
       "id": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
-      "disease": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
+      "disease": "WST640临床微生物学检验标本的采集和转运标准",
       "version": null,
-      "normalizedDisease": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
+      "normalizedDisease": "WST640临床微生物学检验标本的采集和转运标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 640—2026 临床微生物学检验标本的采集和转运标准"
+        "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
+        "WST640临床微生物学检验标本的采集和转运标准"
       ],
       "sectionCount": 137,
       "keyParagraphCount": 0
     },
     "WS-T 641—2026 临床检验定量测定室内质量控制标准": {
       "id": "WS-T 641—2026 临床检验定量测定室内质量控制标准",
-      "disease": "WS-T 641—2026 临床检验定量测定室内质量控制标准",
+      "disease": "WST641临床检验定量测定室内质量控制标准",
       "version": null,
-      "normalizedDisease": "WS-T 641—2026 临床检验定量测定室内质量控制标准",
+      "normalizedDisease": "WST641临床检验定量测定室内质量控制标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 641—2026 临床检验定量测定室内质量控制标准"
+        "WS-T 641—2026 临床检验定量测定室内质量控制标准",
+        "WST641临床检验定量测定室内质量控制标准"
       ],
       "sectionCount": 47,
       "keyParagraphCount": 0
     },
     "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分": {
       "id": "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
-      "disease": "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
+      "disease": "WST645.1临床常用免疫学检验项目参考区间第1部分",
       "version": null,
-      "normalizedDisease": "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
+      "normalizedDisease": "WST645.1临床常用免疫学检验项目参考区间第1部分",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分"
+        "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
+        "WST645.1临床常用免疫学检验项目参考区间第1部分"
       ],
       "sectionCount": 6,
       "keyParagraphCount": 0
     },
     "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分": {
       "id": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
-      "disease": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
+      "disease": "WST645.2临床常用免疫学检验项目参考区间第2部分",
       "version": null,
-      "normalizedDisease": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
+      "normalizedDisease": "WST645.2临床常用免疫学检验项目参考区间第2部分",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分"
+        "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
+        "WST645.2临床常用免疫学检验项目参考区间第2部分"
       ],
       "sectionCount": 6,
       "keyParagraphCount": 0
     },
     "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准": {
       "id": "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准",
-      "disease": "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准",
+      "disease": "WST828妊娠期糖尿病妇女体重增长推荐值标准",
       "version": null,
-      "normalizedDisease": "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准",
+      "normalizedDisease": "WST828妊娠期糖尿病妇女体重增长推荐值标准",
       "audience": "妊娠",
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准"
+        "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准",
+        "WST828妊娠期糖尿病妇女体重增长推荐值标准",
+        "糖尿病",
+        "二甲双胍"
       ],
       "sectionCount": 4,
       "keyParagraphCount": 0
     },
     "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准": {
       "id": "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
-      "disease": "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
+      "disease": "WST883中枢神经系统感染性疾病实验诊断标准",
       "version": null,
-      "normalizedDisease": "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
+      "normalizedDisease": "WST883中枢神经系统感染性疾病实验诊断标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准"
+        "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
+        "WST883中枢神经系统感染性疾病实验诊断标准"
       ],
       "sectionCount": 64,
       "keyParagraphCount": 0
     },
     "WS-T 884—2026 分枝杆菌感染实验诊断标准": {
       "id": "WS-T 884—2026 分枝杆菌感染实验诊断标准",
-      "disease": "WS-T 884—2026 分枝杆菌感染实验诊断标准",
+      "disease": "WST884分枝杆菌感染实验诊断标准",
       "version": null,
-      "normalizedDisease": "WS-T 884—2026 分枝杆菌感染实验诊断标准",
+      "normalizedDisease": "WST884分枝杆菌感染实验诊断标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 884—2026 分枝杆菌感染实验诊断标准"
+        "WS-T 884—2026 分枝杆菌感染实验诊断标准",
+        "WST884分枝杆菌感染实验诊断标准"
       ],
       "sectionCount": 380,
       "keyParagraphCount": 0
     },
     "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标": {
       "id": "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
-      "disease": "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
+      "disease": "WST885临床检验结果互认的基本技术条件及质量指标",
       "version": null,
-      "normalizedDisease": "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
+      "normalizedDisease": "WST885临床检验结果互认的基本技术条件及质量指标",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标"
+        "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
+        "WST885临床检验结果互认的基本技术条件及质量指标"
       ],
       "sectionCount": 17,
       "keyParagraphCount": 0
     },
     "WS-T 886—2026 临床检验常用项目名称及代码": {
       "id": "WS-T 886—2026 临床检验常用项目名称及代码",
-      "disease": "WS-T 886—2026 临床检验常用项目名称及代码",
+      "disease": "WST886临床检验常用项目名称及代码",
       "version": null,
-      "normalizedDisease": "WS-T 886—2026 临床检验常用项目名称及代码",
+      "normalizedDisease": "WST886临床检验常用项目名称及代码",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 886—2026 临床检验常用项目名称及代码"
+        "WS-T 886—2026 临床检验常用项目名称及代码",
+        "WST886临床检验常用项目名称及代码"
       ],
       "sectionCount": 4,
       "keyParagraphCount": 0
     },
     "WS-T 894—2026 成分血制备标准": {
       "id": "WS-T 894—2026 成分血制备标准",
-      "disease": "WS-T 894—2026 成分血制备标准",
+      "disease": "WST894成分血制备标准",
       "version": null,
-      "normalizedDisease": "WS-T 894—2026 成分血制备标准",
+      "normalizedDisease": "WST894成分血制备标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 894—2026 成分血制备标准"
+        "WS-T 894—2026 成分血制备标准",
+        "WST894成分血制备标准"
       ],
       "sectionCount": 192,
       "keyParagraphCount": 0
     },
     "WS-T 895—2026 脐带血造血干细胞制备与冻存标准": {
       "id": "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
-      "disease": "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
+      "disease": "WST895脐带血造血干细胞制备与冻存标准",
       "version": null,
-      "normalizedDisease": "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
+      "normalizedDisease": "WST895脐带血造血干细胞制备与冻存标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 895—2026 脐带血造血干细胞制备与冻存标准"
+        "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
+        "WST895脐带血造血干细胞制备与冻存标准"
       ],
       "sectionCount": 85,
       "keyParagraphCount": 0
     },
     "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准": {
       "id": "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准",
-      "disease": "WS-T 900—2026 病原微生物菌种保藏质量控制通用标准",
+      "disease": "WST900病原微生物菌种保藏质量控制通用标准",
       "version": null,
-      "normalizedDisease": "WS-T 900—2026 病原微生物菌种保藏质量控制通用标准",
+      "normalizedDisease": "WST900病原微生物菌种保藏质量控制通用标准",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准",
-        "WS-T 900—2026 病原微生物菌种保藏质量控制通用标准"
+        "WST900病原微生物菌种保藏质量控制通用标准"
       ],
       "sectionCount": 67,
       "keyParagraphCount": 0
     },
     "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则": {
       "id": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
-      "disease": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
+      "disease": "WST901医疗机构临床医学研究质量管理体系建设",
       "version": null,
-      "normalizedDisease": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
+      "normalizedDisease": "WST901医疗机构临床医学研究质量管理体系建设",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则"
+        "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
+        "WST901医疗机构临床医学研究质量管理体系建设"
       ],
       "sectionCount": 29,
       "keyParagraphCount": 0
@@ -797,7 +827,9 @@
       "supersededBy": null,
       "keywords": [
         "糖尿病酮症酸中毒诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
-        "糖尿病酮症酸中毒"
+        "糖尿病酮症酸中毒",
+        "糖尿病",
+        "二甲双胍"
       ],
       "sectionCount": 1,
       "keyParagraphCount": 0
@@ -820,16 +852,17 @@
     },
     "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "endo-t2dm__EuropePMCOA__PMC13232412",
-      "disease": "2型糖尿病",
+      "disease": "糖尿病",
       "version": null,
-      "normalizedDisease": "2型糖尿病",
+      "normalizedDisease": "糖尿病",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
-        "2型糖尿病"
+        "糖尿病",
+        "二甲双胍"
       ],
       "sectionCount": 1,
       "keyParagraphCount": 0
@@ -1138,9 +1171,25 @@
       "sectionCount": 40,
       "keyParagraphCount": 0
     },
+    "严重过敏反应诊断和临床管理专家共识2025": {
+      "id": "严重过敏反应诊断和临床管理专家共识2025",
+      "disease": "严重过敏反应",
+      "version": null,
+      "normalizedDisease": "严重过敏反应",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "严重过敏反应诊断和临床管理专家共识2025",
+        "严重过敏反应"
+      ],
+      "sectionCount": 73,
+      "keyParagraphCount": 0
+    },
     "中华医学会肺癌临床诊疗指南（2024版）": {
       "id": "中华医学会肺癌临床诊疗指南（2024版）",
-      "disease": "中华医学会肺癌临床",
+      "disease": "肺癌临床",
       "version": 2024,
       "normalizedDisease": "肺癌临床",
       "audience": null,
@@ -1149,23 +1198,23 @@
       "supersededBy": null,
       "keywords": [
         "中华医学会肺癌临床诊疗指南（2024版）",
-        "中华医学会肺癌临床"
+        "肺癌临床"
       ],
       "sectionCount": 104,
       "keyParagraphCount": 1
     },
     "中国人群骨质疏松症风险管理公众指南（2024）": {
       "id": "中国人群骨质疏松症风险管理公众指南（2024）",
-      "disease": "中国人群骨质疏松症风险管理公众指南",
+      "disease": "中国人群骨质疏松症风险管理公众",
       "version": null,
-      "normalizedDisease": "中国人群骨质疏松症风险管理公众指南",
+      "normalizedDisease": "中国人群骨质疏松症风险管理公众",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "中国人群骨质疏松症风险管理公众指南（2024）",
-        "中国人群骨质疏松症风险管理公众指南",
+        "中国人群骨质疏松症风险管理公众",
         "骨质疏松症",
         "腰背疼痛",
         "身高缩短",
@@ -1215,7 +1264,7 @@
     },
     "中国抗癌协会乳腺癌诊治指南与规范（2025年版）": {
       "id": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
-      "disease": "中国抗癌协会乳腺癌",
+      "disease": "乳腺癌",
       "version": 2025,
       "normalizedDisease": "乳腺癌",
       "audience": null,
@@ -1224,7 +1273,6 @@
       "supersededBy": null,
       "keywords": [
         "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
-        "中国抗癌协会乳腺癌",
         "乳腺癌",
         "乳房无痛性肿块",
         "乳头溢液",
@@ -1263,23 +1311,27 @@
     },
     "中国糖尿病防治指南（2024版）": {
       "id": "中国糖尿病防治指南（2024版）",
-      "disease": "中国糖尿病防治指南",
+      "disease": "糖尿病",
       "version": 2024,
-      "normalizedDisease": "中国糖尿病防治指南",
+      "normalizedDisease": "糖尿病",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "中国糖尿病防治指南（2024版）",
-        "中国糖尿病防治指南",
+        "糖尿病",
         "2型糖尿病",
         "医学营养治疗",
         "降压治疗",
         "调脂治疗",
         "抗血小板治疗",
         "补液治疗",
-        "中国糖尿病风险评分"
+        "中国糖尿病风险评分",
+        "二甲双胍",
+        "恶心呕吐",
+        "酮症酸中毒",
+        "烂苹果味"
       ],
       "sectionCount": 593,
       "keyParagraphCount": 15
@@ -1305,23 +1357,25 @@
         "多重用药",
         "降压治疗",
         "慢性并发症筛查与处理",
-        "低血糖风险较高的药物"
+        "低血糖风险较高的药物",
+        "糖尿病",
+        "二甲双胍"
       ],
       "sectionCount": 139,
       "keyParagraphCount": 6
     },
     "中国脑卒中防治指导规范(2021年版)": {
       "id": "中国脑卒中防治指导规范(2021年版)",
-      "disease": "中国脑卒中防治指导规范",
+      "disease": "中国脑卒中防治指导",
       "version": 2021,
-      "normalizedDisease": "中国脑卒中防治指导规范",
+      "normalizedDisease": "中国脑卒中防治指导",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "中国脑卒中防治指导规范(2021年版)",
-        "中国脑卒中防治指导规范"
+        "中国脑卒中防治指导"
       ],
       "sectionCount": 1836,
       "keyParagraphCount": 0
@@ -1359,16 +1413,16 @@
     },
     "中国高血压防治指南(2024年修订版)": {
       "id": "中国高血压防治指南(2024年修订版)",
-      "disease": "中国高血压防治指南",
+      "disease": "中国高血压",
       "version": 2024,
-      "normalizedDisease": "中国高血压防治指南",
+      "normalizedDisease": "中国高血压",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "中国高血压防治指南(2024年修订版)",
-        "中国高血压防治指南",
+        "中国高血压",
         "高血压",
         "起始小剂量降压治疗"
       ],
@@ -1435,6 +1489,22 @@
       "sectionCount": 136,
       "keyParagraphCount": 0
     },
+    "产后出血预防与处理指南2023": {
+      "id": "产后出血预防与处理指南2023",
+      "disease": "产后出血",
+      "version": null,
+      "normalizedDisease": "产后出血",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "产后出血预防与处理指南2023",
+        "产后出血"
+      ],
+      "sectionCount": 34,
+      "keyParagraphCount": 0
+    },
     "儿童肺炎支原体肺炎诊疗指南（2023年版）": {
       "id": "儿童肺炎支原体肺炎诊疗指南（2023年版）",
       "disease": "儿童肺炎支原体肺炎",
@@ -1485,7 +1555,7 @@
     },
     "儿童脑胶质瘤诊疗规范(2021年版)": {
       "id": "儿童脑胶质瘤诊疗规范(2021年版)",
-      "disease": "儿童脑胶质瘤诊疗规范",
+      "disease": "儿童脑胶质瘤",
       "version": 2021,
       "normalizedDisease": "儿童脑胶质瘤",
       "audience": "儿童",
@@ -1494,14 +1564,14 @@
       "supersededBy": null,
       "keywords": [
         "儿童脑胶质瘤诊疗规范(2021年版)",
-        "儿童脑胶质瘤诊疗规范"
+        "儿童脑胶质瘤"
       ],
       "sectionCount": 51,
       "keyParagraphCount": 0
     },
     "儿童腺病毒肺炎诊疗规范": {
       "id": "儿童腺病毒肺炎诊疗规范",
-      "disease": "儿童腺病毒肺炎诊疗规范",
+      "disease": "儿童腺病毒肺炎",
       "version": null,
       "normalizedDisease": "儿童腺病毒肺炎",
       "audience": "儿童",
@@ -1509,7 +1579,8 @@
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "儿童腺病毒肺炎诊疗规范"
+        "儿童腺病毒肺炎诊疗规范",
+        "儿童腺病毒肺炎"
       ],
       "sectionCount": 55,
       "keyParagraphCount": 0
@@ -1829,7 +1900,7 @@
     },
     "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）": {
       "id": "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）",
-      "disease": "国家卫生健康委关于修改和废止部分部门规章的决定",
+      "disease": "关于修改和废止部分部门规章的决定",
       "version": null,
       "normalizedDisease": "关于修改和废止部分部门规章的决定",
       "audience": null,
@@ -1838,7 +1909,7 @@
       "supersededBy": null,
       "keywords": [
         "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）",
-        "国家卫生健康委关于修改和废止部分部门规章的决定"
+        "关于修改和废止部分部门规章的决定"
       ],
       "sectionCount": 40,
       "keyParagraphCount": 0
@@ -1877,16 +1948,16 @@
     },
     "基层血液透析室（中心）建设与服务指南（试行）": {
       "id": "基层血液透析室（中心）建设与服务指南（试行）",
-      "disease": "基层血液透析室建设与服务指南",
+      "disease": "基层血液透析室建设与服务",
       "version": null,
-      "normalizedDisease": "基层血液透析室建设与服务指南",
+      "normalizedDisease": "基层血液透析室建设与服务",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "基层血液透析室（中心）建设与服务指南（试行）",
-        "基层血液透析室建设与服务指南",
+        "基层血液透析室建设与服务",
         "终末期肾病",
         "恶心呕吐",
         "水肿",
@@ -1903,6 +1974,24 @@
         "肾移植"
       ],
       "sectionCount": 0,
+      "keyParagraphCount": 0
+    },
+    "妊娠期高血糖诊治指南2022_第二部分": {
+      "id": "妊娠期高血糖诊治指南2022_第二部分",
+      "disease": "妊娠合并糖尿病",
+      "version": null,
+      "normalizedDisease": "妊娠合并糖尿病",
+      "audience": "妊娠",
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "妊娠期高血糖诊治指南2022_第二部分",
+        "妊娠合并糖尿病",
+        "糖尿病",
+        "二甲双胍"
+      ],
+      "sectionCount": 35,
       "keyParagraphCount": 0
     },
     "子宫内膜癌诊疗指南（2022年版）": {
@@ -1923,16 +2012,16 @@
     },
     "安宁疗护实践指南（2025年版）": {
       "id": "安宁疗护实践指南（2025年版）",
-      "disease": "安宁疗护实践指南",
+      "disease": "安宁疗护实践",
       "version": 2025,
-      "normalizedDisease": "安宁疗护实践指南",
+      "normalizedDisease": "安宁疗护实践",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "安宁疗护实践指南（2025年版）",
-        "安宁疗护实践指南"
+        "安宁疗护实践"
       ],
       "sectionCount": 132,
       "keyParagraphCount": 0
@@ -2030,16 +2119,15 @@
     },
     "慢性乙型肝炎防治指南（2022年版）": {
       "id": "慢性乙型肝炎防治指南（2022年版）",
-      "disease": "慢性乙型肝炎防治指南",
+      "disease": "慢性乙型肝炎",
       "version": 2022,
-      "normalizedDisease": "慢性乙型肝炎防治指南",
+      "normalizedDisease": "慢性乙型肝炎",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "慢性乙型肝炎防治指南（2022年版）",
-        "慢性乙型肝炎防治指南",
         "慢性乙型肝炎",
         "TAF",
         "ETV",
@@ -2051,15 +2139,16 @@
     },
     "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）": {
       "id": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
-      "disease": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤",
+      "disease": "慢性淋巴细胞白血病小淋巴细胞淋巴瘤",
       "version": 2022,
-      "normalizedDisease": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤",
+      "normalizedDisease": "慢性淋巴细胞白血病小淋巴细胞淋巴瘤",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
+        "慢性淋巴细胞白血病小淋巴细胞淋巴瘤",
         "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤",
         "淋巴结肿大",
         "肝脾肿大",
@@ -2143,16 +2232,16 @@
     },
     "慢性阻塞性肺疾病患者健康服务规范（试行）": {
       "id": "慢性阻塞性肺疾病患者健康服务规范（试行）",
-      "disease": "慢性阻塞性肺疾病患者健康服务规范",
+      "disease": "慢性阻塞性肺疾病患者健康服务",
       "version": null,
-      "normalizedDisease": "慢性阻塞性肺疾病患者健康服务规范",
+      "normalizedDisease": "慢性阻塞性肺疾病患者健康服务",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "慢性阻塞性肺疾病患者健康服务规范（试行）",
-        "慢性阻塞性肺疾病患者健康服务规范"
+        "慢性阻塞性肺疾病患者健康服务"
       ],
       "sectionCount": 33,
       "keyParagraphCount": 0
@@ -2188,16 +2277,16 @@
     },
     "成人体外膜肺氧合技术操作规范(2024年版)": {
       "id": "成人体外膜肺氧合技术操作规范(2024年版)",
-      "disease": "成人体外膜肺氧合技术操作规范",
+      "disease": "成人体外膜肺氧合技术操作",
       "version": 2024,
-      "normalizedDisease": "成人体外膜肺氧合技术操作规范",
+      "normalizedDisease": "成人体外膜肺氧合技术操作",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "成人体外膜肺氧合技术操作规范(2024年版)",
-        "成人体外膜肺氧合技术操作规范"
+        "成人体外膜肺氧合技术操作"
       ],
       "sectionCount": 70,
       "keyParagraphCount": 0
@@ -2291,6 +2380,38 @@
       ],
       "sectionCount": 2634,
       "keyParagraphCount": 0
+    },
+    "易栓症诊断与防治中国指南2021": {
+      "id": "易栓症诊断与防治中国指南2021",
+      "disease": "易栓症",
+      "version": null,
+      "normalizedDisease": "易栓症",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "易栓症诊断与防治中国指南2021",
+        "易栓症"
+      ],
+      "sectionCount": 21,
+      "keyParagraphCount": 0
+    },
+    "普通感冒规范诊治的专家共识(基层替代2018)": {
+      "id": "普通感冒规范诊治的专家共识(基层替代2018)",
+      "disease": "普通感冒",
+      "version": null,
+      "normalizedDisease": "普通感冒",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "普通感冒规范诊治的专家共识(基层替代2018)",
+        "普通感冒"
+      ],
+      "sectionCount": 19,
+      "keyParagraphCount": 1
     },
     "木聚糖酶等7种食品添加剂新品种": {
       "id": "木聚糖酶等7种食品添加剂新品种",
@@ -2401,7 +2522,7 @@
     },
     "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）": {
       "id": "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）",
-      "disease": "牙体缺损、牙列缺损与缺失修复诊疗规范",
+      "disease": "牙体缺损、牙列缺损与缺失修复",
       "version": 2022,
       "normalizedDisease": "牙体缺损、牙列缺损与缺失修复",
       "audience": null,
@@ -2410,7 +2531,7 @@
       "supersededBy": null,
       "keywords": [
         "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）",
-        "牙体缺损、牙列缺损与缺失修复诊疗规范"
+        "牙体缺损、牙列缺损与缺失修复"
       ],
       "sectionCount": 183,
       "keyParagraphCount": 0
@@ -2567,6 +2688,22 @@
       "sectionCount": 39,
       "keyParagraphCount": 0
     },
+    "第五次全国幽门螺杆菌感染处理共识报告": {
+      "id": "第五次全国幽门螺杆菌感染处理共识报告",
+      "disease": "幽门螺杆菌",
+      "version": null,
+      "normalizedDisease": "幽门螺杆菌",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "第五次全国幽门螺杆菌感染处理共识报告",
+        "幽门螺杆菌"
+      ],
+      "sectionCount": 6,
+      "keyParagraphCount": 2
+    },
     "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）": {
       "id": "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
       "disease": "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径",
@@ -2597,15 +2734,16 @@
     },
     "结核病分类 WS 196—2017": {
       "id": "结核病分类 WS 196—2017",
-      "disease": "结核病分类 WS 196—2017",
+      "disease": "结核病分类WS196",
       "version": null,
-      "normalizedDisease": "结核病分类 WS 196—2017",
+      "normalizedDisease": "结核病分类WS196",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "结核病分类 WS 196—2017"
+        "结核病分类 WS 196—2017",
+        "结核病分类WS196"
       ],
       "sectionCount": 26,
       "keyParagraphCount": 0
@@ -2640,6 +2778,22 @@
         "罕见病"
       ],
       "sectionCount": 1813,
+      "keyParagraphCount": 0
+    },
+    "老年人多重用药安全管理专家共识": {
+      "id": "老年人多重用药安全管理专家共识",
+      "disease": "多重用药",
+      "version": null,
+      "normalizedDisease": "多重用药",
+      "audience": "老年",
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "老年人多重用药安全管理专家共识",
+        "多重用药"
+      ],
+      "sectionCount": 10,
       "keyParagraphCount": 0
     },
     "老年合理用药核心信息": {
@@ -2769,9 +2923,25 @@
       "sectionCount": 100,
       "keyParagraphCount": 0
     },
+    "肺结核诊疗规范2020": {
+      "id": "肺结核诊疗规范2020",
+      "disease": "肺结核",
+      "version": null,
+      "normalizedDisease": "肺结核",
+      "audience": null,
+      "org": null,
+      "deprecated": false,
+      "supersededBy": null,
+      "keywords": [
+        "肺结核诊疗规范2020",
+        "肺结核"
+      ],
+      "sectionCount": 1,
+      "keyParagraphCount": 0
+    },
     "肺结核门诊诊疗规范": {
       "id": "肺结核门诊诊疗规范",
-      "disease": "肺结核门诊诊疗规范",
+      "disease": "肺结核门诊",
       "version": null,
       "normalizedDisease": "肺结核门诊",
       "audience": null,
@@ -2780,6 +2950,7 @@
       "supersededBy": null,
       "keywords": [
         "肺结核门诊诊疗规范",
+        "肺结核门诊",
         "肺结核",
         "咳嗽",
         "咳痰",
@@ -2811,16 +2982,16 @@
     },
     "肺结核门诊诊疗规范等附件(2012版)": {
       "id": "肺结核门诊诊疗规范等附件(2012版)",
-      "disease": "肺结核门诊诊疗规范等附件",
+      "disease": "肺结核门诊",
       "version": 2012,
-      "normalizedDisease": "肺结核门诊等附件",
+      "normalizedDisease": "肺结核门诊",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "肺结核门诊诊疗规范等附件(2012版)",
-        "肺结核门诊诊疗规范等附件"
+        "肺结核门诊"
       ],
       "sectionCount": 132,
       "keyParagraphCount": 0
@@ -2897,16 +3068,16 @@
     },
     "胎盘植入性疾病诊断和处理指南（2023）": {
       "id": "胎盘植入性疾病诊断和处理指南（2023）",
-      "disease": "胎盘植入性疾病诊断和处理指南",
+      "disease": "胎盘植入性疾病诊断和处理",
       "version": null,
-      "normalizedDisease": "胎盘植入性疾病诊断和处理指南",
+      "normalizedDisease": "胎盘植入性疾病诊断和处理",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "胎盘植入性疾病诊断和处理指南（2023）",
-        "胎盘植入性疾病诊断和处理指南"
+        "胎盘植入性疾病诊断和处理"
       ],
       "sectionCount": 29,
       "keyParagraphCount": 0
@@ -2986,16 +3157,15 @@
     },
     "脑血管病防治指南（2024年版）": {
       "id": "脑血管病防治指南（2024年版）",
-      "disease": "脑血管病防治指南",
+      "disease": "脑血管病",
       "version": 2024,
-      "normalizedDisease": "脑血管病防治指南",
+      "normalizedDisease": "脑血管病",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "脑血管病防治指南（2024年版）",
-        "脑血管病防治指南",
         "脑血管病",
         "偏瘫",
         "失语",
@@ -3013,7 +3183,10 @@
         "吸烟",
         "溶栓治疗",
         "抗血小板治疗",
-        "血管内介入治疗"
+        "血管内介入治疗",
+        "脑卒中",
+        "脑梗死",
+        "脑出血"
       ],
       "sectionCount": 129,
       "keyParagraphCount": 0
@@ -3316,16 +3489,15 @@
     },
     "近视防治指南（2024年版）": {
       "id": "近视防治指南（2024年版）",
-      "disease": "近视防治指南",
+      "disease": "近视",
       "version": 2024,
-      "normalizedDisease": "近视防治指南",
+      "normalizedDisease": "近视",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "近视防治指南（2024年版）",
-        "近视防治指南",
         "近视",
         "视力模糊",
         "远视力下降",
@@ -3363,15 +3535,16 @@
     },
     "食养指南与科普资源": {
       "id": "食养指南与科普资源",
-      "disease": "食养指南与科普资源",
+      "disease": "食养",
       "version": null,
-      "normalizedDisease": "食养指南与科普资源",
+      "normalizedDisease": "食养",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
-        "食养指南与科普资源"
+        "食养指南与科普资源",
+        "食养"
       ],
       "sectionCount": 15,
       "keyParagraphCount": 0
@@ -3491,6 +3664,9 @@
     "1.2026年国家医疗质量安全改进目标": [
       "1.2026年国家医疗质量安全改进目标"
     ],
+    "1.年国家医疗质量安全改进目标": [
+      "1.2026年国家医疗质量安全改进目标"
+    ],
     "1.健康体检自测问卷（2025年版）": [
       "1.健康体检自测问卷（2025年版）"
     ],
@@ -3512,10 +3688,13 @@
     "1.紧密型县域医共体医学影像中心建设与服务指南（试行）": [
       "1.紧密型县域医共体医学影像中心建设与服务指南（试行）"
     ],
-    "1.紧密型县域医共体医学影像中心建设与服务指南": [
+    "1.紧密型县域医共体医学影像中心建设与服务": [
       "1.紧密型县域医共体医学影像中心建设与服务指南（试行）"
     ],
     "2.2026年各专业质控工作改进目标": [
+      "2.2026年各专业质控工作改进目标"
+    ],
+    "2.年各专业质控工作改进目标": [
       "2.2026年各专业质控工作改进目标"
     ],
     "流感": [
@@ -3545,7 +3724,7 @@
     "2.紧密型县域医共体医学检验中心建设与服务指南（试行）": [
       "2.紧密型县域医共体医学检验中心建设与服务指南（试行）"
     ],
-    "2.紧密型县域医共体医学检验中心建设与服务指南": [
+    "2.紧密型县域医共体医学检验中心建设与服务": [
       "2.紧密型县域医共体医学检验中心建设与服务指南（试行）"
     ],
     "3.生物医学新技术临床转化应用优先审查审批申请表": [
@@ -3554,7 +3733,7 @@
     "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）": [
       "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）"
     ],
-    "3.紧密型县域医共体心电诊断中心建设与服务指南": [
+    "3.紧密型县域医共体心电诊断中心建设与服务": [
       "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）"
     ],
     "4.成人健康体检工作流程图（2025年版）": [
@@ -3566,7 +3745,7 @@
     "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）": [
       "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）"
     ],
-    "4.紧密型县域医共体消毒供应中心建设与服务指南": [
+    "4.紧密型县域医共体消毒供应中心建设与服务": [
       "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）"
     ],
     "86个罕见病病种诊疗指南（2025年版）": [
@@ -3576,6 +3755,9 @@
       "86个罕见病病种诊疗指南（2025年版）"
     ],
     "GBZ 104—2026 职业性外照射急性放射病诊断标准": [
+      "GBZ 104—2026 职业性外照射急性放射病诊断标准"
+    ],
+    "GBZ104职业性外照射急性放射病诊断标准": [
       "GBZ 104—2026 职业性外照射急性放射病诊断标准"
     ],
     "职业性外照射急性放射病": [
@@ -3599,6 +3781,9 @@
       "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
     ],
     "GBZ 105—2026 职业性外照射慢性放射病诊断标准": [
+      "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
+    ],
+    "GBZ105职业性外照射慢性放射病诊断标准": [
       "GBZ 105—2026 职业性外照射慢性放射病诊断标准"
     ],
     "职业性外照射慢性放射病": [
@@ -3649,6 +3834,9 @@
     "GBZ 97—2026 职业性放射性肿瘤病因判断标准": [
       "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
     ],
+    "GBZ97职业性放射性肿瘤病因判断标准": [
+      "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
+    ],
     "职业性放射性肿瘤": [
       "GBZ 97—2026 职业性放射性肿瘤病因判断标准"
     ],
@@ -3694,7 +3882,13 @@
     "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准": [
       "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准"
     ],
+    "GBZT244电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准": [
+      "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准"
+    ],
     "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准": [
+      "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准"
+    ],
+    "GBZT344放射工作人员甲状腺中131I的直接测量方法标准": [
       "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准"
     ],
     "甲状腺放射性碘污染": [
@@ -3715,16 +3909,31 @@
     "WS 890—2026 浅层X射线治疗机质量控制检测标准": [
       "WS 890—2026 浅层X射线治疗机质量控制检测标准"
     ],
+    "WS890浅层X射线治疗机质量控制检测标准": [
+      "WS 890—2026 浅层X射线治疗机质量控制检测标准"
+    ],
     "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分": [
+      "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分"
+    ],
+    "WST404.9临床常用生化检验项目参考区间第9部分": [
       "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分"
     ],
     "WS-T 477—2026 D-二聚体定量检测标准": [
       "WS-T 477—2026 D-二聚体定量检测标准"
     ],
+    "WST477D二聚体定量检测标准": [
+      "WS-T 477—2026 D-二聚体定量检测标准"
+    ],
     "WS-T 497—2026 侵袭性真菌病实验诊断标准": [
       "WS-T 497—2026 侵袭性真菌病实验诊断标准"
     ],
+    "WST497侵袭性真菌病实验诊断标准": [
+      "WS-T 497—2026 侵袭性真菌病实验诊断标准"
+    ],
     "WS-T 498—2026 感染性腹泻实验诊断标准": [
+      "WS-T 498—2026 感染性腹泻实验诊断标准"
+    ],
+    "WST498感染性腹泻实验诊断标准": [
       "WS-T 498—2026 感染性腹泻实验诊断标准"
     ],
     "感染性腹泻": [
@@ -3787,49 +3996,115 @@
     "WS-T 503—2026 临床微生物实验室血培养操作标准": [
       "WS-T 503—2026 临床微生物实验室血培养操作标准"
     ],
+    "WST503临床微生物实验室血培养操作标准": [
+      "WS-T 503—2026 临床微生物实验室血培养操作标准"
+    ],
     "WS-T 601—2018 妊娠期糖尿病患者膳食指导": [
       "WS-T 601—2018 妊娠期糖尿病患者膳食指导"
     ],
+    "WST601妊娠期糖尿病患者膳食指导": [
+      "WS-T 601—2018 妊娠期糖尿病患者膳食指导"
+    ],
+    "糖尿病": [
+      "WS-T 601—2018 妊娠期糖尿病患者膳食指导",
+      "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准",
+      "糖尿病酮症酸中毒诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "中国糖尿病防治指南（2024版）",
+      "中国老年糖尿病诊疗指南（2024版）",
+      "口腔念珠菌病诊疗指南（2022年版）",
+      "基层血液透析室（中心）建设与服务指南（试行）",
+      "妊娠期高血糖诊治指南2022_第二部分",
+      "流行性感冒诊疗方案（2025版）",
+      "肺结核门诊诊疗规范",
+      "胰腺癌诊治指南（2022年版）",
+      "脑血管病防治指南（2024年版）"
+    ],
+    "二甲双胍": [
+      "WS-T 601—2018 妊娠期糖尿病患者膳食指导",
+      "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准",
+      "糖尿病酮症酸中毒诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "中国糖尿病防治指南（2024版）",
+      "中国老年糖尿病诊疗指南（2024版）",
+      "妊娠期高血糖诊治指南2022_第二部分"
+    ],
     "WS-T 640—2026 临床微生物学检验标本的采集和转运标准": [
+      "WS-T 640—2026 临床微生物学检验标本的采集和转运标准"
+    ],
+    "WST640临床微生物学检验标本的采集和转运标准": [
       "WS-T 640—2026 临床微生物学检验标本的采集和转运标准"
     ],
     "WS-T 641—2026 临床检验定量测定室内质量控制标准": [
       "WS-T 641—2026 临床检验定量测定室内质量控制标准"
     ],
+    "WST641临床检验定量测定室内质量控制标准": [
+      "WS-T 641—2026 临床检验定量测定室内质量控制标准"
+    ],
     "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分": [
+      "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分"
+    ],
+    "WST645.1临床常用免疫学检验项目参考区间第1部分": [
       "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分"
     ],
     "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分": [
       "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分"
     ],
+    "WST645.2临床常用免疫学检验项目参考区间第2部分": [
+      "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分"
+    ],
     "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准": [
+      "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准"
+    ],
+    "WST828妊娠期糖尿病妇女体重增长推荐值标准": [
       "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准"
     ],
     "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准": [
       "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准"
     ],
+    "WST883中枢神经系统感染性疾病实验诊断标准": [
+      "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准"
+    ],
     "WS-T 884—2026 分枝杆菌感染实验诊断标准": [
+      "WS-T 884—2026 分枝杆菌感染实验诊断标准"
+    ],
+    "WST884分枝杆菌感染实验诊断标准": [
       "WS-T 884—2026 分枝杆菌感染实验诊断标准"
     ],
     "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标": [
       "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标"
     ],
+    "WST885临床检验结果互认的基本技术条件及质量指标": [
+      "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标"
+    ],
     "WS-T 886—2026 临床检验常用项目名称及代码": [
+      "WS-T 886—2026 临床检验常用项目名称及代码"
+    ],
+    "WST886临床检验常用项目名称及代码": [
       "WS-T 886—2026 临床检验常用项目名称及代码"
     ],
     "WS-T 894—2026 成分血制备标准": [
       "WS-T 894—2026 成分血制备标准"
     ],
+    "WST894成分血制备标准": [
+      "WS-T 894—2026 成分血制备标准"
+    ],
     "WS-T 895—2026 脐带血造血干细胞制备与冻存标准": [
+      "WS-T 895—2026 脐带血造血干细胞制备与冻存标准"
+    ],
+    "WST895脐带血造血干细胞制备与冻存标准": [
       "WS-T 895—2026 脐带血造血干细胞制备与冻存标准"
     ],
     "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准": [
       "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准"
     ],
-    "WS-T 900—2026 病原微生物菌种保藏质量控制通用标准": [
+    "WST900病原微生物菌种保藏质量控制通用标准": [
       "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准"
     ],
     "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则": [
+      "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则"
+    ],
+    "WST901医疗机构临床医学研究质量管理体系建设": [
       "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则"
     ],
     "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
@@ -3860,7 +4135,8 @@
       "脑卒中诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
     ],
     "脑卒中": [
-      "脑卒中诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+      "脑卒中诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "脑血管病防治指南（2024年版）"
     ],
     "糖尿病酮症酸中毒诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
       "糖尿病酮症酸中毒诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
@@ -3876,10 +4152,6 @@
     ],
     "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
       "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
-    ],
-    "2型糖尿病": [
-      "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
-      "中国糖尿病防治指南（2024版）"
     ],
     "肝硬化诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
       "肝硬化诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
@@ -4061,16 +4333,22 @@
     "下颌骨骨折": [
       "下颌骨骨折诊疗指南（2022年版）"
     ],
+    "严重过敏反应诊断和临床管理专家共识2025": [
+      "严重过敏反应诊断和临床管理专家共识2025"
+    ],
+    "严重过敏反应": [
+      "严重过敏反应诊断和临床管理专家共识2025"
+    ],
     "中华医学会肺癌临床诊疗指南（2024版）": [
       "中华医学会肺癌临床诊疗指南（2024版）"
     ],
-    "中华医学会肺癌临床": [
+    "肺癌临床": [
       "中华医学会肺癌临床诊疗指南（2024版）"
     ],
     "中国人群骨质疏松症风险管理公众指南（2024）": [
       "中国人群骨质疏松症风险管理公众指南（2024）"
     ],
-    "中国人群骨质疏松症风险管理公众指南": [
+    "中国人群骨质疏松症风险管理公众": [
       "中国人群骨质疏松症风险管理公众指南（2024）"
     ],
     "骨质疏松症": [
@@ -4184,9 +4462,6 @@
     "中国抗癌协会乳腺癌诊治指南与规范（2025年版）": [
       "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
     ],
-    "中国抗癌协会乳腺癌": [
-      "中国抗癌协会乳腺癌诊治指南与规范（2025年版）"
-    ],
     "乳腺癌": [
       "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
       "乳腺癌诊疗指南（2022年版）"
@@ -4242,7 +4517,7 @@
     "中国糖尿病防治指南（2024版）": [
       "中国糖尿病防治指南（2024版）"
     ],
-    "中国糖尿病防治指南": [
+    "2型糖尿病": [
       "中国糖尿病防治指南（2024版）"
     ],
     "医学营养治疗": [
@@ -4260,6 +4535,17 @@
       "脑血管病防治指南（2024年版）"
     ],
     "中国糖尿病风险评分": [
+      "中国糖尿病防治指南（2024版）"
+    ],
+    "恶心呕吐": [
+      "中国糖尿病防治指南（2024版）",
+      "基层血液透析室（中心）建设与服务指南（试行）",
+      "脑胶质瘤诊疗指南（2022年版）"
+    ],
+    "酮症酸中毒": [
+      "中国糖尿病防治指南（2024版）"
+    ],
+    "烂苹果味": [
       "中国糖尿病防治指南（2024版）"
     ],
     "中国老年糖尿病诊疗指南（2024版）": [
@@ -4288,6 +4574,7 @@
     ],
     "多重用药": [
       "中国老年糖尿病诊疗指南（2024版）",
+      "老年人多重用药安全管理专家共识",
       "老年合理用药核心信息"
     ],
     "慢性并发症筛查与处理": [
@@ -4299,7 +4586,7 @@
     "中国脑卒中防治指导规范(2021年版)": [
       "中国脑卒中防治指导规范(2021年版)"
     ],
-    "中国脑卒中防治指导规范": [
+    "中国脑卒中防治指导": [
       "中国脑卒中防治指导规范(2021年版)"
     ],
     "中国艾滋病诊疗指南（2024版）": [
@@ -4353,7 +4640,7 @@
     "中国高血压防治指南(2024年修订版)": [
       "中国高血压防治指南(2024年修订版)"
     ],
-    "中国高血压防治指南": [
+    "中国高血压": [
       "中国高血压防治指南(2024年修订版)"
     ],
     "起始小剂量降压治疗": [
@@ -4421,6 +4708,12 @@
       "食管癌诊疗指南（2022年版）",
       "黑色素瘤诊疗指南（2022年版）"
     ],
+    "产后出血预防与处理指南2023": [
+      "产后出血预防与处理指南2023"
+    ],
+    "产后出血": [
+      "产后出血预防与处理指南2023"
+    ],
     "儿童肺炎支原体肺炎诊疗指南（2023年版）": [
       "儿童肺炎支原体肺炎诊疗指南（2023年版）"
     ],
@@ -4483,10 +4776,13 @@
     "儿童脑胶质瘤诊疗规范(2021年版)": [
       "儿童脑胶质瘤诊疗规范(2021年版)"
     ],
-    "儿童脑胶质瘤诊疗规范": [
+    "儿童脑胶质瘤": [
       "儿童脑胶质瘤诊疗规范(2021年版)"
     ],
     "儿童腺病毒肺炎诊疗规范": [
+      "儿童腺病毒肺炎诊疗规范"
+    ],
+    "儿童腺病毒肺炎": [
       "儿童腺病毒肺炎诊疗规范"
     ],
     "全膝关节置换术加速康复临床路径（2023年版）": [
@@ -4701,14 +4997,6 @@
     "长期使用抗生素": [
       "口腔念珠菌病诊疗指南（2022年版）"
     ],
-    "糖尿病": [
-      "口腔念珠菌病诊疗指南（2022年版）",
-      "基层血液透析室（中心）建设与服务指南（试行）",
-      "流行性感冒诊疗方案（2025版）",
-      "肺结核门诊诊疗规范",
-      "胰腺癌诊治指南（2022年版）",
-      "脑血管病防治指南（2024年版）"
-    ],
     "局部抗真菌药物治疗": [
       "口腔念珠菌病诊疗指南（2022年版）"
     ],
@@ -4841,7 +5129,7 @@
     "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）": [
       "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）"
     ],
-    "国家卫生健康委关于修改和废止部分部门规章的决定": [
+    "关于修改和废止部分部门规章的决定": [
       "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）"
     ],
     "国家基本药物目录（2026年版）": [
@@ -4859,15 +5147,11 @@
     "基层血液透析室（中心）建设与服务指南（试行）": [
       "基层血液透析室（中心）建设与服务指南（试行）"
     ],
-    "基层血液透析室建设与服务指南": [
+    "基层血液透析室建设与服务": [
       "基层血液透析室（中心）建设与服务指南（试行）"
     ],
     "终末期肾病": [
       "基层血液透析室（中心）建设与服务指南（试行）"
-    ],
-    "恶心呕吐": [
-      "基层血液透析室（中心）建设与服务指南（试行）",
-      "脑胶质瘤诊疗指南（2022年版）"
     ],
     "水肿": [
       "基层血液透析室（中心）建设与服务指南（试行）"
@@ -4899,6 +5183,12 @@
     "肾移植": [
       "基层血液透析室（中心）建设与服务指南（试行）"
     ],
+    "妊娠期高血糖诊治指南2022_第二部分": [
+      "妊娠期高血糖诊治指南2022_第二部分"
+    ],
+    "妊娠合并糖尿病": [
+      "妊娠期高血糖诊治指南2022_第二部分"
+    ],
     "子宫内膜癌诊疗指南（2022年版）": [
       "子宫内膜癌诊疗指南（2022年版）"
     ],
@@ -4908,7 +5198,7 @@
     "安宁疗护实践指南（2025年版）": [
       "安宁疗护实践指南（2025年版）"
     ],
-    "安宁疗护实践指南": [
+    "安宁疗护实践": [
       "安宁疗护实践指南（2025年版）"
     ],
     "宫颈癌诊疗指南（2022年版）": [
@@ -5022,9 +5312,6 @@
     "慢性乙型肝炎防治指南（2022年版）": [
       "慢性乙型肝炎防治指南（2022年版）"
     ],
-    "慢性乙型肝炎防治指南": [
-      "慢性乙型肝炎防治指南（2022年版）"
-    ],
     "TAF": [
       "慢性乙型肝炎防治指南（2022年版）"
     ],
@@ -5039,6 +5326,9 @@
       "流行性感冒诊疗方案（2025版）"
     ],
     "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）": [
+      "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
+    ],
+    "慢性淋巴细胞白血病小淋巴细胞淋巴瘤": [
       "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）"
     ],
     "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤": [
@@ -5151,7 +5441,7 @@
     "慢性阻塞性肺疾病患者健康服务规范（试行）": [
       "慢性阻塞性肺疾病患者健康服务规范（试行）"
     ],
-    "慢性阻塞性肺疾病患者健康服务规范": [
+    "慢性阻塞性肺疾病患者健康服务": [
       "慢性阻塞性肺疾病患者健康服务规范（试行）"
     ],
     "慢性髓性白血病诊疗指南（2022年版）": [
@@ -5193,7 +5483,7 @@
     "成人体外膜肺氧合技术操作规范(2024年版)": [
       "成人体外膜肺氧合技术操作规范(2024年版)"
     ],
-    "成人体外膜肺氧合技术操作规范": [
+    "成人体外膜肺氧合技术操作": [
       "成人体外膜肺氧合技术操作规范(2024年版)"
     ],
     "成釉细胞瘤诊疗指南（2022年版）": [
@@ -5253,6 +5543,18 @@
     ],
     "新型抗肿瘤药物临床应用指导原则（2025年版）": [
       "新型抗肿瘤药物临床应用指导原则（2025年版）"
+    ],
+    "易栓症诊断与防治中国指南2021": [
+      "易栓症诊断与防治中国指南2021"
+    ],
+    "易栓症": [
+      "易栓症诊断与防治中国指南2021"
+    ],
+    "普通感冒规范诊治的专家共识(基层替代2018)": [
+      "普通感冒规范诊治的专家共识(基层替代2018)"
+    ],
+    "普通感冒": [
+      "普通感冒规范诊治的专家共识(基层替代2018)"
     ],
     "木聚糖酶等7种食品添加剂新品种": [
       "木聚糖酶等7种食品添加剂新品种"
@@ -5341,7 +5643,7 @@
     "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）": [
       "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）"
     ],
-    "牙体缺损、牙列缺损与缺失修复诊疗规范": [
+    "牙体缺损、牙列缺损与缺失修复": [
       "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）"
     ],
     "牙源性颌骨囊肿诊疗指南（2022年版）": [
@@ -5481,6 +5783,12 @@
     "磨牙症": [
       "磨牙症诊疗指南（2022年版）"
     ],
+    "第五次全国幽门螺杆菌感染处理共识报告": [
+      "第五次全国幽门螺杆菌感染处理共识报告"
+    ],
+    "幽门螺杆菌": [
+      "第五次全国幽门螺杆菌感染处理共识报告"
+    ],
     "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）": [
       "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）"
     ],
@@ -5508,6 +5816,9 @@
     "结核病分类 WS 196—2017": [
       "结核病分类 WS 196—2017"
     ],
+    "结核病分类WS196": [
+      "结核病分类 WS 196—2017"
+    ],
     "综合医院中医药工作指南（2024 版）": [
       "综合医院中医药工作指南（2024 版）"
     ],
@@ -5519,6 +5830,9 @@
     ],
     "罕见病": [
       "罕见病诊疗指南（2019年版）"
+    ],
+    "老年人多重用药安全管理专家共识": [
+      "老年人多重用药安全管理专家共识"
     ],
     "老年合理用药核心信息": [
       "老年合理用药核心信息"
@@ -5652,11 +5966,19 @@
     "减重手术": [
       "肥胖症诊疗指南（2024年版）"
     ],
+    "肺结核诊疗规范2020": [
+      "肺结核诊疗规范2020"
+    ],
+    "肺结核": [
+      "肺结核诊疗规范2020",
+      "肺结核门诊诊疗规范"
+    ],
     "肺结核门诊诊疗规范": [
       "肺结核门诊诊疗规范"
     ],
-    "肺结核": [
-      "肺结核门诊诊疗规范"
+    "肺结核门诊": [
+      "肺结核门诊诊疗规范",
+      "肺结核门诊诊疗规范等附件(2012版)"
     ],
     "咯血": [
       "肺结核门诊诊疗规范"
@@ -5707,9 +6029,6 @@
     "肺结核门诊诊疗规范等附件(2012版)": [
       "肺结核门诊诊疗规范等附件(2012版)"
     ],
-    "肺结核门诊诊疗规范等附件": [
-      "肺结核门诊诊疗规范等附件(2012版)"
-    ],
     "肾癌诊疗指南（2022年版）": [
       "肾癌诊疗指南（2022年版）"
     ],
@@ -5746,7 +6065,7 @@
     "胎盘植入性疾病诊断和处理指南（2023）": [
       "胎盘植入性疾病诊断和处理指南（2023）"
     ],
-    "胎盘植入性疾病诊断和处理指南": [
+    "胎盘植入性疾病诊断和处理": [
       "胎盘植入性疾病诊断和处理指南（2023）"
     ],
     "胰腺癌诊治指南（2022年版）": [
@@ -5844,9 +6163,6 @@
     "脑血管病防治指南（2024年版）": [
       "脑血管病防治指南（2024年版）"
     ],
-    "脑血管病防治指南": [
-      "脑血管病防治指南（2024年版）"
-    ],
     "脑血管病": [
       "脑血管病防治指南（2024年版）"
     ],
@@ -5878,6 +6194,12 @@
       "脑血管病防治指南（2024年版）"
     ],
     "血管内介入治疗": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "脑梗死": [
+      "脑血管病防治指南（2024年版）"
+    ],
+    "脑出血": [
       "脑血管病防治指南（2024年版）"
     ],
     "腭裂诊疗指南（2022年版）": [
@@ -6205,9 +6527,6 @@
     "近视防治指南（2024年版）": [
       "近视防治指南（2024年版）"
     ],
-    "近视防治指南": [
-      "近视防治指南（2024年版）"
-    ],
     "近视": [
       "近视防治指南（2024年版）"
     ],
@@ -6257,6 +6576,9 @@
       "颈椎前路椎间盘切除减压融合术加速康复临床路径（2023年版）"
     ],
     "食养指南与科普资源": [
+      "食养指南与科普资源"
+    ],
+    "食养": [
       "食养指南与科普资源"
     ],
     "食管癌诊疗指南（2022年版）": [

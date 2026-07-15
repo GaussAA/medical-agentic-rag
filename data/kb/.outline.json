@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-14T19:14:13.594Z",
-  "totalFiles": 232,
-  "totalSections": 20608,
-  "totalKeyParagraphs": 496,
+  "generatedAt": "2026-07-15T11:45:15.066Z",
+  "totalFiles": 240,
+  "totalSections": 20807,
+  "totalKeyParagraphs": 499,
   "guides": [
     {
       "id": "1.2026年国家医疗质量安全改进目标",
@@ -1054,6 +1054,14 @@
       "keyParagraphs": []
     },
     {
+      "id": "严重过敏反应诊断和临床管理专家共识2025",
+      "title": "严重过敏反应诊断和临床管理专家共识2025",
+      "sectionCount": 73,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "中华医学会肺癌临床诊疗指南（2024版）",
       "title": "中华医学会肺癌临床诊疗指南（2024版）",
       "sectionCount": 104,
@@ -1187,6 +1195,14 @@
       "id": "乳腺癌诊疗指南（2022年版）",
       "title": "乳腺癌诊疗指南（2022年版）",
       "sectionCount": 136,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "产后出血预防与处理指南2023",
+      "title": "产后出血预防与处理指南2023",
+      "sectionCount": 34,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -1368,6 +1384,14 @@
       "keyParagraphs": []
     },
     {
+      "id": "妊娠期高血糖诊治指南2022_第二部分",
+      "title": "妊娠期高血糖诊治指南2022_第二部分",
+      "sectionCount": 35,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "子宫内膜癌诊疗指南（2022年版）",
       "title": "子宫内膜癌诊疗指南（2022年版）",
       "sectionCount": 53,
@@ -1526,6 +1550,24 @@
       "keyParagraphs": []
     },
     {
+      "id": "易栓症诊断与防治中国指南2021",
+      "title": "易栓症诊断与防治中国指南2021",
+      "sectionCount": 21,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "普通感冒规范诊治的专家共识(基层替代2018)",
+      "title": "普通感冒规范诊治的专家共识(基层替代2018)",
+      "sectionCount": 19,
+      "keyParagraphCount": 1,
+      "hierarchy": [],
+      "keyParagraphs": [
+        "一般无需积极抗病毒治疗，以对症处理、休息、戒烟、多饮水、保持室内空气流通和防治继发细菌感染为主。一般不用抗菌药物，如合并细菌感染，可根据上呼吸道感染常见病原菌经验性选用抗菌药物。"
+      ]
+    },
+    {
       "id": "木聚糖酶等7种食品添加剂新品种",
       "title": "木聚糖酶等7种食品添加剂新品种",
       "sectionCount": 8,
@@ -1626,6 +1668,17 @@
       "keyParagraphs": []
     },
     {
+      "id": "第五次全国幽门螺杆菌感染处理共识报告",
+      "title": "第五次全国幽门螺杆菌感染处理共识报告",
+      "sectionCount": 6,
+      "keyParagraphCount": 2,
+      "hierarchy": [],
+      "keyParagraphs": [
+        "证据质量：中；推荐强度：条件；共识水平：１００％ 。              （或）放射治疗 。所 ［ ］ ３０３１ 有患者根除 Ｈｐ 后均需密切随访。",
+        "左氧氟沙星 。注意 ［１３２］ 方案⑤和⑥组合的 ２ 种抗菌药物 Ｈｐ                          证据质量：低；推荐强度：强；共识水平：１００％ 。"
+      ]
+    },
+    {
       "id": "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
       "title": "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
       "sectionCount": 35,
@@ -1653,6 +1706,14 @@
       "id": "罕见病诊疗指南（2019年版）",
       "title": "罕见病诊疗指南（2019年版）",
       "sectionCount": 1813,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "老年人多重用药安全管理专家共识",
+      "title": "老年人多重用药安全管理专家共识",
+      "sectionCount": 10,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -1706,6 +1767,14 @@
       "id": "肥胖症诊疗指南（2024年版）",
       "title": "肥胖症诊疗指南（2024年版）",
       "sectionCount": 100,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "肺结核诊疗规范2020",
+      "title": "肺结核诊疗规范2020",
+      "sectionCount": 1,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []

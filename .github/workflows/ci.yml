@@ -81,10 +81,9 @@ jobs:
         with:
           node-version: "22"
       - name: 端到端答案质量评测（需 Key；缺失/失败则优雅跳过，非故障）
-        if: ${{ secrets.SENSENOVA_API_KEY != '' }}
         continue-on-error: true
         env:
-          SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY }}
+          SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY || '' }}
           CI: "true"
         run: node tests/unit/answer-quality-judge.mjs
       - name: 评测可用性判定（决定门禁是否执行）

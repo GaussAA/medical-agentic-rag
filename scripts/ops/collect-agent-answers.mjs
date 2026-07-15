@@ -17,7 +17,7 @@
  * 用法：
  *   node scripts/ops/collect-agent-answers.mjs                 # 采全部 null 条目
  *   node scripts/ops/collect-agent-answers.mjs --dry-run       # 仅打印将执行的命令
- *   node scripts/ops/collect-agent-answers.mjs --only Q01      # 仅采指定 id
+ *   node scripts/ops/collect-agent-answers.mjs --only Q01      # 仅采指定 id（支持逗号分隔多 id，如 --only Q37,Q38）
  *   node scripts/ops/collect-agent-answers.mjs --limit 3       # 仅采前 3 条
  *   node scripts/ops/collect-agent-answers.mjs --force         # 覆盖已有 systemAnswer
  *   node scripts/ops/collect-agent-answers.mjs --model deepseek/deepseek-v4-flash
@@ -71,7 +71,7 @@ function parseArgs(argv) {
     const a = argv[i];
     if (a === '--dry-run') out.dryRun = true;
     else if (a === '--force') out.force = true;
-    else if (a === '--only') out.only = argv[++i];
+    else if (a === '--only') out.only = argv[++i].split(',').map((s) => s.trim()).filter(Boolean); // 支持逗号分隔多 id，便于分批串行
     else if (a === '--limit') out.limit = parseInt(argv[++i], 10);
     else if (a === '--skip-ids') out.skipIds = argv[++i].split(',').map((s) => s.trim()).filter(Boolean);
     else if (a === '--model') out.model = argv[++i];
@@ -214,7 +214,7 @@ async function main() {
 
   const gold = JSON.parse(readFileSync(GOLD_PATH, 'utf8'));
   let items = gold.items.filter((it) =>
-    args.only ? it.id === args.only : args.force || it.systemAnswer == null
+    args.only ? args.only.includes(it.id) : args.force || it.systemAnswer == null
   );
   if (args.skipIds.length) {
     items = items.filter((it) => !args.skipIds.includes(it.id));

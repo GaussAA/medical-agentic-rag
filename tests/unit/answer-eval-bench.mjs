@@ -24,7 +24,7 @@ import { hasGradeMarker, hasStrictGrade } from "../../.pi/extensions/lib/grade-m
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const index = loadIndex(REPO_ROOT);
-const TXT_DIR = join(REPO_ROOT, "raw-txt");
+const TXT_DIR = join(REPO_ROOT, "data", "raw-txt");
 
 // ---------- 10 条真实问答样本（证据短语均取自对应指南原文） ----------
 const SAMPLES = [

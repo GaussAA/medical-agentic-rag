@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: medical-rag-config
+  namespace: medical-rag
+data:
+  # 容器内固定 HOME，使 Pi 的全局 KB（~/.pi/knowledge）落到可写 emptyDir
+  HOME: "/home/pi"
+  NODE_ENV: "production"
+  # API 监听
+  API_PORT: "8080"
+  API_HOST: "0.0.0.0"
+  API_MAX_SESSIONS: "8"
+  API_IDLE_TTL_MS: "600000"
+  API_ASK_TIMEOUT_MS: "120000"
+  # 优雅关停排水窗口（在途请求最多等待时长，超时后强杀 Pi 子树）
+  API_DRAIN_MS: "30000"
+  # provider-proxy（LLM 网关，同容器由 api-server 自举为子进程）
+  PROXY_PORT: "18880"
+  # 关键：服务期 KB 只读，关闭 watcher 写锁，避免并发 spawn 的 Pi 争用 WAL 写锁
+  PI_KNOWLEDGE_WATCH: "false"

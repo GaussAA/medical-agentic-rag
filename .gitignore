@@ -41,6 +41,10 @@ data/raw/
 data/raw-txt/
 # 故障转移选择结果（运行期生成）
 .pi/failover-selection.json
+# API 服务运行时 PID（运行期生成）
+.pi/api.pid
+# Windows 保留设备名误建文件（须 WSL 删除，常规 API 无法处理）
+nul
 # 业务日志 + 合规审计日志（audit-*.ndjson）+ 运行时日志
 .pi/logs/
 # 旧日志目录残留（已迁至 .pi/logs/，可清理）

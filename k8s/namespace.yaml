@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: medical-rag
+  labels:
+    app: medical-rag-api
+    # 等保：专属命名空间，配合 NetworkPolicy 做东西向隔离
+    security: restricted

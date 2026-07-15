@@ -1,0 +1,25 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: medical-rag-api
+  namespace: medical-rag
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: medical-rag-api
+  minReplicas: 2        # 单 Pi 串行，容量靠副本数；至少 2 保证可用性与滚动更新零中断
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    # 生产建议增补自定义指标（如 ask p99 延迟 / 在途请求数）由 Prometheus Adapter 提供
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300   # 避免抖动频繁缩容
+    scaleUp:
+      stabilizationWindowSeconds: 0

@@ -1,0 +1,30 @@
+# 一次性 KB 构建 Job：把知识库构建进共享 PVC（RWX），供各 Pod initContainer 拷贝。
+# 仅需在 KB 更新时重跑：kubectl -n medical-rag delete job medical-rag-kb-build && kubectl apply -f k8s/kb-build-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: medical-rag-kb-build
+  namespace: medical-rag
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: build
+          image: medical-agentic-rag:latest
+          command: ["node", "scripts/ops/provision-kb.mjs"]
+          # 构建模式：HOME=/home/pi 使 Pi 把 KB 写到 /home/pi/.pi/knowledge（即 PVC 挂载点）
+          args: ["--build", "--target-dir", "/kb-source"]
+          envFrom:
+            - configMapRef:
+                name: medical-rag-config
+            - secretRef:
+                name: medical-rag-secrets
+          volumeMounts:
+            - name: kb-source
+              mountPath: /kb-source
+      volumes:
+        - name: kb-source
+          persistentVolumeClaim:
+            claimName: medical-rag-kb

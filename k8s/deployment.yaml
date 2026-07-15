@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: medical-rag-api
+  namespace: medical-rag
+  labels:
+    app: medical-rag-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: medical-rag-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0      # 零中断：先起新再停旧
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: medical-rag-api
+    spec:
+      terminationGracePeriodSeconds: 120   # 给优雅关停（排水 + 杀 Pi 子树）留足时间
+      # 每 Pod 单 Pi（串行）：Pi 为单实例，并发吞吐靠 HPA 扩副本，而非多 Pi。
+      initContainers:
+        # 将共享 KB（RWX PVC）拷贝为「本 Pod 独立可写副本」到 emptyDir，
+        # 使每个 Pi 进程独占自己的 KB 写锁，根除多实例 WAL 争用崩溃。
+        - name: provision-kb
+          image: medical-agentic-rag:latest
+          command: ["node", "scripts/ops/provision-kb.mjs"]
+          args: ["--src-dir", "/kb-source", "--target-dir", "/home/pi/.pi/knowledge"]
+          envFrom:
+            - configMapRef:
+                name: medical-rag-config
+          volumeMounts:
+            - name: kb-source
+              mountPath: /kb-source
+              readOnly: true
+            - name: kb-rw
+              mountPath: /home/pi/.pi/knowledge
+      containers:
+        - name: api
+          image: medical-agentic-rag:latest
+          command: ["node", "scripts/service/api-server.mjs"]
+          envFrom:
+            - configMapRef:
+                name: medical-rag-config
+            - secretRef:
+                name: medical-rag-secrets
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:        # 要求 Pi 真正可服务，未就绪则不分流
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          livenessProbe:          # 宽松：仅探进程存活
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+          lifecycle:
+            preStop:
+              # 触发 SIGTERM → api-server 优雅关停：停收新请求 + 排干在途 + 强杀 Pi 整棵子树
+              exec:
+                command: ["/bin/sh", "-c", "kill -TERM 1"]
+          volumeMounts:
+            - name: kb-rw
+              mountPath: /home/pi/.pi/knowledge
+      volumes:
+        - name: kb-source
+          persistentVolumeClaim:
+            claimName: medical-rag-kb
+            readOnly: true
+        - name: kb-rw
+          emptyDir: {}

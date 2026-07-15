@@ -1,0 +1,15 @@
+# 共享 KB 源（只读供各 Pod 拷贝）。需 RWX 支持的 StorageClass
+# （云上：AWS EFS / Azure File / GCP Filestore；自建：NFS/万字CephFS）。
+# 若集群无 RWX，可改为把 KB 直接打进镜像层（构建期 `npm run kb:rebuild`），
+# 此时删去 initContainer 的 --src-dir 与 kb-source 卷，KB 已随镜像就绪。
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: medical-rag-kb
+  namespace: medical-rag
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi

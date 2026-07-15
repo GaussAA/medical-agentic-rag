@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: medical-rag-api
+  namespace: medical-rag
+  labels:
+    app: medical-rag-api
+spec:
+  selector:
+    app: medical-rag-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP
+  type: ClusterIP
+  # 会话亲和在 Ingress 层做（cookie），Service 保持普通 ClusterIP 即可

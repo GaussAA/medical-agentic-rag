@@ -101,7 +101,7 @@ function normalizeToMarkdown(text, name, src) {
 }
 
 // ---------- 3~4. 写库 + 登记 ----------
-function registerSource(name, mdRelPath, department) {
+function registerSource(name, mdRelPath, department, content) {
   const reg = kb.loadRegistry(REG_FILE);
   const id = name;
   if (reg.sources.some((s) => s.id === id)) {
@@ -116,7 +116,7 @@ function registerSource(name, mdRelPath, department) {
       validate: "sha256",
       department,
       lastChecked: new Date().toISOString(),
-      lastHash: kb.contentHash(""),
+      lastHash: kb.contentHash(content || ""), // P0-3 修复：算真实内容哈希，灭空串占位（变更检测方可生效）
       note: "官方文件直供，待抽检权威度",
     });
     kb.saveRegistry(reg, REG_FILE);
@@ -134,7 +134,7 @@ try {
   }
   const md = normalizeToMarkdown(text, name, src);
   const mdPath = join(KB_DIR, `${name}.md`);
-  const mdRel = `data\kb\\${name}.md`;
+  const mdRel = join("data", "kb", `${name}.md`); // P0-3 修复：跨平台 join，灭 Windows 专属反斜杠
   if (existsSync(mdPath)) {
     console.error(`✗ 目标已存在: ${mdPath}（避免覆盖既有指南，请换名或先删）`);
     process.exit(1);

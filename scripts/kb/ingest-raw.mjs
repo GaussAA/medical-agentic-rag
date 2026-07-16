@@ -24,7 +24,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const KB_DIR = join(ROOT, "data", "kb");
-const REG_FILE = join(ROOT, "kb-sources.json");
+const REG_FILE = join(ROOT, "data/kb/kb-sources.json");
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const kb = await import(MOD);
 

@@ -24,7 +24,7 @@ import * as epmc from "./adapters/papers-europepmc.mjs";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const RAW_DIR = join(ROOT, "data", "raw");
 const TXT_DIR = join(ROOT, "data", "raw-txt");
-const REG_FILE = join(ROOT, "kb-sources.json");
+const REG_FILE = join(ROOT, "data/kb/kb-sources.json");
 const KB_SOURCES = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const dryRun = process.argv.includes("--dry-run");
 const targetArg = (() => {

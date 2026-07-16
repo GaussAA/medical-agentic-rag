@@ -19,7 +19,7 @@ import { execFileSync } from "node:child_process";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const KB_DIR = join(ROOT, "data", "kb");
-const REG_FILE = join(ROOT, "kb-sources.json");
+const REG_FILE = join(ROOT, "data/kb/kb-sources.json");
 const PY_VENV =
   process.env.PY_VENV ||
   join(process.env.USERPROFILE || process.env.HOME || "", ".workbuddy", "binaries", "python", "envs", "default", "Scripts", "python.exe");

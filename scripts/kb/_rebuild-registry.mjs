@@ -35,7 +35,7 @@ const out = files.map((f) => {
   };
 });
 writeFileSync(
-  join(ROOT, "kb-sources.json"),
+  join(ROOT, "data/kb/kb-sources.json"),
   JSON.stringify({ sources: out, meta: { lastFullCheck: new Date().toISOString() } }, null, 2),
   "utf-8"
 );

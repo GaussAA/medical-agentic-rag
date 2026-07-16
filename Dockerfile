@@ -31,8 +31,8 @@ RUN npm install -g pi \
 # 知识库通过卷挂载（docker-compose 已配置）；如需从零构建见 deploy/README.md
 EXPOSE 31415 8080
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-COPY docker-entrypoint-api.sh /usr/local/bin/docker-entrypoint-api.sh
+COPY deploy/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY deploy/docker-entrypoint-api.sh /usr/local/bin/docker-entrypoint-api.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint-api.sh
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

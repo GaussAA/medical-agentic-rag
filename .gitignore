@@ -33,7 +33,7 @@ node_modules/
 .pi/.audit-key
 # 对话运行时状态（自动生成，每轮刷新）
 .pi/conversation-state.json
-# 知识库来源登记表（含运行元数据/时间戳）+ 快照
+# 知识库来源登记表（含运行元数据/时间戳）+ 快照（现位于 data/kb/ 下）
 kb-sources.json
 .pi/kb-snapshots/
 # ========== 知识库数据 — 原始文档（不入仓，可经管线重建） ==========

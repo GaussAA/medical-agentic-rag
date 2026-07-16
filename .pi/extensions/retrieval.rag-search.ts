@@ -3,7 +3,7 @@ import { searchKnowledge } from "./lib/retrieval-router.mjs";
 // 复用内置 KnowledgeEngine 实现真 hybrid + 重排（Opt2：内置优先 / DRY，BM25 作优雅回退）
 import { engineHybridSearch } from "./lib/knowledge-engine-search.mjs";
 // A 层增强：检索期版本冲突前置标注（复用 conflict-detector 零成本内核，单一真相源）
-import { buildVersionConflictHint, defaultLoadGuideIndex } from "./lib/conflict-detector.mjs";
+import { buildVersionConflictHint, defaultLoadGuideIndex, filterDeprecatedResults } from "./lib/conflict-detector.mjs";
 // @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
 import { sanitizeSearchQuery, correctMedicalQuery } from "./lib/query-sanitize.mjs";
 // P1 增强：RRF 多通道结果融合
@@ -244,6 +244,12 @@ export default function (pi: ExtensionAPI) {
       const t3 = performance.now();
       const versionWarn = buildVersionConflictHint(src.results, defaultLoadGuideIndex());
       telemetry.versionHintMs = +(performance.now() - t3).toFixed(1);
+
+      // P0 安全闭环：硬剔除已废止 / 有更新版指南 chunk，杜绝 Agent 引用过时版本给出陈旧推荐。
+      // 告警仍基于剔除前结果生成（保留透明提示），正文仅含现行版 chunk。
+      const _gm = defaultLoadGuideIndex();
+      const _filtered = filterDeprecatedResults(src.results, _gm);
+      if (_filtered.length > 0) src.results = _filtered;
 
       telemetry.totalMs = +(performance.now() - t0).toFixed(1);
       telemetry.resultCount = src.results.length;

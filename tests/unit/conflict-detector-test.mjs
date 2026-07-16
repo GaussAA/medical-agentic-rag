@@ -8,6 +8,7 @@ import {
   collectGuideNames,
   matchGuideMeta,
   buildAnnotation,
+  filterDeprecatedResults,
 } from "../../.pi/extensions/lib/conflict-detector.mjs";
 
 let pass = 0;
@@ -191,6 +192,84 @@ async function run() {
     ok(ann.startsWith("⚠️ 跨指南提示"), "批注开头");
     ok(ann.includes("版本差异") && ann.includes("《G1》") && ann.includes("《G2》"), "批注含版本差异与现行版");
     ok(ann.includes("意见分歧") && ann.includes("《G3》") && ann.includes("《G4》") && ann.includes("剂量不同"), "批注含意见分歧");
+  }
+
+  // 12) filterDeprecatedResults：P0 安全闭环硬剔除
+  const FILTER_GM = {
+    "抗肿瘤药2022": { deprecated: true, supersededBy: "抗肿瘤药2025" },
+    "抗肿瘤药2025": { deprecated: false, supersededBy: null },
+    "普通指南": { deprecated: false, supersededBy: null },
+    "有更新版指南": { deprecated: false, supersededBy: "更新版指南" },
+  };
+  {
+    const r = filterDeprecatedResults(
+      [
+        { file_path: "raw-txt/抗肿瘤药2022.txt", score: 9 },
+        { file_path: "raw-txt/抗肿瘤药2025.txt", score: 8 },
+        { file_path: "raw-txt/普通指南.txt", score: 5 },
+      ],
+      FILTER_GM,
+    );
+    ok(r.length === 2, "剔除 deprecated 后剩 2 条");
+    ok(!r.some((x) => x.file_path.includes("抗肿瘤药2022")), "已废止指南被剔除");
+    ok(r.some((x) => x.file_path.includes("抗肿瘤药2025")), "现行版保留");
+  }
+  {
+    // supersededBy（未 deprecated）同样剔除
+    const r = filterDeprecatedResults(
+      [
+        { file_path: "raw-txt/有更新版指南.txt" },
+        { file_path: "raw-txt/更新版指南.txt" },
+      ],
+      FILTER_GM,
+    );
+    ok(r.length === 1 && r[0].file_path.includes("更新版指南"), "supersededBy 指南被剔除");
+  }
+  {
+    // 兜底：全为废弃 → 返回原结果不归零
+    const all = [{ file_path: "raw-txt/抗肿瘤药2022.txt" }];
+    const r = filterDeprecatedResults(all, FILTER_GM);
+    ok(r.length === 1, "全废弃时兜底不归零");
+  }
+  {
+    // 降级：无 guideMap / 非数组 → 原样返回
+    const r1 = filterDeprecatedResults([{ file_path: "x" }], null);
+    ok(Array.isArray(r1) && r1.length === 1, "无 guideMap 原样返回");
+    const r2 = filterDeprecatedResults("not-array", FILTER_GM);
+    ok(r2 === "not-array", "非数组入参原样返回（不崩）");
+  }
+  {
+    // 真实文件名截断匹配（去序号 / 扩展名 / 路径）+ 现行兄弟共存 → 仅剔除废止版
+    const r = filterDeprecatedResults(
+      [
+        { file_path: "data/raw-txt/1.抗肿瘤药2022.txt" },
+        { file_path: "data/raw-txt/抗肿瘤药2025.txt" },
+      ],
+      FILTER_GM,
+    );
+    ok(r.length === 1 && r[0].file_path.includes("抗肿瘤药2025"), "去序号+路径+兄弟共存仍可剔除 deprecated");
+  }
+  {
+    // 真实命名空间：guideMap 键为完整指南标题，chunk 为裸 basename（生产形态）
+    // 锁定 P0 硬剔除对真实 KB 的 3 份废止指南（支原体2023/肝癌2024/抗肿瘤药2022）生效。
+    const REAL_GM = {
+      "儿童肺炎支原体肺炎诊疗指南（2023年版）": { deprecated: true, supersededBy: "儿童肺炎支原体肺炎诊疗指南（2025年版）" },
+      "原发性肝癌诊疗指南（2024年版）": { deprecated: true, supersededBy: "原发性肝癌诊疗指南（2026版）" },
+      "新型抗肿瘤药物临床应用指导原则(2022年版)": { deprecated: true, supersededBy: "新型抗肿瘤药物临床应用指导原则（2025年版）" },
+    };
+    const r = filterDeprecatedResults(
+      [
+        { file_path: "儿童肺炎支原体肺炎诊疗指南（2023年版）.txt" },
+        { file_path: "儿童肺炎支原体肺炎诊疗指南（2025年版）.pdf" },
+        { file_path: "原发性肝癌诊疗指南（2024年版）.pdf" },
+        { file_path: "_oversized_split/肝癌2026/part_001.pdf" },
+        { file_path: "新型抗肿瘤药物临床应用指导原则(2022年版).docx" },
+      ],
+      REAL_GM,
+    );
+    ok(r.length === 2, "真实命名空间剔除 3 份废止剩 2 份现行");
+    ok(!r.some((x) => /2023年版|2024年版|\(2022年版\)/.test(x.file_path)), "真实命名空间无废止版残留");
+    ok(r.every((x) => /2025年版|肝癌2026/.test(x.file_path)), "真实命名空间仅留现行版");
   }
 
   console.log(`\n结果: ${pass} 通过 / ${fail} 失败`);

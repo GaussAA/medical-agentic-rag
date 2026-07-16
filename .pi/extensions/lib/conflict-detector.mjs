@@ -114,6 +114,31 @@ export function buildVersionConflictHint(results, guideMap) {
   }
 }
 
+// ---------- 检索期版本冲突硬剔除（P0 安全闭环） ----------
+/**
+ * 从检索结果中剔除已废止 / 有更新版的指南 chunk，杜绝 Agent 引用过时版本给出陈旧推荐。
+ * 纯函数、可注入 guideMap，零成本查 guide-index；与 buildVersionConflictHint 同内核（matchGuideMeta）。
+ * 失败哲学：解析异常 / 无 guideMap / 入参非数组 → 原样返回（不阻断检索，仅放弃剔除）。
+ * 兜底：若剔除后结果为空，返回原结果（避免召回归零导致"未检索到"误判，宁可带告警也不丢召回）。
+ * @param {Array} results searchKnowledge / engine 返回的 [{file_path,...}, ...]
+ * @param {object|null} guideMap guide-index 的 guideMap（注入便于单测；默认 null）
+ * @returns {Array} 剔除 deprecated / supersededBy 后的结果（或原样）
+ */
+export function filterDeprecatedResults(results, guideMap) {
+  if (!guideMap || !Array.isArray(results)) return results;
+  try {
+    const kept = [];
+    for (const r of results) {
+      const meta = matchGuideMeta(r.file_path, guideMap);
+      if (meta && (meta.deprecated || meta.supersededBy)) continue; // 剔除过时版本
+      kept.push(r);
+    }
+    return kept.length > 0 ? kept : results; // 兜底：不归零
+  } catch {
+    return results;
+  }
+}
+
 // ---------- Layer 2：内容冲突（免费 LLM） ----------
 /**
  * 默认 LLM 判定器：判断两份指南片段对给定问题是否意见相左。

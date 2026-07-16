@@ -21,12 +21,17 @@ COPY . .
 # 2) 项目依赖（better-sqlite3 等；会触发原生编译）
 RUN npm install
 
-# 3) 安装 Pi CLI 与所需扩展包（pi-webui 会自动发现这些已安装包）
+# 3) 安装 Pi CLI、Pi 引擎、扩展包（pi-webui 自动加载本地 .pi/extensions）
+#    注意：不能使用 pi install 命令（pi v2 下为空壳），
+#    改为直接 npm install -g 安装所需包。
 RUN npm install -g pi \
- && pi install npm:pi-knowledge \
- && pi install npm:pi-web-access \
- && pi install npm:pi-subagents \
- && pi install npm:@firstpick/pi-package-webui
+    @earendil-works/pi-coding-agent \
+    pi-knowledge \
+    pi-web-access \
+    pi-subagents \
+    @firstpick/pi-package-webui \
+ && mkdir -p /app/pi/packages \
+ && ln -sfn /usr/local/lib/node_modules/@earendil-works/pi-coding-agent /app/pi/packages/coding-agent
 
 # 知识库通过卷挂载（docker-compose 已配置）；如需从零构建见 deploy/README.md
 EXPOSE 31415 8080

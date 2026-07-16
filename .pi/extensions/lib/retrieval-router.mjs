@@ -567,4 +567,54 @@ export function searchKnowledge(query, opts = {}) {
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────────
+// RRF 结果融合（Reciprocal Rank Fusion）
+// 将多个检索通道的 TopK 结果按 RRF 公式加权合并，消除单一通道排序偏差。
+// 公式：score = Σ(1 / (k + rank_in_list))，其中 k 为常数（默认 60）。
+// 入参 lists 为二维数组：lists[i] = [{file_path, score, snippet, ...}, ...]
+// 返回按融合分数降序排列的去重结果数组。
+// -------------------------------------------------------------------------
+const RRF_K = 60;
+
+/**
+ * 多通道 RRF 结果融合。
+ * @param {Array<Array<object>>} lists  每个检索通道的排序结果列表（降序）
+ * @param {number} [k=RRF_K]  RRF 常数，默认 60
+ * @param {number} [topK=8]  融合后取前 topK 条
+ * @returns {Array<object>}  按 RRF 分数降序，去重
+ */
+export function rrfFusion(lists, k = RRF_K, topK = 8) {
+  if (!Array.isArray(lists) || lists.length === 0) return [];
+  if (lists.length === 1) return (lists[0] || []).slice(0, topK);
+
+  // 累计 RRF 分数: file_path -> { item, score }
+  const fused = new Map();
+  for (const list of lists) {
+    if (!Array.isArray(list)) continue;
+    for (let rank = 0; rank < list.length; rank++) {
+      const item = list[rank];
+      if (!item || !item.file_path) continue;
+      const prev = fused.get(item.file_path);
+      if (prev) {
+        prev.score += 1 / (k + rank);
+        // 保留高分的 snippet
+        if (item.score > (prev.item.score || 0)) prev.item = item;
+      } else {
+        fused.set(item.file_path, {
+          score: 1 / (k + rank),
+          item: { ...item },
+        });
+      }
+    }
+  }
+
+  return [...fused.values()]
+    .sort((a, b) => b.score - a.score)
+    .slice(0, topK)
+    .map((entry) => ({
+      ...entry.item,
+      rrfScore: Number(entry.score.toFixed(4)),
+    }));
+}
+
 export { Database };

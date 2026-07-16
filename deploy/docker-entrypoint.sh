@@ -27,10 +27,16 @@ else
   REMOTE_ARG="--no-remote-auth"
 fi
 
-# 3) 定位 pi-webui 独立启动器
-WUI_BIN="$(ls /root/.pi/agent/npm/node_modules/@firstpick/pi-package-webui/bin/pi-webui.mjs 2>/dev/null || true)"
+# 3) 定位 pi-webui 独立启动器（遍历可能安装路径）
+WUI_BIN=""
+for cand in \
+  /root/.pi/agent/npm/node_modules/@firstpick/pi-package-webui/bin/pi-webui.mjs \
+  /usr/local/lib/node_modules/@firstpick/pi-package-webui/bin/pi-webui.mjs \
+  "$(npm root -g 2>/dev/null)/@firstpick/pi-package-webui/bin/pi-webui.mjs"; do
+  [ -n "$cand" ] && [ -f "$cand" ] && { WUI_BIN="$cand"; break; } || true
+done
 if [ -z "$WUI_BIN" ]; then
-  echo "✗ 未找到 pi-webui，请确认 Dockerfile 中已执行 pi install npm:@firstpick/pi-package-webui" >&2
+  echo "✗ 未找到 pi-webui，请确认已执行: npm install -g @firstpick/pi-package-webui" >&2
   exit 1
 fi
 

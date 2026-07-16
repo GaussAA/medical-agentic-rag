@@ -33,19 +33,24 @@ const GUARD_TOOL_HINTS = [
 function resolvePiCli() {
   if (process.env.PI_CLI_PATH && existsSync(process.env.PI_CLI_PATH))
     return process.env.PI_CLI_PATH;
-  const local = join(
-    process.cwd(),
-    "pi",
-    "packages",
-    "coding-agent",
-    "dist",
-    "cli.js",
-  );
-  if (existsSync(local)) return local;
+  // 优先 npm 全局安装的 pi-coding-agent（Docker 镜像内 pi/ 源码不打包）
   try {
     return require.resolve("@earendil-works/pi-coding-agent/dist/cli.js");
   } catch {
-    return local; // 最后兜底，启动时会报错给出明确信息
+    // 兜底：npm 全局安装路径（Docker 镜像下 npm install -g 的位置）
+    const globalPath = "/usr/local/lib/node_modules/@earendil-works/pi-coding-agent/dist/cli.js";
+    if (existsSync(globalPath)) return globalPath;
+    // 终极兜底：本地 pi/ 源码路径（开发环境/非容器使用）
+    const local = join(
+      process.cwd(),
+      "pi",
+      "packages",
+      "coding-agent",
+      "dist",
+      "cli.js",
+    );
+    if (existsSync(local)) return local;
+    return local; // 报错时给出明确信息
   }
 }
 

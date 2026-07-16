@@ -35,17 +35,17 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "rate(audit_event_count_total[5m])",
-          "legendFormat": "{{type}}",
+          "expr": "rate(medical_rag_proxy_requests_total[5m])",
+          "legendFormat": "LLM 请求",
           "refId": "A"
         }
       ],
-      "title": "审计事件率（5m 滑动）",
+      "title": "LLM 请求速率（5m 滑动）",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "description": "安全护栏命中次数，按护栏类型区分",
+      "description": "安全护栏累计命中次数",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
@@ -54,12 +54,7 @@
           "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
           "unit": "short"
         },
-        "overrides": [
-          {
-            "matcher": { "id": "byName", "options": "越界拦截" },
-            "properties": [{ "id": "custom.lineWidth", "value": 3 }, { "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
       "id": 2,
@@ -75,31 +70,31 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "rate(guard_hit_total[5m])",
-          "legendFormat": "{{guard}}",
+          "expr": "medical_rag_safety_guard_hits_total",
+          "legendFormat": "护栏命中",
           "refId": "A"
         }
       ],
-      "title": "安全护栏命中率（5m 滑动）",
+      "title": "安全护栏命中",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "description": "最近一次审计/护栏事件的时间（按服务统计），stale 表示长时间无新事件",
+      "description": "当前活跃 LLM Provider 及其健康状态",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
           "custom": { "hideFrom": { "legend": false, "tooltip": false, "viz": false } },
-          "mappings": [],
+          "mappings": [
+            { "type": "value", "value": "1", "text": "", "options": { "1": { "text": "活跃" } } }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "red", "value": null },
-              { "color": "yellow", "value": 120 },
-              { "color": "green", "value": 300 }
+              { "color": "green", "value": null }
             ]
           },
-          "unit": "s"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -119,18 +114,18 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "time() - last_event_timestamp_seconds{service=\"web-ui\"}",
-          "legendFormat": "Web 已过时间(s)",
+          "expr": "medical_rag_proxy_current_provider",
+          "legendFormat": "当前 Provider",
           "refId": "A"
         },
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "time() - last_event_timestamp_seconds{service=\"api-server\"}",
-          "legendFormat": "API 已过时间(s)",
+          "expr": "medical_rag_proxy_consecutive_failures",
+          "legendFormat": "连续失败次数",
           "refId": "B"
         }
       ],
-      "title": "最后事件距现在（秒）",
+      "title": "Provider 状态",
       "type": "stat"
     },
     {
@@ -178,29 +173,29 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "rate(audit_event_count_total{service=\"web-ui\"}[1h])",
-          "legendFormat": "Web: {{type}}",
+          "expr": "rate(medical_rag_proxy_errors_total[5m])",
+          "legendFormat": "错误率",
           "refId": "A"
         },
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "rate(audit_event_count_total{service=\"api-server\"}[1h])",
-          "legendFormat": "API: {{type}}",
+          "expr": "rate(medical_rag_proxy_failovers_total[5m])",
+          "legendFormat": "Provider 切换",
           "refId": "B"
         }
       ],
-      "title": "审计事件分布（1h 率，堆叠柱状图）",
+      "title": "错误 & 切换（5m 率，堆叠柱状图）",
       "type": "timeseries"
     }
   ],
   "refresh": "15s",
   "schemaVersion": 39,
-  "tags": ["medical-rag", "audit", "safety"],
+  "tags": ["medical-rag", "llm-proxy", "monitoring"],
   "templating": { "list": [] },
   "time": { "from": "now-1h", "to": "now" },
   "timepicker": {},
   "timezone": "browser",
-  "title": "医疗 Agentic RAG — 审计与安全监控",
+  "title": "医疗 Agentic RAG — 系统监控",
   "version": 0,
   "weekStart": ""
 }

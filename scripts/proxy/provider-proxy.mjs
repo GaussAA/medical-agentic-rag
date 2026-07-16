@@ -187,7 +187,8 @@ async function forwardRequest(body) {
   if (!currentProvider) await selectProvider();
 
   const isSensenova = () => currentProvider.baseUrl.includes("token.sensenova.cn");
-  const model = body.model || currentModelName;
+  // 始终使用 provider-proxy 选出的模型名（currentModelName），不传 Pi 内部的 provider/model 格式
+  const model = currentModelName;
   const prevBaseUrl = currentProvider.baseUrl;
 
   let lastErr;
@@ -296,15 +297,40 @@ const server = createServer(async (req, res) => {
       return;
     }
 
-    // ---- 指标 ----
+    // ---- 指标（Prometheus 文本格式） ----
     if (url.pathname === "/metrics") {
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({
-        ...metrics,
-        currentProvider: currentProvider?.label,
-        consecutiveFailures,
-        uptime: process.uptime(),
-      }, null, 2));
+      const pName = currentProvider?.label || "unknown";
+      const lines = [
+        "# HELP medical_rag_proxy_requests_total Total LLM requests proxied",
+        "# TYPE medical_rag_proxy_requests_total counter",
+        `medical_rag_proxy_requests_total ${metrics.requests}`,
+        "# HELP medical_rag_proxy_errors_total Total proxy errors",
+        "# TYPE medical_rag_proxy_errors_total counter",
+        `medical_rag_proxy_errors_total ${metrics.errors}`,
+        "# HELP medical_rag_proxy_failovers_total Total provider failovers",
+        "# TYPE medical_rag_proxy_failovers_total counter",
+        `medical_rag_proxy_failovers_total ${metrics.failovers}`,
+        "# HELP medical_rag_proxy_current_provider Currently active provider",
+        "# TYPE medical_rag_proxy_current_provider gauge",
+        `medical_rag_proxy_current_provider{provider="${pName}"} 1`,
+        "# HELP medical_rag_proxy_consecutive_failures Current consecutive failure count",
+        "# TYPE medical_rag_proxy_consecutive_failures gauge",
+        `medical_rag_proxy_consecutive_failures ${consecutiveFailures}`,
+        "# HELP medical_rag_proxy_uptime_seconds Proxy uptime",
+        "# TYPE medical_rag_proxy_uptime_seconds gauge",
+        `medical_rag_proxy_uptime_seconds ${Math.floor(process.uptime())}`,
+      ];
+      // 按 provider 维度输出 per-provider 指标
+      for (const [name, stats] of Object.entries(metrics.byProvider)) {
+        lines.push(`# HELP medical_rag_proxy_provider_requests_total Requests by provider`);
+        lines.push(`# TYPE medical_rag_proxy_provider_requests_total counter`);
+        lines.push(`medical_rag_proxy_provider_requests_total{provider="${name}"} ${stats.requests}`);
+        lines.push(`# HELP medical_rag_proxy_provider_errors_total Errors by provider`);
+        lines.push(`# TYPE medical_rag_proxy_provider_errors_total counter`);
+        lines.push(`medical_rag_proxy_provider_errors_total{provider="${name}"} ${stats.errors || 0}`);
+      }
+      res.writeHead(200, { "Content-Type": "text/plain; version=0.0.4" });
+      res.end(lines.join("\n") + "\n");
       return;
     }
 
@@ -364,7 +390,7 @@ async function start() {
     console.warn("=".repeat(70));
   }
 
-  server.listen(PORT, "127.0.0.1", () => {
+  server.listen(PORT, "0.0.0.0", () => {
     console.log(`[proxy] LLM Provider 代理网关运行于 http://127.0.0.1:${PORT}`);
     console.log(`[proxy] 端点:`);
     console.log(`  POST /v1/chat/completions  ← Pi Agent 请求入口`);

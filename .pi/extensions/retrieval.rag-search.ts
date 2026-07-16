@@ -5,7 +5,12 @@ import { engineHybridSearch } from "./lib/knowledge-engine-search.mjs";
 // A 层增强：检索期版本冲突前置标注（复用 conflict-detector 零成本内核，单一真相源）
 import { buildVersionConflictHint, defaultLoadGuideIndex } from "./lib/conflict-detector.mjs";
 // @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
-import { sanitizeSearchQuery } from "./lib/query-sanitize.mjs";
+import { sanitizeSearchQuery, correctMedicalQuery } from "./lib/query-sanitize.mjs";
+// P1 增强：RRF 多通道结果融合
+import { rrfFusion } from "./lib/retrieval-router.mjs";
+// P1 增强：查询改写（MultiQuery 语义等价问法生成）
+// @ts-ignore
+import { generateQueryVariants } from "./lib/query-transform.mjs";
 // 检索动作落入防篡改审计哈希链（仅记字段名，不记查询原文——合规红线）
 import { auditChainLog } from "./lib/audit-chain.mjs";
 import { logRetrieval, logEngineFallback } from "./lib/observability.mjs";
@@ -94,12 +99,19 @@ export default function (pi: ExtensionAPI) {
       const p = normalizeParams(params);
       const rawQuery = ((p.query || p.q || "") as string).toString().trim();
       // 强制脱敏：避免患者 PII 进入检索上下文与查询日志（合规红线）
-      const query = sanitizeSearchQuery(rawQuery);
+      let query = sanitizeSearchQuery(rawQuery);
       if (!query) {
         return {
           content: [{ type: "text", text: "请提供检索内容（query）。" }],
         };
       }
+      // P1 CRAG 增强：医疗查询纠错（同音字/缩写/术语补全）
+      const correctedQuery = correctMedicalQuery(query);
+      if (correctedQuery !== query) {
+        diag.info("rag_search", `CRAG 纠错: "${query.slice(0, 40)}" → "${correctedQuery.slice(0, 40)}"`);
+        query = correctedQuery;
+      }
+
       const limit = typeof p.limit === "number" && p.limit > 0 ? Math.min(p.limit, 30) : 8;
       const kbId = typeof p.kb_id === "string" && p.kb_id ? p.kb_id : null;
       // 审计：检索动作落入防篡改哈希链（仅字段名，不含查询原文——合规红线）
@@ -118,11 +130,58 @@ export default function (pi: ExtensionAPI) {
         t0,
       };
 
-      // 始终先算 BM25 + 路由（廉价、无 e5 加载）：兼作（1）路由约束来源（2）引擎失败时的回退
+      // P1 查询改写增强：生成语义等价问法变体，多路检索后 RRF 融合
+      // 仅在 fast 模式（无需引擎的纯 BM25 路径）下启用；dense 模式引擎端仅用原始 query（避免 3×引擎开销）
+      let searchQueries: string[] = [query];
+      const DENSE = new Set(["hybrid", "semantic", "deep", "adaptive"]);
+      const dense = !mode || DENSE.has(mode);
+      // 非 dense 模式启动查询改写
+      if (!dense) {
+        try {
+          const variants = await generateQueryVariants(query, { timeoutMs: 8000 });
+          if (variants.length > 1) {
+            searchQueries = variants;
+            telemetry.queryVariants = variants.length;
+            telemetry.queriesUsed = variants.map((v: string) => v.slice(0, 30));
+          }
+        } catch (e: any) {
+          // 改写失败静默降级（仅用原句），不阻断检索
+          diag.info("rag_search", "查询改写降级: " + (e?.message || e));
+        }
+      }
+
+      // 多路 BM25 + RRF 融合：对每个变体做 searchKnowledge，再 RRF 合成
       let out;
       const t1 = performance.now();
       try {
-        out = searchKnowledge(query, { limit, kbId });
+        const bm25Results = [];
+        for (const q of searchQueries) {
+          const r = searchKnowledge(q, { limit, kbId });
+          if (r && r.results && r.results.length) {
+            bm25Results.push(r.results);
+          }
+        }
+        if (bm25Results.length === 0) {
+          // 各变体均无结果 → 退化为单次全语料检索（与旧行为一致）
+          out = searchKnowledge(query, { limit, kbId });
+        } else if (bm25Results.length === 1) {
+          // 单变体（改写未产生额外结果）→ 直接取第一个
+          out = searchKnowledge(searchQueries[0], { limit, kbId });
+        } else {
+          // 多通道 RRF 融合
+          const fused = rrfFusion(bm25Results, 60, limit);
+          // 沿用 searchKnowledge 的结果骨架（路由信息取自首个查询的首变体）
+          const base = searchKnowledge(searchQueries[0], { limit: 1, kbId });
+          out = {
+            results: fused,
+            routedTitles: base?.routedTitles || [],
+            kbFiles: base?.kbFiles || [],
+            constrained: base?.constrained || false,
+            lowConfidence: base?.lowConfidence || false,
+            topScore: base?.topScore || 0,
+            totalFiles: base?.totalFiles || 0,
+          };
+        }
       } catch (e: any) {
         telemetry.error = "searchKnowledge_failed:" + (e?.message || e);
         diag.warn("rag_search", "telemetry: " + JSON.stringify(telemetry));
@@ -155,8 +214,6 @@ export default function (pi: ExtensionAPI) {
       telemetry.lowConfidence = out.lowConfidence || undefined;
 
       const routedFilePaths = out.kbFiles && out.kbFiles.length ? out.kbFiles : null;
-      const DENSE = new Set(["hybrid", "semantic", "deep", "adaptive"]);
-      const dense = !mode || DENSE.has(mode);
 
       // dense 模式委托内置引擎（真 hybrid / 重排）；失败则回退 BM25，显式告警，无静默失败
       let engineResult = null;

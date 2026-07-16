@@ -24,7 +24,7 @@ const PY_VENV =
   process.env.PY_VENV ||
   join(process.env.USERPROFILE || process.env.HOME || "", ".workbuddy", "binaries", "python", "envs", "default", "Scripts", "python.exe");
 const DOCX_BRIDGE = join(ROOT, "scripts", "kb", "_docx2txt.py");
-const DEF_SRC = process.env.MEDICAL_RAW_SRC || "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
+const DEF_SRC = process.env.MEDICAL_RAW_SRC || join(process.env.USERPROFILE || process.env.HOME || "", "Documents", "medical-knowledge-docs", "medical-knowlegde-origin");
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;
 const kb = await import(MOD);
 

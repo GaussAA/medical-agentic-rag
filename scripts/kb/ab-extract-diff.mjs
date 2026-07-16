@@ -24,7 +24,7 @@ process.on("uncaughtException", (e) => {
   console.error("  [uncaughtException]", String(e && e.message ? e.message : e).slice(0, 120));
 });
 
-const SRC = process.env.MEDICAL_RAW_SRC || "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
+const SRC = process.env.MEDICAL_RAW_SRC || join(process.env.USERPROFILE || process.env.HOME || "", "Documents", "medical-knowledge-docs", "medical-knowlegde-origin");
 const npmRoot =
   process.env.PI_AGENT_NPM ||
   join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "agent", "npm");

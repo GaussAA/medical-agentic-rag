@@ -17,7 +17,7 @@ import {
 } from "node:fs";
 import { join, extname, basename } from "node:path";
 
-const SRC = process.env.MEDICAL_RAW_SRC || "D:/JaNiy/Documents/medical-knowledge-docs/medical-knowlegde-origin";
+const SRC = process.env.MEDICAL_RAW_SRC || join(process.env.USERPROFILE || process.env.HOME || "", "Documents", "medical-knowledge-docs", "medical-knowlegde-origin");
 const ROOT = process.cwd();
 const RAW_DIR = join(ROOT, "data", "raw");
 const TXT_DIR = join(ROOT, "data", "raw-txt");

@@ -13,6 +13,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseKeys } from "../lib/parse-keys.mjs"; // P1#7 抽离：单一真相源，可独立单测
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）
@@ -20,10 +21,7 @@ const OUTLINE_FILE = join(ROOT, "data", "kb", ".outline.json");
 const GRAPH_FILE = join(ROOT, "data", "kb", ".knowledge-graph.json");
 
 // ---------- 20 Key 池并发机制（复用 llm-judge 命名惯例） ----------
-function parseKeys(raw) {
-  if (!raw) return [];
-  return raw.split(/[\s,]+/).map((s) => s.trim()).filter(Boolean);
-}
+// parseKeys 已抽离至 scripts/lib/parse-keys.mjs（单一真相源，可独立单测）。
 const SENSENOVA_KEYS = (() => {
   const pool = parseKeys(process.env.SENSENOVA_API_KEYS || "");
   const single = process.env.SENSENOVA_API_KEY;

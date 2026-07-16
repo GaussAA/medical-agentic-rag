@@ -25,6 +25,7 @@ import { createRequire } from "node:module";
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
+import { betterSqlite3Candidates } from "../lib/config.mjs"; // P0-1 修复：路径由 env/homedir 推导，灭用户名写死
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -46,12 +47,8 @@ const ROOT = findProjectRoot(__dirname);
 // ---------- better-sqlite3 动态加载（与 retrieval-router 同候选路径）----------
 function loadBetterSqlite3() {
   const require = createRequire(import.meta.url);
-  const candidates = [
-    "better-sqlite3",
-    process.env.PI_AGENT_NPM && join(process.env.PI_AGENT_NPM, "node_modules", "better-sqlite3"),
-    "C:/Users/JaNiy/.pi/agent/npm/node_modules/better-sqlite3",
-    join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "agent", "npm", "node_modules", "better-sqlite3"),
-  ].filter(Boolean);
+  // 候选人全部经 config.betterSqlite3Candidates() 由 env / homedir 推导，不再写死用户名。
+  const candidates = betterSqlite3Candidates();
   let lastErr;
   for (const c of candidates) {
     try {

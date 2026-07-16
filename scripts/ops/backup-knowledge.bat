@@ -23,7 +23,7 @@ echo.
 
 set NODE_OPTIONS=--use-env-proxy
 
-"C:\Users\JaNiy\.workbuddy\binaries\node\versions\22.22.2\node.exe" ^
+"%USERPROFILE%\.workbuddy\binaries\node\versions\22.22.2\node.exe" ^
   "%~dp0..\pi\packages\coding-agent\dist\cli.js" ^
   --model deepseek/deepseek-v4-flash ^
   --no-session ^

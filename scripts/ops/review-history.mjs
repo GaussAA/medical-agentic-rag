@@ -209,17 +209,18 @@ async function main() {
         console.log(`    ⏭ 跳过: ${score.reason}`);
         results.push({ sessionId, sessionTs, question: qPreview, skipped: true, reason: score.reason });
       } else {
+        const safe = (v) => (v !== undefined && v !== null && !isNaN(Number(v)) ? Number(v) : 0);
         evaluated++;
-        console.log(`    ✅ F=${score.faithfulness} R=${score.answerRelevance} C=${score.clinicalCorrectness} S=${score.safety}`);
+        console.log(`    ✅ F=${safe(score.faithfulness)} R=${safe(score.answerRelevance)} C=${safe(score.clinicalCorrectness)} S=${safe(score.safety)}`);
         results.push({
           sessionId,
           sessionTs,
           question: qPreview,
           skipped: false,
-          faithfulness: score.faithfulness,
-          answerRelevance: score.answerRelevance,
-          clinicalCorrectness: score.clinicalCorrectness,
-          safety: score.safety,
+          faithfulness: safe(score.faithfulness),
+          answerRelevance: safe(score.answerRelevance),
+          clinicalCorrectness: safe(score.clinicalCorrectness),
+          safety: safe(score.safety),
         });
       }
     } catch (err) {

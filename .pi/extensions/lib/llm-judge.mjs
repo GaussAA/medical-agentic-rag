@@ -64,7 +64,7 @@ function loadEnv() {
 loadEnv();
 
 // ---------- 端点定义 ----------
-const SENSENOVA_URL = "https://token.sensenova.cn/v1/chat/completions";
+const SENSENOVA_URL = process.env.SENSENOVA_PROXY_URL || "https://token.sensenova.cn/v1/chat/completions";
 const SENSENOVA_MODEL = "sensenova-6.7-flash-lite";
 const DEEPSEEK_URL = "https://api.deepseek.com/chat/completions";
 const DEEPSEEK_MODEL = "deepseek-v4-flash";
@@ -143,7 +143,7 @@ function nextSensenovaIndex() {
   return i;
 }
 
-async function callOne(ep, messages, { temperature = 0, maxTokens = 2048, timeoutMs = 15000 } = {}) {
+async function callOne(ep, messages, { temperature = 0, maxTokens = 2048, timeoutMs = 30000 } = {}) {
   // 显式 AbortController + setTimeout：比 AbortSignal.timeout 在 TLS 拦截代理下更可靠地中断悬挂连接。
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -322,12 +322,13 @@ export async function judgeAnswer({ question, answer, referenceAnswer, gtSources
     );
     const m = text.match(/\{[\s\S]*\}/);
     const o = m ? JSON.parse(m[0]) : {};
+    const safe = (v) => (v !== undefined && v !== null && !isNaN(Number(v)) ? Number(v) : 0);
     return {
       skipped: false,
-      faithfulness: Number(o.faithfulness),
-      answerRelevance: Number(o.answerRelevance),
-      clinicalCorrectness: Number(o.clinicalCorrectness),
-      safety: Number(o.safety),
+      faithfulness: safe(o.faithfulness),
+      answerRelevance: safe(o.answerRelevance),
+      clinicalCorrectness: safe(o.clinicalCorrectness),
+      safety: safe(o.safety),
       reasons: o.reasons || "",
     };
   } catch (e) {

@@ -44,6 +44,8 @@ services:
     environment:
       - API_HOST=0.0.0.0
       - API_PORT=8080
+      # llm-judge 通过 provider-proxy 路由（替代直连 sensenova API，共享键池轮询+重试）
+      - SENSENOVA_PROXY_URL=http://127.0.0.1:18880/v1/chat/completions
       - MEDICAL_API_RUN=1
       # API 服务自举 provider-proxy（LLM 网关）；如需鉴权，设 API_TOKEN
       # - API_TOKEN=change_me
@@ -53,7 +55,7 @@ services:
     volumes:
       - "${HOME}/.pi/knowledge:/root/.pi/knowledge"
       - medical-api-logs:/app/.pi/logs
-      - medical-api-sessions:/root/.pi/sessions
+      - medical-api-sessions:/app/.pi/sessions
     restart: unless-stopped
     entrypoint: ["/usr/local/bin/docker-entrypoint-api.sh"]
     healthcheck:

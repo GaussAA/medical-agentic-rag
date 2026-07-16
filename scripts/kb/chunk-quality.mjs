@@ -26,6 +26,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { betterSqlite3Candidates } from "../lib/config.mjs"; // P0-1 修复：路径由 env/homedir 推导，灭用户名写死
+import { isHeadingLine } from "../lib/chinese-heading.mjs"; // P1#5 统一中文层级标题判定
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -196,8 +197,7 @@ export function entityFragmentation(chunks) {
 }
 
 // ---------- 层级归属完整度 ----------
-// 章节标题正则（与 extract-outline 对齐：一、/（一）/1. / 全角１．等）。
-const SECTION_RE = /^[ \t]*(#{2,4}\s+.+|[一二三四五六七八九十百零两]+[.．、].*|（[一二三四五六七八九十百零两]+）.*|\d+[.、].*)/;
+// 章节标题判定已迁至 scripts/lib/chinese-heading.mjs（isHeadingLine，含全角１．分支）
 /**
  * 层级归属完整度：chunk 是否携带所属章节标题上下文。
  * 判定：chunk 首行（trim 后）命中章节标题正则 → 视为带上下文；否则视为 orphan（可能丢失层级归属）。
@@ -208,7 +208,7 @@ export function sectionContext(chunks) {
   let withSection = 0;
   for (const c of chunks) {
     const firstLine = (c.content || "").split("\n").map((s) => s.trim()).find((s) => s.length > 0);
-    if (firstLine && SECTION_RE.test(firstLine)) withSection++;
+    if (firstLine && isHeadingLine(firstLine)) withSection++;
   }
   const total = chunks.length;
   const orphan = total - withSection;

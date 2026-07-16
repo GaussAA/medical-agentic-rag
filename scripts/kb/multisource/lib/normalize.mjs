@@ -1,4 +1,5 @@
 // scripts/kb/multisource/lib/normalize.mjs
+import { isHeadingLine } from "../../../lib/chinese-heading.mjs"; // P1#5 统一中文层级标题判定
 //
 // 把 adapter 抓取的原始内容（HTML / JATS XML / 富文本）清洗为干净 UTF-8 纯文本，
 // 并结构化为「# 标题」+ 中文层级标题，供 extract-outline.mjs 复用其中文层级正则。
@@ -63,9 +64,8 @@ export function normalizeDoc(raw, meta = {}) {
   body = cleanWhitespace(body);
 
   // 若正文无中文层级标题（如纯论文段落），补一个「正文」分区，避免 outline 空结构
-  const hasCnHeading = /^[一二三四五六七八九十百零两]+[.．、）]/m.test(body)
-    || /^（[一二三四五六七八九十百零两]+）/m.test(body)
-    || /^#{2,4}\s/m.test(body);
+  // 判定统一走 scripts/lib/chinese-heading.mjs（isHeadingLine，含全角１．分支，修复原缺失漂移）
+  const hasCnHeading = body.split(/\r?\n/).some(isHeadingLine);
   if (!hasCnHeading) {
     body = `## 正文\n\n${body}`;
   }

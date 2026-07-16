@@ -14,6 +14,7 @@ import { pathToFileURL } from "url";
 import { execFileSync } from "child_process";
 import { readdirSync, readFileSync, writeFileSync, mkdtempSync, rmSync } from "fs";
 import { join, extname, basename } from "path";
+import { countHeadings } from "../lib/chinese-heading.mjs"; // P1#5 统一中文层级标题计数（补齐「两」与全角１．分支）
 import os from "os";
 
 // 兜底：单个文件异步抽取拒绝不应崩掉整轮
@@ -66,15 +67,14 @@ function ourDocx(p) {
 
 // ---------- 度量 ----------
 const CJK = /[一-鿿]/g;
-const HEADERS =
-  /(^[一二三四五六七八九十百零]+[.．、])|（[一二三四五六七八九十]+）|^[０-９]+[.．、]|^[0-9]+[.、]/gm;
+// 章节标题计数统一走 scripts/lib/chinese-heading.mjs（countHeadings），原 HEADERS 缺「两」且漏全角１．分支
 const FW_DIGIT = /[０-９]/g;
 const ALL_DIGIT = /[0-9０-９]/g;
 
 function metrics(t) {
   if (typeof t !== "string") return { len: 0, cjk: 0, heads: 0, fwRate: 0 };
   const cjk = (t.match(CJK) || []).length;
-  const heads = (t.match(HEADERS) || []).length;
+  const heads = countHeadings(t);
   const fw = (t.match(FW_DIGIT) || []).length;
   const all = (t.match(ALL_DIGIT) || []).length;
   return {

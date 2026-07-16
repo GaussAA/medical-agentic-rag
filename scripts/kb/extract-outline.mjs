@@ -8,6 +8,7 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { SECTION_RE } from "../lib/chinese-heading.mjs"; // P1#5 统一中文层级正则（11 捕获组契约不变）
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）
@@ -25,15 +26,8 @@ const OUT_FILE = join(KB_DIR, ".outline.json");
 //       - 1. 2. ……（ASCII 数字）
 //       - １． ２． ……（全角数字 + 全角标点）
 //     行首允许空白（pdftotext -layout 可能缩进）
-const CN_NUM = "一二三四五六七八九十百零两";
-const SECTION_RE = new RegExp(
-  "^(?:[ \\t]*)(#{2,4})\\s+(.+)" + // 1,2 markdown ## ### ####
-    "|^(?:[ \\t]*)([" + CN_NUM + "]+[.．、])\\s*(.+)" + // 3,4 一、 二． 三、
-    "|^(?:[ \\t]*)（([" + CN_NUM + "]+)）\\s*(.+)" + // 5,6 （一）（二）
-    "|^(?:[ \\t]*)([０-９]+[.．、])\\s*(.+)" + // 7,8 １． ２、
-    "|^(?:[ \\t]*)(\\d+)([.、])\\s*(.+)", // 9,10,11 1. 2、
-  "gm"
-);
+// SECTION_RE（中文层级捕获正则，11 捕获组布局不变）已迁至
+// scripts/lib/chinese-heading.mjs，本文件仅 import 复用。
 // 关键内容段落模式：含"推荐"、"诊断"、"治疗"的段落
 const KEY_PARA_RE = /^[^#\n]{30,}?(推荐|诊断|治疗|筛查|预后|分期|药物|剂量)[^#\n]{30,}。$/gm;
 

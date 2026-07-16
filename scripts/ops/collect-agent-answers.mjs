@@ -27,6 +27,7 @@ import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync, readdir
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
+import { findPiRuntime, killTree } from '../lib/pi-runner.mjs'; // P0-5 修复：抽离公共 Pi 驱动（跨平台树杀、统一运行时定位）
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..');
@@ -85,63 +86,12 @@ function stripAnsi(s) {
   return s.replace(ANSI_RE, '');
 }
 
-// ---------- Pi 运行时定位 ----------
-// pi 全局命令是 POSIX shell 脚本（/e/nvm4w/nodejs/pi），其内部 exec "$basedir/node"
-// （即 nvm4w 的 node v25.8.1 / ABI 141）运行 cli.js。但 pi-knowledge 内嵌的
-// better-sqlite3(v11.9.1) 仅有 ABI 127(node22) 预编译产物、node25 无 VS 构建链无法现编，
-// 用 node25 拉起会 "NODE_MODULE_VERSION 141 vs 127" 崩 KB 加载。生产 start.sh 真运行时
-// 亦锁 node22，故此处必须用 node22(ABI 127) 运行 cli.js 以匹配 KB 绑定，仅 cli.js 仍取自
-// nvm4w 安装位。node 路径：PI_NODE > NODE_BIN > managed node22(经 USERPROFILE 推导) > 报错。
-function resolveNode22() {
-  if (process.env.PI_NODE) return process.env.PI_NODE;
-  if (process.env.NODE_BIN) return process.env.NODE_BIN;
-  const home = process.env.USERPROFILE || process.env.HOME || '';
-  if (home) {
-    const verRoot = join(home, '.workbuddy', 'binaries', 'node', 'versions');
-    if (existsSync(verRoot)) {
-      // 选取 22.x managed node（跨机版本号可能微调，故按前缀匹配取最新）
-      const v22 = readdirSync(verRoot).filter((d) => d.startsWith('22.')).sort().pop();
-      if (v22) {
-        const p = join(verRoot, v22, process.platform === 'win32' ? 'node.exe' : 'bin/node');
-        if (existsSync(p)) return p;
-      }
-    }
-  }
-  return null;
-}
+// ---------- Pi 运行时定位 / 进程树诛杀 ----------
+// 2026-07-17 P0-5 修复：resolveNode22 / findPiRuntime / killTree 原三处复制已抽离至
+// scripts/lib/pi-runner.mjs（跨平台、统一真相源）。node22(ABI 127) 解析与 cli.js
+// 探测均在 config.mjs / pi-runner.mjs 内由 env / os.homedir() 推导，不再写死 nvm4w 盘符路径。
+// 下方 runPi 仍按名调用 findPiRuntime() / killTree(child.pid)，行为不变。
 
-function findPiRuntime() {
-  const node22 = resolveNode22();
-  // cli.js 位置：优先 PI_CLI env；否则按常见安装位探测。注意本脚本由 Windows Node 运行，
-  // existsSync 须用盘符正斜杠路径（"E:/..."），git-bash 风格 "/e/..." 不被识别。
-  const cliCandidates = [];
-  if (process.env.PI_CLI) cliCandidates.push(process.env.PI_CLI);
-  const REL = ['node_modules', '@earendil-works', 'pi-coding-agent', 'dist', 'cli.js'];
-  for (const base of ['E:/nvm4w/nodejs', 'E:/nvm/v25.8.1', 'C:/nvm4w/nodejs']) {
-    cliCandidates.push(join(base, ...REL));
-  }
-  for (const cli of cliCandidates) {
-    if (existsSync(cli)) {
-      const node = node22 || 'node'; // node22 缺失则退回 PATH node（有 ABI 风险，日志告警）
-      if (!node22) console.warn('[warn] 未定位到 node22(ABI 127)，退回 PATH node，KB 加载可能因 ABI 不匹配失败');
-      return { node, cli };
-    }
-  }
-  return null;
-}
-
-// ---------- 进程树诛杀（对齐 T15 pi-bridge，根治孤儿 Pi 持 KB 锁饿死新实例）----------
-// Win: taskkill /T /F 杀整棵子树；Linux: 需 detached 使 Pi 成进程组组长，kill(-pid) 杀全组。
-function killTree(pid) {
-  if (!pid) return;
-  try {
-    if (process.platform === 'win32') {
-      spawn('taskkill', ['/PID', String(pid), '/T', '/F'], { stdio: 'ignore', windowsHide: true });
-    } else {
-      process.kill(-pid, 'SIGKILL');
-    }
-  } catch { /* 进程已退出则忽略 */ }
-}
 
 // ---------- 驱动 Pi 非交互作答（直接 spawn node25 + cli.js）----------
 const PRELOAD_PATH = join(ROOT, "scripts", "proxy", "preload-fetch-proxy.mjs");

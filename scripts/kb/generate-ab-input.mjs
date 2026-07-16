@@ -24,6 +24,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
+import { findPiRuntime, killTree } from "../lib/pi-runner.mjs"; // P0-5 修复：抽离公共 Pi 驱动，跨平台树杀
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -106,18 +107,7 @@ export function assembleInput({ meta = {}, items = [] } = {}) {
   };
 }
 
-// ---------------- Pi 驱动（复用 collect-agent-answers.mjs 范式）----------------
-
-function findPiRuntime() {
-  if (process.env.PI_NODE && process.env.PI_CLI) return { node: process.env.PI_NODE, cli: process.env.PI_CLI };
-  const bases = ["/e/nvm4w/nodejs", "C:\\nvm4w\\nodejs"];
-  for (const base of bases) {
-    const node = join(base, "node");
-    const cli = join(base, "node_modules", "@earendil-works", "pi-coding-agent", "dist", "cli.js");
-    if (existsSync(node) && existsSync(cli)) return { node, cli };
-  }
-  return null;
-}
+// ---------------- Pi 驱动（抽离至 scripts/lib/pi-runner.mjs）----------------
 
 function stripAnsi(s) {
   return s.replace(ANSI_RE, "");
@@ -142,7 +132,7 @@ function runPi(argsArray, { timeoutMs = PER_ITEM_TIMEOUT_MS } = {}) {
     child.stdout.on("data", (d) => (stdout += d));
     child.stderr.on("data", (d) => (stderr += d));
     const timer = setTimeout(() => {
-      try { child.kill("SIGKILL"); } catch {}
+      try { killTree(child.pid); } catch {}
       reject(new Error(`timeout ${timeoutMs}ms`));
     }, timeoutMs);
     child.on("error", (e) => {

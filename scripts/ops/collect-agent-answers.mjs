@@ -27,7 +27,7 @@ import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync, readdir
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
-import { findPiRuntime, killTree } from '../lib/pi-runner.mjs'; // P0-5 修复：抽离公共 Pi 驱动（跨平台树杀、统一运行时定位）
+import { runPi, stripAnsi } from '../lib/pi-runner.mjs'; // P0-5/P1#4 修复：抽离公共 Pi 驱动（跨平台树杀、统一 runPi 内核）
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..');
@@ -80,11 +80,7 @@ function parseArgs(argv) {
   return out;
 }
 
-// ---------- ANSI 清洗 ----------
-const ANSI_RE = /\x1b\[[0-9;?]*[A-Za-z]/g;
-function stripAnsi(s) {
-  return s.replace(ANSI_RE, '');
-}
+// ANSI 清洗已抽离至 scripts/lib/pi-runner.mjs（stripAnsi 统一导出）。
 
 // ---------- Pi 运行时定位 / 进程树诛杀 ----------
 // 2026-07-17 P0-5 修复：resolveNode22 / findPiRuntime / killTree 原三处复制已抽离至
@@ -93,61 +89,10 @@ function stripAnsi(s) {
 // 下方 runPi 仍按名调用 findPiRuntime() / killTree(child.pid)，行为不变。
 
 
-// ---------- 驱动 Pi 非交互作答（直接 spawn node25 + cli.js）----------
-const PRELOAD_PATH = join(ROOT, "scripts", "proxy", "preload-fetch-proxy.mjs");
-function runPi(argsArray) {
-  return new Promise((resolve, reject) => {
-    const rt = findPiRuntime();
-    const spawnOpts = {
-      env: {
-        ...process.env,
-        NODE_PATH: join(ROOT, "pi", "node_modules"),
-      },
-      cwd: ROOT,
-      windowsHide: true,
-      shell: false,
-      detached: process.platform !== 'win32', // Linux: 使 Pi 成进程组组长，kill(-pid) 可诛整树
-      stdio: ['ignore', 'pipe', 'pipe'], // stdin 忽略，避免非交互下读 stdin 阻塞
-    };
-    // 注入 preload-fetch-proxy，使 Pi 的 LLM 调用经 proxy 路由到免费后端
-    //（proxy 由 start.sh 启动，若未运行则 Pi 直呼 deepseek.com 付费 API）
-    const nodeArgs = ["--require", PRELOAD_PATH, rt.cli, ...argsArray];
-    const child = rt
-      ? spawn(rt.node, nodeArgs, spawnOpts)
-      : spawn('pi', argsArray, { ...spawnOpts, shell: process.platform === 'win32' });
-    let stdout = '';
-    let stderr = '';
-    let settled = false;
-    child.stdout.on('data', (d) => (stdout += d));
-    child.stderr.on('data', (d) => (stderr += d));
-    const timer = setTimeout(() => {
-      killTree(child.pid); // 诛整棵子树，防孤儿 Pi 持 KB 锁饿死后续采集
-      if (!settled) {
-        settled = true;
-        reject(new Error(`timeout ${PER_ITEM_TIMEOUT_MS}ms`));
-      }
-    }, PER_ITEM_TIMEOUT_MS);
-    child.on('error', (e) => {
-      if (!settled) {
-        settled = true;
-        clearTimeout(timer);
-        reject(e);
-      }
-    });
-    child.on('close', (code) => {
-      killTree(child.pid); // 兜底：即便正常退出也诛残留子树
-      if (!settled) {
-        settled = true;
-        clearTimeout(timer);
-        resolve({
-          answer: stripAnsi(stdout).trim(),
-          stderr,
-          code,
-        });
-      }
-    });
-  });
-}
+// ---------- 驱动 Pi 非交互作答（统一至 scripts/lib/pi-runner.mjs 的 runPi） ----------
+// proxy:true 注入 preload-fetch-proxy + NODE_PATH，关毕默认诛整棵子树（防孤儿 Pi 持 KB 锁）。
+// 下方 call site 经 runPi(piArgs, { proxy: true, timeoutMs: PER_ITEM_TIMEOUT_MS }) 调用。
+
 
 // ---------- 原子写回 ----------
 function atomicWrite(path, data) {
@@ -212,7 +157,7 @@ async function main() {
 
     const t0 = Date.now();
     try {
-      const { answer, stderr, code } = await runPi(piArgs);
+      const { answer, stderr, code } = await runPi(piArgs, { proxy: true, timeoutMs: PER_ITEM_TIMEOUT_MS });
       const elapsed = ((Date.now() - t0) / 1000).toFixed(1);
       const hadExtErr = stderr.includes('Extension error');
       if (!answer) {

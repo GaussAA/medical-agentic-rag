@@ -23,8 +23,7 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawn } from "node:child_process";
-import { findPiRuntime, killTree } from "../lib/pi-runner.mjs"; // P0-5 修复：抽离公共 Pi 驱动，跨平台树杀
+import { runPi, stripAnsi } from "../lib/pi-runner.mjs"; // P0-5/P1#4 修复：统一 Pi 驱动内核（runPi/stripAnsi 抽离）
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -44,7 +43,6 @@ const GOLD_PATH = join(ROOT, "tests", "gold-answers.json");
 const DEFAULT_A_PROMPT = join(ROOT, ".pi", "prompts", "medical-agent.md");
 const DEFAULT_MODEL = "sensenova/sensenova-6.7-flash-lite";
 const PER_ITEM_TIMEOUT_MS = 280_000;
-const ANSI_RE = /\x1b\[[0-9;?]*[A-Za-z]/g;
 
 // ---------------- 纯函数（零 Key 单测）----------------
 
@@ -107,44 +105,13 @@ export function assembleInput({ meta = {}, items = [] } = {}) {
   };
 }
 
-// ---------------- Pi 驱动（抽离至 scripts/lib/pi-runner.mjs）----------------
+// Pi 驱动（runPi/stripAnsi）已统一抽离至 scripts/lib/pi-runner.mjs。
 
-function stripAnsi(s) {
-  return s.replace(ANSI_RE, "");
-}
 
-/** 驱动 Pi 非交互作答；超时硬杀，异常 reject（由调用方兜底标记跳过）。 */
-function runPi(argsArray, { timeoutMs = PER_ITEM_TIMEOUT_MS } = {}) {
-  return new Promise((resolve, reject) => {
-    const rt = findPiRuntime();
-    const spawnOpts = {
-      env: process.env,
-      cwd: ROOT,
-      windowsHide: true,
-      shell: false,
-      stdio: ["ignore", "pipe", "pipe"], // stdin 忽略，避免非交互下读 stdin 阻塞
-    };
-    const child = rt
-      ? spawn(rt.node, [rt.cli, ...argsArray], spawnOpts)
-      : spawn("pi", argsArray, { ...spawnOpts, shell: process.platform === "win32" });
-    let stdout = "";
-    let stderr = "";
-    child.stdout.on("data", (d) => (stdout += d));
-    child.stderr.on("data", (d) => (stderr += d));
-    const timer = setTimeout(() => {
-      try { killTree(child.pid); } catch {}
-      reject(new Error(`timeout ${timeoutMs}ms`));
-    }, timeoutMs);
-    child.on("error", (e) => {
-      clearTimeout(timer);
-      reject(e);
-    });
-    child.on("close", (code) => {
-      clearTimeout(timer);
-      resolve({ answer: stripAnsi(stdout).trim(), stderr, code });
-    });
-  });
-}
+
+// 下方 A/B 两侧经 runPi(piArgs, { timeoutMs, proxy:false }) 调用 pi-runner 统一内核。
+
+
 
 // ---------------- CLI ----------------
 
@@ -220,7 +187,7 @@ async function main() {
 
     // A 侧
     try {
-      const ra = await runPi(piArgsA);
+      const ra = await runPi(piArgsA, { timeoutMs: PER_ITEM_TIMEOUT_MS, proxy: false });
       if (!ra.answer) {
         console.error(`[fail A] ${it.id} 空回答 (code=${ra.code})`);
         answersById[it.id] = { answerA: "", answerB: "" };
@@ -235,7 +202,7 @@ async function main() {
 
     // B 侧
     try {
-      const rb = await runPi(piArgsB);
+      const rb = await runPi(piArgsB, { timeoutMs: PER_ITEM_TIMEOUT_MS, proxy: false });
       if (!rb.answer) {
         console.error(`[fail B] ${it.id} 空回答 (code=${rb.code})`);
       } else {

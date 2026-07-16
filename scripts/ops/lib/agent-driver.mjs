@@ -21,12 +21,11 @@ import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { setTimeout as sleep } from "node:timers/promises";
+import { runPi } from "../../lib/pi-runner.mjs"; // P0-5/P1#4 修复：统一 Pi 驱动内核（跨平台树杀）
 
 const HERE = dirname(fileURLToPath(import.meta.url)); // scripts/ops/lib
 const ROOT = join(HERE, "..", "..", ".."); // lib -> ops -> scripts -> repoRoot
-const PI_NODE_MODULES = join(ROOT, "pi", "node_modules");
 const CLI_PATH = join(ROOT, "pi", "packages", "coding-agent", "dist", "cli.js");
-const PRELOAD = join(ROOT, "scripts", "proxy", "preload-fetch-proxy.mjs");
 const PROXY = join(ROOT, "scripts", "proxy", "provider-proxy.mjs");
 const FAILOVER = join(ROOT, "scripts", "proxy", "launch-with-failover.mjs");
 const PROMPT = join(ROOT, ".pi", "prompts", "medical-agent.md");
@@ -101,11 +100,9 @@ export async function canRunRealLink() {
   return { ok: true, provider: sel.provider, model: sel.model };
 }
 
-/** 单轮驱动：spawn cli print 模式处理一条用户消息。 */
+/** 单轮驱动：spawn cli print 模式处理一条用户消息。Pi 驱动内核统一至 pi-runner.runPi。 */
 async function runTurn(msg, { provider, model, sessionDir, turnIndex }) {
   const args = [
-    "--require", PRELOAD,
-    CLI_PATH,
     "--print", msg,
     "--model", `${provider}/${model}`,
     "--system-prompt", PROMPT,
@@ -113,16 +110,14 @@ async function runTurn(msg, { provider, model, sessionDir, turnIndex }) {
     "--no-approve",
   ];
   if (turnIndex > 0) args.push("--resume");
-  return spawnAsync(
-    NODE_BIN,
-    args,
-    {
-      cwd: ROOT,
-      env: { ...process.env, NODE_PATH: PI_NODE_MODULES, NODE_BIN },
-      stdio: ["ignore", "pipe", "pipe"],
-    },
-    TURN_TIMEOUT_MS,
-  );
+  try {
+    // nodeBin/cliPath 沿用本模块固定 NODE_BIN / CLI_PATH（与既有真链路启动范式一致）；
+    // proxy:true 注入 --require PRELOAD + NODE_PATH=pi/node_modules，关毕默认诛整棵子树。
+    const r = await runPi(args, { nodeBin: NODE_BIN, cliPath: CLI_PATH, proxy: true, timeoutMs: TURN_TIMEOUT_MS });
+    return { code: r.code, timedOut: r.timedOut };
+  } catch (e) {
+    return { code: null, timedOut: false, error: String(e?.message || e) };
+  }
 }
 
 /** 读数：.pi/conversation-state.json 的 clarificationCount（缺则 0）。 */

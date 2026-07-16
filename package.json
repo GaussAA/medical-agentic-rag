@@ -40,6 +40,7 @@
     "test:chunk-quality": "node tests/unit/chunk-quality-test.mjs",
     "observe": "node scripts/ops/observability-report.mjs",
     "observe:ci": "node scripts/ops/observability-report.mjs --strict",
+    "review:history": "node scripts/ops/review-history.mjs",
     "feedback": "node scripts/ops/feedback-loop.mjs",
     "feedback:ci": "node scripts/ops/feedback-loop.mjs --strict",
     "feedback:consume": "node scripts/ops/consume-feedback.mjs",

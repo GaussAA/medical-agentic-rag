@@ -24,12 +24,16 @@ RUN npm install
 # 3) 安装 Pi CLI、Pi 引擎、扩展包（pi-webui 自动加载本地 .pi/extensions）
 #    注意：不能使用 pi install 命令（pi v2 下为空壳），
 #    改为直接 npm install -g 安装所需包。
-RUN npm install -g pi \
-    @earendil-works/pi-coding-agent \
-    pi-knowledge \
-    pi-web-access \
-    pi-subagents \
-    @firstpick/pi-package-webui \
+#    ⚠️ 版本硬性锁定（P0-1 修复）：此前 `npm install -g pi` 无版本约束，
+#    构建时拉取 npm latest，镜像在不同时间构建结果不可复现、存在供应链风险。
+#    下方版本为 2026-07-17 实查 npm latest，须与 package.json 的 `piRuntime` 字段保持一致；
+#    升级任一包须同步更新两处并重新验证。
+RUN npm install -g pi@2.0.5 \
+    @earendil-works/pi-coding-agent@0.80.10 \
+    pi-knowledge@0.5.1 \
+    pi-web-access@0.13.0 \
+    pi-subagents@0.34.0 \
+    @firstpick/pi-package-webui@0.6.8 \
  && mkdir -p /app/pi/packages \
  && ln -sfn /usr/local/lib/node_modules/@earendil-works/pi-coding-agent /app/pi/packages/coding-agent
 

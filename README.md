@@ -76,12 +76,14 @@ medical-agentic-rag/
 
 | 组件       | 技术                         | 说明                          |
 | ---------- | ---------------------------- | ----------------------------- |
-| Agent 框架 | Pi Agent (v0.80.3)           | ReAct 智能体循环 + 工具系统   |
+| Agent 框架 | Pi CLI `pi@2.0.5` + `@earendil-works/pi-coding-agent@0.80.10` | ReAct 智能体循环 + 工具系统 |
 | RAG 引擎   | pi-knowledge (v0.5.1)        | 本地优先，混合检索 + 重排序   |
 | LLM        | DeepSeek V4 Flash            | `api.deepseek.com`            |
 | 嵌入模型   | multilingual-e5-small (本地) | 约 32MB ONNX，零 API Key      |
 | 向量存储   | pi-knowledge 内置向量文件    | 本地存储于 `~/.pi/knowledge/` |
 | 运行环境   | Node.js 22.22.2+             | 满足 Pi 要求（>=22.19.0）     |
+
+> ⚠️ **Pi 生态包版本硬性锁定（P0-1 修复）**：上述 Pi 运行时包（pi / pi-coding-agent / pi-knowledge / pi-web-access / pi-subagents / @firstpick/pi-package-webui）的精确版本为**构建可复现与供应链安全**强制锁定，单一真相源见 `package.json` 的 `piRuntime` 字段，Dockerfile 的 `npm install -g` 须与之逐一对应。升级任一包须同步改两处并重新验证端到端评测，禁止 `npm install -g pi` 无版本约束拉取 latest。
 
 ## 快速启动
 

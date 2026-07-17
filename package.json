@@ -49,11 +49,12 @@
     "feedback:consume:ci": "node scripts/ops/consume-feedback.mjs --strict",
     "compliance:audit": "node scripts/ops/compliance-audit.mjs",
     "feedback:merge": "node scripts/ops/consume-feedback.mjs --merge",
-    "test": "node tests/run-all-tests.mjs && node --experimental-strip-types tests/unit/conversation-state-test.mjs && node --experimental-strip-types tests/unit/patient-profile-test.mjs && node --experimental-strip-types tests/unit/clarification-loop-test.mjs && node tests/unit/grounding-rule-test.mjs && node tests/unit/llm-judge-test.mjs && node tests/unit/kg-graph-test.mjs && node tests/unit/retrieval-router-test.mjs && node tests/unit/retrieval-fts-test.mjs && node tests/unit/faithfulness-guard-test.mjs && node tests/unit/conflict-detector-test.mjs && node tests/unit/rag-search-version-hint-test.mjs && node tests/unit/scope-guard-test.mjs && node tests/unit/query-sanitize-test.mjs && node tests/unit/eval-gate-test.mjs && node tests/unit/audit-logger-test.mjs && node tests/unit/engine-version-test.mjs && node tests/unit/observability-test.mjs && node tests/unit/diagnostic-log-test.mjs && node tests/unit/provider-health-test.mjs && node tests/unit/alert-log-test.mjs && node tests/unit/multisource/quality-gate-test.mjs && node tests/unit/multisource/normalize-test.mjs && node tests/unit/merge-into-gold-test.mjs && node tests/unit/guard-replacement-test.mjs && node --experimental-strip-types tests/unit/patient-forget-test.mjs && node tests/unit/chunk-quality-test.mjs && node tests/unit/chinese-heading-test.mjs && node tests/unit/ab-prompt-eval-test.mjs && node tests/unit/generate-ab-input-test.mjs && node tests/unit/content-need-alignment-test.mjs && node --test tests/unit/api-server-test.mjs",
+    "test": "node tests/run-all-tests.mjs && node --experimental-strip-types tests/unit/conversation-state-test.mjs && node --experimental-strip-types tests/unit/patient-profile-test.mjs && node --experimental-strip-types tests/unit/clarification-loop-test.mjs && node tests/unit/grounding-rule-test.mjs && node tests/unit/llm-judge-test.mjs && node tests/unit/kg-graph-test.mjs && node tests/unit/retrieval-router-test.mjs && node tests/unit/retrieval-fts-test.mjs && node tests/unit/faithfulness-guard-test.mjs && node tests/unit/conflict-detector-test.mjs && node tests/unit/rag-search-version-hint-test.mjs && node tests/unit/scope-guard-test.mjs && node tests/unit/query-sanitize-test.mjs && node tests/unit/eval-gate-test.mjs && node tests/unit/audit-logger-test.mjs && node tests/unit/engine-version-test.mjs && node tests/unit/observability-test.mjs && node tests/unit/diagnostic-log-test.mjs && node tests/unit/provider-health-test.mjs && node tests/unit/alert-log-test.mjs && node tests/unit/multisource/quality-gate-test.mjs && node tests/unit/multisource/normalize-test.mjs && node tests/unit/merge-into-gold-test.mjs && node tests/unit/guard-replacement-test.mjs && node --experimental-strip-types tests/unit/patient-forget-test.mjs && node tests/unit/chunk-quality-test.mjs && node tests/unit/chinese-heading-test.mjs && node tests/unit/ab-prompt-eval-test.mjs && node tests/unit/generate-ab-input-test.mjs && node tests/unit/content-need-alignment-test.mjs && node --test tests/unit/api-server-test.mjs && node --test tests/unit/session-pool-test.mjs",
     "test:kg": "node tests/unit/kg-graph-test.mjs",
     "kb:graph": "node scripts/kb/build-kg-db.mjs",
     "kb:fts": "node scripts/kb/build-retrieval-fts.mjs",
     "test:ci": "node tests/eval-ci-gate.mjs",
+    "test:pool": "node --test tests/unit/session-pool-test.mjs",
     "test:real-link": "node scripts/ops/smoke-real-link.mjs",
     "test:state": "node --experimental-strip-types tests/unit/conversation-state-test.mjs",
     "test:profile": "node --experimental-strip-types tests/unit/patient-profile-test.mjs",
@@ -84,5 +85,14 @@
   "homepage": "https://github.com/GaussAA/medical-agentic-rag#readme",
   "dependencies": {
     "better-sqlite3": "^12.11.1"
+  },
+  "piRuntime": {
+    "_note": "Pi 运行时生态包版本锁（P0-1 修复）。Dockerfile 的 `npm install -g` 须与此处逐一对应；升级任一包须同步改两处并重新验证构建与端到端评测。本地开发使用 pi/ 克隆（已 gitignore）独立构建，与此处 npm 全局安装为两条供应路径，版本须对齐。",
+    "pi": "2.0.5",
+    "@earendil-works/pi-coding-agent": "0.80.10",
+    "pi-knowledge": "0.5.1",
+    "pi-web-access": "0.13.0",
+    "pi-subagents": "0.34.0",
+    "@firstpick/pi-package-webui": "0.6.8"
   }
 }

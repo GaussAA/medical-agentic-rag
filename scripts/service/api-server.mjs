@@ -19,6 +19,7 @@ import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { randomUUID } from "node:crypto";
+import { maskPII } from "../../.pi/extensions/lib/phi-crypto.mjs";
 import { PiWorker } from "./pi-bridge.mjs";
 import { SessionPool, PoolFullError } from "./session-pool.mjs";
 import { CircuitBreaker, CircuitOpenError, retry } from "./circuit-breaker.mjs";
@@ -55,7 +56,7 @@ export function makeConfig(overrides = {}) {
   return {
     port: Number(process.env.API_PORT || 8080),
     host: process.env.API_HOST || "127.0.0.1",
-    apiToken: process.env.API_TOKEN || "", // 空=开放（仅本机默认）
+    apiToken: process.env.API_TOKEN || "", // 空=仅本机回环开放（非本机暴露须设 API_TOKEN，否则 fail-closed 拒 401）
     proxyPort: Number(process.env.PROXY_PORT || 18880),
     nodeBin: resolveNodeBin(),
     model,
@@ -110,11 +111,23 @@ export function createApiHandler({
   breakers = new Map(),
   log = () => {},
 }) {
+  function isLocalHost(host) {
+    return (
+      host === "127.0.0.1" || host === "localhost" || host === "::1" || host === "::"
+    );
+  }
+
   function authenticate(req) {
-    if (!config.apiToken) return true; // 开放模式（仅限本机绑定）
-    const h = req.headers["authorization"] || "";
-    const m = /^Bearer\s+(.+)$/i.exec(h);
-    return !!m && m[1] === config.apiToken;
+    // 显式开发绕过（默认关闭）：仅本地联调使用，生产须删除
+    if (process.env.API_AUTH_DISABLED === "1") return true;
+    if (config.apiToken) {
+      const h = req.headers["authorization"] || "";
+      const m = /^Bearer\s+(.+)$/i.exec(h);
+      return !!m && m[1] === config.apiToken;
+    }
+    // 无 token：仅当服务绑定本机回环才允许开放（fail-closed——
+    // 非本机暴露必须设 API_TOKEN，否则一律 401，杜绝生产裸奔）
+    return isLocalHost(config.host);
   }
 
   function getBreaker(key) {
@@ -124,6 +137,7 @@ export function createApiHandler({
         failureThreshold: Number(process.env.API_CB_FAILURES || 5),
         cooldownMs: Number(process.env.API_CB_COOLDOWN_MS || 30000),
         timeoutMs: config.askTimeoutMs,
+        ignoreErrors: [PoolFullError], // 池满背压不计入下游故障，否则洪峰会误打 open 熔断
       });
       breakers.set(key, b);
     }
@@ -194,12 +208,18 @@ export function createApiHandler({
         const traceId = randomUUID();
 
         const prompt = body.patientProfile
-          ? `${question}\n\n[患者资料（PHI，将按策略加密/脱敏）]\n${String(body.patientProfile)}`
+          ? `${question}\n\n[患者资料（PHI，已按策略脱敏后注入）]\n${maskPII(String(body.patientProfile))}`
           : question;
 
         const breaker = getBreaker(sessionId || "__default__");
         let result;
         try {
+          // 背压：池满立即 429——不经熔断/重试，避免误伤熔断阈值与无谓退避
+          if (pool.isFull()) {
+            throw new PoolFullError(
+              `会话池已满（在途 ${pool.inflight}/${pool.maxSessions}），请稍后重试或横向扩容 Pod`,
+            );
+          }
           result = await retry(
             () =>
               breaker.exec(() =>
@@ -208,7 +228,8 @@ export function createApiHandler({
             {
               retries: 1,
               backoffMs: 300,
-              shouldRetry: (err) => !(err instanceof CircuitOpenError),
+              shouldRetry: (err) =>
+                !(err instanceof CircuitOpenError || err instanceof PoolFullError),
             },
           );
         } catch (err) {
@@ -380,8 +401,13 @@ export function startApiServer({
     log(
       `[api] Medical Agentic RAG API  → http://${config.host}:${config.port}/`,
     );
-    if (config.apiToken) log(`[api] 鉴权已启用（Bearer）。`);
-    else log(`[api][注意] 未设 API_TOKEN，接口开放（请确保仅绑定 127.0.0.1）`);
+    if (config.apiToken) {
+      log(`[api] 鉴权已启用（Bearer）。`);
+    } else if (isLocalHost(config.host) || process.env.API_AUTH_DISABLED === "1") {
+      log(`[api][注意] 未设 API_TOKEN，接口仅本机回环开放（API_AUTH_DISABLED=${process.env.API_AUTH_DISABLED === "1"}）。`);
+    } else {
+      log(`[api][⚠️ 安全] 未设 API_TOKEN 且绑定非本机(${config.host})，接口将对全网开放（401 拒绝）。生产须设 API_TOKEN 或改绑 127.0.0.1。`);
+    }
     // 预热单 Pi worker（best-effort）：失败不阻断服务，首问会自动重建；
     // 成功则就绪探针立即可过，Pod 启动即能服务。
     try {

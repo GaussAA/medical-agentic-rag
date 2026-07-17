@@ -6,10 +6,10 @@
 //
 // 设计纪律（契合项目原则）：
 //   · 免费优先：judge 默认复用 lib/llm-judge（sensenova 免费池 → deepseek 兜底），不自写端点。
-//   · 无静默失败：LLM 不可用 / 超时 / 抛错 → 一律放行（action:"pass"）+ 结构化日志，绝不卡死回答。
+//   · 无静默失败：LLM 不可用 / 超时 / 抛错 → 一律「附未核验批注」(action:"annotate") + 结构化日志，绝不卡死回答，也绝不静默放行。
 //   · 双可测：纯 .mjs；judge 依赖注入（默认 judgeAnswer），单测可传假 judge 走纯逻辑、零真 LLM 调用。
 //   · 控本：shouldGuard 启发式（长度/临床关键词）仅在「高风险回答」才评审，避免每句都烧免费额度。
-//   · 保守护栏：默认仅附批注（不删原回答，防误伤）；仅 HARD 开关 + 安全极低才阻断。
+//   · 保守护栏：默认附批注（不删原回答，防误伤）；HARD 默认开启（fail-closed），安全极低即阻断；评审不可用时降级为未核验批注而非静默放行。
 
 import { judgeAnswer, isLLMAvailable } from "./llm-judge.mjs";
 import { diag } from "./diagnostic-log.mjs";
@@ -123,8 +123,15 @@ export async function guardReview({ question, answer, judge = judgeAnswer, isAva
     return { action: "pass", reason: "low_risk_skip" };
   }
   if (!isAvailable()) {
-    if (!silent) diag.warn("faithfulness-guard", "LLM 不可用，放行（不评审）");
-    return { action: "pass", skipped: true, reason: "no_llm" };
+    if (!silent) diag.warn("faithfulness-guard", "LLM 不可用，附『未核验』批注（fail-closed，不静默放行）");
+    return {
+      action: "annotate",
+      skipped: true,
+      reason: "no_llm",
+      annotatedText: buildAnnotated(answer, [
+        "⚠️ 循证核验：评审服务不可用，本回答未经自动循证核验，请结合原始指南与临床判断谨慎参考。",
+      ]),
+    };
   }
 
   const res = await withTimeout(
@@ -133,16 +140,37 @@ export async function guardReview({ question, answer, judge = judgeAnswer, isAva
   );
 
   if (res && res.__timeout) {
-    if (!silent) diag.warn("faithfulness-guard", "评审超时，放行");
-    return { action: "pass", skipped: true, reason: "timeout" };
+    if (!silent) diag.warn("faithfulness-guard", "评审超时，附『未核验』批注（fail-closed）");
+    return {
+      action: "annotate",
+      skipped: true,
+      reason: "timeout",
+      annotatedText: buildAnnotated(answer, [
+        "⚠️ 循证核验：评审超时未完成，本回答未经自动循证核验，请结合原始指南与临床判断谨慎参考。",
+      ]),
+    };
   }
   if (res && res.__error) {
-    if (!silent) diag.warn("faithfulness-guard", "评审异常，放行: " + res.__error);
-    return { action: "pass", skipped: true, reason: "error:" + res.__error };
+    if (!silent) diag.warn("faithfulness-guard", "评审异常，附『未核验』批注（fail-closed）: " + res.__error);
+    return {
+      action: "annotate",
+      skipped: true,
+      reason: "error:" + res.__error,
+      annotatedText: buildAnnotated(answer, [
+        "⚠️ 循证核验：评审异常未完成，本回答未经自动循证核验，请结合原始指南与临床判断谨慎参考。",
+      ]),
+    };
   }
   if (res && res.skipped) {
-    if (!silent) diag.warn("faithfulness-guard", "judge 跳过（" + res.reason + "），放行");
-    return { action: "pass", skipped: true, reason: res.reason };
+    if (!silent) diag.warn("faithfulness-guard", "judge 跳过（" + res.reason + "），附『未核验』批注（fail-closed）");
+    return {
+      action: "annotate",
+      skipped: true,
+      reason: res.reason,
+      annotatedText: buildAnnotated(answer, [
+        "⚠️ 循证核验：评审跳过（" + res.reason + "），本回答未经自动循证核验，请结合原始指南与临床判断谨慎参考。",
+      ]),
+    };
   }
 
   const dims = {
@@ -157,7 +185,9 @@ export async function guardReview({ question, answer, judge = judgeAnswer, isAva
     return { action: "pass", dims, reasons: res.reasons };
   }
 
-  const hard = process.env.FAITHFULNESS_GUARD_HARD === "1";
+  // HARD 默认开启（fail-closed）：显式 FAITHFULNESS_GUARD_HARD=0 才关闭。
+  // 生产默认对「安全」维度极低（<SAFETY_HARD_THRESHOLD）的回答硬阻断，杜绝默认不拦截。
+  const hard = process.env.FAITHFULNESS_GUARD_HARD !== "0";
   if (hard && dims.safety < SAFETY_HARD_THRESHOLD) {
     return {
       action: "block",

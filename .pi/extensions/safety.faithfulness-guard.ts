@@ -17,7 +17,7 @@ import { alert } from "./lib/alert-log.mjs";
  *      - action:"annotate" → 经 buildReplacementMessage 在回答末尾附「循证核验/安全护栏」批注
  *        （保留原回答，防误伤），return { message } 真替换。
  *      - action:"block"（仅 FAITHFULNESS_GUARD_HARD=1 且 safety 极低）→ 替换为纯护栏拦截提示，return { message } 真替换。
- *      - action:"pass" / 评审失败 / 超时 / 无 Key → 返回 undefined 放行，不卡死回答（无静默失败，仅告警日志）。
+ *      - action:"pass" / 评审失败 → 降级放行（不卡死回答）；超时 / 无 Key → 降级为未核验批注（fail-closed），不再静默放行。
  *   3) 旁路开关：env FAITHFULNESS_GUARD=off 整体关闭；FAITHFULNESS_GUARD_HARD=1 开启硬阻断。
  *
  * 真生效机制：Pi 框架 await message_end 返回值并 _replaceMessageInPlace 同步 agent state / 会话持久化
@@ -61,8 +61,9 @@ export default function (pi: ExtensionAPI) {
       // 异步评审：await 结果，经 buildReplacementMessage 转为替换消息并 return
       verdict = await Promise.race([
         guardReview({ question, answer }, { silent: true }),
+        // 须 > lib GUARD_TIMEOUT_MS(8000)，否则慢评审被本层静默丢弃（fail-open 隐患）
         new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error("guard review timeout")), 3000),
+          setTimeout(() => reject(new Error("guard review timeout")), 9000),
         ),
       ]);
     } catch (e: any) {

@@ -10,6 +10,7 @@ import { createServer } from "node:http";
 import { createApiHandler, makeConfig } from "../../scripts/service/api-server.mjs";
 import { assembleResult } from "../../scripts/service/pi-bridge.mjs";
 import { CircuitBreaker, CircuitOpenError, retry } from "../../scripts/service/circuit-breaker.mjs";
+import { PoolFullError } from "../../scripts/service/session-pool.mjs";
 
 function makeMockPool({ askImpl } = {}) {
   const calls = { ask: 0, setModel: 0, models: 0, sessions: 0 };
@@ -32,7 +33,10 @@ function makeMockPool({ askImpl } = {}) {
     },
     async setModel(p, m) { calls.setModel++; return `${p}/${m}`; },
     async getAvailableModels() { calls.models++; return [{ provider: "sensenova", id: "sensenova-6.7-flash-lite" }]; },
-    listSessions() { calls.sessions++; return { defaultAlive: true, sessions: [{ sessionId: "s1", alive: true, idleMs: 1 }] }; },
+    listSessions() { calls.sessions++; return { defaultAlive: true, inflight: 0, maxSessions: 8, sessions: [{ sessionId: "s1", alive: true, idleMs: 1 }] }; },
+    isFull() { return false; },
+    inflight: 0,
+    maxSessions: 8,
     async stopAll() {},
   };
 }
@@ -175,6 +179,93 @@ test("熔断：连续失败达阈值后返回 429", async () => {
     }
     assert.ok(saw500, "应出现若干 500");
     assert.ok(saw429, "熔断打开后应出现 429");
+  } finally { server.close(); }
+});
+
+test("背压：池满预检直接返回 429（不经熔断/重试）", async () => {
+  const pool = {
+    isFull: () => true,
+    inflight: 8,
+    maxSessions: 8,
+    async ask() { throw new Error("不应被调用"); },
+    listSessions: () => ({ defaultAlive: true, inflight: 8, maxSessions: 8, sessions: [] }),
+    async stopAll() {},
+  };
+  const handler = createApiHandler({ pool, config: makeConfig({ apiToken: "" }) });
+  const server = await startServer(handler);
+  try {
+    const r = await jsonPost(server, "/api/v1/ask", { question: "x" });
+    assert.equal(r.status, 429);
+    assert.equal(r.json.ok, false);
+    assert.equal(r.json.error, "service_unavailable");
+  } finally { server.close(); }
+});
+
+test("背压：ask 抛 PoolFullError 也归一到 429（预检竞态兜底）", async () => {
+  let calls = 0;
+  const pool = {
+    isFull: () => false,
+    inflight: 1,
+    maxSessions: 8,
+    async ask() { calls++; throw new PoolFullError("会话池已满（在途 8/8）"); },
+    listSessions: () => ({ defaultAlive: true, inflight: 1, maxSessions: 8, sessions: [] }),
+    async stopAll() {},
+  };
+  const handler = createApiHandler({ pool, config: makeConfig({ apiToken: "" }) });
+  const server = await startServer(handler);
+  try {
+    const r = await jsonPost(server, "/api/v1/ask", { question: "x" });
+    assert.equal(r.status, 429);
+    assert.equal(r.json.error, "service_unavailable");
+    assert.ok(calls >= 1); // 确实进入了 ask（未被预检拦截）
+  } finally { server.close(); }
+});
+
+test("鉴权 fail-closed：非本机暴露 + 空 token → 401", async () => {
+  const pool = makeMockPool();
+  const handler = createApiHandler({ pool, config: makeConfig({ apiToken: "", host: "0.0.0.0" }) });
+  const server = await startServer(handler);
+  try {
+    const r = await jsonPost(server, "/api/v1/ask", { question: "x" });
+    assert.equal(r.status, 401);
+  } finally { server.close(); }
+});
+
+test("鉴权开发绕过：API_AUTH_DISABLED=1 + 空 token + 非本机 → 200", async () => {
+  const prev = process.env.API_AUTH_DISABLED;
+  process.env.API_AUTH_DISABLED = "1";
+  const pool = makeMockPool();
+  const handler = createApiHandler({ pool, config: makeConfig({ apiToken: "", host: "0.0.0.0" }) });
+  const server = await startServer(handler);
+  try {
+    const r = await jsonPost(server, "/api/v1/ask", { question: "x" });
+    assert.equal(r.status, 200);
+  } finally { server.close(); process.env.API_AUTH_DISABLED = prev; }
+});
+
+test("患者资料 PHI 边界脱敏：手机号经 maskPII 后再注入 prompt", async () => {
+  let captured = null;
+  const pool = {
+    isFull: () => false,
+    inflight: 0,
+    maxSessions: 8,
+    async ask(sessionId, prompt, opts) {
+      captured = prompt;
+      return { ok: true, answer: "x", citations: [], evidence: [], safety: { guardHits: [], blocked: false }, stats: {}, model: "m", traceId: opts?.traceId, durationMs: 1 };
+    },
+    listSessions: () => ({ defaultAlive: true, inflight: 0, maxSessions: 8, sessions: [] }),
+    async stopAll() {},
+  };
+  const handler = createApiHandler({ pool, config: makeConfig({ apiToken: "" }) });
+  const server = await startServer(handler);
+  try {
+    const profile = "患者手机 13800138000，对青霉素过敏，男 65 岁";
+    const r = await jsonPost(server, "/api/v1/ask", { question: "q", patientProfile: profile });
+    assert.equal(r.status, 200);
+    assert.ok(captured, "pool.ask 应被调用且拿到 prompt");
+    assert.ok(captured.includes("对青霉素过敏"), "临床事实须保留");
+    assert.ok(captured.includes("138****8000"), "手机号须被掩码");
+    assert.ok(!captured.includes("13800138000"), "原始手机号不得明文注入");
   } finally { server.close(); }
 });
 

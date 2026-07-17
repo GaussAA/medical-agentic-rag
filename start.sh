@@ -39,12 +39,16 @@ WIN_ROOT="$(pwd -W 2>/dev/null || pwd)"
 WIN_HOME="$(cd ~ && pwd -W 2>/dev/null || echo "$HOME")"
 
 # managed node 22（与 better-sqlite3 ABI 一致）
+# 解析顺序：env 覆盖 → $HOME 受管路径（跨用户可移植）→ 本机 JaNiy 固定路径（兜底兼容）→ 系统 node
 NODE_BIN="${NODE_BIN:-}"
 if [ -z "$NODE_BIN" ] || [ ! -x "$NODE_BIN" ]; then
   for cand in \
+    "$HOME/.workbuddy/binaries/node/versions/22.22.2/node" \
+    "$HOME/.workbuddy/binaries/node/versions/22.22.2/node.exe" \
     "/c/Users/JaNiy/.workbuddy/binaries/node/versions/22.22.2/node" \
-    "C:/Users/JaNiy/.workbuddy/binaries/node/versions/22.22.2/node.exe"; do
-    [ -x "$cand" ] && { NODE_BIN="$cand"; break; } || true
+    "C:/Users/JaNiy/.workbuddy/binaries/node/versions/22.22.2/node.exe" \
+    "$(command -v node)"; do
+    [ -n "$cand" ] && [ -x "$cand" ] && { NODE_BIN="$cand"; break; } || true
   done
 fi
 [ -x "$NODE_BIN" ] || NODE_BIN="node"

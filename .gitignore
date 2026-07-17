@@ -108,3 +108,7 @@ data/kb/.knowledge-graph.db-wal
 data/kb/.knowledge-graph.db-shm
 # docs/ 下 2 份早期误入仓的生成物报告（全景验收报告.html、抓取管线规划.md）已于本回合
 # 经 git rm --cached 清理出索引，磁盘保留，令 docs/ 忽略规则彻底生效。
+
+# 嵌入评测产物（172+ MB 浮点数缓存 + 报告，可重建，不入仓）
+data/embed-cache*
+data/*-report.json

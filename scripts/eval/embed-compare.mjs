@@ -178,20 +178,20 @@ async function main() {
     } catch {}
   }
 
+  let embedMs = null;  // 嵌入耗时（ms），缓存加载时为 null
+
   if (!chunkVecs) {
     console.log(`  共计 ${allChunks.length} chunks...`);
     const chunkTexts = allChunks.map(c => (c.content || "").slice(0, 800));
     const t0 = Date.now();
     chunkVecs = await batchEmbed(chunkTexts);
-    const embedMs = Date.now() - t0;
+    embedMs = Date.now() - t0;
     console.log(`\n  嵌入完成，耗时 ${(embedMs / 1000).toFixed(0)}s`);
     try {
       writeFileSync(CACHE_FILE, JSON.stringify({ model: EMBED_MODEL, total: allChunks.length, vectors: chunkVecs, ts: Date.now() }), "utf-8");
       console.log(`  缓存已写入: ${CACHE_FILE}`);
     } catch (e) { console.warn(`  缓存写入失败: ${e.message}`); }
   }
-  // embedMs 用于输出
-  const embedMs = null;
 
   // 5) 评测所有 gold 条目
   console.log(`\n[4] 评测 ${items.length} 条 gold 查询...\n`);

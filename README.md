@@ -50,15 +50,25 @@ medical-agentic-rag/
 │       │   ├── kg-search.mjs    # 知识图谱检索
 │       │   ├── retrieval-cache.mjs # 文件化共享检索缓存
 │       │   └── phi-crypto.mjs   # PHI 加密 + PII 脱敏 + 审计
-│       ├── retrieval.guide-finder.ts      # 指南路由工具（语义路由版）
-│       ├── retrieval.kg-search-tool.ts    # 知识图谱检索工具
-│       ├── provider.query-cache.ts       # 检索缓存管理命令（/cache）
-│       ├── retrieval.query-decomposer.ts  # 复杂问题分解
-│       ├── eval.answer-evaluator.ts  # 回答质量评估
-│       ├── eval.monitor-logger.ts    # 运行日志埋点 + 审计（/logs /audit）
-│       ├── safety.patient-profile.ts   # 患者画像（AES-256-GCM 加密 + 审计）
-│       ├── provider.agnes.ts    # Agnes AI Provider
-│       └── provider.sensenova.ts # 商汤日日新 Provider
+│       ├── provider.agnes.ts            # Agnes AI Provider
+│       ├── provider.sensenova.ts       # 商汤日日新 Provider
+│       ├── provider.failover.ts         # Provider 故障转移（健康探测 + 回退）
+│       ├── provider.query-cache.ts      # 检索缓存管理命令（/cache）
+│       ├── retrieval.guide-finder.ts    # 指南路由工具（语义路由版）
+│       ├── retrieval.kg-search-tool.ts  # 知识图谱检索工具
+│       ├── retrieval.query-decomposer.ts# 复杂问题分解
+│       ├── retrieval.medical-infographic.ts # 医疗信息图生成
+│       ├── retrieval.rag-search.ts      # 原生 RAG 检索工具
+│       ├── eval.answer-evaluator.ts     # 回答质量评估
+│       ├── eval.monitor-logger.ts       # 运行日志埋点 + 审计（/logs /audit）
+│       ├── safety.patient-profile.ts    # 患者画像（AES-256-GCM 加密 + 审计）
+│       ├── safety.bash-guard.ts         # 危险 shell 命令护栏
+│       ├── safety.audit-logger.ts       # 审计日志（乙类告警独立 sink）
+│       ├── safety.conflict-detector.ts  # 多指南冲突检测
+│       ├── safety.scope-guard.ts        # 越界/能力边界护栏
+│       ├── safety.faithfulness-guard.ts # 忠实度护栏（fail-closed + HARD 默认开）
+│       ├── session.manager.ts           # 会话管理（背压/池化）
+│       └── state.conversation-state.ts  # 对话状态持久化
 ├── prompts/
 │   └── medical-agent.md         # 医疗 Agent System Prompt（核心定制）
 ├── scripts/

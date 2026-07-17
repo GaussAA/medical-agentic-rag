@@ -17,7 +17,6 @@ function loadBetterSqlite3() {
   const require = createRequire(import.meta.url);
   const candidates = [
     "better-sqlite3",
-    "C:/Users/JaNiy/.pi/agent/npm/node_modules/better-sqlite3",
     join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "agent", "npm", "node_modules", "better-sqlite3"),
   ].filter(Boolean);
   for (const c of candidates) {

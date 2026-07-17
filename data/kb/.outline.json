@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-17T05:07:12.394Z",
-  "totalFiles": 239,
-  "totalSections": 20594,
-  "totalKeyParagraphs": 497,
+  "generatedAt": "2026-07-17T09:54:29.421Z",
+  "totalFiles": 241,
+  "totalSections": 21168,
+  "totalKeyParagraphs": 498,
   "guides": [
     {
       "id": "1.2026年国家医疗质量安全改进目标",
@@ -1173,6 +1173,14 @@
       "keyParagraphs": []
     },
     {
+      "id": "临床诊疗指南·癫痫病分册",
+      "title": "临床诊疗指南·癫痫病分册",
+      "sectionCount": 536,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "乙烯醇均聚物等2种食品相关产品新品种",
       "title": "乙烯醇均聚物等2种食品相关产品新品种",
       "sectionCount": 2,
@@ -1429,6 +1437,16 @@
       "keyParagraphs": []
     },
     {
+      "id": "急诊成人社区获得性肺炎临床实践指南（2024年版）",
+      "title": "急诊成人社区获得性肺炎临床实践指南（2024年版）",
+      "sectionCount": 38,
+      "keyParagraphCount": 1,
+      "hierarchy": [],
+      "keyParagraphs": [
+        "推荐意见 9 ：对于急诊留观 / 住院 CAP 患者，推荐单       议暂停母乳喂养 [75-76]（证据等级Ⅲ，推荐等级 B）。"
+      ]
+    },
+    {
       "id": "慢性乙型肝炎防治指南（2022年版）",
       "title": "慢性乙型肝炎防治指南（2022年版）",
       "sectionCount": 33,
@@ -1573,8 +1591,8 @@
       "keyParagraphs": []
     },
     {
-      "id": "流行性感冒诊疗方案（2025版）",
-      "title": "流行性感冒诊疗方案（2025版）",
+      "id": "流行性感冒诊疗方案2025",
+      "title": "流行性感冒诊疗方案2025",
       "sectionCount": 82,
       "keyParagraphCount": 0,
       "hierarchy": [],

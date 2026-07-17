@@ -38,6 +38,7 @@ kb-sources.json
 .pi/kb-snapshots/
 # ========== 知识库数据 — 原始文档（不入仓，可经管线重建） ==========
 data/raw/
+data/raw-bak/
 data/raw-txt/
 # 故障转移选择结果（运行期生成）
 .pi/failover-selection.json

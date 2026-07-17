@@ -64,9 +64,9 @@ console.log("\n[5] selectProvider 优先级选择");
 ph.resetHealthState();
 mockFetch(async () => ({ ok: true, status: 200 }));
 process.env.SENSENOVA_API_KEY = "sk";
-// sensenova 有 Key（healthy，且 priority 居首）→ 直接选 sensenova（免费优先）
+// local 无 Key 但 authEnv=null（无需 Key），priority 0 居首 → 选 local
 const sel = await ph.selectProvider();
-check("跳过无 Key 的 primary 选次优先", sel.provider === "sensenova", sel.provider);
+check("无 Key 本地 provider 优先（priority 0）", sel.provider === "local", sel.provider);
 check("未降级", sel.degraded === false);
 
 // 6. 全不健康 → 降级回退 priority 最小
@@ -76,7 +76,7 @@ delete process.env.SENSENOVA_API_KEY;
 mockFetch(async () => ({ ok: false, status: 503 }));
 const sel2 = await ph.selectProvider();
 check("全失败 → degraded=true", sel2.degraded === true);
-check("回退 priority 最小(sensenova 免费优先)", sel2.provider === "sensenova", sel2.provider);
+check("回退 priority 最小(local 本地优先)", sel2.provider === "local", sel2.provider);
 
 // 7. formatStatus 可读
 console.log("\n[7] formatStatus");

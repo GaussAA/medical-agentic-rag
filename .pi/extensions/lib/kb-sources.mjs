@@ -24,7 +24,7 @@ import {
 } from "node:fs";
 import { join } from "node:path";
 
-const REGISTRY_FILE = join(process.cwd(), "kb-sources.json");
+const REGISTRY_FILE = join(process.cwd(), "data", "kb", "kb-sources.json");
 const SNAPSHOT_DIR = join(process.cwd(), ".pi", "kb-snapshots");
 
 /** cadence（天）→ 毫秒阈值（容忍 1.5 倍漂移，避免网络抖动误报）。 */

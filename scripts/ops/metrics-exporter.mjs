@@ -17,7 +17,9 @@ import { renderMedicalRagMetrics } from "./metrics-format.mjs";
 const PORT = Number(process.env.METRICS_PORT || 19100);
 const HOST = process.env.METRICS_HOST || "0.0.0.0";
 // 审计日志位于项目 cwd 下的 .pi/logs/audit-YYYY-MM-DD.ndjson
-const LOG_DIR = process.env.AUDIT_LOG_DIR || join(process.cwd(), ".pi", "logs");
+// 支持多目录（冒号/分号分隔），便于 sidecar 同时挂载多服务的日志卷。
+const LOG_DIR_RAW = process.env.AUDIT_LOG_DIR || join(process.cwd(), ".pi", "logs");
+const LOG_DIR = LOG_DIR_RAW.split(/[:;]/).map((s) => s.trim()).filter(Boolean);
 const STARTED = Date.now();
 
 const server = createServer((req, res) => {

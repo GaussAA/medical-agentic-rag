@@ -33,6 +33,22 @@ export function isGuardHit(key) {
 }
 
 export function collectAuditMetrics(logDir) {
+  // 支持多目录：传入数组时合并各目录计数（sidecar 同时挂载多服务日志卷）
+  if (Array.isArray(logDir)) {
+    const mergedCounters = new Map();
+    let mergedGuard = 0;
+    let mergedLast = 0;
+    for (const d of logDir) {
+      const { counters, guardHits, lastTs } = collectAuditMetrics(d);
+      for (const [k, v] of counters) {
+        mergedCounters.set(k, (mergedCounters.get(k) || 0) + v);
+      }
+      mergedGuard += guardHits;
+      if (lastTs > mergedLast) mergedLast = lastTs;
+    }
+    return { counters: mergedCounters, guardHits: mergedGuard, lastTs: mergedLast };
+  }
+
   const counters = new Map();
   let guardHits = 0;
   let lastTs = 0;

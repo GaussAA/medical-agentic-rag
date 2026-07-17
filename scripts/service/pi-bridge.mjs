@@ -16,6 +16,13 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { randomUUID } from "node:crypto";
 import { resolveNodeBin, toNativePath } from "./node-bin.mjs";
+import { killTree } from "../lib/pi-runner.mjs";
+
+// 复用 pi-runner 公共 killTree（单一诛杀真相源）；薄包装仅补「等待诛杀完成」语义。
+async function killTreeAndWait(pid) {
+  killTree(pid);
+  await new Promise((r) => setTimeout(r, 400));
+}
 
 // 已知安全护栏工具名（命中即计入 safety.guardHits）
 const GUARD_TOOL_HINTS = [
@@ -287,7 +294,7 @@ export class PiWorker {
       await this.request({ type: "get_state" }, 120000);
     } catch (e) {
       // 失败则杀整棵子树，杜绝半启动 Pi 残留持 KB 锁
-      await this._killTree(this.proc?.pid);
+      await killTreeAndWait(this.proc?.pid);
       this.proc = null;
       throw new Error(
         `Pi failed to become ready: ${e.message}. Stderr: ${short(this._stderr, 500)}`,
@@ -332,40 +339,6 @@ export class PiWorker {
     this._pending.clear();
   }
 
-  // 杀整棵子树（根治孤儿 Pi 持全局 KB 写锁饿死新实例的运营故障）。
-  // Windows: taskkill /T /F 直接强杀子树；非 Windows: 进程组 SIGTERM→SIGKILL。
-  async _killTree(pid) {
-    if (!pid) return;
-    if (process.platform === "win32") {
-      await new Promise((res) => {
-        const cp = spawn("taskkill", ["/PID", String(pid), "/T", "/F"], {
-          stdio: "ignore",
-        });
-        cp.on("close", () => res());
-        cp.on("error", () => res());
-      });
-      return;
-    }
-    try {
-      process.kill(-pid, "SIGTERM");
-    } catch {
-      try {
-        this.proc?.kill("SIGTERM");
-      } catch {
-        /* noop */
-      }
-    }
-    await new Promise((r) => setTimeout(r, 800));
-    try {
-      process.kill(-pid, "SIGKILL");
-    } catch {
-      try {
-        this.proc?.kill("SIGKILL");
-      } catch {
-        /* noop */
-      }
-    }
-  }
 
   _cleanup() {
     try {
@@ -487,7 +460,7 @@ export class PiWorker {
       if (msg.includes("already processing") || msg.includes("Timeout")) {
         this._wedged = true;
         try {
-          await this._killTree(this.proc?.pid);
+          await killTreeAndWait(this.proc?.pid);
         } catch {
           /* noop */
         }
@@ -513,7 +486,7 @@ export class PiWorker {
     const pid = this.proc.pid;
     this.started = false;
     this._wedged = false;
-    await this._killTree(pid);
+    await killTreeAndWait(pid);
     this.proc = null;
   }
 
@@ -524,7 +497,7 @@ export class PiWorker {
     this.started = false;
     this._wedged = false;
     this._exitError = null;
-    await this._killTree(pid);
+    await killTreeAndWait(pid);
     this.proc = null;
   }
 }

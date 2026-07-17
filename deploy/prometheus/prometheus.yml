@@ -25,3 +25,9 @@ scrape_configs:
       - targets: ["medical-api:18880"]
         labels:
           service: "llm-provider-proxy"
+  - job_name: "medical-rag-metrics"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["metrics-exporter:19100"]
+        labels:
+          service: "metrics-exporter"

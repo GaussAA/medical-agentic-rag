@@ -28,9 +28,11 @@ const PI_DIR = join(process.cwd(), ".pi");
 const FAILOVER_FILE = join(PI_DIR, "failover-selection.json");
 
 // Provider 注册表（复用 provider-health.mjs 定义，独立副本防循环依赖）
-// ⚠️ 优先级 = 成本优先级：P1 免费→P2 免费深搜→P3 agnes-2.0→P4 付费 deepseek（末位兜底）
+// ⚠️ 优先级 = 本地优先 → 成本优先：P0 本地 LLM → P1 免费 → P2 免费深搜 → P3 agnes-2.0 → P4 付费 deepseek
 // 烟雾实测(2026-07-15)：agnes-2.5-flash 不可达(503)，不纳入
 const PROVIDERS = [
+  // P0: 本地私有 LLM（LM Studio / Ollama / llama.cpp），最高优先级
+  { provider: "local", model: "google/gemma-4-e2b", baseUrl: "http://localhost:1234/v1", authEnv: null, priority: 0, label: "Local Gemma-4-E2B (私有)" },
   // P1: sensenova 免费主力
   { provider: "sensenova", model: "sensenova-6.7-flash-lite", baseUrl: "https://token.sensenova.cn/v1", authEnv: "SENSENOVA_API_KEY", priority: 1, label: "SenseNova 6.7 Flash Lite" },
   // P2: sensenova deepseek 免费通道
@@ -103,14 +105,14 @@ async function probeProvider(p) {
   if (!apiKey && p.authEnv === "SENSENOVA_API_KEY" && SENSENOVA_KEY_POOL.length) {
     apiKey = SENSENOVA_KEY_POOL[0];
   }
-  if (!apiKey) return { ...p, healthy: false, reason: `缺 ${p.authEnv}` };
+  // 本地私有 LLM（authEnv === null）：无需 Key，直连探测
+  const noKeyOk = !apiKey && p.authEnv === null;
+  if (!apiKey && !noKeyOk) return { ...p, healthy: false, reason: `缺 ${p.authEnv}` };
   try {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), PROBE_TIMEOUT);
-    const res = await fetch(`${p.baseUrl}/models`, {
-      headers: { Authorization: `Bearer ${apiKey}` },
-      signal: ctrl.signal,
-    });
+    const headers = apiKey ? { Authorization: `Bearer ${apiKey}` } : {};
+    const res = await fetch(`${p.baseUrl}/models`, { headers, signal: ctrl.signal });
     clearTimeout(timer);
     return { ...p, healthy: res.ok, reason: res.ok ? "OK" : `HTTP ${res.status}` };
   } catch (err) {
@@ -195,7 +197,9 @@ async function forwardRequest(body) {
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     // 每次尝试（含重试）都轮询 Key 池——sensenova 换 Key 缓解单 Key 限速
     const apiKey = isSensenova() ? nextSensenovaKey() : getApiKey(currentProvider);
-    if (!apiKey) throw new Error(`当前 Provider ${currentProvider.label} 缺 API Key`);
+    // 本地私有 LLM（authEnv === null）不需要 apiKey
+    const noKeyOk = !apiKey && currentProvider.authEnv === null;
+    if (!apiKey && !noKeyOk) throw new Error(`当前 Provider ${currentProvider.label} 缺 API Key`);
 
     const url = `${currentProvider.baseUrl}/chat/completions`;
 
@@ -206,12 +210,13 @@ async function forwardRequest(body) {
     try {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), REQUEST_TIMEOUT);
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
       const res = await fetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
+        headers,
         body: JSON.stringify({ ...body, model }),
         signal: ctrl.signal,
       });
@@ -340,20 +345,22 @@ const server = createServer(async (req, res) => {
       for await (const chunk of req) bodyBuf.push(chunk);
       const body = JSON.parse(Buffer.concat(bodyBuf).toString("utf-8"));
 
+      const labelSafe = (currentProvider?.label || "unknown").replace(/[^\x20-\x7E]/g, "");
+      const pKey = `${currentProvider?.provider || "unknown"}/${currentProvider?.model || "unknown"}`;
+
       const response = await forwardRequest(body);
       const bodyText = await response.text();
 
       res.writeHead(response.status, {
         "Content-Type": "application/json",
-        "X-Provider": currentProvider?.label || "unknown",
+        "X-Provider": labelSafe,
         "X-Failover-Count": String(failoverCount),
       });
       res.end(bodyText);
 
       // 记录指标
-      const pName = currentProvider?.label || "unknown";
-      if (!metrics.byProvider[pName]) metrics.byProvider[pName] = { requests: 0, errors: 0 };
-      metrics.byProvider[pName].requests++;
+      if (!metrics.byProvider[pKey]) metrics.byProvider[pKey] = { requests: 0, errors: 0 };
+      metrics.byProvider[pKey].requests++;
 
       const elapsed = Date.now() - start;
       console.log(`[proxy] ${elapsed}ms ${response.status} ${currentProvider?.label} (failovers=${failoverCount})`);

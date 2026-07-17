@@ -48,6 +48,15 @@ const HEALTHY_STREAK_TO_RECOVER = 2;
  * - sensenova-u1-fast: ✅ 可达(/v1/models 200, 图像非聊天端点跳过)
  */
 export const PROVIDERS = [
+  // P0: 本地私有 LLM（LM Studio），最高优先级
+  {
+    provider: "local",
+    model: "google/gemma-4-e2b",
+    label: "Local Gemma-4-E2B (私有)",
+    baseUrl: "http://localhost:1234/v1",
+    authEnv: null,
+    priority: 0,
+  },
   {
     provider: "sensenova",
     model: "sensenova-6.7-flash-lite",
@@ -108,7 +117,8 @@ export async function runProbe(p) {
   }
   const ts = Date.now();
   const key = `${p.provider}|${p.model}`;
-  if (!apiKey) {
+  const noKeyOk = !apiKey && p.authEnv === null; // 本地私有 LLM 无需 Key
+  if (!apiKey && !noKeyOk) {
     const r = {
       provider: p.provider,
       model: p.model,
@@ -126,7 +136,7 @@ export async function runProbe(p) {
   try {
     const res = await fetch(`${p.baseUrl}/models`, {
       method: "GET",
-      headers: { Authorization: `Bearer ${apiKey}` },
+      headers: apiKey ? { Authorization: `Bearer ${apiKey}` } : {},
       signal: controller.signal,
     });
     probeOk = res.ok;

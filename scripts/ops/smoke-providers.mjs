@@ -49,7 +49,7 @@ async function testProbe(t) {
   // 1. /v1/models 端点探测
   try {
     const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 8000);
+    const timer = setTimeout(() => ctrl.abort(), 8000); // 上线冒烟探针超时：模型冷加载首响较长，故 8000ms；与 provider-proxy 运行时 PROBE_TIMEOUT=3000 用途不同（后者为高频健康探测、需快速切换），非不一致
     const res = await fetch(`${t.baseUrl}/models`, {
       headers: { Authorization: `Bearer ${apiKey}` },
       signal: ctrl.signal,

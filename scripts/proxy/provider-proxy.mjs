@@ -43,7 +43,7 @@ const PROVIDERS = [
   { provider: "deepseek", model: "deepseek-v4-flash", baseUrl: "https://api.deepseek.com", authEnv: "DEEPSEEK_API_KEY", priority: 4, label: "⚠️ DeepSeek V4 Flash (付费)" },
 ];
 
-const PROBE_TIMEOUT = 3000;
+const PROBE_TIMEOUT = 3000; // 运行时健康探针超时：决定 Provider 切换灵敏度（短，避免瞬时抖动误切）；与 smoke-providers 的 8000ms（上线冷加载冒烟）用途不同，非一致性 bug
 const REQUEST_TIMEOUT = 60000;
 const RETRY_DELAY = 1000;
 const MAX_RETRIES = 2;

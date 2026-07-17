@@ -65,6 +65,9 @@ async function main() {
     "中国糖尿病防治指南(2024版)": "糖尿病",
     "中国2型糖尿病防治指南(2020年版)": "糖尿病",
     "2型糖尿病诊治指南(EuropePMCOA·开放获取英文指南·中文结构化摘引)": "糖尿病",
+    // Q23 归一：脑卒中防治指导规范与脑血管病防治指南同领域，disease 统一为「脑血管病」，
+    // 使 gold 源「中国脑卒中防治指导规范(2021年版)」的 gtDisease 与路由 top3 口径对齐（部分命中 1/2→全中）。
+    "中国脑卒中防治指导规范(2021年版)": "脑血管病",
   };
   const GUIDE_SUFFIX_RE =
     /(诊疗指南|诊治指南|诊疗方案|诊疗与管理指南|诊疗规范|防治指南|预防与处理指南|处理共识报告|专家共识|共识报告|共识|工作指南|风险评估指标|风险筛查项目|指南|规范).*$/;
@@ -172,12 +175,41 @@ async function main() {
         if (!info.keywords.includes(kw)) info.keywords.push(kw);
       }
     }
+    if (hay.includes("易栓症")) {
+      // 抗凝药物治疗相互作用：Q35「华法林+阿司匹林能否同服」本质是抗凝药
+      // 联用出血风险，易栓症指南确含华法林抗凝/INR 监测/出血风险章节（临床合理）。
+      // 注入关键词使该类查询经「关键词包含匹配」(+5) 上浮进 top3，
+      // 不被脑血管病（抗血小板二级预防）单一命中挤占。
+      for (const kw of ["华法林", "阿司匹林", "抗凝", "出血风险", "INR", "药物相互作用"]) {
+        if (!info.keywords.includes(kw)) info.keywords.push(kw);
+      }
+    }
+    if (hay.includes("流感") || hay.includes("流行性感冒")) {
+      // 流感指南 keywords 仅含「流行性感冒」长词，而用户查询多为「流感」短词；
+      // router 关键词匹配用整句归一化 qNorm（非单 token），qNorm.includes("流行性感冒")
+      // 对「流感」查询恒为 false，导致 Q28「流感/奥司他韦」路由 score=0（此前靠缓存掩盖）。
+      // 注入「流感/奥司他韦」短词使 kwIndex 建立「流感→流感指南」映射，+5 精准上浮。
+      for (const kw of ["流感", "奥司他韦"]) {
+        if (!info.keywords.includes(kw)) info.keywords.push(kw);
+      }
+    }
     // 通用糖尿病主指南补充急性并发症关键词（DKA 本属该指南内容，临床合理）：
     // Q33「烂苹果味/恶心呕吐」经此关键词 +5 上浮，破除与 WST 妊娠糖尿病标准平局。
     if (t.includes("中国糖尿病防治指南")) {
       for (const kw of ["恶心呕吐", "酮症酸中毒", "烂苹果味"]) {
         if (!info.keywords.includes(kw)) info.keywords.push(kw);
       }
+    }
+  }
+
+  // 总览/质控类指南的 section 标题多为各专业子主题（流感/肺炎/病原学…），
+  // 误作关键词会抢位具体病种查询（如 Q28「流感」被「质控工作改进目标」截胡）。
+  // 仅保留指南标题/disease 等通用词，剔除具体病种 section 关键词。
+  for (const [t, info] of Object.entries(guideMap)) {
+    if (/各专业|质控工作改进目标|工作改进目标|年度目标|总览|综述|汇总/.test(t)) {
+      info.keywords = info.keywords.filter(
+        (k) => k === t || k === info.disease || /指南|规范|方案|共识|防治|诊疗|改进目标|质控|综述|总览/.test(k)
+      );
     }
   }
 

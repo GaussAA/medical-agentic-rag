@@ -112,6 +112,7 @@ services:
       - "9090:9090"
     volumes:
       - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./deploy/prometheus/rules.yml:/etc/prometheus/rules.yml:ro
       - medical-rag-prometheus-data:/prometheus
     restart: unless-stopped
     depends_on:
@@ -137,6 +138,38 @@ services:
     depends_on:
       - prometheus
 
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: medical-rag-alertmanager
+    entrypoint: ["sh", "/etc/alertmanager/docker-entrypoint.sh"]
+    ports:
+      - "9093:9093"
+    environment:
+      - ALERT_WEBHOOK_URL=${ALERT_WEBHOOK_URL}
+    volumes:
+      - ./deploy/alertmanager/docker-entrypoint.sh:/etc/alertmanager/docker-entrypoint.sh:ro
+      - medical-rag-alertmanager-data:/alertmanager
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
+  metrics-exporter:
+    image: medical-agentic-rag:latest
+    container_name: medical-rag-metrics-exporter
+    entrypoint: ["node", "/app/scripts/ops/metrics-exporter.mjs"]
+    environment:
+      # 同时挂载 medical-api 与 medical-rag 两日志卷，合并审计指标
+      - AUDIT_LOG_DIR=/app/.pi/logs/api:/app/.pi/logs/rag
+    # 不映射宿主端口：medical-rag 已占用宿主 19100 且无进程；
+    # prometheus 经 docker 网络 metrics-exporter:19100 抓取即可。
+    volumes:
+      - medical-api-logs:/app/.pi/logs/api
+      - medical-rag-logs:/app/.pi/logs/rag
+    restart: unless-stopped
+    depends_on:
+      - medical-api
+      - medical-rag
+
 volumes:
   kb_rag:
   kb_api:
@@ -146,3 +179,4 @@ volumes:
   medical-api-logs:
   medical-rag-prometheus-data:
   medical-rag-grafana-data:
+  medical-rag-alertmanager-data:

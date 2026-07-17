@@ -105,18 +105,20 @@ function readBody(req, limit = 1_048_576) {
 // 服务启动时间戳（供 /healthz、/metrics 计算 uptime）
 export const SERVER_STARTED_AT = Date.now();
 
+// 判断服务是否仅绑定本机回环（用于安全告警与开放策略）。
+// 模块级定义：createApiHandler 内与顶层 server.listen 回调均需访问。
+function isLocalHost(host) {
+  return (
+    host === "127.0.0.1" || host === "localhost" || host === "::1" || host === "::"
+  );
+}
+
 export function createApiHandler({
   pool,
   config,
   breakers = new Map(),
   log = () => {},
 }) {
-  function isLocalHost(host) {
-    return (
-      host === "127.0.0.1" || host === "localhost" || host === "::1" || host === "::"
-    );
-  }
-
   function authenticate(req) {
     // 显式开发绕过（默认关闭）：仅本地联调使用，生产须删除
     if (process.env.API_AUTH_DISABLED === "1") return true;

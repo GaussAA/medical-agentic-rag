@@ -23,11 +23,15 @@ services:
       - "31415:31415"
       - "19100:19100"   # Prometheus 指标（Web 服务的 metrics-exporter 同端口）
     volumes:
-      # 预构建的知识库（宿主机 ~/.pi/knowledge → 容器），避免每次重建
-      - "${HOME}/.pi/knowledge:/root/.pi/knowledge"
+      # KB 隔离（P1 修复）：每个 Pi 实例持独立 KB 副本（kb_rag 卷），
+      # 经 provision-kb 从宿主机只读源灌入，杜绝两容器共享 WAL 写锁争用崩溃。
+      - kb_rag:/root/.pi/knowledge
       # 审计/会话日志持久化（指标导出器读取 .pi/logs/audit-*.ndjson）
       - medical-rag-logs:/app/.pi/logs
       - medical-rag-sessions:/root/.pi/sessions
+    depends_on:
+      provision-kb:
+        condition: service_completed_successfully
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "node", "/app/scripts/ops/healthcheck.mjs", "http://127.0.0.1:31415/"]
@@ -53,9 +57,13 @@ services:
       - "8080:8080"
       - "19101:19100"   # API 服务自带 /metrics（避免与 Web 服务 19100 冲突）
     volumes:
-      - "${HOME}/.pi/knowledge:/root/.pi/knowledge"
+      # KB 隔离（P1 修复）：独立 kb_api 卷，与 Web 服务 kb_rag 物理隔离
+      - kb_api:/root/.pi/knowledge
       - medical-api-logs:/app/.pi/logs
       - medical-api-sessions:/app/.pi/sessions
+    depends_on:
+      provision-kb:
+        condition: service_completed_successfully
     restart: unless-stopped
     entrypoint: ["/usr/local/bin/docker-entrypoint-api.sh"]
     healthcheck:
@@ -64,6 +72,27 @@ services:
       timeout: 5s
       retries: 5
       start_period: 60s
+
+  # ============================================================
+  # KB 隔离预置（P1 修复）：将宿主机只读 KB 源灌入各 Pi 实例的独立卷，
+  # 使 medical-rag 与 medical-api 各持一份 KB 副本，避免共享 SQLite WAL
+  # 写锁争用导致双实例崩溃（与 k8s 每 Pod 独立 emptyDir 同构）。
+  # 运行一次即退出（restart: "no"），由两 Pi 服务 depends_on 等待完成。
+  # KB 更新流程：在宿主机重建 ~/.pi/knowledge 后 `docker compose down && up`
+  # 即重新灌入；容器内对 KB 的写入为实例本地、重启不持久（与 k8s 一致）。
+  # ============================================================
+  provision-kb:
+    build: .
+    image: medical-agentic-rag:latest
+    entrypoint:
+      - /bin/sh
+      - -c
+      - "mkdir -p /rag /api; if [ -d /src ]; then cp -a /src/. /rag/ && cp -a /src/. /api/ && echo KB_provisioned_into_per_instance_volumes; else echo WARN_host_KB_missing_instances_start_empty; fi; exit 0"
+    volumes:
+      - "${HOME}/.pi/knowledge:/src:ro"
+      - kb_rag:/rag
+      - kb_api:/api
+    restart: "no"
 
   # ============================================================
   # 监控栈：Prometheus + Grafana（指标可视化）
@@ -109,6 +138,8 @@ services:
       - prometheus
 
 volumes:
+  kb_rag:
+  kb_api:
   medical-rag-sessions:
   medical-rag-logs:
   medical-api-sessions:

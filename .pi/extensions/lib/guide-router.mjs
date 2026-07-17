@@ -448,6 +448,17 @@ export function routeGuides(query, opts = {}) {
       score *= 0.4;
       reasons.push("非疾病类降权");
     }
+    // ④·补 汇总/全领域类指南(各专业质控改进目标·年度工作改进目标等)在疾病问法下排序降权，
+    //     其 sections 覆盖所有病种(流感/高血压/糖尿病…)，语义词元在任意病种 query 下
+    //     虚高分漂移到 top3，挤占专项指南（如 Q28 流感奥司他韦被「各专业质控目标」错配）。
+    //     仅当无真实关键词命中时降权；确有该汇总指南专属关键词命中时保留。
+    const isSummaryGuide =
+      /各专业|质控工作改进目标|工作改进目标|改进目标|年度目标|总览|综述|汇总/.test(title) ||
+      /各专业|质控工作改进目标|改进目标/.test(info.id || "");
+    if (isSummaryGuide) {
+      score *= 0.4;
+      reasons.push("汇总类指南降权");
+    }
     // ⑤ 纯语义/模糊命中(无关键词·无标题/疾病字面命中)排序降权，抑制 IDF 语义漂移
     //    (如「控制」漂到 WS 射线标准、「功能/开」漂到甲状腺)，让有强信号的指南上浮。
     if (matchedKw.length === 0 && !titleL.includes(qNorm) && !disease.includes(qNorm)) {

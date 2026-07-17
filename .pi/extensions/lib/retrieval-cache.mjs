@@ -22,7 +22,8 @@ import {
 import { join } from "node:path";
 
 const DEFAULT_TTL_MS = 10 * 60 * 1000; // 10 分钟
-const CACHE_DIR = join(process.cwd(), ".pi", "cache");
+const MAX_ENTRIES = parseInt(process.env.RETRIEVAL_CACHE_MAX_ENTRIES || "500", 10); // 条目容量上限（LRU 近似：超容按写入时间裁剪最旧）
+const CACHE_DIR = process.env.RETRIEVAL_CACHE_DIR || join(process.cwd(), ".pi", "cache"); // 支持测试/自定义目录覆盖
 const CACHE_FILE = join(CACHE_DIR, "retrieval-cache.json");
 
 // ---------- 跨进程文件锁（防多实例并发 writeAll 互相覆盖） ----------
@@ -149,12 +150,14 @@ export function cacheGet(key, ttlMs = DEFAULT_TTL_MS) {
   const h = cacheHash(key);
   const m = memory.get(h);
   if (fresh(m, ttlMs)) return m.value;
+  if (m) memory.delete(h); // 内存命中但已过期：丢弃，避免陈旧值滞留热路径
   const entries = readAll();
   const e = entries[h];
   if (fresh(e, ttlMs)) {
     memory.set(h, e); // 回填内存，加速后续命中
     return e.value;
   }
+  // 磁盘命中但已过期：仅清内存标记，磁盘过期项由 cacheSet/gcExpired 统一回收（读路径不写盘）
   return undefined;
 }
 
@@ -168,11 +171,28 @@ export function cacheSet(key, value, ttlMs = DEFAULT_TTL_MS) {
   const h = cacheHash(key);
   const entry = { value, ts: Date.now(), ttl: ttlMs };
   memory.set(h, entry);
-  // read-modify-write 整体在锁内，杜绝多进程并发丢更新
+  // read-modify-write 整体在锁内，杜绝多进程并发丢更新；
+  // 顺带回收过期条目 + 超容按写入时间 LRU 近似裁剪，抑制缓存文件/内存单调膨胀。
   mutateAll((entries) => {
+    const now = Date.now();
+    for (const k of Object.keys(entries)) {
+      const e = entries[k];
+      if (!e || now - e.ts >= (e.ttl || ttlMs)) delete entries[k]; // 回收过期
+    }
     entries[h] = entry;
+    const keys = Object.keys(entries);
+    if (keys.length > MAX_ENTRIES) {
+      // 按写入时间升序，裁掉最旧 (keys.length - MAX_ENTRIES) 个
+      keys.sort((a, b) => entries[a].ts - entries[b].ts);
+      for (const k of keys.slice(0, keys.length - MAX_ENTRIES)) delete entries[k];
+    }
     return entries;
   });
+  // 内存热缓存同步裁剪，避免与磁盘容量漂移
+  if (memory.size > MAX_ENTRIES) {
+    const sorted = [...memory.entries()].sort((a, b) => a[1].ts - b[1].ts);
+    for (const [k] of sorted.slice(0, memory.size - MAX_ENTRIES)) memory.delete(k);
+  }
 }
 
 /** 缓存统计（有效/过期条目数 + 文件位置）。 */
@@ -197,4 +217,27 @@ export function cacheStats() {
 export function cacheClear() {
   memory.clear();
   mutateAll(() => ({}));
+}
+
+/**
+ * 主动回收所有过期条目（内存 + 磁盘），返回清理条数。
+ * 供 /cache gc 命令或定时任务调用，抑制纯读场景下过期条目长期占盘。
+ */
+export function gcExpired() {
+  const now = Date.now();
+  for (const [k, e] of memory.entries()) {
+    if (!e || now - e.ts >= (e.ttl || DEFAULT_TTL_MS)) memory.delete(k);
+  }
+  let removed = 0;
+  mutateAll((entries) => {
+    for (const k of Object.keys(entries)) {
+      const e = entries[k];
+      if (!e || now - e.ts >= (e.ttl || DEFAULT_TTL_MS)) {
+        delete entries[k];
+        removed++;
+      }
+    }
+    return entries;
+  });
+  return removed;
 }

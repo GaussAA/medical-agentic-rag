@@ -53,6 +53,7 @@ const SUITES = [
   ["node", "tests/unit/content-need-alignment-test.mjs"],
   ["node", "--test", "tests/unit/api-server-test.mjs"],
   ["node", "--test", "tests/unit/session-pool-test.mjs"],
+  ["node", "tests/unit/retrieval-cache-test.mjs"],
 ];
 
 function run(name, cmd, args) {

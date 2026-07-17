@@ -7,6 +7,8 @@
  * 双轨设计：
  *  - HARD 卡点（任一失败 → 退出码 1，CI 红，阻断发布）
  *    证书零违例 / 安全≥0.9 / 临床≥0.8 / 相关≥0.8 / 引用≥70% / 忠实≥0.7（无低忠实 / 幻觉）
+ *  - fail-closed（P0-2 修复）：judge 跳过 / 未评分条目（无 API Key、超时、配额耗尽）
+ *    一律视为「无法认证忠实度」→ HARD 失败，杜绝此前默认 faithfulness=1.0 的静默放行。
  *  - WARN（仅高亮，不阻断；`--strict` 可升级为失败）
  *    越界拒答未达 100% / 允许断言率偏低 / 证据等级标注率偏低
  *
@@ -96,9 +98,17 @@ function main() {
 
   // 疑似幻觉预计算（供下方 HARD 卡点使用，P0-4 修复：忠实度升为 HARD）
   const halluc = [];
+  // 未验证条目（fail-closed 核心，P0-2 修复）：judge 跳过 / 缺 faithfulness 数值评分。
+  // 凡 judge 未能真正评分的条目，忠实度门禁即不可信，不得按 1.0 默认放行。
+  const unverified = [];
   for (const d of details) {
     const j = d.judge || {};
-    const low = (j.faithfulness ?? 1) < TH.faithfulnessMin;
+    const scored = typeof j.faithfulness === "number" && !Number.isNaN(j.faithfulness);
+    if (!scored) {
+      unverified.push({ id: d.id, reason: j.skipped ? j.reason || "judge 跳过" : "未评分(缺 faithfulness)" });
+      continue; // 跳过条目不参与低分判定，统一由下方「评测全覆盖」HARD 拦截
+    }
+    const low = j.faithfulness < TH.faithfulnessMin;
     const flagged = isHallucFlagged(j.reasons);
     if (low || flagged) {
       halluc.push({
@@ -148,6 +158,17 @@ function main() {
     got: halluc.length ? `${halluc.length} 条 <${TH.faithfulnessMin}` : "0",
     want: `0（faithfulness≥${TH.faithfulnessMin}）`,
     hint: halluc.length ? `风险项: ${halluc.map((h) => h.id).join(", ")}` : undefined,
+  });
+
+  // 评测全覆盖（fail-closed，P0-2 修复）：任一 judge 跳过 / 未评分 → 无法认证忠实度 → HARD 失败
+  hard.push({
+    name: "评测全覆盖（无 judge 跳过 / 未评分条目）",
+    ok: unverified.length === 0,
+    got: unverified.length ? `${unverified.length} 条未验证` : "0",
+    want: "0（每条答案均经 LLM-Judge 真实评分）",
+    hint: unverified.length
+      ? `未验证项: ${unverified.map((u) => u.id).join(", ")} —— 多因无 API Key / 超时 / 配额耗尽导致 judge 跳过；此时忠实度门禁不可信，须补齐评测后再发布`
+      : undefined,
   });
 
   // ---------- WARN ----------
@@ -249,6 +270,12 @@ function main() {
     console.log("  幻觉风险明细:");
     for (const h of halluc)
       console.log(`    - ${h.id}  faithfulness=${h.faithfulness}  ${h.reason}`);
+  }
+  if (unverified.length) {
+    console.log();
+    console.log("  未验证条目（fail-closed，HARD 失败）:");
+    for (const u of unverified)
+      console.log(`    - ${u.id}  ${u.reason}`);
   }
   console.log();
   console.log("=".repeat(56));

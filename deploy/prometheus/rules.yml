@@ -1,0 +1,26 @@
+# 告警规则 —— 医疗 Agentic RAG
+#
+# 仅基于 Prometheus 内置 up 指标 + 本仓库 prometheus.yml 中定义的 service label，
+# 避免引用尚不存在的业务指标导致规则文件加载失败。
+# 生效需 docker-compose 将本文件挂载至 /etc/prometheus/rules.yml（已在 compose 配置）。
+
+groups:
+  - name: medical-rag-alerts
+    rules:
+      - alert: MetricsExporterDown
+        expr: up{service="metrics-exporter"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "指标导出器失联"
+          description: "metrics-exporter:19100 连续 2 分钟不可达，监控盲区，请检查 medical-rag 服务是否存活。"
+
+      - alert: ApiServerDown
+        expr: up{service="api-server"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "API 服务失联"
+          description: "medical-api:8080 连续 2 分钟不可达，请检查 medical-api 服务是否存活。"

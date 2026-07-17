@@ -17,7 +17,25 @@ spec:
         target:
           type: Utilization
           averageUtilization: 70
-    # 生产建议增补自定义指标（如 ask p99 延迟 / 在途请求数）由 Prometheus Adapter 提供
+    # ---- 自定义指标（数据面真实压力信号）----
+    # 需配套部署 kube-prometheus-stack + prometheus-adapter，并让 api-server 暴露 /metrics
+    # （observability 层已规划，当前未部署）。Adapter 未就绪时该指标为 Unknown，
+    # autoscaling/v2 自动忽略 Unknown 指标（仅 CPU 生效），不会阻断扩缩容 —— 安全降级。
+    - type: Pods
+      pods:
+        metric:
+          name: in_flight_asks            # 单 Pod 在途 ask 数（Pi 串行的真实并发压力）
+        target:
+          type: AverageValue
+          averageValue: "8"
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests_per_second  # 单 Pod 每秒请求数（流量压力）
+        target:
+          type: AverageValue
+          averageValue: "20"
+    # 生产建议：另可增补 ask p99 延迟指标，由 Prometheus Adapter 提供
   behavior:
     scaleDown:
       stabilizationWindowSeconds: 300   # 避免抖动频繁缩容

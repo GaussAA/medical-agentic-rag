@@ -300,6 +300,9 @@ export function createApiHandler({
 }
 
 // ---- provider-proxy 自举 ----
+// 兜底监督：provider-proxy 若意外退出，3s 后自举重试（对齐「无静默失败」）。
+// 正常关停（code=0 且无 signal）不自举；期间 Pi 直连 Provider，不拖垮 API 服务。
+let proxyRespawnGuard = false;
 async function ensureProxy(config, log) {
   const url = `http://127.0.0.1:${config.proxyPort}/health`;
   try {
@@ -329,6 +332,17 @@ async function ensureProxy(config, log) {
     return null;
   });
   child.stderr?.on("data", (d) => log(`[proxy:stderr] ${d.toString().trim()}`));
+  child.on("exit", (code, signal) => {
+    if (code === 0 && !signal) return; // 正常关停，不自举
+    log(`[api][告警] provider-proxy 意外退出(code=${code}, signal=${signal})，3s 后自举重试；期间 Pi 直连 Provider`);
+    if (!proxyRespawnGuard) {
+      proxyRespawnGuard = true;
+      setTimeout(() => {
+        proxyRespawnGuard = false;
+        ensureProxy(config, log).catch((e) => log(`[api][告警] provider-proxy 自举重试失败：${e.message}`));
+      }, 3000);
+    }
+  });
   // 等待就绪（最多 15s）
   for (let i = 0; i < 30; i++) {
     await new Promise((r) => setTimeout(r, 500));

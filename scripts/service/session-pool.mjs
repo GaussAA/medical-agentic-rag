@@ -26,6 +26,7 @@ export class SessionPool {
       throw new Error("SessionPool 需要 workerFactory() => PiWorker");
     }
     this.maxSessions = opts.maxSessions ?? 8;
+    this.inflight = 0; // 在途 ask 计数（背压依据；非 sessions.size——后者仅记账且靠 idle 回收）
     this.idleTtlMs = opts.idleTtlMs ?? 10 * 60 * 1000;
     this.log = opts.log || (() => {});
     this.worker = null; // 单 Pi worker（每 Pod 单实例）
@@ -70,10 +71,29 @@ export class SessionPool {
     return this._ensureWorker();
   }
 
+  // 是否已达并发上限（供 API 层快速 429 预检；与 ask() 内原子判定二重保险）
+  isFull() {
+    return this.inflight >= this.maxSessions;
+  }
+
   async ask(sessionId, question, opts = {}) {
+    // 背压：超出并发上限立即 429 拒绝（不排队），避免洪峰请求堆积拖死整 Pod。
+    // 在拉起 worker 前原子判定，满则直接抛，不浪费 worker 启动成本。
+    if (this.inflight >= this.maxSessions) {
+      const err = new PoolFullError(
+        `会话池已满（在途 ${this.inflight}/${this.maxSessions}），请稍后重试或横向扩容 Pod`,
+      );
+      this.log(`[pool] ${err.message}`);
+      throw err;
+    }
     if (sessionId) this.sessions.set(sessionId, Date.now());
-    const w = await this.getWorker();
-    return w.ask(question, opts);
+    this.inflight++;
+    try {
+      const w = await this.getWorker();
+      return await w.ask(question, opts);
+    } finally {
+      this.inflight--; // 无论成功/失败/超时均归零，杜绝计数泄漏
+    }
   }
 
   async setModel(provider, modelId, sessionId) {
@@ -92,7 +112,12 @@ export class SessionPool {
     for (const [id, t] of this.sessions) {
       items.push({ sessionId: id, alive: true, idleMs: now - t });
     }
-    return { defaultAlive: !!this.worker?.isAlive(), sessions: items };
+    return {
+      defaultAlive: !!this.worker?.isAlive(),
+      inflight: this.inflight,
+      maxSessions: this.maxSessions,
+      sessions: items,
+    };
   }
 
   _sweep() {

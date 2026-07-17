@@ -20,6 +20,7 @@ export class CircuitBreaker {
    * @param {number} [opts.cooldownMs=30000]     熔断后冷却时长（期间直接拒绝）
    * @param {number} [opts.successThreshold=2]   half-open 需连续成功多少次才恢复
    * @param {number} [opts.timeoutMs=60000]      单次调用超时（超时才计失败）
+   * @param {Array<new (...a: any) => Error>} [opts.ignoreErrors]  不计入下游故障的错误类型（如池满背压 PoolFullError），避免污染熔断阈值
    * @param {() => number} [opts.now]            时钟（测试可注入）
    */
   constructor(opts = {}) {
@@ -27,6 +28,7 @@ export class CircuitBreaker {
     this.cooldownMs = opts.cooldownMs ?? 30000;
     this.successThreshold = opts.successThreshold ?? 2;
     this.timeoutMs = opts.timeoutMs ?? 60000;
+    this.ignoreErrors = opts.ignoreErrors || [];
     this.now = opts.now || (() => Date.now());
 
     this.state = "closed"; // closed | open | half-open
@@ -88,6 +90,10 @@ export class CircuitBreaker {
       this._onSuccess();
       return result;
     } catch (err) {
+      // 背压/瞬态信号（如 PoolFullError）不计为下游故障，避免污染熔断阈值
+      if (this.ignoreErrors.some((C) => err instanceof C)) {
+        throw err;
+      }
       this._onFailure();
       throw err;
     } finally {

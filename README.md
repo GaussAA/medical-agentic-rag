@@ -18,12 +18,16 @@ pi install npm:pi-web-access
 pi install npm:@firstpick/pi-package-webui
 pi install npm:pi-subagents
 
-# 4. 复制启动配置
-cp start.example.bat start.bat
-# 编辑 start.bat 填入你的 API Key
+# 4. 配置 LLM 网关（免费优先 sensenova，经 provider-proxy 故障转移）
+#   复制 .env 模板并填入 SENSENOVA_API_KEYS（免费额度，可留多枚轮询）
+cp .env.example .env
+#   编辑 .env 填入你的 SENSENOVA_API_KEYS（多个用逗号分隔）
 
-# 5. 首次启动后索引知识库
-# 在 Pi 交互界面中执行:
+# 5. 启动（编排故障转移 + 代理网关 + Pi Agent，详见 start.sh / start.ps1 / start.bat）
+./start.sh
+#   或 Windows 双击 start.bat / 运行 start.ps1
+
+# 6. 首次启动后索引知识库（在 Pi 交互界面中执行）
 #   knowledge_plan { source: "raw" }
 #   knowledge_add { source: "raw", name: "医疗指南" }
 ```
@@ -78,7 +82,9 @@ medical-agentic-rag/
 │   ├── eval-bench.mjs           # 端到端评测基准（路由召回 / 延迟）
 │   ├── eval-report.json         # 评测结果（结构化）
 │   └── eval-report.html         # 评测结果（可视化）
-├── start.example.bat            # 启动脚本模板（填入 Key 后复制为 start.bat）
+├── start.sh                     # 启动脚本（编排故障转移 + 代理网关 + Pi Agent）
+├── start.bat                    # Windows 启动脚本
+├── start.ps1                    # PowerShell 启动脚本
 ├── README.md
 ```
 
@@ -88,7 +94,7 @@ medical-agentic-rag/
 | ---------- | ---------------------------- | ----------------------------- |
 | Agent 框架 | Pi CLI `pi@2.0.5` + `@earendil-works/pi-coding-agent@0.80.10` | ReAct 智能体循环 + 工具系统 |
 | RAG 引擎   | pi-knowledge (v0.5.1)        | 本地优先，混合检索 + 重排序   |
-| LLM        | DeepSeek V4 Flash            | `api.deepseek.com`            |
+| LLM        | sensenova-6.7-flash-lite（免费优先）经 provider-proxy(127.0.0.1:18880) 故障转移；P0 本地 gemma-4-e2b(LM Studio) / 付费兜底 deepseek-v4-flash | `token.sensenova.cn` |
 | 嵌入模型   | multilingual-e5-small (本地) | 约 32MB ONNX，零 API Key      |
 | 向量存储   | pi-knowledge 内置向量文件    | 本地存储于 `~/.pi/knowledge/` |
 | 运行环境   | Node.js 22.22.2+             | 满足 Pi 要求（>=22.19.0）     |
@@ -106,10 +112,13 @@ medical-agentic-rag/
 ### 方式二：命令行
 
 ```bash
-# 设置 API Key
-set DEEPSEEK_API_KEY=YOUR_DEEPSEEK_API_KEY_HERE
+# 先启动 LLM 网关（provider-proxy，免费优先 sensenova，含故障转移）
+npm run proxy:start
 
-# 启动 Pi（含医疗 System Prompt）
+# 设置 API Key（sensenova 免费额度）
+set SENSENOVA_API_KEYS=YOUR_SENSENOVA_API_KEYS_HERE
+
+# 启动 Pi（含医疗 System Prompt，经网关 127.0.0.1:18880）
 node pi\packages\coding-agent\dist\cli.js ^
   --model deepseek/deepseek-v4-flash ^
   --system-prompt prompts\medical-agent.md
@@ -261,7 +270,7 @@ node scripts/kb/kb-update.mjs refresh
    每次启动前 `selectProvider` 探测各 Provider（`/models` 端点 + 3s 超时 + API Key 缺失判不健康），
    选出健康者写入 `.pi/failover-selection.json`，由启动脚本读入 `--model`，**自动避开宕机 Provider**。
    显式设置 `LLM_PROVIDER` 时尊重用户选择，跳过探测。
-2. **Provider 注册表** (`lib/provider-health.mjs`)：deepseek(主) → agnes → sensenova×2 四候选，含优先级。
+2. **Provider 注册表** (`scripts/proxy/provider-proxy.mjs`)：local/gemma-4-e2b(LM Studio，P0) → sensenova-6.7-flash-lite(免费，P1) → deepseek-v4-flash(免费通道，P2) → agnes(P3) → deepseek-v4-flash(付费兜底，P4) 多候选，含优先级。
    `selectProvider` 全不健康时降级回退 priority 最小者并标注 degraded（避免启动即崩，但明确告警）。
 3. **运行时可观测** (`provider.failover.ts`)
    周期（5min）健康监控，健康态跃迁记 `logs/audit-*.ndjson`；`/failover` 命令展示健康排行与当前选定；
@@ -276,7 +285,7 @@ node scripts/kb/kb-update.mjs refresh
 
 ## 组合优先架构（P1/P2/P3 终局）
 
-经扩展生态审计（见 `docs/extension-audit-2026-07-10.html`），系统确立「尽量用现成成熟方案、只在真正需要时手写」的架构纪律，分三阶段落地：
+经扩展生态审计与代码质量体检（见 `docs/code-quality-debt-audit-2026-07-17.html`），系统确立「尽量用现成成熟方案、只在真正需要时手写」的架构纪律，分三阶段落地：
 
 - **P1 减负**：删 Kafka/Redis 队列等孤立死代码；`apply-reranker-patch.mjs` 加版本锁防升级静默失效。
 - **P2 删死重**：删未接生产的 `neo4j-search`/`qdrant-search`/`cross-doc-search` 及整个未激活 `scripts/infra/` 七栈（redis/qdrant/postgres/kafka/neo4j/prometheus/nginx 从未 `compose up`）；`retrieval.kg-search-tool.ts` 移除永不走到的 Neo4j 分支。保留 `query-decomposer`（医学启发式，与 pi-subagents 互补）与 `conversation-state`（Agent 侧槽位追踪，与 pi-interview 关注点不同）。

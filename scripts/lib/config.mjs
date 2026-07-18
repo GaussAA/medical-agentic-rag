@@ -96,19 +96,25 @@ export function betterSqlite3Candidates() {
 }
 
 // ---------- Pi cli.js 候选路径 ----------
+// REL：从「含 node_modules 的 base」到 cli.js 的相对片段（@earendil-works 安装布局）。
+const PI_CLI_REL = ["node_modules", "@earendil-works", "pi-coding-agent", "dist", "cli.js"];
 function piCliCandidates() {
-  const REL = ["node_modules", "@earendil-works", "pi-coding-agent", "dist", "cli.js"];
-  const bases = [];
-  if (process.env.PI_CLI) bases.push(process.env.PI_CLI);
-  // 常见安装位（仅作兜底探测，不再写死 /e/nvm4w 等盘符路径）
+  const out = [];
+  // ① 环境变量显式指定 cli.js 全路径（跨机首选，最高优先）
+  if (process.env.PI_CLI && existsSync(process.env.PI_CLI)) out.push(process.env.PI_CLI);
+  // ② 仓内 monorepo dev 构建（start.sh 权威路径）
+  const repoDev = join(ROOT, "pi", "packages", "coding-agent", "dist", "cli.js");
+  if (existsSync(repoDev)) out.push(repoDev);
+  // ③ 仓内 vendor node_modules（base=ROOT/pi，REL 自带 node_modules，勿再叠一层）
+  const repoVendor = join(ROOT, "pi", ...PI_CLI_REL);
+  if (existsSync(repoVendor)) out.push(repoVendor);
+  // ④ nvm4w 全局安装位（由 homedir 推导，跨机安全；本机若在他盘则靠上面仓内命中）
   const home = os.homedir();
   if (home) {
-    bases.push(join(home, ".nvm4w", "nodejs")); // nvm4w 默认位（Windows）
+    const nvm = join(home, ".nvm4w", "nodejs", ...PI_CLI_REL);
+    if (existsSync(nvm)) out.push(nvm);
   }
-  bases.push(join(ROOT, "pi", "node_modules")); // 仓内 vendor
-  const out = [];
-  for (const b of bases) out.push(join(b, ...REL));
-  return out.filter((p) => existsSync(p));
+  return out;
 }
 
 // ---------- 统一 Pi 运行时定位 ----------

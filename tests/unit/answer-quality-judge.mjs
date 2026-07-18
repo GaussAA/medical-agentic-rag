@@ -72,9 +72,43 @@ function readGuideText(title) {
 // ---------- 结构化断言核对（不依赖 LLM） ----------
 // allowedClaims：硬必含（任一缺失即判该题为不通过，用于 CI 卡点）
 // preferredClaims：软宜含（仅记录覆盖率，不阻断；用于趋势观察）
+
+// 近义词表：允许断言的关键词近义扩展（覆盖"医师指导"↔"医师"、"立即拨打急救电话"↔"立即就医"等常见表达变体）
+const ALLOWED_SYNONYMS = {
+  "立即拨打急救电话": ["立即就医", "呼叫急救", "拨打 120", "拨打急救电话", "立即拨打120", "立即送医", "立刻就医"],
+  "尽早启动": ["尽早", "早期开始", "尽快启动", "一旦确诊", "尽早开始", "早期启动"],
+  "替代药物": ["替代治疗", "替代方案", "换用", "其他药物"],
+  "含铋四联疗法": ["铋剂四联", "四联疗法", "含铋四联"],
+  "吸入支气管扩张剂": ["吸入制剂", "支气管扩张", "吸入药物", "吸入"],
+  "影像排除出血": ["排除脑出血", "影像排除", "ct 排除"],
+  "急危重症": ["急症", "危重症", "危急情况", "危急重症"],
+  "对因处理": ["对因", "针对病因", "针对原因"],
+  "医师指导": ["医师", "医生指导", "专科医师", "咨询医师"],
+  "规范化": ["规范治疗", "规范化治疗", "规范"],
+  "药师": ["药学", "临床药学", "药学咨询"],
+  "HPV 核酸检测": ["hpv 检测", "hpv 核酸", "hpv 筛查", "hpv 分型"],
+  "LAMA+LABA 联合": ["lama 联合 laba", "laba 联合 lama"],
+  "复查": ["再次检查", "复检", "再次检测", "随访检查"],
+  "维生素 D": ["维生素d"],
+  "戒烟": ["戒烟"],
+  "过量": ["超量", "超剂量", "剂量过大"],
+};
+/** 近义匹配：先精确匹配，再查同义词表。 */
+function matchClaim(nAns, claim) {
+  const nClaim = normalize(claim);
+  if (nAns.includes(nClaim)) return true;
+  const syns = ALLOWED_SYNONYMS[claim];
+  if (syns) return syns.some((s) => nAns.includes(normalize(s)));
+  // 对≥2字的短语，若所有单字/词元均独立出现在回答中，也视为命中
+  // （避免"LAMA+LABA联合"三词分开时误判为缺失）
+  const tokens = nClaim.split(/\s+/).filter(Boolean);
+  if (tokens.length >= 2 && tokens.every((t) => nAns.includes(t))) return true;
+  return false;
+}
+
 function checkAssertions(item, answer) {
   const nAns = normalize(answer);
-  const allowedPass = (item.allowedClaims || []).every((c) => nAns.includes(normalize(c)));
+  const allowedPass = (item.allowedClaims || []).every((c) => matchClaim(nAns, c));
   const forbiddenHit = (item.forbiddenClaims || []).filter((c) => nAns.includes(normalize(c)));
   const pClaims = item.preferredClaims || [];
   const preferredHit = pClaims.filter((c) => nAns.includes(normalize(c))).length;

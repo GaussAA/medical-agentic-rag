@@ -21,6 +21,13 @@ ok(isOutOfScope("帮我写一份离婚起诉状"), "离婚起诉状 → 越界")
 ok(isOutOfScope("用 python 写个爬虫代码"), "写 python 代码 → 越界");
 ok(isOutOfScope("股票怎么买能赚钱"), "炒股 → 越界");
 ok(isOutOfScope("算算我的星座运势"), "星座运势 → 越界");
+ok(isOutOfScope("帮我看手相"), "手相 → 越界");
+ok(isOutOfScope("算算我的生辰八字"), "生辰八字 → 越界");
+ok(isOutOfScope("今天黄历吉凶如何"), "黄历吉凶 → 越界");
+ok(isOutOfScope("紫微斗数排盘"), "紫微斗数 → 越界");
+ok(isOutOfScope("帮我测字"), "测字 → 越界");
+ok(isOutOfScope("看看我的风水"), "风水 → 越界");
+ok(isOutOfScope("批命看运势"), "批命 → 越界");
 ok(isOutOfScope("红烧肉怎么做"), "菜谱 → 越界");
 ok(isOutOfScope("高考志愿怎么填"), "高考志愿 → 越界");
 
@@ -51,6 +58,10 @@ ok(!isOutOfScope(""), "空串 → 不越界");
 
 // 5. 大小写归一化（latin 关键词）
 ok(isOutOfScope("How to write Java code?"), "Java 代码(大小写) → 越界");
+
+// 6. 医疗+非医疗混合 → 黑名单优先（越界）
+ok(isOutOfScope("用 python 分析糖尿病数据"), "混合(python+糖尿病) → 越界");
+ok(isOutOfScope("高血压的股票值得买吗"), "混合(高血压+股票) → 越界");
 
 console.log(`\n越界拦截单测: ${pass} 通过 / ${fail} 失败`);
 if (fail > 0) {

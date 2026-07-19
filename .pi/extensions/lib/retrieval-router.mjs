@@ -436,13 +436,31 @@ export function lexicalSearch(db, query, opts = {}) {
     if (ids && ids.length && ids.length <= MAX_FTS_CANDIDATES) candidateIds = ids;
   }
 
-  // 2) 组装 SQL：FTS 候选约束 + kb_id + 路由文件名约束（三者取交集，互不冲突）
+  // 2a) FTS 候选为空时，对 2 字中文短查询（如"鼠疫""感冒"）用 SQL LIKE 预过滤，
+  //     避免全表扫入 JS BM25（~9s 瓶颈）。2 字中文无法构成 trigram（≥3 字），FTS5 静默降级全扫。
+  //     LIKE 在 SQLite 层做字节级子串判定，远快于行行 tokenize。
+  //     仅对单一 2 字中文片段生效（多词查询如"高血压 管理"中"高血压"已可触发 FTS，无需 LIKE）。
+  //     当 kbFiles 已约束时全表本就限在小集，也不加额外 LIKE。
+  let likeTerm = null;
+  if (!candidateIds && qNorm.length >= 2 && qNorm.length <= 4) {
+    const cjk = qNorm.match(/^[一-鿿]{2,4}$/);
+    if (cjk && (!kbFiles || !kbFiles.length)) {
+      likeTerm = cjk[0];
+    }
+  }
+
+  // 2b) 组装 SQL：FTS 候选约束 + LIKE 短查询预过滤 + kb_id + 路由文件名约束（四者取交集）
   let sql = "SELECT id, file_path, content, metadata_json FROM chunks WHERE 1=1";
   const params = [];
   if (candidateIds) {
     const ph = candidateIds.map(() => "?").join(",");
     sql += ` AND id IN (${ph})`;
     params.push(...candidateIds);
+  }
+  // LIKE 预过滤仅对单一 2~4 字纯中文查询生效，不干扰多词查询
+  if (likeTerm) {
+    sql += " AND content LIKE ?";
+    params.push(`%${likeTerm}%`);
   }
   if (kbId) {
     const realKb = resolveKbId(db, kbId);

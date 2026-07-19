@@ -367,15 +367,28 @@ for (const it of ITEMS) {
 }
 
 // ---------- 阶段二：LLM-Judge 四维（有界并发；整体看门狗防网络悬挂致进程卡死） ----------
-// 无 Key / 网络不可达 / 代理 TLS 拦截导致 fetch 无法中止时，单条 callOne 虽有 15s AbortController，
-// 极端情况下 Promise 仍可能不 settle；故阶段二整体加 120s 看门狗，超时即降级 skipped 并照常出报告。
-const EVAL_LLM_TIMEOUT_MS = Number(process.env.EVAL_LLM_TIMEOUT_MS) || 120000;
+// 【并发选型（实证）】：真凶原为 sensenova-6.7-flash-lite 默认「思考」——思考 token 计入 max_tokens
+// 却不返回，思考长度不定，超预算即 content 空（被误判空响应连环切 key 拖死整批）。
+// 根治：llm-judge.mjs 的 callOne 对 sensenova 端点注入 thinking:{type:"disabled"}，单条 judge
+// 从 20-40s 骤降至 ~2.5s、零空响应。关思考后免费层可稳吃并发：实测并发 8 → 8/8 成功、总耗 3.8s。
+// 故评测批默认并发提至 8（EVAL_LLM_CONCURRENCY 可覆盖）。与通用 LLM_CONCURRENCY 解耦。
+const EVAL_LLM_CONCURRENCY = Math.max(1, Math.min(Number(process.env.EVAL_LLM_CONCURRENCY) || 8, SENSENOVA_CONCURRENCY));
+// 看门狗随题量伸缩：低并发/串行合法长跑不应被固定 120s 误杀。
+// 关思考后单条 ~3s，此估算（每波 25s）留足冗余，且不低于 120s。
+const EVAL_LLM_TIMEOUT_MS =
+  Number(process.env.EVAL_LLM_TIMEOUT_MS) ||
+  Math.max(120000, Math.ceil(ITEMS.length / EVAL_LLM_CONCURRENCY) * 25000 + 60000);
+if (RUN_LLM) {
+  console.log(
+    `[llm-judge] 阶段二启动：并发=${EVAL_LLM_CONCURRENCY} · 看门狗=${(EVAL_LLM_TIMEOUT_MS / 1000).toFixed(0)}s · 样本=${partials.length}`,
+  );
+}
 let judges;
 try {
   judges = await Promise.race([
     runWithConcurrency(
       partials.map((p) => () => llmJudge(p.it, p.answer)),
-      SENSENOVA_CONCURRENCY,
+      EVAL_LLM_CONCURRENCY,
     ),
     new Promise((_, rej) =>
       setTimeout(() => rej(new Error("llm-judge 阶段超时")), EVAL_LLM_TIMEOUT_MS),

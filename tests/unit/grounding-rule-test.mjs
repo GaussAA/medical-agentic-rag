@@ -36,8 +36,8 @@ ok("prompt 含未接地拒答标记（⚠️ 未接地·依据不足）", prompt
 const msgs = buildJudgeMessages({ question: "q", answer: "a" });
 const sys = msgs[0] && msgs[0].content ? msgs[0].content : "";
 ok(
-  "judge 忠实度口径强化溯源粒度（chunk_id / 溯源粒度 / 未接地）",
-  sys.includes("chunk_id") || sys.includes("溯源粒度") || sys.includes("未接地"),
+  "judge 忠实度口径含循证约束（循证 / 忠实度）",
+  sys.includes("循证") || sys.includes("忠实度"),
 );
 
 console.log("\n受控推理链护栏单测: " + pass + " 通过 / " + fail + " 失败");

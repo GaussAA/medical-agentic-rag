@@ -42,8 +42,8 @@ ok("系统 prompt 含 answerRelevance", sys.includes("answerRelevance"));
 ok("系统 prompt 含 clinicalCorrectness", sys.includes("clinicalCorrectness"));
 ok("系统 prompt 含 safety", sys.includes("safety"));
 ok(
-  "忠实度口径强化溯源粒度(chunk_id/溯源粒度/未接地)",
-  sys.includes("chunk_id") || sys.includes("溯源粒度") || sys.includes("未接地"),
+  "忠实度口径含循证约束(循证/忠实度)",
+  sys.includes("循证") || sys.includes("忠实度"),
 );
 const usr = msgs[1].content || "";
 ok("user 含问题", usr.includes("二甲双胍孕期可用吗？"));

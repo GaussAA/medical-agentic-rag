@@ -1,0 +1,199 @@
+# ============================================================
+# 医疗 Agentic RAG — 生产部署编排（优化版）
+#
+# 与 docker-compose.yml 的区别：
+#   1. 新增 Caddy 反向代理（统一入口：前端静态 + API 代理）
+#   2. Grafana/Prometheus/Alertmanager 标记为可选（注释掉）
+#   3. KB 容器自动探活、失败不阻塞主服务
+#   4. 缩减日志卷数量、简化网络
+#
+# 用法：
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#   或单独使用：
+#   cp docker-compose.prod.yml docker-compose.yml && docker compose up -d
+#
+# Cloudflare Tunnel 指向：
+#   medical.your-domain.com → Caddy :80
+#   Caddy 自动路由 /api/* → medical-api:8080
+#                  /*      → frontend/ 静态文件
+# ============================================================
+
+services:
+  # ============================================================
+  # 核心服务（与基础 docker-compose.yml 相同，此处精简）
+  # ============================================================
+  medical-rag:
+    build: .
+    image: medical-agentic-rag:latest
+    container_name: medical-rag
+    env_file: .env
+    environment:
+      - WEBUI_HOST=0.0.0.0
+      - WEBUI_PORT=31415
+      - PI_WEBUI_PI_LATEST_VERSION_URL=http://127.0.0.1:9/nope
+    ports:
+      - "127.0.0.1:31415:31415"   # 仅本地访问（通过 Caddy 暴露出去）
+    volumes:
+      - kb_rag:/root/.pi/knowledge
+      - medical-rag-logs:/app/.pi/logs
+      - medical-rag-sessions:/root/.pi/sessions
+    depends_on:
+      provision-kb:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "/app/scripts/ops/healthcheck.mjs", "http://127.0.0.1:31415/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  medical-api:
+    build: .
+    image: medical-agentic-rag:latest
+    container_name: medical-api
+    env_file: .env
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8080
+      - SENSENOVA_PROXY_URL=http://127.0.0.1:18880/v1/chat/completions
+      - MEDICAL_API_RUN=1
+    ports:
+      - "127.0.0.1:8080:8080"     # 仅本地访问（通过 Caddy 暴露出去）
+      - "127.0.0.1:19101:19100"   # Prometheus 指标（仅本地）
+    volumes:
+      - kb_api:/root/.pi/knowledge
+      - medical-api-logs:/app/.pi/logs
+      - medical-api-sessions:/root/.pi/sessions
+    depends_on:
+      provision-kb:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    entrypoint: ["/usr/local/bin/docker-entrypoint-api.sh"]
+    healthcheck:
+      test: ["CMD", "node", "/app/scripts/ops/healthcheck.mjs", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  # ============================================================
+  # Caddy 反向代理 — 统一入口
+  # 作用：
+  #   1. 提供前端静态文件（frontend/dist/）
+  #   2. 代理 /api/* 到 medical-api:8080
+  #   3. 自动处理 404 回退
+  # ============================================================
+  caddy:
+    image: caddy:2-alpine
+    container_name: medical-caddy
+    ports:
+      - "80:80"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./frontend/dist:/usr/share/caddy/frontend:ro  # 前端构建产物
+      - caddy-data:/data
+    restart: unless-stopped
+    depends_on:
+      - medical-api
+
+  # ============================================================
+  # KB 预置（同基础版，但优化了启动失败行为）
+  # ============================================================
+  provision-kb:
+    build: .
+    image: medical-agentic-rag:latest
+    entrypoint:
+      - /bin/sh
+      - -c
+      - >
+        mkdir -p /rag /api;
+        if [ -d /src ]; then
+          cp -a /src/. /rag/ && cp -a /src/. /api/;
+          echo "KB_provisioned_into_per_instance_volumes";
+        else
+          echo "WARN: host KB missing at /src, instances will start with empty KB";
+          echo "Run 'docker compose run --rm provision-kb' after copying KB to /root/.pi/knowledge";
+        fi;
+        exit 0
+    volumes:
+      - "${HOME}/.pi/knowledge:/src:ro"
+      - kb_rag:/rag
+      - kb_api:/api
+    restart: "no"
+
+# ============================================================
+# 监控栈（生产可选：默认不启动，需手动加 --profile monitoring）
+# 用法：docker compose --profile monitoring up -d
+# ============================================================
+  prometheus:
+    profiles: ["monitoring"]
+    image: prom/prometheus:v2.55.0
+    container_name: medical-rag-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+      - --web.enable-lifecycle
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./deploy/prometheus/rules.yml:/etc/prometheus/rules.yml:ro
+      - prometheus-data:/prometheus
+    restart: unless-stopped
+
+  grafana:
+    profiles: ["monitoring"]
+    image: grafana/grafana:11.2.0
+    container_name: medical-rag-grafana
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./deploy/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml:ro
+      - ./deploy/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml:ro
+      - ./deploy/grafana/medical-rag-dashboard.json:/var/lib/grafana/dashboards/medical-rag-dashboard.json:ro
+      - grafana-data:/var/lib/grafana
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    restart: unless-stopped
+
+  alertmanager:
+    profiles: ["monitoring"]
+    image: prom/alertmanager:v0.27.0
+    container_name: medical-rag-alertmanager
+    entrypoint: ["sh", "/etc/alertmanager/docker-entrypoint.sh"]
+    ports:
+      - "127.0.0.1:9093:9093"
+    environment:
+      - ALERT_WEBHOOK_URL=${ALERT_WEBHOOK_URL}
+    volumes:
+      - ./deploy/alertmanager/docker-entrypoint.sh:/etc/alertmanager/docker-entrypoint.sh:ro
+      - alertmanager-data:/alertmanager
+    restart: unless-stopped
+
+  metrics-exporter:
+    profiles: ["monitoring"]
+    image: medical-agentic-rag:latest
+    container_name: medical-rag-metrics-exporter
+    entrypoint: ["node", "/app/scripts/ops/metrics-exporter.mjs"]
+    environment:
+      - AUDIT_LOG_DIR=/app/.pi/logs/api:/app/.pi/logs/rag
+    volumes:
+      - medical-api-logs:/app/.pi/logs/api
+      - medical-rag-logs:/app/.pi/logs/rag
+    restart: unless-stopped
+
+volumes:
+  kb_rag:
+  kb_api:
+  medical-rag-sessions:
+  medical-rag-logs:
+  medical-api-sessions:
+  medical-api-logs:
+  caddy-data:
+  prometheus-data:
+  grafana-data:
+  alertmanager-data:

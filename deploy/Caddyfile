@@ -1,0 +1,60 @@
+# 医疗 Agentic RAG — Caddy 反向代理配置
+# Cloudflare Tunnel → Caddy → 后端服务
+#
+# 用法：
+#   Cloudflare Tunnel 的 ingress 指向 http://localhost:80
+#   Caddy 自动路由 /api/* → API 服务
+#                    /*   → 前端静态文件
+#
+# 注意：TLS 由 Cloudflare 边缘终止，Caddy 仅监听 HTTP（80 端口）。
+# 如需直连公网（非 Tunnel），取消注释下方 tls 指令并开放 443 端口。
+
+medical.your-domain.com {
+
+    # 如果需要 Caddy 自管 TLS（非 Tunnel 场景时用）
+    # tls your-email@example.com
+
+    # ============ API 路由 ============
+    # 前端通过 /api/v1/* 调用后端
+    handle_path /api/* {
+        reverse_proxy medical-api:8080 {
+            # 传递真实客户端 IP
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+
+            # 健康检查
+            health_uri /healthz
+            health_interval 30s
+            health_timeout 5s
+        }
+    }
+
+    # ============ 前端静态文件 ============
+    # 所有非 /api/ 请求 → 前端 SPA
+    root * /usr/share/caddy/frontend
+
+    # SPA fallback：前端路由（如 /chat、/history）回退到 index.html
+    try_files {path} /index.html
+
+    # ============ 安全头部 ============
+    header {
+        # 安全
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+
+        # 禁止搜索引擎收录医疗问答内容
+        X-Robots-Tag "noindex, nofollow"
+
+        # 移除 Caddy 版本标识
+        -Server
+    }
+
+    # ============ 日志 ============
+    log {
+        output file /data/caddy-access.log
+        format json
+    }
+}

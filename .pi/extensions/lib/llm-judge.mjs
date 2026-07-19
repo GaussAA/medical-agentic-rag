@@ -143,23 +143,34 @@ function nextSensenovaIndex() {
   return i;
 }
 
-async function callOne(ep, messages, { temperature = 0, maxTokens = 2048, timeoutMs = 30000 } = {}) {
+// 【超时选型】sensenova-6.7-flash-lite 为思考型模型，单条 judge 合法调用需先内部推理再输出，
+// 实测裸调用即达 ~21.5s，并发节流下更久。故默认超时须放宽至 45s，否则会误杀合法慢调用
+// （曾错设 20s → 合法 21.5s 调用被 abort → 连环切 key 拖死整批，教训见 error_ledger）。
+async function callOne(ep, messages, { temperature = 0, maxTokens = 2048, timeoutMs = 45000 } = {}) {
   // 显式 AbortController + setTimeout：比 AbortSignal.timeout 在 TLS 拦截代理下更可靠地中断悬挂连接。
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
+    const body = {
+      model: ep.model,
+      messages,
+      temperature,
+      max_tokens: maxTokens,
+    };
+    // 【关键·关闭思考】sensenova-6.7-flash-lite 默认开启内部思考：思考 token 计入 max_tokens 却不返回，
+    // 思考长度不定，一旦超预算即 content 为空（finish_reason=length）→ 被误判「空响应」拖死整批。
+    // 实测 thinking:{type:"disabled"} 使单条 judge 从 20-40s 降至 ~2.5s、稳定输出合法 JSON、仅耗 ~100 token。
+    // 仅对 sensenova 端点注入该参数，避免污染 deepseek 兜底（其不识别此字段可能报错）。
+    if (/sensenova/i.test(ep.url) || /sensenova/i.test(ep.model)) {
+      body.thinking = { type: "disabled" };
+    }
     const res = await fetch(ep.url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${ep.key}`,
       },
-      body: JSON.stringify({
-        model: ep.model,
-        messages,
-        temperature,
-        max_tokens: maxTokens,
-      }),
+      body: JSON.stringify(body),
       signal: controller.signal,
     });
     if (!res.ok) {
@@ -174,8 +185,14 @@ async function callOne(ep, messages, { temperature = 0, maxTokens = 2048, timeou
       throw statusErr;
     }
     const data = await res.json();
-    const text = data?.choices?.[0]?.message?.content || "";
-    if (!text) throw new Error(`[${ep.name}] 空响应`);
+    const choice = data?.choices?.[0];
+    const text = choice?.message?.content || "";
+    if (!text) {
+      // 区分「思考型模型 token 预算耗尽（finish_reason=length，思考吃光预算未及输出）」与真·空响应，
+      // 便于诊断：前者应增大 maxTokens 而非切 key。
+      const fr = choice?.finish_reason || "unknown";
+      throw new Error(`[${ep.name}] 空响应（finish_reason=${fr}${fr === "length" ? "，疑 maxTokens 过小被思考耗尽" : ""}）`);
+    }
     return text;
   } finally {
     clearTimeout(timer);
@@ -290,7 +307,7 @@ export async function checkKeyHealth() {
         const text = await callOne(
           ep,
           [{ role: "user", content: "用单个英文单词回复：ok" }],
-          { temperature: 0, maxTokens: 1024 },
+          { temperature: 0, maxTokens: 1024, timeoutMs: 30000 },
         );
         return { index: i + 1, ok: true, sample: text.slice(0, 24) };
       } catch (e) {
@@ -343,6 +360,8 @@ export async function judgeAnswer({ question, answer, referenceAnswer, gtSources
   try {
     const text = await callLLM(
       buildJudgeMessages({ question, answer, referenceAnswer, gtSources }),
+      // 思考已在 callOne 关闭（thinking:disabled），judge 仅输出 ~100 token 的 JSON；2048 为充裕余量，
+      // 亦作「思考参数意外失效」时的兜底缓冲（届时至少给足预算避免被思考瞬间吃穿）。
       { temperature: 0, maxTokens: 2048 },
     );
     const m = text.match(/\{[\s\S]*\}/);

@@ -97,7 +97,7 @@ export default function (pi: ExtensionAPI) {
       },
       required: ["topic"],
     },
-    execute: async (_toolCallId: string, params: Record<string, unknown>) => {
+    execute: async (_toolCallId: string, params: Record<string, unknown>, signal?: AbortSignal) => {
       const topic = String(params.topic || "").trim();
       if (!topic) {
         return {
@@ -125,8 +125,9 @@ export default function (pi: ExtensionAPI) {
       // —— 2. 调用 sensenova-u1-fast ——
       const prompt = buildPrompt(topic, style, guideTitle);
       try {
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+        // 合并 Pi 框架外部 signal 与内部超时 controller，任一触发即终止
+        const timeout = AbortSignal.timeout(FETCH_TIMEOUT_MS);
+        const combined = signal ? AbortSignal.any([signal, timeout]) : timeout;
         const res = await fetch(API_URL, {
           method: "POST",
           headers: {
@@ -139,15 +140,12 @@ export default function (pi: ExtensionAPI) {
             size: "2752x1536",
             n: 1,
           }),
-          signal: controller.signal,
+          signal: combined,
         });
-        clearTimeout(timer);
-
         if (!res.ok) {
           const errText = await res.text().catch(() => "");
           throw new Error(`HTTP ${res.status}: ${errText.slice(0, 200)}`);
         }
-
         const raw = await res.json();
         const imageUrl = extractImageUrl(raw);
         if (!imageUrl) {
@@ -161,7 +159,7 @@ export default function (pi: ExtensionAPI) {
         const filename = `infographic_${safeTopic}_${timestamp}.png`;
         const filepath = join(IMG_DIR, filename);
 
-        const imgRes = await fetch(imageUrl);
+        const imgRes = await fetch(imageUrl, { signal: combined });
         if (!imgRes.ok) {
           throw new Error(`下载图片失败: HTTP ${imgRes.status}`);
         }

@@ -11,7 +11,7 @@
     "kb:prepare": "node scripts/kb/ingest/prepare-raw.mjs",
     "kb:outline": "node scripts/kb/index/extract-outline.mjs",
     "kb:index": "node scripts/kb/index/build-guide-index.mjs",
-    "kb:entities": "node scripts/kb/extract-entities.mjs",
+    "kb:entities": "node scripts/kb/index/extract-entities.mjs",
     "kb:ingest": "node scripts/kb/ingest/ingest-raw.mjs",
     "kb:deprecate": "node scripts/kb/lifecycle/deprecate-versions.mjs",
     "kb:lifecycle": "node scripts/compliance/privacy/data-lifecycle.mjs",

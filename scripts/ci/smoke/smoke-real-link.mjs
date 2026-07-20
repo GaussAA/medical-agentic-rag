@@ -30,8 +30,8 @@ import {
   searchKnowledge,
   setKbDb,
   Database,
-} from "../../.pi/extensions/lib/retrieval-router.mjs";
-import { engineHybridSearch, isEngineAvailable } from "../../.pi/extensions/lib/knowledge-engine-search.mjs";
+} from "../../../.pi/extensions/lib/retrieval-router.mjs";
+import { engineHybridSearch, isEngineAvailable } from "../../../.pi/extensions/lib/knowledge-engine-search.mjs";
 
 const FORCE_JSON = process.argv.includes("--json");
 const REPORT_DIR = join(process.cwd(), "tests", "reports");

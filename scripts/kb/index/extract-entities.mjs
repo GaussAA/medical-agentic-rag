@@ -13,7 +13,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseKeys } from "../lib/parse-keys.mjs"; // P1#7 抽离：单一真相源，可独立单测
+import { parseKeys } from "../../lib/parse-keys.mjs"; // P1#7 抽离：单一真相源，可独立单测
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）

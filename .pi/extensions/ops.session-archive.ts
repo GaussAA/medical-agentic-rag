@@ -90,10 +90,12 @@ export default function (pi: ExtensionAPI) {
       }
 
       const options = sessions.map((s) => {
-        const time = s.mtime.toLocaleString("zh-CN");
-        const name = s.name ? `「${s.name}」` : "";
-        const preview = (s.firstMessage || "").slice(0, 40);
-        return `${s.id.slice(0, 8)} | ${time}${name ? ` ${name}` : ""} | ${s.messageCount}条 | ${preview}`;
+        const time = s.mtime.toLocaleString("zh-CN", {
+          month: "2-digit", day: "2-digit",
+          hour: "2-digit", minute: "2-digit",
+        });
+        const preview = (s.firstMessage || "").slice(0, 30);
+        return `[${s.id.slice(0, 8)}] ${preview}  ${s.messageCount}条 ${time}`;
       });
       options.push("── 全部归档 ──");
       options.push("取消");
@@ -124,8 +126,9 @@ export default function (pi: ExtensionAPI) {
         return;
       }
 
-      // 单个归档
-      const sessionId = choice.split(" | ")[0];
+      // 单个归档：从选项文本提取会话 ID 前缀（" [xxxx]" 部分）
+      const idMatch = choice.match(/\[([^\]]+)\]/);
+      const sessionId = idMatch ? idMatch[1] : "";
       const matched = sessions.find((s) => s.id.startsWith(sessionId));
       if (!matched) {
         ctx.ui.notify("未找到匹配的会话。", "error");
@@ -194,13 +197,16 @@ async function listSessionSummaries(sessionDir: string): Promise<SessionSummary[
       for (let i = 1; i < lines.length; i++) {
         try {
           const entry = JSON.parse(lines[i]);
+          // Pi session v3 格式：role/content 在嵌套的 message 对象中
           if (entry.type === "session_info" && entry.name) name = entry.name;
-          if (entry.type === "message" && entry.role && (entry.role === "user" || entry.role === "assistant")) {
+          if (entry.type === "message" && entry.message?.role &&
+              (entry.message.role === "user" || entry.message.role === "assistant")) {
             msgCount++;
-            if (!firstMsg && entry.role === "user") {
-              const c = entry.content;
-              firstMsg = typeof c === "string" ? c
-                : Array.isArray(c) ? c.map((p: any) => p.text || "").join(" ") : "";
+            if (!firstMsg && entry.message.role === "user") {
+              const c = entry.message.content;
+              firstMsg = Array.isArray(c)
+                ? c.map((p: any) => p.text || "").join(" ")
+                : typeof c === "string" ? c : "";
             }
           }
         } catch { /* 跳过损坏行 */ }

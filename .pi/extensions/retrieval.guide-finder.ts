@@ -1,5 +1,7 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { routeGuides, loadIndex } from "./lib/guide-router.mjs";
+// @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
+import { normalizeParams } from "./lib/parse-params.mjs";
 
 /**
  * 指南查找工具 - 层级检索增强（语义路由版）
@@ -48,13 +50,7 @@ export default function (pi: ExtensionAPI) {
       await ensureLoaded();
       // 鲁棒解析：Pi 框架可能把参数传为 (a) 直接对象 (b) JSON 字符串 (c) 嵌套 {arguments}
       // 此前因 params.query 未被正确绑定 → 误走"空查询"分支，语义路由整轮失效。
-      let p = params;
-      if (typeof p === "string") { try { p = JSON.parse(p); } catch { /* 保持原样 */ } }
-      if (p && typeof p === "object" && typeof p.arguments === "string") {
-        try { p = JSON.parse(p.arguments); } catch { /* 保持原样 */ }
-      } else if (p && typeof p === "object" && typeof p.arguments === "object") {
-        p = p.arguments;
-      }
+      const p = normalizeParams(params);
       const query = ((p && p.query) || "").toString().trim();
       if (!query) {
         return { content: [{ type: "text", text: "请提供查询关键词。" }] };

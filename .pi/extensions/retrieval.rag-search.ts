@@ -17,6 +17,8 @@ import { logRetrieval, logEngineFallback } from "./lib/observability.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
 import { alert } from "./lib/alert-log.mjs";
+// @ts-ignore —— 参数归一化（Pi 框架三种传参格式变体）
+import { normalizeParams } from "./lib/parse-params.mjs";
 
 /**
  * rag_search 定向召回检索扩展（独立工具名，避免与 pi-knowledge 扩展的 knowledge_search 重名冲突）
@@ -36,28 +38,40 @@ import { alert } from "./lib/alert-log.mjs";
  * 行为保持兼容：沿用内置工具参数名（query/limit/kb_id/mode…），模型调用方式不变。
  */
 
-function normalizeParams(params: any) {
-  let p = params;
-  if (typeof p === "string") {
-    try {
-      p = JSON.parse(p);
-    } catch {
-      /* 保持原样 */
-    }
-  }
-  if (p && typeof p === "object" && typeof p.arguments === "string") {
-    try {
-      p = JSON.parse(p.arguments);
-    } catch {
-      /* 保持原样 */
-    }
-  } else if (p && typeof p === "object" && typeof p.arguments === "object") {
-    p = p.arguments;
-  }
-  return p || {};
-}
+// 防止 LLM 反复重搜的调用计数硬上限（代码层禁止，不依赖 LLM 自觉）
+const MAX_RAG_SEARCH_CALLS = 2;
+let _callCount = 0;
+let _callKey = "";
 
 export default function (pi: ExtensionAPI) {
+  // 每轮用户新问题重置检索计数器 & 注入工具使用禁令
+  pi.on("context", (event: any) => {
+    // 重置计数器
+    try {
+      const msgs: any[] = (event && event.messages) || [];
+      for (let i = msgs.length - 1; i >= 0; i--) {
+        if (msgs[i] && msgs[i].role === "user") {
+          const text = (typeof msgs[i].content === "string" ? msgs[i].content : "") || "";
+          const key = text.slice(0, 100);
+          if (key !== _callKey) { _callKey = key; _callCount = 0; }
+          break;
+        }
+      }
+    } catch { /* 不影响主流程 */ }
+    // 注入工具禁令：knowledge_search / knowledge_symbol_search 已停用（仅保留 rag_search / guide_finder）
+    // 因 Pi 不允许同名工具覆盖，无法从工具注册层面禁掉 pi-knowledge 的 knowledge_search，
+    // 故在 context 层注入系统指令，确保 LLM 每轮调用前都看到禁令。
+    return {
+      messages: [
+        {
+          role: "system",
+          content: "⚠️ 工具使用禁令：knowledge_search、knowledge_symbol_search 等旧版检索工具已停用，**严禁调用**。所有检索请使用 rag_search 或 guide_finder。",
+        },
+        ...(event.messages || []),
+      ],
+    };
+  });
+
   pi.registerTool({
     name: "rag_search",
     label: "RAG Search (routed)",
@@ -96,6 +110,18 @@ export default function (pi: ExtensionAPI) {
     // LLM 参数绑定宽松，按既有扩展惯例以 any 承接并显式标注
     execute: async (_toolCallId: string, params: any, signal?: any) => {
       const t0 = performance.now();
+      // 🔴 检索次数硬上限：LLM 无视"仅检索一次"铁律时的终极防线。
+      // 代码层限制单轮用户问题仅允许 MAX_RAG_SEARCH_CALLS 次检索，
+      // 超限后直接返回阻断消息，从根本上杜绝铁律沦丧。
+      _callCount++;
+      if (_callCount > MAX_RAG_SEARCH_CALLS) {
+        return {
+          content: [{
+            type: "text",
+            text: `⚠️ 检索次数已达上限（${MAX_RAG_SEARCH_CALLS} 次）。请据实告知用户：该主题知识库已检索完毕未找到更佳匹配，不能换词继续搜索。`,
+          }],
+        };
+      }
       const p = normalizeParams(params);
       const rawQuery = ((p.query || p.q || "") as string).toString().trim();
       // 强制脱敏：避免患者 PII 进入检索上下文与查询日志（合规红线）
@@ -130,71 +156,59 @@ export default function (pi: ExtensionAPI) {
         t0,
       };
 
-      // P1 查询改写增强：生成语义等价问法变体，多路检索后 RRF 融合
-      // 仅在 fast 模式（无需引擎的纯 BM25 路径）下启用；dense 模式引擎端仅用原始 query（避免 3×引擎开销）
+      // 查询改写优化：先快速单路 BM25 试水温，仅低置信时升级为多路 RRF 融合
+      // 避免每次检索都等 8s 变体生成（大多数正常查询单路 BM25 <1s 即可出结果）
       let searchQueries: string[] = [query];
       const DENSE = new Set(["hybrid", "semantic", "deep", "adaptive"]);
       const dense = !mode || DENSE.has(mode);
-      // 非 dense 模式启动查询改写
-      if (!dense) {
-        try {
-          const variants = await generateQueryVariants(query, { timeoutMs: 8000 });
-          if (variants.length > 1) {
-            searchQueries = variants;
-            telemetry.queryVariants = variants.length;
-            telemetry.queriesUsed = variants.map((v: string) => v.slice(0, 30));
-          }
-        } catch (e: any) {
-          // 改写失败静默降级（仅用原句），不阻断检索
-          diag.info("rag_search", "查询改写降级: " + (e?.message || e));
-        }
-      }
 
-      // 多路 BM25 + RRF 融合：对每个变体做 searchKnowledge，再 RRF 合成
       let out;
       const t1 = performance.now();
-      try {
-        const bm25Results = [];
-        for (const q of searchQueries) {
-          const r = searchKnowledge(q, { limit, kbId });
-          if (r && r.results && r.results.length) {
-            bm25Results.push(r.results);
+      if (dense) {
+        // dense 模式不变：引擎端仅用原始 query（避免 3×引擎开销）
+        out = searchKnowledge(query, { limit, kbId });
+      } else {
+        // Fast path：单路 BM25 试水温（<1s）
+        out = searchKnowledge(query, { limit, kbId });
+        telemetry.bm25Ms = +(performance.now() - t1).toFixed(1);
+
+        // 仅当低置信且结果不足时升级为多路变体 + RRF 融合
+        if (out && out.lowConfidence && (!out.results || out.results.length < 3)) {
+          try {
+            const variants = await generateQueryVariants(query, { timeoutMs: 8000 });
+            if (variants.length > 1) {
+              searchQueries = variants;
+              telemetry.queryVariants = variants.length;
+              telemetry.queriesUsed = variants.map((v: string) => v.slice(0, 30));
+              // 多路 BM25 + RRF 融合
+              const t1b = performance.now();
+              const bm25Results = [];
+              for (const q of searchQueries) {
+                const r = searchKnowledge(q, { limit, kbId });
+                if (r && r.results && r.results.length) bm25Results.push(r.results);
+              }
+              if (bm25Results.length > 1) {
+                const fused = rrfFusion(bm25Results, 60, limit);
+                const base = searchKnowledge(searchQueries[0], { limit: 1, kbId });
+                out = {
+                  results: fused,
+                  routedTitles: base?.routedTitles || [],
+                  kbFiles: base?.kbFiles || [],
+                  constrained: base?.constrained || false,
+                  lowConfidence: base?.lowConfidence || false,
+                  topScore: base?.topScore || 0,
+                  totalFiles: base?.totalFiles || 0,
+                };
+                telemetry.bm25Ms = +(performance.now() - t1b).toFixed(1);
+              }
+            }
+          } catch (e: any) {
+            diag.info("rag_search", "查询改写降级: " + (e?.message || e));
           }
-        }
-        if (bm25Results.length === 0) {
-          // 各变体均无结果 → 退化为单次全语料检索（与旧行为一致）
-          out = searchKnowledge(query, { limit, kbId });
-        } else if (bm25Results.length === 1) {
-          // 单变体（改写未产生额外结果）→ 直接取第一个
-          out = searchKnowledge(searchQueries[0], { limit, kbId });
         } else {
-          // 多通道 RRF 融合
-          const fused = rrfFusion(bm25Results, 60, limit);
-          // 沿用 searchKnowledge 的结果骨架（路由信息取自首个查询的首变体）
-          const base = searchKnowledge(searchQueries[0], { limit: 1, kbId });
-          out = {
-            results: fused,
-            routedTitles: base?.routedTitles || [],
-            kbFiles: base?.kbFiles || [],
-            constrained: base?.constrained || false,
-            lowConfidence: base?.lowConfidence || false,
-            topScore: base?.topScore || 0,
-            totalFiles: base?.totalFiles || 0,
-          };
+          telemetry.bm25Ms = +(performance.now() - t1).toFixed(1);
         }
-      } catch (e: any) {
-        telemetry.error = "searchKnowledge_failed:" + (e?.message || e);
-        diag.warn("rag_search", "telemetry: " + JSON.stringify(telemetry));
-        return {
-          content: [
-            {
-              type: "text",
-              text: `知识库检索暂时不可用：${e?.message || e}\n建议改用 guide_finder 定位指南。`,
-            },
-          ],
-        };
       }
-      telemetry.bm25Ms = +(performance.now() - t1).toFixed(1);
 
       if (out.error) {
         telemetry.error = out.error;

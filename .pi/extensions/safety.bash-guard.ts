@@ -1,8 +1,7 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-// 相对指向 dist：monorepo 下包名 @earendil-works/pi-coding-agent 未 install 到 node_modules，
-// 普通模块解析会失败，故用相对路径直取官方工厂函数（已实证 tool.name==="bash"）。
-// @ts-ignore —— dist 编译产物无随行类型声明
-import { createBashTool } from "../../pi/packages/coding-agent/dist/core/tools/index.js";
+// 官方 bash 工具工厂——经 jiti 别名系统映射到包入口 (dist/index.js)，
+// 同时兼容本地 workspace 链接与 Docker npm 全局安装。
+import { createBashTool } from "@earendil-works/pi-coding-agent";
 // @ts-ignore —— .mjs 纯 JS 共享库，由 Pi 的 jiti 加载器解析
 import {
   normalizeBashParams,

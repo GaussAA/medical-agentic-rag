@@ -1,13 +1,13 @@
 /**
  * 会话手动归档扩展
  *
- * 提供 /archive 命令，通过 Pi 的交互式选择器（键盘上下键 + 回车）
- * 将会话从活跃区移入归档目录，数据完整保留，后续可用于分析。
+ * 提供 /archive 命令，将会话从活跃区移入归档目录。
+ * 交互式选择器已抽取至 lib/session-picker.mjs，可复用于其他命令。
  *
  * 归档路径：.pi/archive/YYYY-MM/<session_id>.jsonl
  *
  * 用法：
- *   /archive          — 交互式选择要归档的会话
+ *   /archive          — 交互式搜索 + 选择要归档的会话
  *   /archive all      — 一键归档所有活跃会话
  *   /archive list     — 列出已归档的会话
  */
@@ -15,11 +15,13 @@ import type { ExtensionAPI, ExtensionCommandContext } from "@earendil-works/pi-c
 import { readdir, stat, rename, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
+// @ts-ignore —— .mjs 共享模块，由 jiti 加载
+import { pickSession } from "./lib/session-picker.mjs";
 
 export default function (pi: ExtensionAPI) {
   pi.registerCommand("archive", {
     description:
-      "将会话移入归档（数据保留）：archive（交互式选择）| archive all（一键归档全部）| archive list（列出已归档）",
+      "将会话移入归档：archive（搜索+选择）| archive all（全部归档）| archive list（列出已归档）",
     handler: async (args: string, ctx: ExtensionCommandContext) => {
       const parts = args.trim().split(/\s+/);
       const subCmd = parts[0]?.toLowerCase() || "";
@@ -73,72 +75,47 @@ export default function (pi: ExtensionAPI) {
         }
         let archived = 0;
         for (const f of files) {
-          try {
-            await archiveFile(f, sessionDir);
-            archived++;
-          } catch { /* 跳过失败项 */ }
+          try { await archiveFile(f, sessionDir); archived++; }
+          catch { /* 跳过失败项 */ }
         }
         ctx.ui.notify(`已归档 ${archived}/${files.length} 个会话 → .pi/archive/`, "info");
         return;
       }
 
-      // ── archive — 交互式选择归档 ──────────────────────────
+      // ── archive — 交互式搜索 + 选择归档 ──────────────────
       const sessions = await listSessionSummaries(sessionDir);
       if (sessions.length === 0) {
         ctx.ui.notify("没有活跃会话可归档。", "info");
         return;
       }
 
-      const options = sessions.map((s) => {
-        const time = s.mtime.toLocaleString("zh-CN", {
-          month: "2-digit", day: "2-digit",
-          hour: "2-digit", minute: "2-digit",
-        });
-        const preview = (s.firstMessage || "").slice(0, 30);
-        return `[${s.id.slice(0, 8)}] ${preview}  ${s.messageCount}条 ${time}`;
+      const { session: picked, all } = await pickSession(ctx, sessions, {
+        title: "选择要归档的会话",
+        showAllOption: true,
       });
-      options.push("── 全部归档 ──");
-      options.push("取消");
 
-      const choice = await ctx.ui.select("选择要归档的会话（↑↓选择，回车确认）:", options);
-      if (!choice || choice === "取消") {
-        ctx.ui.notify("已取消。", "info");
-        return;
-      }
+      if (!picked && !all) return; // 用户取消
 
-      if (choice === "── 全部归档 ──") {
+      if (all) {
         const confirmed = await ctx.ui.confirm(
           "归档全部",
           `确认将全部 ${sessions.length} 个活跃会话移入归档？`,
         );
-        if (!confirmed) {
-          ctx.ui.notify("已取消。", "info");
-          return;
-        }
+        if (!confirmed) { ctx.ui.notify("已取消。", "info"); return; }
         let archived = 0;
         for (const s of sessions) {
-          try {
-            await archiveFile(s.path, sessionDir);
-            archived++;
-          } catch { /* 跳过 */ }
+          try { await archiveFile(s.path, sessionDir); archived++; }
+          catch { /* 跳过 */ }
         }
         ctx.ui.notify(`已归档 ${archived}/${sessions.length} 个会话 → .pi/archive/`, "info");
         return;
       }
 
-      // 单个归档：从选项文本提取会话 ID 前缀（" [xxxx]" 部分）
-      const idMatch = choice.match(/\[([^\]]+)\]/);
-      const sessionId = idMatch ? idMatch[1] : "";
-      const matched = sessions.find((s) => s.id.startsWith(sessionId));
-      if (!matched) {
-        ctx.ui.notify("未找到匹配的会话。", "error");
-        return;
-      }
       try {
-        await archiveFile(matched.path, sessionDir);
+        await archiveFile(picked.path, sessionDir);
         ctx.ui.notify(
-          `已归档会话 [${matched.id.slice(0, 8)}]` +
-            (matched.name ? `「${matched.name}」` : ""),
+          `已归档会话 [${picked.id.slice(0, 8)}]` +
+            (picked.name ? `「${picked.name}」` : ""),
           "info",
         );
       } catch (err: any) {
@@ -153,27 +130,18 @@ export default function (pi: ExtensionAPI) {
 // =============================================================================
 
 interface SessionSummary {
-  id: string;
-  path: string;
-  name?: string;
-  mtime: Date;
-  messageCount: number;
-  firstMessage: string;
+  id: string; path: string; name?: string;
+  mtime: Date; messageCount: number; firstMessage: string;
 }
 
-/** 列出活跃会话目录下所有 .jsonl 文件 */
 async function listSessionFiles(sessionDir: string): Promise<string[]> {
   try {
-    const files = await readdir(sessionDir);
-    return files
+    return (await readdir(sessionDir))
       .filter((f) => f.endsWith(".jsonl"))
       .map((f) => join(sessionDir, f));
-  } catch {
-    return [];
-  }
+  } catch { return []; }
 }
 
-/** 列出活跃会话摘要（供交互式选择器使用） */
 async function listSessionSummaries(sessionDir: string): Promise<SessionSummary[]> {
   const files = await listSessionFiles(sessionDir);
   const result: SessionSummary[] = [];
@@ -190,14 +158,10 @@ async function listSessionSummaries(sessionDir: string): Promise<SessionSummary[
       try { header = JSON.parse(lines[0]); } catch { continue; }
       if (header.type !== "session" || !header.id) continue;
 
-      let name: string | undefined;
-      let firstMsg = "";
-      let msgCount = 0;
-
+      let name: string | undefined, firstMsg = "", msgCount = 0;
       for (let i = 1; i < lines.length; i++) {
         try {
           const entry = JSON.parse(lines[i]);
-          // Pi session v3 格式：role/content 在嵌套的 message 对象中
           if (entry.type === "session_info" && entry.name) name = entry.name;
           if (entry.type === "message" && entry.message?.role &&
               (entry.message.role === "user" || entry.message.role === "assistant")) {
@@ -212,14 +176,7 @@ async function listSessionSummaries(sessionDir: string): Promise<SessionSummary[
         } catch { /* 跳过损坏行 */ }
       }
 
-      result.push({
-        id: header.id,
-        path: filePath,
-        name,
-        mtime: s.mtime,
-        messageCount: msgCount,
-        firstMessage: firstMsg,
-      });
+      result.push({ id: header.id, path: filePath, name, mtime: s.mtime, messageCount: msgCount, firstMessage: firstMsg });
     } catch { /* 跳过损坏文件 */ }
   }
 
@@ -227,11 +184,9 @@ async function listSessionSummaries(sessionDir: string): Promise<SessionSummary[
   return result;
 }
 
-/** 将会话文件移入归档目录 .pi/archive/YYYY-MM/ */
 async function archiveFile(filePath: string, sessionDir: string): Promise<void> {
   const s = await stat(filePath);
   const monthDir = join(sessionDir, "..", "archive", s.mtime.toISOString().slice(0, 7));
   await mkdir(monthDir, { recursive: true });
-  const dest = join(monthDir, filePath.split(/[/\\]/).pop()!);
-  await rename(filePath, dest);
+  await rename(filePath, join(monthDir, filePath.split(/[/\\]/).pop()!));
 }

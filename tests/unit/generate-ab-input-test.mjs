@@ -7,7 +7,7 @@ import {
   findMissing,
   validateInput,
   assembleInput,
-} from "../../scripts/kb/generate-ab-input.mjs";
+} from "../../scripts/eval/ab/generate-ab-input.mjs";
 
 let pass = 0;
 let fail = 0;

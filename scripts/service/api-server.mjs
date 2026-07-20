@@ -23,7 +23,7 @@ import { maskPII } from "../../.pi/extensions/lib/phi-crypto.mjs";
 import { PiWorker } from "./pi-bridge.mjs";
 import { SessionPool, PoolFullError } from "./session-pool.mjs";
 import { CircuitBreaker, CircuitOpenError, retry } from "./circuit-breaker.mjs";
-import { renderMedicalRagMetrics } from "../ops/metrics-format.mjs";
+import { renderMedicalRagMetrics } from "../ci/metrics/metrics-format.mjs";
 import { resolveNodeBin, toNativePath } from "./node-bin.mjs";
 
 function readFailover() {

@@ -25,6 +25,8 @@ node_modules/
 .pi/cache/
 # 会话历史（含对话内容，可能含 PHI，绝对不入仓）
 .pi/sessions/
+# 归档会话历史（含对话内容，可能含 PHI，绝对不入仓）
+.pi/archive/
 # 患者画像含 PHI（个人健康信息，已 AES-256-GCM 加密），仍绝对不入仓
 .pi/patient-profile.json
 # PHI 加密密钥（自动生成），绝对不入仓

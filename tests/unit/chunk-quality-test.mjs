@@ -37,7 +37,7 @@ if (Database) {
   );
 }
 
-const MOD = pathToFileURL(join(origCwd, "scripts/kb/chunk-quality.mjs")).href;
+const MOD = pathToFileURL(join(origCwd, "scripts/eval/quality/chunk-quality.mjs")).href;
 const cq = await import(MOD);
 
 let passed = 0,

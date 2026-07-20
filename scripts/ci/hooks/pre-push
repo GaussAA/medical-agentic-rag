@@ -22,7 +22,7 @@ if command -v npm >/dev/null 2>&1; then
   npm run test:real-link --silent
   code=$?
 elif command -v node >/dev/null 2>&1; then
-  node scripts/ops/smoke-real-link.mjs
+  node scripts/ci/smoke/smoke-real-link.mjs
   code=$?
 else
   echo "[pre-push] 未找到 node/npm，跳过真实链路冒烟。"

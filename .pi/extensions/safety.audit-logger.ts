@@ -51,7 +51,8 @@ export default function (pi: ExtensionAPI) {
   });
 
   // 助手响应结束：记一笔响应事件（链完整性，便于事后回溯整轮）
-  pi.on("message_end", async () => {
+  // 注意：不用 async，auditTurn 是同步函数，无 async 可防 Pi 框架额外 await 造成事件循环延迟
+  pi.on("message_end", () => {
     try {
       auditTurn("agent_response", {});
     } catch (e: any) {

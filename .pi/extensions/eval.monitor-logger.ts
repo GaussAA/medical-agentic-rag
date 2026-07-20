@@ -1,5 +1,5 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { appendFile, mkdir, readFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, readdir, stat, unlink } from "node:fs/promises";
 import { join } from "node:path";
 import { alert } from "./lib/alert-log.mjs";
 // @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
@@ -37,6 +37,18 @@ export default function (pi: ExtensionAPI) {
   pi.on("session_start", async (event, ctx) => {
     const data = event as any;
     await logEntry("session_start", { cwd: ctx.cwd, sessionId: data.sessionId });
+
+    // ── 会话自动清理 ──────────────────────────────────────────
+    // 每次新会话启动时清理超限会话，防止会话文件无限增长。
+    // 双条件保留（取更宽松）：最多 50 条 / 最长 30 天。
+    try {
+      const sessionDir = ctx.sessionManager?.getSessionDir?.();
+      if (sessionDir) {
+        await cleanupOldSessions(sessionDir, { maxCount: 50, maxDays: 30 });
+      }
+    } catch {
+      // 清理失败不影响主流程
+    }
   });
 
   pi.on("before_agent_start", async (event, _ctx) => {
@@ -83,4 +95,63 @@ export default function (pi: ExtensionAPI) {
       }
     },
   });
+}
+
+// =============================================================================
+// 会话自动清理
+// =============================================================================
+
+interface CleanupOptions {
+  /** 最大保留会话数（超出则删除最旧的） */
+  maxCount: number;
+  /** 会话最大保留天数（超过则删除） */
+  maxDays: number;
+}
+
+/**
+ * 清理超出保留限制的历史会话文件。
+ * 双条件保留：同时满足 maxCount 和 maxDays 的会话才会保留。
+ * 排序规则：按最后修改时间降序（最新的优先保留）。
+ */
+async function cleanupOldSessions(sessionDir: string, opts: CleanupOptions): Promise<void> {
+  let files: string[];
+  try {
+    files = (await readdir(sessionDir))
+      .filter((f) => f.endsWith(".jsonl"))
+      .map((f) => join(sessionDir, f));
+  } catch {
+    return; // 目录不存在或无权限，跳过
+  }
+  if (files.length <= opts.maxCount) return; // 未超上限，不清理
+
+  // 获取每文件的修改时间
+  const withMtime: { path: string; mtime: Date }[] = [];
+  for (const f of files) {
+    try {
+      const s = await stat(f);
+      if (s.isFile()) withMtime.push({ path: f, mtime: s.mtime });
+    } catch { /* 跳过无法读取的文件 */ }
+  }
+
+  // 按修改时间降序（最新的在前）
+  withMtime.sort((a, b) => b.mtime.getTime() - a.mtime.getTime());
+
+  const cutoff = Date.now() - opts.maxDays * 86400_000;
+  let deleted = 0;
+
+  for (const f of withMtime) {
+    // 保留条件：在 maxCount 限额内 且 未超过 maxDays
+    const withinCount = withMtime.indexOf(f) < opts.maxCount;
+    const withinDays = f.mtime.getTime() >= cutoff;
+    if (withinCount && withinDays) continue; // 满足保留条件
+
+    try {
+      await unlink(f.path);
+      deleted++;
+    } catch { /* 删除失败跳过 */ }
+  }
+
+  if (deleted > 0) {
+    console.log(`[session-cleanup] 清理 ${deleted} 个历史会话文件`);
+  }
 }

@@ -2,11 +2,11 @@
 // 维度五·持续反馈优化 —— 运行时信号 → 系统性薄弱点 → 改进建议队列。
 // 纯聚合，不烧 LLM；默认不阻断 CI（--strict 时 high>0 退出 1）。
 //
-// 用法: node scripts/ops/feedback-loop.mjs [--strict] [--out <path>]
+// 用法: node scripts/eval/pipeline/feedback-loop.mjs [--strict] [--out <path>]
 
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { buildFeedbackQueue, writeFeedbackQueue } from "../../.pi/extensions/lib/feedback-loop.mjs";
+import { buildFeedbackQueue, writeFeedbackQueue } from "../../../.pi/extensions/lib/feedback-loop.mjs";
 
 function parseArgs(argv) {
   const a = { strict: false, out: undefined };

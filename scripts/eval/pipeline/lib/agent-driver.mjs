@@ -1,7 +1,7 @@
-// scripts/ops/lib/agent-driver.mjs
+// scripts/eval/pipeline/lib/agent-driver.mjs
 // 真实 Agent 多轮驱动（共享内核）——B0-b 真链路 / B3 多轮评测 harness 共用。
 //
-// 设计纪律（契合项目原则，与 scripts/ops/smoke-real-link.mjs 同源）：
+// 设计纪律（契合项目原则，与 scripts/ci/smoke/smoke-real-link.mjs 同源）：
 //   · 零静默失败：任何异常显式捕获、结构化日志；运行期故障绝不吞没。
 //   · 优雅跳过：本环境若无外联（proxy 探活失败 / failover 降级），一律 exit 2 跳过，
 //     绝不误报/飘红——真链路多轮属「本地开发机 / 自托管 nightly runner」任务。
@@ -21,10 +21,10 @@ import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { setTimeout as sleep } from "node:timers/promises";
-import { runPi } from "../../lib/pi-runner.mjs"; // P0-5/P1#4 修复：统一 Pi 驱动内核（跨平台树杀）
+import { runPi } from "../../../lib/pi-runner.mjs"; // P0-5/P1#4 修复：统一 Pi 驱动内核（跨平台树杀）
 
-const HERE = dirname(fileURLToPath(import.meta.url)); // scripts/ops/lib
-const ROOT = join(HERE, "..", "..", ".."); // lib -> ops -> scripts -> repoRoot
+const HERE = dirname(fileURLToPath(import.meta.url)); // scripts/eval/pipeline/lib
+const ROOT = join(HERE, "..", "..", "..", ".."); // lib -> pipeline -> eval -> scripts -> repoRoot
 const CLI_PATH = join(ROOT, "pi", "packages", "coding-agent", "dist", "cli.js");
 const PROXY = join(ROOT, "scripts", "proxy", "provider-proxy.mjs");
 const FAILOVER = join(ROOT, "scripts", "proxy", "launch-with-failover.mjs");

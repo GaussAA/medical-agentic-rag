@@ -14,7 +14,7 @@
 // 以说明 B1 修复的必要性。
 //
 // 真 LLM 多轮（驱动完整 pi 运行期 + provider-proxy + 真 KB）属 nightly / 本地开发机
-// 任务（与 scripts/ops/smoke-real-link.mjs 同一归属），本确定性护栏是其 CI 门禁。
+// 任务（与 scripts/ci/smoke/smoke-real-link.mjs 同一归属），本确定性护栏是其 CI 门禁。
 //
 // 运行: node --experimental-strip-types tests/unit/clarification-loop-test.mjs
 

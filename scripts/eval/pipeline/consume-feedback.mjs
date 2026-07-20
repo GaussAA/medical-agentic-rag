@@ -2,7 +2,7 @@
 // 维度五·反馈闭环消费端：读取 feedback-queue.json → 跳过已解决 → 派生 gold 候选
 // → 落回灌记录 + 候选清单。绝不修改受控 gold-answers.json（候选需人工审阅后并入）。
 //
-// 用法: node scripts/ops/consume-feedback.mjs [--strict] [--queue <path>] [--candidates <path>]
+// 用法: node scripts/eval/pipeline/consume-feedback.mjs [--strict] [--queue <path>] [--candidates <path>]
 //   --strict        若存在 phi_noncompliant 高危信号 → 退出码 1（合规阻断）
 //   --queue <path>  指定队列文件（默认 logs/feedback-queue.json）
 //   --candidates <path> 候选输出路径（默认 tests/reports/gold-candidates.json）
@@ -18,9 +18,9 @@ import {
   consumeFeedback,
   writeConsumed,
   mergeIntoGold,
-} from "../../.pi/extensions/lib/feedback-loop.mjs";
+} from "../../../.pi/extensions/lib/feedback-loop.mjs";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 
 function parseArgs(argv) {
   const a = { strict: false, queue: undefined, candidates: undefined, mergeId: undefined };

@@ -2,17 +2,17 @@
  * 医疗指南结构化解析脚本
  * 提取每份指南的章节标题、层级、关键内容，生成结构化 JSON 大纲
  *
- * 用法: node scripts/kb/extract-outline.mjs
+ * 用法: node scripts/kb/index/extract-outline.mjs
  * 输出: data/kb/.outline.json
  */
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { SECTION_RE } from "../lib/chinese-heading.mjs"; // P1#5 统一中文层级正则（11 捕获组契约不变）
+import { SECTION_RE } from "../../lib/chinese-heading.mjs"; // P1#5 统一中文层级正则（11 捕获组契约不变）
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）
-// 输入：归一化纯文本（由 scripts/kb/prepare-raw.mjs 从原始 PDF/DOCX 抽取，复用中文层级正则）
+const ROOT = join(__dirname, "..", "..", ".."); // 仓库根目录（scripts/kb/index 上三级）
+// 输入：归一化纯文本（由 scripts/kb/ingest/prepare-raw.mjs 从原始 PDF/DOCX 抽取，复用中文层级正则）
 const TXT_DIR = join(ROOT, "data", "raw-txt");
 // 输出：索引仍落 data/kb/（扩展硬编码读取，零改动）
 const KB_DIR = join(ROOT, "data", "kb");

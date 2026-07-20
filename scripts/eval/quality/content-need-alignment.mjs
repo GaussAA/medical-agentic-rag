@@ -19,16 +19,16 @@
 // 原生 node 零 Key 单测；CLI 层负责读真实文件 + 直读 knowledge.db（better-sqlite3 动态候选路径）。
 //
 // 用法：
-//   node scripts/kb/content-need-alignment.mjs                 # 评真实 KB
-//   node scripts/kb/content-need-alignment.mjs --gold <p>      # 指定 gold
-//   node scripts/kb/content-need-alignment.mjs --db <p>        # 指定 DB
-//   node scripts/kb/content-need-alignment.mjs --out <p>       # 指定 JSON 输出（默认 tests/reports/）
+//   node scripts/eval/quality/content-need-alignment.mjs        # 评真实 KB
+//   node scripts/eval/quality/content-need-alignment.mjs --gold <p>      # 指定 gold
+//   node scripts/eval/quality/content-need-alignment.mjs --db <p>        # 指定 DB
+//   node scripts/eval/quality/content-need-alignment.mjs --out <p>       # 指定 JSON 输出（默认 tests/reports/）
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createRequire } from "node:module";
-import { betterSqlite3Candidates } from "../lib/config.mjs";
+import { betterSqlite3Candidates } from "../../lib/config.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

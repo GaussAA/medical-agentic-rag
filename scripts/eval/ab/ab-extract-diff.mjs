@@ -7,14 +7,14 @@
  * 比对中文保真度、章节标记留存率、全角数字占比，判断 Pi 原生抽取是否够格。
  *
  * 只读源目录、只写临时报告，绝不触碰 ~/.pi/knowledge/ 当前知识库。
- * 用法: node scripts/kb/ab-extract-diff.mjs
+ * 用法: node scripts/eval/ab/ab-extract-diff.mjs
  */
 import { createRequire } from "module";
 import { pathToFileURL } from "url";
 import { execFileSync } from "child_process";
 import { readdirSync, readFileSync, writeFileSync, mkdtempSync, rmSync } from "fs";
 import { join, extname, basename } from "path";
-import { countHeadings } from "../lib/chinese-heading.mjs"; // P1#5 统一中文层级标题计数（补齐「两」与全角１．分支）
+import { countHeadings } from "../../lib/chinese-heading.mjs"; // P1#5 统一中文层级标题计数（补齐「两」与全角１．分支）
 import os from "os";
 
 // 兜底：单个文件异步抽取拒绝不应崩掉整轮

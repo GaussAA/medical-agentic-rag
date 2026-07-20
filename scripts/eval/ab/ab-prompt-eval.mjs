@@ -17,9 +17,9 @@
 //      **绝不写 gold-answers.json**（沿用 mergeIntoGold 守卫理念，防错误候选污染金标准）。
 //
 // 用法：
-//   node scripts/kb/ab-prompt-eval.mjs --input ab-input.json
-//   node scripts/kb/ab-prompt-eval.mjs --input ab-input.json --limit 3   # 仅前 3 题（控成本）
-//   node scripts/kb/ab-prompt-eval.mjs --input ab-input.json --report out.json
+//   node scripts/eval/ab/ab-prompt-eval.mjs --input ab-input.json
+//   node scripts/eval/ab/ab-prompt-eval.mjs --input ab-input.json --limit 3   # 仅前 3 题（控成本）
+//   node scripts/eval/ab/ab-prompt-eval.mjs --input ab-input.json --report out.json
 //
 // input JSON 结构：
 //   { "meta": { "promptA": "...", "promptB": "...", "note": "..." },
@@ -34,7 +34,7 @@ import {
   JUDGE_DIMENSIONS,
   isLLMAvailable,
   runWithConcurrency,
-} from "../../.pi/extensions/lib/llm-judge.mjs";
+} from "../../../.pi/extensions/lib/llm-judge.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

@@ -1,10 +1,10 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { cacheClear } from "../../.pi/extensions/lib/retrieval-cache.mjs";
+import { cacheClear } from "../../../.pi/extensions/lib/retrieval-cache.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, "..", ".."); // 仓库根目录（scripts/kb 上两级）
+const ROOT = join(__dirname, "..", "..", ".."); // 仓库根目录（scripts/kb/index 上三级）
 const KB_DIR = join(ROOT, "data", "kb");
 
 async function main() {

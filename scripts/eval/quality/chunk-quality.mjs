@@ -14,10 +14,10 @@
 //   4) sectionContext         层级归属完整度（chunk 是否携带所属章节标题上下文）
 //
 // 用法：
-//   node scripts/kb/chunk-quality.mjs                 # 评真实 knowledge.db
-//   node scripts/kb/chunk-quality.mjs --db <path>     # 指定 DB
-//   node scripts/kb/chunk-quality.mjs --gold <path>   # 指定 gold（默认 tests/gold-answers.json）
-//   node scripts/kb/chunk-quality.mjs --report <path> # 指定报告输出
+//   node scripts/eval/quality/chunk-quality.mjs                 # 评真实 knowledge.db
+//   node scripts/eval/quality/chunk-quality.mjs --db <path>     # 指定 DB
+//   node scripts/eval/quality/chunk-quality.mjs --gold <path>   # 指定 gold（默认 tests/gold-answers.json）
+//   node scripts/eval/quality/chunk-quality.mjs --report <path> # 指定报告输出
 //
 // 纯 .mjs 双可测：所有纯函数接受注入数据，供 tests/unit/chunk-quality-test.mjs 原生 node 单测。
 
@@ -25,13 +25,13 @@ import { createRequire } from "node:module";
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
-import { betterSqlite3Candidates } from "../lib/config.mjs"; // P0-1 修复：路径由 env/homedir 推导，灭用户名写死
-import { isHeadingLine } from "../lib/chinese-heading.mjs"; // P1#5 统一中文层级标题判定
+import { betterSqlite3Candidates } from "../../lib/config.mjs"; // P0-1 修复：路径由 env/homedir 推导，灭用户名写死
+import { isHeadingLine } from "../../lib/chinese-heading.mjs"; // P1#5 统一中文层级标题判定
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // 稳健解析项目根：从本文件目录向上递归找含 package.json 的目录。
-// 不依赖固定的 "../.." 层数（scripts/kb → 实际隔 2 层，曾因写 3 层越过项目根落到父目录）。
+// 不依赖固定的 "../../.." 层数（scripts/eval/quality → 实际隔 3 层）。
 function findProjectRoot(startDir) {
   let dir = startDir;
   // 上限 8 层，防死循环

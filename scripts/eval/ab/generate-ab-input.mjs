@@ -1,4 +1,4 @@
-// scripts/kb/generate-ab-input.mjs
+// scripts/eval/ab/generate-ab-input.mjs
 // 真 B 生成器 —— 打通提示词 A/B 自调优「生成 → 评测」全链路（维度⑤反馈闭环的二次调优量化臂）。
 //
 // 背景：ab-prompt-eval.mjs 只做「judge 对比」，A/B 两套答案由外部 input JSON 喂入（MVP 解耦，防 41 题生成成本爆炸）。
@@ -13,17 +13,17 @@
 //   · 纯函数（buildItems/findMissing/validateInput/assembleInput）与 LLM 调用解耦，供零 Key 单测。
 //
 // 用法：
-//   node scripts/kb/generate-ab-input.mjs --prompt-b prompts/medical-agent.v2.md --limit 3
-//   node scripts/kb/generate-ab-input.mjs --prompt-b ... --model deepseek/deepseek-v4-flash --only Q01,Q02
-//   node scripts/kb/generate-ab-input.mjs --dry-run          # 仅打印将执行的 pi 命令
-//   node scripts/kb/generate-ab-input.mjs --out my-ab.json   # 指定输出路径
+//   node scripts/eval/ab/generate-ab-input.mjs --prompt-b prompts/medical-agent.v2.md --limit 3
+//   node scripts/eval/ab/generate-ab-input.mjs --prompt-b ... --model deepseek/deepseek-v4-flash --only Q01,Q02
+//   node scripts/eval/ab/generate-ab-input.mjs --dry-run          # 仅打印将执行的 pi 命令
+//   node scripts/eval/ab/generate-ab-input.mjs --out my-ab.json   # 指定输出路径
 //
 // 注意：未指定 --prompt-b 时 B 默认等同 A（仅作 smoke，四维对比应全持平）；真实 A/B 须传 --prompt-b 变体文件。
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
-import { runPi, stripAnsi } from "../lib/pi-runner.mjs"; // P0-5/P1#4 修复：统一 Pi 驱动内核（runPi/stripAnsi 抽离）
+import { runPi, stripAnsi } from "../../lib/pi-runner.mjs"; // P0-5/P1#4 修复：统一 Pi 驱动内核（runPi/stripAnsi 抽离）
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

@@ -3,9 +3,9 @@
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join } from "node:path";
 import { readFileSync } from "node:fs";
-import { routeGuides, loadIndex, normalize } from "../../.pi/extensions/lib/guide-router.mjs";
+import { routeGuides, loadIndex, normalize } from "../../../.pi/extensions/lib/guide-router.mjs";
 
-const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const index = loadIndex(REPO_ROOT);
 
 // P1#8 抽离：改为可导出纯函数，guideMap/vocab 默认取模块级索引，

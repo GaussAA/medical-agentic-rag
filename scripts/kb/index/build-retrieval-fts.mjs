@@ -7,7 +7,7 @@
 //
 // 运行: npm run kb:fts
 
-import { Database, ensureFtsIndex, ftsDbPath, resolveKbDbPath } from "../../.pi/extensions/lib/retrieval-router.mjs";
+import { Database, ensureFtsIndex, ftsDbPath, resolveKbDbPath } from "../../../.pi/extensions/lib/retrieval-router.mjs";
 
 const p = resolveKbDbPath();
 if (!p) {

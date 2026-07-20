@@ -1,6 +1,6 @@
 // citation-check-test.mjs
 // P1#8 单测 —— resolveGtDisease 纯函数（用合成 guideMap/vocab，不依赖真实 KB 索引）。
-// 直接 import scripts/ops/citation-check.mjs（其模块级 loadIndex 仅读盘、无网络/exit 副作用）。
+// 直接 import scripts/eval/quality/citation-check.mjs（其模块级 loadIndex 仅读盘、无网络/exit 副作用）。
 // 运行: node tests/unit/citation-check-test.mjs
 
 import { pathToFileURL, fileURLToPath } from "node:url";

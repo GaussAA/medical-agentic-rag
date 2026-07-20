@@ -92,8 +92,29 @@ cmd_tui() {
     local BM=$(node -e "const j=require('./.pi/failover-selection.json');console.log(j.model||'')")
     [ -n "$BP" ] && BACKEND_LABEL="${BP}/${BM}"
   fi
-  local PROVIDER="deepseek"
-  local MODEL="deepseek-v4-flash"
+  local PROVIDER="${LLM_PROVIDER:-sensenova}"
+  local MODEL="${LLM_MODEL:-sensenova-6.7-flash-lite}"
+
+  # failover 探测结果覆写默认模型
+  # 注意：仅当 Provider 是 Pi 已注册的（sensenova/agnes/deepseek）时才覆写，
+  # 否则维持默认免费模型。local 等 proxy 专用 Provider 不直接对 Pi 可见，
+  # 强传会导致 Error: Model not found。
+  if [ -f "$SEL_FILE" ]; then
+    local FP=$(node -e "try{console.log(require('./.pi/failover-selection.json').provider||'')}catch(e){}" 2>/dev/null || true)
+    local FM=$(node -e "try{console.log(require('./.pi/failover-selection.json').model||'')}catch(e){}" 2>/dev/null || true)
+    if [ -n "$FP" ] && [ -n "$FM" ]; then
+      case "$FP" in
+        sensenova|agnes|deepseek)
+          PROVIDER="$FP"
+          MODEL="$FM"
+          ;;
+        *)
+          # local 等 proxy 专用 Provider——不传给 Pi CLI，保持默认免费模型
+          # proxy 会自行根据 failover 选择路由到实际后端
+          ;;
+      esac
+    fi
+  fi
 
   # 清理残留 proxy
   echo "[orchestration] 清理残留 LLM Provider 代理（端口 $PROXY_PORT）..."
@@ -142,15 +163,21 @@ cmd_webui() {
     case "$a" in -d|--background) BACKGROUND=1 ;; *=*) export "${a%%=*}"="${a#*=}" ;; esac
   done
 
-  # 模型选择（优先 failover）
+  # 模型选择（优先 failover，仅限 Pi 已注册 Provider）
   local PROVIDER="${LLM_PROVIDER:-sensenova}"
   local MODEL="${LLM_MODEL:-sensenova-6.7-flash-lite}"
   if [ -f .pi/failover-selection.json ]; then
     local P M
     P="$(node -e "try{console.log(require('./.pi/failover-selection.json').provider||'')}catch(e){}" 2>/dev/null || true)"
     M="$(node -e "try{console.log(require('./.pi/failover-selection.json').model||'')}catch(e){}" 2>/dev/null || true)"
-    [ -n "$P" ] && PROVIDER="$P"
-    [ -n "$M" ] && MODEL="$M"
+    if [ -n "$P" ] && [ -n "$M" ]; then
+      case "$P" in
+        sensenova|agnes|deepseek)
+          PROVIDER="$P"
+          MODEL="$M"
+          ;;
+      esac
+    fi
   fi
 
   # 定位 pi-webui

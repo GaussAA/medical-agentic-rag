@@ -76,7 +76,6 @@ medical-agentic-rag/
 │   ├── e2e/                     # 端到端冒烟
 │   ├── reports/                 # 测试报告输出
 │   └── data/                    # 测试数据（gold-answers.json 等）
-├── frontend/                    # React 三栏医典 UI（协作同僚维护）
 ├── start.sh / start.bat / start.ps1  # 启动脚本（编排网关 + failover + Pi）
 ├── Dockerfile / docker-compose.yml    # 容器化部署
 └── k8s/                         # K8s 多活部署（T15）
@@ -84,16 +83,16 @@ medical-agentic-rag/
 
 ## 技术栈
 
-| 组件       | 技术 | 说明 |
-|-----------|------|------|
-| Agent 框架 | Pi CLI 0.81.0 | ReAct 智能体循环 + 工具系统 |
-| RAG 引擎   | pi-knowledge 0.5.1 | 本地优先，混合检索 + 重排序 |
-| LLM 首选   | sensenova-6.7-flash-lite（免费） | 商汤日日新，256K context |
-| LLM 本地   | google/gemma-4-e2b（LM Studio） | 可选，/model 切换 |
-| LLM 兜底   | deepseek-v4-flash（付费） | provider-proxy failover 自动降级 |
-| 嵌入模型   | multilingual-e5-small（本地） | ~32MB ONNX，零 API Key |
-| 向量存储   | pi-knowledge SQLite | 本地 `~/.pi/knowledge/` |
-| 运行环境   | Node.js 22.22.2+ | |
+| 组件       | 技术                             | 说明                             |
+| ---------- | -------------------------------- | -------------------------------- |
+| Agent 框架 | Pi CLI 0.81.0                    | ReAct 智能体循环 + 工具系统      |
+| RAG 引擎   | pi-knowledge 0.5.1               | 本地优先，混合检索 + 重排序      |
+| LLM 首选   | sensenova-6.7-flash-lite（免费） | 商汤日日新，256K context         |
+| LLM 本地   | google/gemma-4-e2b（LM Studio）  | 可选，/model 切换                |
+| LLM 兜底   | deepseek-v4-flash（付费）        | provider-proxy failover 自动降级 |
+| 嵌入模型   | multilingual-e5-small（本地）    | ~32MB ONNX，零 API Key           |
+| 向量存储   | pi-knowledge SQLite              | 本地 `~/.pi/knowledge/`          |
+| 运行环境   | Node.js 22.22.2+                 |                                  |
 
 ## 启动
 
@@ -105,6 +104,7 @@ start.bat                     # Windows 双击
 ```
 
 启动编排：
+
 1. 探测健康 Provider → 写入 `.pi/failover-selection.json`
 2. 启动 LLM Provider 代理网关（127.0.0.1:18880）
 3. 启动 Pi Agent（自动加载全部医疗扩展 + system prompt）
@@ -138,6 +138,7 @@ knowledge_show
 ### npm scripts（package.json 注册入口）
 
 **知识库管理：**
+
 - `npm run kb:rebuild` — 重建向量库
 - `npm run kb:update check` — 检查过期待刷来源
 - `npm run kb:prepare` — 归一化原始文档（PDF/DOCX→TXT）
@@ -146,12 +147,14 @@ knowledge_show
 - `npm run kb:entities` — 知识图谱实体抽取
 
 **评测与测试：**
+
 - `npm test` — 全量数据完整性套件
 - `npm run test:ci` — CI 门禁（忠实战 fail-closed）
 - `npm run eval:judge` — LLM-Judge 四维评测
 - `npm run eval:ab` — A/B 提示词对比
 
 **运维：**
+
 - `npm run proxy:start` — 启动 LLM 代理网关
 - `npm run failover` — 探测健康 Provider
 - `npm run ops:watchdog` — 检测新指南文件
@@ -196,27 +199,28 @@ knowledge_show
 
 按功能分为四组：
 
-| 分组 | 扩展 | 职责 |
-|------|------|------|
-| Provider | `provider.sensenova.ts` / `agnes.ts` / `local.ts` / `failover.ts` / `query-cache.ts` | LLM 提供商注册 + 故障转移 |
-| 检索 | `retrieval.guide-finder.ts` / `rag-search.ts` / `kg-search-tool.ts` / `query-decomposer.ts` / `medical-infographic.ts` | 医疗指南语义路由 + RAG + 知识图谱 |
-| 安全 | `safety.scope-guard.ts` / `faithfulness-guard.ts` / `bash-guard.ts` / `patient-profile.ts` / `audit-logger.ts` / `conflict-detector.ts` | 越界拦截、忠实度护栏、PHI 加密 |
-| 评测 | `eval.answer-evaluator.ts` / `monitor-logger.ts` | LLM-Judge 四维评测、会话自动归档 |
-| 状态 | `state.conversation-state.ts` | 对话上下文（槽位、澄清计数） |
+| 分组     | 扩展                                                                                                                                    | 职责                              |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| Provider | `provider.sensenova.ts` / `agnes.ts` / `local.ts` / `failover.ts` / `query-cache.ts`                                                    | LLM 提供商注册 + 故障转移         |
+| 检索     | `retrieval.guide-finder.ts` / `rag-search.ts` / `kg-search-tool.ts` / `query-decomposer.ts` / `medical-infographic.ts`                  | 医疗指南语义路由 + RAG + 知识图谱 |
+| 安全     | `safety.scope-guard.ts` / `faithfulness-guard.ts` / `bash-guard.ts` / `patient-profile.ts` / `audit-logger.ts` / `conflict-detector.ts` | 越界拦截、忠实度护栏、PHI 加密    |
+| 评测     | `eval.answer-evaluator.ts` / `monitor-logger.ts`                                                                                        | LLM-Judge 四维评测、会话自动归档  |
+| 状态     | `state.conversation-state.ts`                                                                                                           | 对话上下文（槽位、澄清计数）      |
 
 ## 测试体系
 
 当前测试覆盖率（对应 `scripts/ci/test-aggregate.mjs`）：
 
-| 层级 | 覆盖情况 |
-|------|---------|
-| 单元测试 | **52 套件全部通过** |
-| 扩展层 | **20/20（100%）** — 每个 .ts 扩展均有对应测试 |
+| 层级      | 覆盖情况                                         |
+| --------- | ------------------------------------------------ |
+| 单元测试  | **52 套件全部通过**                              |
+| 扩展层    | **20/20（100%）** — 每个 .ts 扩展均有对应测试    |
 | lib/ 模块 | **25/26（96%）** — 仅 query-transform 被间接覆盖 |
-| script 层 | 14/45 CLI 脚本有独立测试（运维脚本变更频率低） |
-| 冒烟测试 | 24/24 全绿（pre-push 门禁 + 真实 KB 链路） |
+| script 层 | 14/45 CLI 脚本有独立测试（运维脚本变更频率低）   |
+| 冒烟测试  | 24/24 全绿（pre-push 门禁 + 真实 KB 链路）       |
 
 关键测试文件分布：
+
 - `tests/unit/extensions/provider/` — Provider 注册/健康探测
 - `tests/unit/extensions/retrieval/` — 路由/检索/缓存
 - `tests/unit/extensions/safety/` — 护栏/越界/忠实度
@@ -226,25 +230,25 @@ knowledge_show
 
 ## 合规体系
 
-| 维度 | 实现 | 位置 |
-|------|------|------|
-| PHI 静态加密 | AES-256-GCM 认证加密 | `lib/phi-crypto/crypto.mjs` |
-| PII 脱敏 | 手机/身份证/邮箱/姓名脱敏 | `lib/phi-crypto/mask.mjs` |
-| 审计哈希链 | 防篡改哈希链 | `lib/phi-crypto/audit.mjs` |
-| 被遗忘权 | 画像擦除 + 审计留痕 | `safety.patient-profile.ts` |
-| 忠实度护栏 | LLM-Judge fail-closed，HARD 默认开 | `safety.faithfulness-guard.ts` |
-| 越界护栏 | 医疗领域边界拦截 | `safety.scope-guard.ts` |
-| 会话自动归档 | 超 50 条/30 天自动移入 archive/ | `eval.monitor-logger.ts` |
+| 维度         | 实现                               | 位置                           |
+| ------------ | ---------------------------------- | ------------------------------ |
+| PHI 静态加密 | AES-256-GCM 认证加密               | `lib/phi-crypto/crypto.mjs`    |
+| PII 脱敏     | 手机/身份证/邮箱/姓名脱敏          | `lib/phi-crypto/mask.mjs`      |
+| 审计哈希链   | 防篡改哈希链                       | `lib/phi-crypto/audit.mjs`     |
+| 被遗忘权     | 画像擦除 + 审计留痕                | `safety.patient-profile.ts`    |
+| 忠实度护栏   | LLM-Judge fail-closed，HARD 默认开 | `safety.faithfulness-guard.ts` |
+| 越界护栏     | 医疗领域边界拦截                   | `safety.scope-guard.ts`        |
+| 会话自动归档 | 超 50 条/30 天自动移入 archive/    | `eval.monitor-logger.ts`       |
 
 ## 搜索模式
 
-| 场景 | 模式 | 示例 |
-|------|:----:|------|
-| 常规问答 | `hybrid` | `rag_search({ query: "...", mode: "hybrid" })` |
-| 高精度（用药剂量） | `deep` | `rag_search({ query: "...", mode: "deep" })` |
-| 多指南对比 | `adaptive` | `rag_search({ query: "...", mode: "adaptive" })` |
-| 精确术语 | `fast` | `rag_search({ query: "...", mode: "fast" })` |
-| 概念搜索 | `semantic` | `rag_search({ query: "...", mode: "semantic" })` |
+| 场景               |    模式    | 示例                                             |
+| ------------------ | :--------: | ------------------------------------------------ |
+| 常规问答           |  `hybrid`  | `rag_search({ query: "...", mode: "hybrid" })`   |
+| 高精度（用药剂量） |   `deep`   | `rag_search({ query: "...", mode: "deep" })`     |
+| 多指南对比         | `adaptive` | `rag_search({ query: "...", mode: "adaptive" })` |
+| 精确术语           |   `fast`   | `rag_search({ query: "...", mode: "fast" })`     |
+| 概念搜索           | `semantic` | `rag_search({ query: "...", mode: "semantic" })` |
 
 ## 设计原则
 

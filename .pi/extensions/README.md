@@ -1,65 +1,75 @@
 # `.pi/extensions/` 扩展索引
 
-> 本目录是医疗 Agentic RAG 的 Pi 自定义扩展层。本文件为分类索引与维护约定，非 Pi 框架文件。
+> 本目录是医疗 Agentic RAG 的 Pi 自定义扩展层。共 **20 个 .ts 扩展，100% 测试覆盖**。
 
 ## 命名约定
 
-- **平铺发现**：所有入口扩展平铺于 `.pi/extensions/*.ts`，由 Pi 框架 `*.ts` 平铺发现模式自动加载。
-- **文件名前缀分组**：`<group>.<basename>.ts`，`group ∈ { retrieval, provider, safety, eval, state }`。
-  - 前缀仅作分组标识（IDE 自动折叠、人眼一眼归类），**不改变加载行为**。
-- **共享库抽离**：纯函数复用模块置于 `lib/*.mjs`，被多个扩展引用；同一份逻辑既能被 jiti（扩展内）加载，也能被原生 node 单测，避免逻辑分叉。
-- **扩展间零互引**：扩展互不 `import` 对方文件，仅通过 System Prompt 工具名协作；工具注册名（`registerTool` 的 `name`）独立于文件名。
+- **平铺发现**：平铺于 `.pi/extensions/*.ts`，由 Pi 框架 `*.ts` 通配自动加载。
+- **文件名前缀分组**：`<group>.<basename>.ts`，`group ∈ { provider, retrieval, safety, eval, state }`。
+- **共享库抽离**：纯函数复用模块置于 `lib/` 并已按职责拆分子目录。
+- **扩展间零互引**：扩展互不 import 对方，通过工具名协作。
 
-## 分组清单
+## 完整清单
+
+### `provider`（LLM 提供商注册）
+
+| 文件 | 职责 |
+|------|------|
+| `provider.sensenova.ts` | 商汤日日新（免费主力，256K context） |
+| `provider.agnes.ts` | Agnes AI（兜底付费） |
+| `provider.local.ts` | LM Studio 本地模型（localhost:1234，可选切换） |
+| `provider.failover.ts` | 运行时故障转移 + `/failover` `/kb` 命令 |
+| `provider.query-cache.ts` | 查询缓存管理 `/cache` 命令 |
 
 ### `retrieval`（检索 / 知识库）
 
-| 文件                            | 职责                               | 注册工具          | 依赖 lib           |
-| ------------------------------- | ---------------------------------- | ----------------- | ------------------ |
-| `retrieval.guide-finder.ts`     | 指南路由（语义路由定位应查指南）   | `guide_finder`    | `guide-router`     |
-| `retrieval.kg-search-tool.ts`   | 知识图谱检索                       | `kg_search`       | `kg-search`        |
-| `retrieval.rag-search.ts`       | 定向召回（语义路由约束 + 真 hybrid：BM25 回退 / dense 委托 KnowledgeEngine + bge 重排） | `rag_search` | `retrieval-router`,`knowledge-engine-search` |
-| `retrieval.query-decomposer.ts` | 复杂问题分解为子查询               | `decompose_query` | （启发式，无 lib） |
-
-### `provider`（Provider 与高可用）
-
-| 文件                      | 职责                                     | 注册工具 / 注      | 依赖 lib                                      |
-| ------------------------- | ---------------------------------------- | ------------------ | --------------------------------------------- |
-| `provider.agnes.ts`       | Agnes AI Provider 注册                   | `registerProvider` | —                                             |
-| `provider.sensenova.ts`   | 商汤日日新 Provider（免费通道）          | `registerProvider` | —                                             |
-| `provider.failover.ts`    | 运行时故障转移（`/failover` `/kb` 命令） | 命令               | `provider-health`, `kb-sources`, `phi-crypto` |
-| `provider.query-cache.ts` | 查询缓存管理（`/cache` 命令）            | 命令               | `retrieval-cache`                             |
+| 文件 | 职责 | 注册工具 |
+|------|------|---------|
+| `retrieval.guide-finder.ts` | 医疗指南语义路由（IDF 加权 + 同义词归一） | `guide_finder` |
+| `retrieval.rag-search.ts` | 定向召回 + 版本冲突标注 + 引擎容错 | `rag_search` |
+| `retrieval.kg-search-tool.ts` | 知识图谱多跳推理 | `kg_search` |
+| `retrieval.query-decomposer.ts` | 复杂问题分解为子查询 | `decompose_query` |
+| `retrieval.medical-infographic.ts` | 医疗信息图生成（sensenova u1-fast） | `generate_infographic` |
 
 ### `safety`（安全合规）
 
-| 文件                        | 职责                                      | 注册工具           | 依赖 lib                   |
-| --------------------------- | ----------------------------------------- | ------------------ | -------------------------- |
-| `safety.bash-guard.ts`      | bash 护栏（超时+命令拦截，覆盖内置 bash） | 覆盖 `bash`        | `bash-guard`, `phi-crypto` |
-| `safety.patient-profile.ts` | 患者画像（AES-256-GCM 加密 + 审计）       | `remember_patient` | `phi-crypto`               |
+| 文件 | 职责 |
+|------|------|
+| `safety.scope-guard.ts` | 越界拦截（医疗领域边界，占卜/法律等拒答） |
+| `safety.faithfulness-guard.ts` | 忠实度护栏（LLM-Judge fail-closed，HARD 默认开） |
+| `safety.bash-guard.ts` | 危险 shell 命令拦截 |
+| `safety.patient-profile.ts` | 患者画像（AES-256-GCM 加密 + 审计 + 被遗忘权） |
+| `safety.audit-logger.ts` | 运行时审计日志埋点 |
+| `safety.conflict-detector.ts` | 多指南冲突检测（检索期版本比较标注） |
 
 ### `eval`（评测 / 观测）
 
-| 文件                       | 职责                                    | 注册工具 | 依赖 lib     |
-| -------------------------- | --------------------------------------- | -------- | ------------ |
-| `eval.answer-evaluator.ts` | 答案质量评估（`/eval`，免费模型优先）   | 命令     | `llm-judge`  |
-| `eval.monitor-logger.ts`   | 运行日志埋点 + 审计（`/logs` `/audit`） | 命令     | `phi-crypto` |
+| 文件 | 职责 |
+|------|------|
+| `eval.answer-evaluator.ts` | 答案质量评估（免费模型优先 LLM-Judge） |
+| `eval.monitor-logger.ts` | 运行日志埋点 + 会话自动归档 |
 
 ### `state`（会话状态）
 
-| 文件                          | 职责             | 注册工具                    | 依赖 lib    |
-| ----------------------------- | ---------------- | --------------------------- | ----------- |
-| `state.conversation-state.ts` | 会话状态槽位追踪 | `update_conversation_state` | （node:fs） |
+| 文件 | 职责 |
+|------|------|
+| `state.conversation-state.ts` | 对话上下文（槽位追踪、澄清计数、越界护栏） |
 
-## Pi 加载约束（重要，勿违）
+## 共享库 `lib/` 模块索引
+
+| 子目录 | 子模块 | 职责 |
+|--------|--------|------|
+| `retrieval-router/` | `db` / `matcher` / `fts` / `bm25` / `fusion` | BM25+FTS+RFF 检索管线 |
+| `phi-crypto/` | `crypto` / `mask` / `audit` | AES-256-GCM 加密、PII 脱敏、审计哈希链 |
+| `llm-judge/` | `client` / `judge` | 免费优先 LLM 客户端、四维答案质量评审 |
+| `guide-router/` | `vocab` / `text` / `index` / `route` | 医疗词典、文本处理、索引加载、路由主逻辑 |
+| `feedback-loop/` | `signal` / `aggregate` / `queue` / `merge` | 反馈信号采集、热点聚合、队列管理、gold 合并 |
+
+## Pi 加载约束（重要）
 
 经 `pi/packages/coding-agent/src/core/extensions/loader.ts` 确证：
+1. 仅认 `.pi/extensions/*.ts`（平铺）与 `.pi/extensions/*/index.ts`（子目录包）。
+2. 子目录内非 `index.ts` 会被静默忽略。
+3. 不递归超过一层。
 
-1. **仅认两种形态**：`.pi/extensions/*.ts`（平铺）与 `.pi/extensions/*/index.ts`（子目录包）。
-2. **子目录内非 `index.ts` 会被静默忽略**——扩展直接丢失，无报错。
-3. **不递归超过一层**。
-
-故本项目**采用「平铺 + 文件名前缀分组」，不拆子目录**：
-
-- 平铺 → loader 零风险、新增扩展零改动（丢文件即生效）。
-- 前缀命名 → 视觉分组、IDE 折叠，规避「纯平铺随扩展增长而乱」与「子目录致目录爆炸 / 单文件巨型化」两难。
-- 若未来扩展数过百，优先改用「前缀命名 + 本索引」检索，而非物理子目录。
+故本项目采用**平铺 + 文件名前缀分组**，不拆子目录。

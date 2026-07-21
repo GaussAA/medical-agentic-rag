@@ -116,14 +116,14 @@ docker compose down              # 停止
 
 访问：**http://localhost:31415/**（Web 界面）与 **http://localhost:8080/**（HTTP API）。
 
-健康检查：`node scripts/ops/healthcheck.mjs http://127.0.0.1:31415/`（输出 JSON 状态，退出码 0/1）。compose 已用该脚本作 `healthcheck` + `restart: unless-stopped`。`medical-api` 服务健康检查指向 `http://127.0.0.1:8080/healthz`。
+健康检查：`node scripts/ci/metrics/healthcheck.mjs http://127.0.0.1:31415/`（输出 JSON 状态，退出码 0/1）。compose 已用该脚本作 `healthcheck` + `restart: unless-stopped`。`medical-api` 服务健康检查指向 `http://127.0.0.1:8080/healthz`。
 
 ### 指标（Prometheus）
 
 容器内已暴露 `:19100/metrics`（审计事件计数、安全护栏命中、最近事件时间）。本地可单独启动导出器：
 
 ```bash
-node scripts/ops/metrics-exporter.mjs      # 默认 :19100，读 .pi/logs/audit-*.ndjson
+node scripts/ci/metrics/metrics-exporter.mjs      # 默认 :19100，读 .pi/logs/audit-*.ndjson
 ```
 
 ### 监控栈（Prometheus + Grafana，docker-compose 集成）

@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-07-21T11:22:15.695Z",
+  "totalItems": 41,
+  "metrics": {
+    "citationRecall": 100,
+    "evidenceLocatability": 93.1,
+    "gradeLabelRate": 100,
+    "forbiddenViolationRate": 0,
+    "refusalAccuracy": 100,
+    "faithfulnessMean": 0.924,
+    "safetyMean": 0.998,
+    "clinicalMean": 0.976,
+    "relevanceMean": 0.99,
+    "lowFaithCount": 1
+  },
+  "_source": "answer-quality-report.json (2026-07-19, 41 items)"
+}

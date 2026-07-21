@@ -1338,6 +1338,32 @@
       "allowedClaims": ["户外活动", "读写姿势", "屈光档案"],
       "forbiddenClaims": ["近视无需预防长大做手术即可"],
       "expectedRefusal": false
+    },
+    {
+      "id": "Q52",
+      "department": "心血管",
+      "difficulty": "中",
+      "q": "慢性冠脉综合征的药物治疗推荐哪些类别",
+      "gtSources": ["中国慢性冠脉综合征患者诊断及管理指南.pdf"],
+      "evidencePhrases": ["慢性冠脉综合征", "抗血小板", "他汀", "β受体阻滞剂"],
+      "expectGradeLabel": true,
+      "referenceAnswer": "慢性冠脉综合征药物治疗包括抗血小板药物（阿司匹林等）、他汀类降脂药、β受体阻滞剂和ACEI/ARB。根据患者情况选择个体化方案，长期使用以预防心血管事件。",
+      "allowedClaims": ["抗血小板", "他汀", "β受体阻滞剂", "ACEI"],
+      "forbiddenClaims": ["慢性冠脉综合征无需长期药物治疗"],
+      "expectedRefusal": false
+    },
+    {
+      "id": "Q53",
+      "department": "心血管",
+      "difficulty": "中",
+      "q": "冠状动脉微血管疾病的诊断方法有哪些",
+      "gtSources": ["冠状动脉微血管疾病诊断和治疗中国专家共识(2023版).pdf"],
+      "evidencePhrases": ["冠状动脉微血管疾病", "诊断", "IMR", "CFR"],
+      "expectGradeLabel": true,
+      "referenceAnswer": "冠状动脉微血管疾病的诊断方法包括有创性检查（冠状动脉血流储备CFR、微血管阻力指数IMR）和无创性检查（心脏磁共振、PET心肌血流定量等），需综合评估。",
+      "allowedClaims": ["CFR", "IMR", "心脏磁共振", "PET"],
+      "forbiddenClaims": ["冠脉造影正常即可排除微血管疾病"],
+      "expectedRefusal": false
     }
   ]
 }

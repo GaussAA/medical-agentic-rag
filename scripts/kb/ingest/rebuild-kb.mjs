@@ -98,7 +98,7 @@ console.log(tx(await captured["knowledge_status"].execute("knowledge_status", {}
 
 // ---- 清空检索缓存，使 KB 变更立即生效 ----
 try {
-  const { cacheClear } = await import("../../.pi/extensions/lib/retrieval-cache.mjs");
+  const { cacheClear } = await import("../../../.pi/extensions/lib/retrieval-cache.mjs");
   cacheClear();
   console.log("[cache] 检索缓存已清空");
 } catch (e) {

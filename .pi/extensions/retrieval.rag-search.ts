@@ -51,7 +51,11 @@ export default function (pi: ExtensionAPI) {
       const msgs: any[] = (event && event.messages) || [];
       for (let i = msgs.length - 1; i >= 0; i--) {
         if (msgs[i] && msgs[i].role === "user") {
-          const text = (typeof msgs[i].content === "string" ? msgs[i].content : "") || "";
+          const text = (typeof msgs[i].content === "string"
+            ? msgs[i].content
+            : Array.isArray(msgs[i].content)
+              ? (msgs[i].content.find((c: any) => c.type === "text")?.text || "")
+              : "") || "";
           const key = text.slice(0, 100);
           if (key !== _callKey) { _callKey = key; _callCount = 0; }
           break;

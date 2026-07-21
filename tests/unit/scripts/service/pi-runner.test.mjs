@@ -10,7 +10,7 @@ import { pathToFileURL, fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const HERE = dirname(fileURLToPath(import.meta.url)); // tests/unit
-const MOD = pathToFileURL(join(HERE, "..", "..", "scripts", "lib", "pi-runner.mjs")).href;
+const MOD = pathToFileURL(join(HERE, "..", "..", "..", "..", "scripts", "lib", "pi-runner.mjs")).href;
 const { runPi, stripAnsi, findPiRuntime, killTree, toNativePath } = await import(MOD);
 
 let passed = 0, failed = 0;

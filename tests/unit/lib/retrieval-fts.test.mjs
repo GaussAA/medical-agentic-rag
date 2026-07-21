@@ -14,7 +14,7 @@ import {
   ensureFtsIndex,
   sourceSig,
   Database,
-} from "../../.pi/extensions/lib/retrieval-router.mjs";
+} from "../../../.pi/extensions/lib/retrieval-router.mjs";
 
 let pass = 0;
 let fail = 0;

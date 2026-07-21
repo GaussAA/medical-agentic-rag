@@ -8,7 +8,7 @@ import {
   compareDimensions,
   decideVerdict,
   buildReport,
-} from "../../scripts/eval/ab/ab-prompt-eval.mjs";
+} from "../../../../../scripts/eval/ab/ab-prompt-eval.mjs";
 
 // 构造一对 A/B 评分（四维）
 function pair(a, b) {

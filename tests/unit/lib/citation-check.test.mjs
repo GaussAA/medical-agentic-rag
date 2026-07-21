@@ -7,7 +7,7 @@ import { pathToFileURL, fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const HERE = dirname(fileURLToPath(import.meta.url)); // tests/unit
-const MOD = pathToFileURL(join(HERE, "..", "..", "scripts", "ops", "citation-check.mjs")).href;
+const MOD = pathToFileURL(join(HERE, "..", "..", "..", "scripts", "eval", "quality", "citation-check.mjs")).href;
 const { resolveGtDisease } = await import(MOD);
 
 // 合成索引（不依赖真实 data/kb/.guide-index.json）

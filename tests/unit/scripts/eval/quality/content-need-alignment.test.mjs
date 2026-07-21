@@ -12,7 +12,7 @@ import {
   untestedBreadthRatio,
   indexCoverage,
   buildAlignmentReport,
-} from "../../scripts/eval/quality/content-need-alignment.mjs";
+} from "../../../../../scripts/eval/quality/content-need-alignment.mjs";
 
 let pass = 0;
 let fail = 0;

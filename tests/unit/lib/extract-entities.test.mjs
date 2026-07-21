@@ -7,7 +7,7 @@ import { pathToFileURL, fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const HERE = dirname(fileURLToPath(import.meta.url)); // tests/unit
-const MOD = pathToFileURL(join(HERE, "..", "..", "scripts", "lib", "parse-keys.mjs")).href;
+const MOD = pathToFileURL(join(HERE, "..", "..", "..", "scripts", "lib", "parse-keys.mjs")).href;
 const { parseKeys } = await import(MOD);
 
 let passed = 0, failed = 0;

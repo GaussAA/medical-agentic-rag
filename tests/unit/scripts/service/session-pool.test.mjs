@@ -7,8 +7,8 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SessionPool, PoolFullError } from "../../scripts/service/session-pool.mjs";
-import { CircuitBreaker } from "../../scripts/service/circuit-breaker.mjs";
+import { SessionPool, PoolFullError } from "../../../../scripts/service/session-pool.mjs";
+import { CircuitBreaker } from "../../../../scripts/service/circuit-breaker.mjs";
 
 // 极简 mock PiWorker：start 同步完成，ask 行为可注入
 function makeMockWorker({ askImpl, startImpl, alive = true } = {}) {

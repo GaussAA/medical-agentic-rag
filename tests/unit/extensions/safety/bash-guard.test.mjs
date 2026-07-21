@@ -8,7 +8,7 @@ import {
   assessCommand,
   DEFAULT_TIMEOUT_SEC,
   MAX_TIMEOUT_SEC,
-} from "../../.pi/extensions/lib/bash-guard.mjs";
+} from "../../../../.pi/extensions/lib/bash-guard.mjs";
 
 let pass = 0;
 let fail = 0;

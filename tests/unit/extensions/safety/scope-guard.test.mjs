@@ -2,7 +2,7 @@
 // 越界拦截纯逻辑单测：零 LLM、确定性，进 CI。
 // 运行: node tests/unit/scope-guard-test.mjs
 
-import { detectScope, isOutOfScope } from "../../.pi/extensions/lib/scope-guard.mjs";
+import { detectScope, isOutOfScope } from "../../../../.pi/extensions/lib/scope-guard.mjs";
 
 let pass = 0;
 let fail = 0;

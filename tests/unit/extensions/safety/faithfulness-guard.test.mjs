@@ -2,7 +2,7 @@
 // 在线护栏评审层单测：依赖注入 mock judge，零真 LLM 调用，确定性验证逻辑分级。
 // 运行: node tests/unit/faithfulness-guard-test.mjs
 
-import { guardReview, shouldGuard, getMessageText } from "../../.pi/extensions/lib/faithfulness-guard.mjs";
+import { guardReview, shouldGuard, getMessageText } from "../../../../.pi/extensions/lib/faithfulness-guard.mjs";
 
 let pass = 0;
 let fail = 0;

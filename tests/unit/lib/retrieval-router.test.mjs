@@ -10,7 +10,7 @@ import {
   setKbDb,
   loadKbFilenames,
   Database,
-} from "../../.pi/extensions/lib/retrieval-router.mjs";
+} from "../../../.pi/extensions/lib/retrieval-router.mjs";
 
 let pass = 0;
 let fail = 0;
@@ -147,8 +147,8 @@ if (!existsSync(REAL)) {
   ok("kb_id 传真实 UUID 正常召回", r5.results.length > 0, "results=" + r5.results.length);
 
   // 语义路由本身能识别骨质疏松指南
-  const idx = (await import("../../.pi/extensions/lib/guide-router.mjs")).loadIndex();
-  const routed = (await import("../../.pi/extensions/lib/guide-router.mjs")).routeGuides("骨质疏松", { index: idx });
+  const idx = (await import("../../../.pi/extensions/lib/guide-router.mjs")).loadIndex();
+  const routed = (await import("../../../.pi/extensions/lib/guide-router.mjs")).routeGuides("骨质疏松", { index: idx });
   const hitOsteo = routed.top.some((g) => g.title.includes("骨质疏松"));
   ok("语义路由正确识别骨质疏松指南", hitOsteo, JSON.stringify(routed.top.map(g=>g.title).slice(0,3)));
 

@@ -84,7 +84,7 @@ const snapPath = kb.snapshot(REG);
 check("快照文件生成", existsSync(snapPath));
 // 篡改 registry 再回滚
 writeFileSync(REG, JSON.stringify({ sources: [{ id: "tampered" }] }, null, 2), "utf-8");
-kb.rollback(snapPath);
+kb.rollback(snapPath, REG);
 const restored = kb.loadRegistry(REG);
 check("回滚恢复 2 项", restored.sources.length === 2);
 check("回滚恢复原始 id", restored.sources[0].id === "g1");

@@ -2,7 +2,7 @@
 // eval-ci-gate 回归对比纯逻辑单测：零文件 IO（传入对象），进 CI。
 // 运行: node tests/unit/eval-gate-test.mjs
 
-import { compareRegression, REGRESS_TOLERANCES } from "../../.pi/extensions/lib/eval-compare.mjs";
+import { compareRegression, REGRESS_TOLERANCES } from "../../../../.pi/extensions/lib/eval-compare.mjs";
 
 let pass = 0;
 let fail = 0;

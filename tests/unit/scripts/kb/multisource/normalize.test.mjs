@@ -1,6 +1,6 @@
 // tests/unit/multisource/normalize-test.mjs
 // 内容归一化器纯函数单测。
-import { decodeEntities, stripTags, cleanWhitespace, normalizeDoc, truncateSafe } from "../../../scripts/kb/multisource/lib/normalize.mjs";
+import { decodeEntities, stripTags, cleanWhitespace, normalizeDoc, truncateSafe } from "../../../../../scripts/kb/multisource/lib/normalize.mjs";
 
 let pass = 0, fail = 0;
 function ok(name, cond, detail = "") {

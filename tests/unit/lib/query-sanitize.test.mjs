@@ -2,7 +2,7 @@
 // 检索查询脱敏纯逻辑单测：零依赖、确定性，进 CI。
 // 运行: node tests/unit/query-sanitize-test.mjs
 
-import { sanitizeSearchQuery, sanitizeForLog } from "../../.pi/extensions/lib/query-sanitize.mjs";
+import { sanitizeSearchQuery, sanitizeForLog } from "../../../.pi/extensions/lib/query-sanitize.mjs";
 
 let pass = 0;
 let fail = 0;

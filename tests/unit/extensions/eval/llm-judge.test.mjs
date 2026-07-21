@@ -14,7 +14,7 @@ import { dirname, join } from "node:path";
 
 const HERE = dirname(fileURLToPath(import.meta.url)); // tests/unit
 const MOD = pathToFileURL(
-  join(HERE, "..", "..", ".pi", "extensions", "lib", "llm-judge.mjs"),
+  join(HERE, "..", "..", "..", "..", ".pi", "extensions", "lib", "llm-judge.mjs"),
 ).href;
 const { buildJudgeMessages, isLLMAvailable, availableKeyCount } = await import(MOD);
 

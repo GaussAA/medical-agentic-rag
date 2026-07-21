@@ -12,10 +12,10 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildJudgeMessages } from "../../.pi/extensions/lib/llm-judge.mjs";
+import { buildJudgeMessages } from "../../../../.pi/extensions/lib/llm-judge.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url)); // tests/unit
-const PROMPT = join(HERE, "..", "..", ".pi", "prompts", "medical-agent.md");
+const PROMPT = join(HERE, "..", "..", "..", "..", ".pi", "prompts", "medical-agent.md");
 const prompt = readFileSync(PROMPT, "utf-8");
 
 let pass = 0, fail = 0;

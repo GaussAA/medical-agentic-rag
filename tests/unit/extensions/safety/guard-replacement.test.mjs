@@ -4,8 +4,8 @@
 // 或 pass / 无批注时返回 undefined（调用方据此放行）。
 // 直导纯 .mjs，零 LLM 调用，确定性；运行: node tests/unit/guard-replacement-test.mjs
 
-import { buildReplacementMessage as buildFaith } from "../../.pi/extensions/lib/faithfulness-guard.mjs";
-import { buildReplacementMessage as buildConflict } from "../../.pi/extensions/lib/conflict-detector.mjs";
+import { buildReplacementMessage as buildFaith } from "../../../../.pi/extensions/lib/faithfulness-guard.mjs";
+import { buildReplacementMessage as buildConflict } from "../../../../.pi/extensions/lib/conflict-detector.mjs";
 
 let pass = 0;
 let fail = 0;

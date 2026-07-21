@@ -8,7 +8,7 @@
 import {
   lastUserText,
   isNewUserTurn,
-} from "../../.pi/extensions/lib/audit-logger.mjs";
+} from "../../../.pi/extensions/lib/audit-logger.mjs";
 
 let pass = 0;
 let fail = 0;

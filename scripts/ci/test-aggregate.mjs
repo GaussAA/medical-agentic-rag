@@ -1,59 +1,81 @@
-#!/usr/bin/env node
-/**
- * test-aggregate.mjs — npm test 聚合运行器
- *
- * 取代 package.json 中原 `&&` 串联主链，解决「短路断链」问题：
- * 原主链任一测试失败即中断后续，CI/本地拿不到完整失败清单，且定位困难。
- *
- * 行为约定：
- *  - 串行 spawn 全部套件，stdio 实时继承（不缓冲、不丢中间输出）
- *  - 不短路：前项失败仍继续跑后续，最终汇聚完整 PASS/FAIL 清单
- *  - fail-closed：任一失败 → 进程 exit 1；全过 → exit 0
- *
- * 新增单测须在此 SUITES 登记（顺序无关，测试相互独立）。
- * 清单等价原 package.json `npm test` 主链（run-all-tests + 30 个单测）。
- */
+// scripts/ci/test-aggregate.mjs
+// npm test 聚合运行器 —— 不短路、fail-closed
+// 新增单测在此 SUITES 登记（顺序无关）
 import { spawn } from "node:child_process";
 
-/**
- * @type {[string, ...string[]][]}
- * 每项：[命令, ...参数]。等价原 npm test 主链，不自短路。
- */
 const SUITES = [
+  // ── 数据完整性套件 ──
   ["node", "tests/run-all-tests.mjs"],
-  ["node", "--experimental-strip-types", "tests/unit/conversation-state-test.mjs"],
-  ["node", "--experimental-strip-types", "tests/unit/patient-profile-test.mjs"],
-  ["node", "--experimental-strip-types", "tests/unit/clarification-loop-test.mjs"],
-  ["node", "tests/unit/grounding-rule-test.mjs"],
-  ["node", "tests/unit/llm-judge-test.mjs"],
-  ["node", "tests/unit/kg-graph-test.mjs"],
-  ["node", "tests/unit/retrieval-router-test.mjs"],
-  ["node", "tests/unit/retrieval-fts-test.mjs"],
-  ["node", "tests/unit/faithfulness-guard-test.mjs"],
-  ["node", "tests/unit/conflict-detector-test.mjs"],
-  ["node", "tests/unit/rag-search-version-hint-test.mjs"],
-  ["node", "tests/unit/scope-guard-test.mjs"],
-  ["node", "tests/unit/query-sanitize-test.mjs"],
-  ["node", "tests/unit/eval-gate-test.mjs"],
-  ["node", "tests/unit/audit-logger-test.mjs"],
-  ["node", "tests/unit/engine-version-test.mjs"],
-  ["node", "tests/unit/observability-test.mjs"],
-  ["node", "tests/unit/diagnostic-log-test.mjs"],
-  ["node", "tests/unit/provider-health-test.mjs"],
-  ["node", "tests/unit/alert-log-test.mjs"],
-  ["node", "tests/unit/multisource/quality-gate-test.mjs"],
-  ["node", "tests/unit/multisource/normalize-test.mjs"],
-  ["node", "tests/unit/merge-into-gold-test.mjs"],
-  ["node", "tests/unit/guard-replacement-test.mjs"],
-  ["node", "--experimental-strip-types", "tests/unit/patient-forget-test.mjs"],
-  ["node", "tests/unit/chunk-quality-test.mjs"],
-  ["node", "tests/unit/chinese-heading-test.mjs"],
-  ["node", "tests/unit/ab-prompt-eval-test.mjs"],
-  ["node", "tests/unit/generate-ab-input-test.mjs"],
-  ["node", "tests/unit/content-need-alignment-test.mjs"],
-  ["node", "--test", "tests/unit/api-server-test.mjs"],
-  ["node", "--test", "tests/unit/session-pool-test.mjs"],
-  ["node", "tests/unit/retrieval-cache-test.mjs"],
+
+  // ── extensions/state ──
+  ["node", "--experimental-strip-types", "tests/unit/extensions/state/conversation-state.test.mjs"],
+  ["node", "--experimental-strip-types", "tests/unit/extensions/state/clarification-loop.test.mjs"],
+
+  // ── extensions/safety ──
+  ["node", "--experimental-strip-types", "tests/unit/extensions/safety/patient-profile.test.mjs"],
+  ["node", "--experimental-strip-types", "tests/unit/extensions/safety/patient-forget.test.mjs"],
+  ["node", "tests/unit/extensions/safety/scope-guard.test.mjs"],
+  ["node", "tests/unit/extensions/safety/faithfulness-guard.test.mjs"],
+  ["node", "tests/unit/extensions/safety/bash-guard.test.mjs"],
+  ["node", "tests/unit/extensions/safety/compliance.test.mjs"],
+  ["node", "tests/unit/extensions/safety/guard-replacement.test.mjs"],
+  ["node", "tests/unit/extensions/safety/grounding-rule.test.mjs"],
+
+  // ── extensions/eval ──
+  ["node", "tests/unit/extensions/eval/gate.test.mjs"],
+  ["node", "tests/unit/extensions/eval/llm-judge.test.mjs"],
+
+  // ── extensions/provider ──
+  ["node", "--experimental-strip-types", "tests/unit/extensions/provider/registration.test.mjs"],
+
+  // ── extensions/retrieval ──
+  ["node", "--experimental-strip-types", "tests/unit/extensions/retrieval/query-decomposer.test.mjs"],
+  ["node", "--experimental-strip-types", "tests/unit/extensions/retrieval/medical-infographic.test.mjs"],
+  ["node", "--experimental-strip-types", "tests/unit/extensions/retrieval/execute-contract.test.mjs"],
+
+  // ── lib/ ──
+  ["node", "tests/unit/lib/kg-graph.test.mjs"],
+  ["node", "tests/unit/lib/retrieval-router.test.mjs"],
+  ["node", "tests/unit/lib/retrieval-fts.test.mjs"],
+  ["node", "tests/unit/lib/retrieval-cache.test.mjs"],
+  ["node", "tests/unit/lib/conflict-detector.test.mjs"],
+  ["node", "tests/unit/lib/rag-search-version-hint.test.mjs"],
+  ["node", "tests/unit/lib/query-sanitize.test.mjs"],
+  ["node", "tests/unit/lib/p1-enhancements.test.mjs"],
+  ["node", "tests/unit/lib/engine-version.test.mjs"],
+  ["node", "tests/unit/lib/chinese-heading.test.mjs"],
+  ["node", "tests/unit/lib/observability.test.mjs"],
+  ["node", "tests/unit/lib/diagnostic-log.test.mjs"],
+  ["node", "tests/unit/lib/alert-log.test.mjs"],
+  ["node", "tests/unit/lib/audit-logger.test.mjs"],
+  ["node", "tests/unit/lib/audit-chain.test.mjs"],
+  ["node", "tests/unit/lib/parse-params.test.mjs"],
+  ["node", "tests/unit/lib/kb-sources.test.mjs"],
+  ["node", "tests/unit/lib/knowledge-engine-search.test.mjs"],
+  ["node", "tests/unit/lib/extract-entities.test.mjs"],
+  ["node", "tests/unit/lib/citation-check.test.mjs"],
+
+  // ── scripts/service ──
+  ["node", "--test", "tests/unit/scripts/service/api-server.test.mjs"],
+  ["node", "--test", "tests/unit/scripts/service/session-pool.test.mjs"],
+  ["node", "tests/unit/scripts/service/pi-runner.test.mjs"],
+  ["node", "tests/unit/scripts/service/provider-health.test.mjs"],
+
+  // ── scripts/proxy ──
+  ["node", "tests/unit/scripts/proxy/provider-proxy.test.mjs"],
+
+  // ── scripts/kb ──
+  ["node", "tests/unit/scripts/kb/lifecycle/deprecate-versions.test.mjs"],
+  ["node", "tests/unit/scripts/kb/multisource/quality-gate.test.mjs"],
+  ["node", "tests/unit/scripts/kb/multisource/normalize.test.mjs"],
+
+  // ── scripts/eval ──
+  ["node", "tests/unit/scripts/eval/ab/prompt-eval.test.mjs"],
+  ["node", "tests/unit/scripts/eval/ab/generate-input.test.mjs"],
+  ["node", "tests/unit/scripts/eval/quality/chunk-quality.test.mjs"],
+  ["node", "tests/unit/scripts/eval/quality/content-need-alignment.test.mjs"],
+  ["node", "tests/unit/scripts/eval/pipeline/merge-into-gold.test.mjs"],
+  ["node", "tests/unit/scripts/eval/pipeline/feedback-loop.test.mjs"],
 ];
 
 function run(name, cmd, args) {
@@ -84,18 +106,18 @@ async function main() {
   }
 
   const failed = results.filter((r) => r.code !== 0);
-  console.log("\n" + "=".repeat(60));
-  console.log(`汇总: ${results.length - failed.length}/${results.length} 通过, ${failed.length} 失败`);
-  if (failed.length) {
-    console.log("失败项:");
-    for (const r of failed) console.log(`  - ${r.name} (exit ${r.code})`);
-  }
-  console.log("=".repeat(60));
+  console.log(`\n${"=".repeat(60)}`);
+  console.log(`结果: ${results.length - failed.length}/${results.length} 通过`);
 
-  process.exit(failed.length > 0 ? 1 : 0);
+  if (failed.length > 0) {
+    console.error(`失败 ${failed.length}:`);
+    for (const f of failed) console.error(`  ❌ ${f.name} (exit ${f.code})`);
+    process.exit(1);
+  }
+  console.log("✅ 全部通过");
 }
 
 main().catch((err) => {
-  console.error("聚合测试运行异常:", err);
+  console.error("聚合运行异常:", err);
   process.exit(1);
 });

@@ -1,6 +1,6 @@
 // rag-search-version-hint-test.mjs
 // A 层增强·检索期版本冲突前置标注：验证 buildVersionConflictHint（纯函数，注入 guideMap）。
-import { buildVersionConflictHint } from "../../.pi/extensions/lib/conflict-detector.mjs";
+import { buildVersionConflictHint } from "../../../.pi/extensions/lib/conflict-detector.mjs";
 
 let pass = 0;
 let fail = 0;

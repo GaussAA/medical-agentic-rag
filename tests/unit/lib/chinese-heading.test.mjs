@@ -1,6 +1,6 @@
 // tests/unit/chinese-heading-test.mjs
 // 零副作用单测：直接 import 纯模块，不拉 Pi / 不碰 KB。
-import { CN_DIGITS, SECTION_RE, isHeadingLine, countHeadings } from "../../scripts/lib/chinese-heading.mjs";
+import { CN_DIGITS, SECTION_RE, isHeadingLine, countHeadings } from "../../../scripts/lib/chinese-heading.mjs";
 
 let pass = 0, fail = 0;
 function ok(cond, name) {

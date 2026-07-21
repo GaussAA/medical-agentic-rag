@@ -10,7 +10,7 @@ import {
   logAuditEvent,
   logFeedbackGen,
   EVENTS,
-} from "../../.pi/extensions/lib/observability.mjs";
+} from "../../../.pi/extensions/lib/observability.mjs";
 
 let pass = 0;
 let fail = 0;

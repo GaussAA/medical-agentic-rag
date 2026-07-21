@@ -110,11 +110,15 @@ console.log("\n=== 字段排序稳定性 ===");
   assert(c1 === c2, "排序后 JSON 一致");
 }
 
-// === 6. CLI 工具集成测试 ===
+// === 6. CLI 工具集成测试（CI 跳过：需要 .pi/logs/） ===
 console.log("\n=== CLI 工具集成 ===");
-{
+const { existsSync } = await import("node:fs");
+const LOGS_DIR = join(process.cwd(), ".pi/logs");
+if (!existsSync(LOGS_DIR)) {
+  console.log("  (跳过 CLI 集成测试：.pi/logs/ 不存在 — CI 模式，符合预期)");
+} else {
   // 直接调用 audit-verify.mjs 的 verifyChain 功能
-  const { verifyChain, queryAuditLog, auditChainLog } = await import("../../.pi/extensions/lib/audit-chain.mjs");
+  const { verifyChain, queryAuditLog, auditChainLog } = await import("../../../.pi/extensions/lib/audit-chain.mjs");
 
   // verifyChain 应能对当前日志（如果存在）执行无错误扫描
   const result = verifyChain();

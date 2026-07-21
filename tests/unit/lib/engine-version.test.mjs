@@ -9,7 +9,7 @@ import {
   candidates,
   validateEngineApi,
   getEngineVersion,
-} from "../../.pi/extensions/lib/knowledge-engine-search.mjs";
+} from "../../../.pi/extensions/lib/knowledge-engine-search.mjs";
 
 let pass = 0;
 let fail = 0;

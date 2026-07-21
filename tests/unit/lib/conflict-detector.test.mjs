@@ -9,7 +9,7 @@ import {
   matchGuideMeta,
   buildAnnotation,
   filterDeprecatedResults,
-} from "../../.pi/extensions/lib/conflict-detector.mjs";
+} from "../../../.pi/extensions/lib/conflict-detector.mjs";
 
 let pass = 0;
 let fail = 0;

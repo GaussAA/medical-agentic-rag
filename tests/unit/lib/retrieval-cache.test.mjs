@@ -13,7 +13,7 @@ process.env.RETRIEVAL_CACHE_DIR = TMP;
 process.env.RETRIEVAL_CACHE_MAX_ENTRIES = "10";
 
 const { cacheGet, cacheSet, gcExpired, cacheStats, cacheClear } = await import(
-  "../../.pi/extensions/lib/retrieval-cache.mjs"
+  "../../../.pi/extensions/lib/retrieval-cache.mjs"
 );
 
 test("容量上限：超容按写入时间 LRU 近似裁剪到 MAX_ENTRIES", () => {

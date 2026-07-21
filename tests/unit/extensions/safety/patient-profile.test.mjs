@@ -18,7 +18,7 @@ const mockPi = {
   on: (ev, fn) => { hooks[ev] = fn; },
 };
 
-const factory = (await import("../../.pi/extensions/safety.patient-profile.ts")).default;
+const factory = (await import("../../../../.pi/extensions/safety.patient-profile.ts")).default;
 await factory(mockPi);
 
 let pass = 0, fail = 0;

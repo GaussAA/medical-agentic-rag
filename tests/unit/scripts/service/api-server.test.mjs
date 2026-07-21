@@ -7,10 +7,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
-import { createApiHandler, makeConfig } from "../../scripts/service/api-server.mjs";
-import { assembleResult } from "../../scripts/service/pi-bridge.mjs";
-import { CircuitBreaker, CircuitOpenError, retry } from "../../scripts/service/circuit-breaker.mjs";
-import { PoolFullError } from "../../scripts/service/session-pool.mjs";
+import { createApiHandler, makeConfig } from "../../../../scripts/service/api-server.mjs";
+import { assembleResult } from "../../../../scripts/service/pi-bridge.mjs";
+import { CircuitBreaker, CircuitOpenError, retry } from "../../../../scripts/service/circuit-breaker.mjs";
+import { PoolFullError } from "../../../../scripts/service/session-pool.mjs";
 
 function makeMockPool({ askImpl } = {}) {
   const calls = { ask: 0, setModel: 0, models: 0, sessions: 0 };

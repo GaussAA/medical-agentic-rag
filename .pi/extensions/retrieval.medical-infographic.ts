@@ -19,7 +19,7 @@ const FETCH_TIMEOUT_MS = 120_000; // 图像生成可能 60-120s
 /**
  * 从环境变量获取 sensenova API Key（单 Key 或 Key 池均兼容）。
  */
-function getApiKey(): string {
+export function getApiKey(): string {
   const single = process.env.SENSENOVA_API_KEY;
   if (single) return single;
   const pool = (process.env.SENSENOVA_API_KEYS || "")
@@ -33,7 +33,7 @@ function getApiKey(): string {
  * 构建信息图 prompt：将 topic + style + guide_title 组装为 u1-fast 的
  * 自然语言描述。u1-fast 没有 chat 接口，prompt 即最终生成指令。
  */
-function buildPrompt(
+export function buildPrompt(
   topic: string,
   style: string,
   guideTitle: string,
@@ -52,7 +52,7 @@ function buildPrompt(
 }
 
 /** 从 API 响应中提取图片 URL（兼容 data[0].url 与 images[0].url）。 */
-function extractImageUrl(data: any): string | null {
+export function extractImageUrl(data: any): string | null {
   if (data?.data?.[0]?.url) return data.data[0].url;
   if (data?.images?.[0]?.url) return data.images[0].url;
   return null;

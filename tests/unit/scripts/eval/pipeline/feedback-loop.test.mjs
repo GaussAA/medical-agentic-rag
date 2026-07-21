@@ -14,7 +14,7 @@ import {
   consumeFeedback,
   resolveFeedback,
   SEVERITY,
-} from "../../.pi/extensions/lib/feedback-loop.mjs";
+} from "../../../../../.pi/extensions/lib/feedback-loop.mjs";
 
 let pass = 0;
 let fail = 0;
@@ -116,7 +116,7 @@ function fixture() {
   ];
   const sug = buildSuggestions(hot);
   ok(sug[0].suggestion.includes("跨指南冲突"), "conflict → 对齐/补录建议");
-  ok(sug[1].suggestion.includes("系统提示"), "faithfulness_block → 系统提示建议");
+  ok(sug[1].suggestion.includes("复盘阻断"), "faithfulness_block → 复盘阻断根因建议");
   ok(sug[2].suggestion.includes("gold"), "eval_low → gold 建议");
   ok(sug[3].suggestion.includes("PHI"), "phi → 排查建议");
 }

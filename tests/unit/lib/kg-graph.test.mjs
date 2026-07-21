@@ -11,7 +11,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = pjoin(__dirname, "..", "..");
+const ROOT = pjoin(__dirname, "..", "..", "..");
 const CACHE_LIB = pjoin(ROOT, ".pi", "extensions", "lib", "retrieval-cache.mjs");
 const KG_DB_LIB = pjoin(ROOT, ".pi", "extensions", "lib", "kg-graph-db.mjs");
 

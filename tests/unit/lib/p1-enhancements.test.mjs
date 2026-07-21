@@ -2,9 +2,9 @@
 // P1 三件套单测：RRF 融合 + CRAG 纠错 + 查询改写（纯函数部分）
 // 运行: node tests/unit/p1-enhancements-test.mjs
 
-import { rrfFusion } from "../../.pi/extensions/lib/retrieval-router.mjs";
-import { correctMedicalQuery } from "../../.pi/extensions/lib/query-sanitize.mjs";
-import { filterVariants } from "../../.pi/extensions/lib/query-transform.mjs";
+import { rrfFusion } from "../../../.pi/extensions/lib/retrieval-router.mjs";
+import { correctMedicalQuery } from "../../../.pi/extensions/lib/query-sanitize.mjs";
+import { filterVariants } from "../../../.pi/extensions/lib/query-transform.mjs";
 
 let pass = 0;
 let fail = 0;

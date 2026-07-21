@@ -9,7 +9,7 @@
 
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { engineHybridSearch, isEngineAvailable, applySoftConstraint, searchWithTimeout } from "../../.pi/extensions/lib/knowledge-engine-search.mjs";
+import { engineHybridSearch, isEngineAvailable, applySoftConstraint, searchWithTimeout } from "../../../.pi/extensions/lib/knowledge-engine-search.mjs";
 
 // 同步预判：内置引擎是否可达（避免 live 段 await 后才发现不可用）
 const ENGINE_AVAILABLE = (() => {

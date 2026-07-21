@@ -5,7 +5,7 @@
 import { mkdtempSync, writeFileSync, readFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { mergeIntoGold } from "../../.pi/extensions/lib/feedback-loop.mjs";
+import { mergeIntoGold } from "../../../../../.pi/extensions/lib/feedback-loop.mjs";
 
 let pass = 0;
 let fail = 0;

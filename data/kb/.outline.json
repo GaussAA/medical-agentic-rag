@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-17T09:54:29.421Z",
-  "totalFiles": 241,
-  "totalSections": 21168,
+  "generatedAt": "2026-07-21T10:44:57.530Z",
+  "totalFiles": 243,
+  "totalSections": 21324,
   "totalKeyParagraphs": 498,
   "guides": [
     {
@@ -1088,6 +1088,14 @@
       "keyParagraphs": []
     },
     {
+      "id": "中国慢性冠脉综合征患者诊断及管理指南",
+      "title": "中国慢性冠脉综合征患者诊断及管理指南",
+      "sectionCount": 66,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
       "title": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
       "sectionCount": 186,
@@ -1264,6 +1272,14 @@
       "id": "养老服务机构中营养指导员工作流程示例",
       "title": "养老服务机构中营养指导员工作流程示例",
       "sectionCount": 60,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "冠状动脉微血管疾病诊断和治疗中国专家共识(2023版)",
+      "title": "冠状动脉微血管疾病诊断和治疗中国专家共识(2023版)",
+      "sectionCount": 90,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []

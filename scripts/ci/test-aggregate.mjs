@@ -82,6 +82,9 @@ const SUITES = [
 
   // ── 端到端质量门禁（评估回答质量基线，Q01/Q22/Q37 有 3 条忠实度 <0.7，待修复后收紧）──
   ["node", "tests/eval-ci-gate.mjs", "--baseline=tests/reports/baseline.json", "--compare"],
+
+  // ── 端到端冒烟（真实 KnowledgeEngine + FTS 全链路）──
+  ["node", "tests/e2e/real-link.mjs"],
 ];
 
 const SKIP_CODES = [13]; // 退出码 13 = CI 跳过低配环境（引擎不可用）

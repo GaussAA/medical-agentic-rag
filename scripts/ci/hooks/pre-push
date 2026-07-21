@@ -1,23 +1,30 @@
 #!/usr/bin/env bash
-# pre-push 钩子 —— 推送前真实链路冒烟（P2-④ 本地门禁）
+# pre-push 钩子 —— 推送前质量门禁
+# 双层设计：
+#   1) 真实链路冒烟（FTS/检索/引擎链路，始终执行，轻量无 LLM）
+#   2) 全量质量评测（LLM-Judge 四维 + 回归对比，可选：设置 PRE_PUSH_FULL_CHECK=true + SENSENOVA_API_KEY 时执行）
+#
 # 行为约定：
-#   · CI 环境（CI 变量非空）→ 直接放行（CI 已有纯逻辑门禁，避免重复卡点）
-#   · 本环境无真库（脚本退出码 2）→ 视为允许推送（开发机/CI 宿主机无 KB）
-#   · 真实链路故障（脚本退出码 1）→ 阻断推送，强制先修检索/FTS/引擎链路
+#   · CI 环境（CI 变量非空）→ 直接放行（CI 已有纯逻辑门禁 + quality-gate job）
+#   · PRE_PUSH_FULL_CHECK=true 且 SENSENOVA_API_KEY 已配置时 → 额外运行全量评测 + 回归对比
+#   · 本环境无真库（smoke-real-link 退出码 2）→ 视为允许推送
+#   · 真实链路故障（退出码 1）→ 阻断推送
 set -uo pipefail
 
-# CI 环境跳过（GitHub Actions / 其他 CI 均会注入 CI=true）
+# CI 环境跳过
 if [ -n "${CI:-}" ]; then
   exit 0
 fi
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
 if [ -z "$ROOT" ]; then
-  echo "[pre-push] 未处于 git 仓库，跳过真实链路冒烟。"
+  echo "[pre-push] 未处于 git 仓库，跳过。"
   exit 0
 fi
 cd "$ROOT" || exit 0
 
+# ---- 第一层：真实链路冒烟（轻量，始终执行）----
+echo "[pre-push] 阶段一：真实链路冒烟（FTS/检索/引擎链路）..."
 if command -v npm >/dev/null 2>&1; then
   npm run test:real-link --silent
   code=$?
@@ -25,17 +32,34 @@ elif command -v node >/dev/null 2>&1; then
   node scripts/ci/smoke/smoke-real-link.mjs
   code=$?
 else
-  echo "[pre-push] 未找到 node/npm，跳过真实链路冒烟。"
+  echo "[pre-push] 未找到 node/npm，跳过冒烟。"
   exit 0
 fi
 
 if [ "$code" -eq 2 ]; then
   echo "[pre-push] 真实链路冒烟跳过（本环境无真库），允许推送。"
-  exit 0
-fi
-if [ "$code" -ne 0 ]; then
+elif [ "$code" -ne 0 ]; then
   echo "[pre-push] ✗ 真实链路冒烟失败（exit $code），已阻断推送。请排查 FTS/检索/引擎链路后再 push。"
   exit 1
+else
+  echo "[pre-push] ✓ 真实链路冒烟通过。"
 fi
-echo "[pre-push] ✓ 真实链路冒烟通过。"
+
+# ---- 第二层：全量质量评测（可选，需环境变量激活）----
+if [ "${PRE_PUSH_FULL_CHECK:-}" = "true" ] && [ -n "${SENSENOVA_API_KEY:-}" ]; then
+  echo "[pre-push] 阶段二：全量质量评测（LLM-Judge 四维 + 回归对比）..."
+  echo "[pre-push] 配置了 SENSENOVA_API_KEY + PRE_PUSH_FULL_CHECK=true，将运行 npm run eval:full"
+  echo "[pre-push] 预计耗时 3-5 分钟（65 题 × ~2.5s/题），请稍候..."
+
+  if npm run eval:full --silent 2>&1; then
+    echo "[pre-push] ✓ 全量质量评测通过。"
+  else
+    echo "[pre-push] ✗ 全量质量评测未通过。请运行 'npm run eval:full' 查看详细报告后再 push。"
+    exit 1
+  fi
+elif [ "${PRE_PUSH_FULL_CHECK:-}" = "true" ] && [ -z "${SENSENOVA_API_KEY:-}" ]; then
+  echo "[pre-push] ⚠ PRE_PUSH_FULL_CHECK=true 但未设置 SENSENOVA_API_KEY，跳过全量评测。"
+  echo "[pre-push]   提示：export SENSENOVA_API_KEY=your_key 后重试。"
+fi
+
 exit 0

@@ -34,5 +34,5 @@ export function normalizeParams(params) {
   } else if (p && typeof p === "object" && typeof p.arguments === "object") {
     p = p.arguments;
   }
-  return p || {};
+  return (p && typeof p === "object" && !Array.isArray(p)) ? p : {};
 }

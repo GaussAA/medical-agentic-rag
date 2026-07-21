@@ -22,7 +22,7 @@ import {
   renameSync,
   readdirSync,
 } from "node:fs";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
 
 const REGISTRY_FILE = join(process.cwd(), "data", "kb", "kb-sources.json");
 const SNAPSHOT_DIR = join(process.cwd(), ".pi", "kb-snapshots");
@@ -82,10 +82,11 @@ export function snapshot(file = REGISTRY_FILE) {
 /**
  * 从快照回滚 registry（恢复文件内容）。返回快照路径。
  */
-export function rollback(snapshotPath) {
+export function rollback(snapshotPath, file = REGISTRY_FILE) {
   if (!existsSync(snapshotPath)) throw new Error(`快照不存在: ${snapshotPath}`);
   const data = readFileSync(snapshotPath, "utf-8");
-  writeFileSync(REGISTRY_FILE, data, "utf-8");
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, data, "utf-8");
   return snapshotPath;
 }
 
@@ -185,8 +186,9 @@ export async function ingest(source, opts = {}) {
  * @returns {{ok:boolean, snapshot:string, results:object[], rolledBack:boolean}}
  */
 export async function refreshAll(opts = {}) {
-  const snap = snapshot();
-  const registry = loadRegistry();
+  const registryFile = opts.file || REGISTRY_FILE;
+  const snap = snapshot(registryFile);
+  const registry = loadRegistry(registryFile);
   const results = [];
   let failed = false;
   try {
@@ -203,13 +205,13 @@ export async function refreshAll(opts = {}) {
     registry.meta = registry.meta || {};
     registry.meta.lastFullCheck = new Date().toISOString();
     if (!failed) {
-      saveRegistry(registry);
+      saveRegistry(registry, registryFile);
     } else {
-      rollback(snap); // 任一项失败即回滚，保证 registry 不处于半更新态
+      rollback(snap, registryFile); // 任一项失败即回滚，保证 registry 不处于半更新态
     }
     return { ok: !failed, snapshot: snap, results, rolledBack: failed };
   } catch (err) {
-    rollback(snap);
+    rollback(snap, registryFile);
     return {
       ok: false,
       snapshot: snap,

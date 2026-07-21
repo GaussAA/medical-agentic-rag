@@ -13,35 +13,24 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { existsSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const KB_DIR = join(ROOT, "data", "kb");
 const RAW_DIR = join(ROOT, "data", "raw");
 const RAW_TXT_DIR = join(ROOT, "data", "raw-txt");
-
-const dryRun = process.argv.includes("--dry-run");
 
 // 括号归一化
 function normalizeBrackets(s) {
   return s.replace(/（/g, "(").replace(/）/g, ")").replace(/〔/g, "[").replace(/〕/g, "]");
 }
 
-async function main() {
-  console.log(`[deprecate-versions] 扫描指南版本关系...${dryRun ? " (演练模式 --dry-run)" : ""}`);
-
-  // 1. 加载 outline
-  const outlinePath = join(KB_DIR, ".outline.json");
-  const indexPath = join(KB_DIR, ".guide-index.json");
-  if (!existsSync(outlinePath)) {
-    console.error("✗ .outline.json 不存在");
-    process.exit(1);
-  }
-  const outline = JSON.parse(await readFile(outlinePath, "utf-8"));
-  const guides = outline.guides || [];
-  console.log(`  加载 outline: ${guides.length} 条指南`);
-
-  // 2. 去重检测
+/**
+ * 检测括号重复（全角/半角差异导致的重复条目）
+ * @param {{title:string,id?:string}[]} guides
+ * @returns {{keep:{title:string,id?:string}, remove:{title:string,id?:string}}[]}
+ */
+export function detectBracketDups(guides) {
   const bracketDups = [];
   const seen = new Map();
   for (const g of guides) {
@@ -53,27 +42,25 @@ async function main() {
       seen.set(norm, g);
     }
   }
-  if (bracketDups.length) {
-    console.log(`  括号重复: ${bracketDups.length} 组`);
-    for (const d of bracketDups)
-      console.log(`    ✗ 重复: "${d.remove.title}" → 保留 "${d.keep.title}"`);
-  } else {
-    console.log(`  括号重复: 0 (clean)`);
-  }
+  return bracketDups;
+}
 
-  // 3. 版本检测
+/**
+ * 检测版本更新（如 2023→2025 版本替代）
+ * @param {{title:string,id?:string}[]} guides
+ * @returns {{oldTitle:string,oldVersion:number,newTitle:string,newVersion:number}[]}
+ */
+export function detectDeprecations(guides) {
   const VER_RE = /\((\d{4})\s*年?(?:版|修订版|修订本|本)\)/;
   const AUD_RE = /(儿童|老年|妊娠|围产期|新生儿|婴幼儿|青少年|孕妇|胎儿|男性|女性|成年)/;
   const ORG_RE = /(中国抗癌协会|中华医学会|国家卫健委|国家卫生健康委|国家卫生健康委员会)/;
-
-  // 按归一化疾病名分组
   const byDisease = new Map();
   for (const g of guides) {
     const normalizedBrackets = g.title.replace(/（/g, "(").replace(/）/g, ")");
     let disease = normalizedBrackets
       .replace(/诊疗指南.*$/, "")
       .replace(/诊疗方案.*$/, "")
-      .replace(/\(\d{4}\s*年?(?:版|修订版|修订本|本)\)/g, "") // 去版次，避免同名因括号差异分到两组
+      .replace(/\(\d{4}\s*年?(?:版|修订版|修订本|本)\)/g, "")
       .trim();
     const verMatch = normalizedBrackets.match(VER_RE);
     const version = verMatch ? Number(verMatch[1]) : null;
@@ -83,15 +70,12 @@ async function main() {
     if (!byDisease.has(key)) byDisease.set(key, []);
     byDisease.get(key).push({ title: g.title, id: g.id, version, audience, org, disease });
   }
-
   const deprecations = [];
   for (const [, entries] of byDisease) {
     const withVer = entries.filter((e) => e.version != null);
     if (withVer.length < 2) continue;
-    // 去重：同版本的不算更新（如括号差异造成的重复）
     const uniqueVersions = new Set(withVer.map((e) => e.version));
     if (uniqueVersions.size < 2) continue;
-    // 同机构/人群检测
     const orgs = new Set(withVer.map((e) => e.org || ""));
     if (orgs.size > 1) continue;
     const auds = new Set(withVer.map((e) => e.audience || ""));
@@ -108,7 +92,36 @@ async function main() {
       });
     }
   }
+  return deprecations;
+}
 
+async function main() {
+  const dryRun = process.argv.includes("--dry-run");
+  console.log(`[deprecate-versions] 扫描指南版本关系...${dryRun ? " (演练模式 --dry-run)" : ""}`);
+
+  // 1. 加载 outline
+  const outlinePath = join(KB_DIR, ".outline.json");
+  const indexPath = join(KB_DIR, ".guide-index.json");
+  if (!existsSync(outlinePath)) {
+    console.error("✗ .outline.json 不存在");
+    process.exit(1);
+  }
+  const outline = JSON.parse(await readFile(outlinePath, "utf-8"));
+  const guides = outline.guides || [];
+  console.log(`  加载 outline: ${guides.length} 条指南`);
+
+  // 2. 去重检测
+  const bracketDups = detectBracketDups(guides);
+  if (bracketDups.length) {
+    console.log(`  括号重复: ${bracketDups.length} 组`);
+    for (const d of bracketDups)
+      console.log(`    ✗ 重复: "${d.remove.title}" → 保留 "${d.keep.title}"`);
+  } else {
+    console.log(`  括号重复: 0 (clean)`);
+  }
+
+  // 3. 版本检测
+  const deprecations = detectDeprecations(guides);
   console.log(`\n  版本检测完成，可标记废止: ${deprecations.length} 项`);
   for (const d of deprecations)
     console.log(`    ⚠ [${d.oldVersion}] "${d.oldTitle}" → [${d.newVersion}] "${d.newTitle}"`);
@@ -134,7 +147,10 @@ async function main() {
   console.log(`  废止: ${deprecations.length} 项已标记`);
 }
 
-main().catch((err) => {
-  console.error("[deprecate-versions] 失败:", err.message);
-  process.exit(1);
-});
+// 仅作为 CLI 运行时执行 main()
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((err) => {
+    console.error("[deprecate-versions] 失败:", err.message);
+    process.exit(1);
+  });
+}

@@ -90,7 +90,7 @@
   "piRuntime": {
     "_note": "Pi 运行时生态包版本锁（P0-1 修复）。Dockerfile 的 `npm install -g` 须与此处逐一对应；升级任一包须同步改两处并重新验证构建与端到端评测。本地开发使用 pi/ 克隆（已 gitignore）独立构建，与此处 npm 全局安装为两条供应路径，版本须对齐。",
     "pi": "2.0.5",
-    "@earendil-works/pi-coding-agent": "0.80.10",
+    "@earendil-works/pi-coding-agent": "0.81.0",
     "pi-knowledge": "0.5.1",
     "pi-web-access": "0.13.0",
     "pi-subagents": "0.34.0",

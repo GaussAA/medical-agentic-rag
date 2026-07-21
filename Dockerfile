@@ -26,10 +26,10 @@ RUN npm install
 #    改为直接 npm install -g 安装所需包。
 #    ⚠️ 版本硬性锁定（P0-1 修复）：此前 `npm install -g pi` 无版本约束，
 #    构建时拉取 npm latest，镜像在不同时间构建结果不可复现、存在供应链风险。
-#    下方版本为 2026-07-17 实查 npm latest，须与 package.json 的 `piRuntime` 字段保持一致；
+#    下方版本为 2026-07-21 实查 v0.81.0 tag，须与 package.json 的 'piRuntime' 字段保持一致；
 #    升级任一包须同步更新两处并重新验证。
 RUN npm install -g pi@2.0.5 \
-    @earendil-works/pi-coding-agent@0.80.10 \
+    @earendil-works/pi-coding-agent@0.81.0 \
     pi-knowledge@0.5.1 \
     pi-web-access@0.13.0 \
     pi-subagents@0.34.0 \

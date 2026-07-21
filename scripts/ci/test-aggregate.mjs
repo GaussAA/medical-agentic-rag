@@ -74,6 +74,9 @@ const SUITES = [
   ["node", "tests/unit/scripts/eval/ab/generate-input.test.mjs"],
   ["node", "tests/unit/scripts/eval/quality/chunk-quality.test.mjs"],
   ["node", "tests/unit/scripts/eval/quality/content-need-alignment.test.mjs"],
+
+  // ── integration（文件级全链路）──
+  ["node", "tests/integration/knowledge-pipeline.test.mjs"],
   ["node", "tests/unit/scripts/eval/pipeline/merge-into-gold.test.mjs"],
   ["node", "tests/unit/scripts/eval/pipeline/feedback-loop.test.mjs"],
 ];

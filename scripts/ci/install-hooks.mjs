@@ -10,7 +10,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SRC_DIR = join(__dirname, "..", "hooks");
+const SRC_DIR = join(__dirname, "hooks");
 const GIT_DIR = join(__dirname, "..", "..", ".git");
 const HOOKS_DIR = join(GIT_DIR, "hooks");
 

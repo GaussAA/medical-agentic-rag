@@ -57,9 +57,25 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for t in compliance-test provider-health-test kb-sources-test bash-guard-test audit-chain-test provider-proxy-test kg-graph-test faithfulness-guard-test conflict-detector-test rag-search-version-hint-test scope-guard-test query-sanitize-test eval-gate-test audit-logger-test engine-version-test; do
+          # 测试文件已重组为子目录 + .test.mjs 后缀（见 test-aggregate.mjs 全量注册表）
+          for t in \
+            extensions/safety/compliance.test.mjs \
+            scripts/service/provider-health.test.mjs \
+            lib/kb-sources.test.mjs \
+            extensions/safety/bash-guard.test.mjs \
+            lib/audit-chain.test.mjs \
+            scripts/proxy/provider-proxy.test.mjs \
+            lib/kg-graph.test.mjs \
+            extensions/safety/faithfulness-guard.test.mjs \
+            lib/conflict-detector.test.mjs \
+            lib/rag-search-version-hint.test.mjs \
+            extensions/safety/scope-guard.test.mjs \
+            lib/query-sanitize.test.mjs \
+            extensions/eval/gate.test.mjs \
+            lib/audit-logger.test.mjs \
+            lib/engine-version.test.mjs; do
             echo "::group::unit/$t"
-            node "tests/unit/$t.mjs"
+            node "tests/unit/$t"
             echo "::endgroup::"
           done
 
@@ -88,7 +104,7 @@ jobs:
         env:
           SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY || '' }}
           CI: "true"
-        run: node tests/unit/answer-quality-judge.mjs
+        run: node tests/integration/answer-quality-judge.mjs
       - name: 评测可用性判定（决定门禁是否执行 / 失败）
         id: evalcheck
         run: |

@@ -35,6 +35,7 @@
     "eval:gate": "node tests/eval-ci-gate.mjs --report=tests/reports/answer-quality-report.json --baseline=tests/reports/baseline.json --compare --strict",
     "eval:bench": "node tests/integration/eval-bench.mjs",
     "eval:aeval": "node tests/integration/answer-eval-bench.mjs",
+    "eval:calibrate": "node scripts/eval/calibrate-judge.mjs",
     "eval:ab": "node scripts/eval/ab/ab-prompt-eval.mjs",
     "eval:ab:gen": "node scripts/eval/ab/generate-ab-input.mjs",
     "test:retrieval-engine": "node tests/unit/lib/knowledge-engine-search.test.mjs",

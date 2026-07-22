@@ -3,6 +3,9 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { lastUserText, isNewUserTurn, auditTurn } from "./lib/audit-logger.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
+// @ts-ignore —— PHI 审计日志文件路径
+import { auditFileToday } from "./lib/phi-crypto.mjs";
+import { readFile } from "node:fs/promises";
 
 /**
  * 审计链运行期接线（会话级审计）
@@ -63,5 +66,27 @@ export default function (pi: ExtensionAPI) {
   // 会话结束：闭合审计边界
   pi.on("session_shutdown", () => {
     auditTurn("session_end", {});
+  });
+
+  // 合规审计查看命令
+  pi.registerCommand("audit", {
+    description: "Show today's PHI audit trail (patient profile read/write)",
+    handler: async (_args: string, ctx: any) => {
+      const file = auditFileToday();
+      try {
+        const text = await readFile(file, "utf-8");
+        const lines = text.trim().split("\n").filter(Boolean);
+        const recent = lines.slice(-10).join("\n");
+        ctx.ui.notify(
+          `合规审计日志: ${file}\n共 ${lines.length} 条，最近 ${Math.min(10, lines.length)} 条:\n${recent}`,
+          "info",
+        );
+      } catch {
+        ctx.ui.notify(
+          `合规审计日志: ${file}\n（今日暂无审计记录，PHI 读写时自动生成）`,
+          "info",
+        );
+      }
+    },
   });
 }

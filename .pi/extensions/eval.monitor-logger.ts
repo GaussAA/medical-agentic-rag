@@ -2,8 +2,6 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { appendFile, mkdir, readFile, readdir, stat, rename } from "node:fs/promises";
 import { join } from "node:path";
 import { alert } from "./lib/alert-log.mjs";
-// @ts-ignore —— .mjs 纯 JS 共享模块，由 Pi 的 jiti 加载器解析
-import { auditFileToday } from "./lib/phi-crypto.mjs";
 
 /**
  * 可观测性 / 审计扩展
@@ -75,26 +73,7 @@ export default function (pi: ExtensionAPI) {
     },
   });
 
-  pi.registerCommand("audit", {
-    description: "Show today's PHI audit trail (patient profile read/write)",
-    handler: async (_args: string, ctx: any) => {
-      const file = auditFileToday();
-      try {
-        const text = await readFile(file, "utf-8");
-        const lines = text.trim().split("\n").filter(Boolean);
-        const recent = lines.slice(-10).join("\n");
-        ctx.ui.notify(
-          `合规审计日志: ${file}\n共 ${lines.length} 条，最近 ${Math.min(10, lines.length)} 条:\n${recent}`,
-          "info",
-        );
-      } catch {
-        ctx.ui.notify(
-          `合规审计日志: ${file}\n（今日暂无审计记录，PHI 读写时自动生成）`,
-          "info",
-        );
-      }
-    },
-  });
+  // ── audit 命令已移至 safety.audit-logger.ts ──
 }
 
 // =============================================================================

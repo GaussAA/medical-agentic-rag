@@ -21,6 +21,9 @@ jobs:
     name: 端到端质量评测 & 基线刷新
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: write   # 基线 JSON 提交
+      issues: write     # 质量退步 Issue 创建
 
     steps:
       - name: Checkout

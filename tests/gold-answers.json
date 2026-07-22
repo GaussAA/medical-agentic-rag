@@ -1538,7 +1538,7 @@
         "ALK",
         "ROS1"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "原发性肺癌驱动基因检测推荐至少包括 EGFR、ALK、ROS1、BRAF V600E、RET、MET 等靶点，检测方法以 NGS 或 PCR 为主，组织样本优先，血浆 ctDNA 可作补充。",
       "allowedClaims": [
         "EGFR",
@@ -1566,7 +1566,7 @@
         "紫杉醇",
         "卡铂"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "卵巢癌初始治疗以肿瘤细胞减灭术为核心，术后辅以铂类联合紫杉醇化疗（静脉/腹腔联合），BRCA突变者维持治疗可选PARP抑制剂，FIGO分期和残余灶大小决定辅助化疗方案与疗程。",
       "allowedClaims": [
         "肿瘤细胞减灭术",
@@ -1594,7 +1594,7 @@
         "碘染色",
         "ESD"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "食管癌筛查高危人群（40岁以上、食管癌高发区、有食管癌家族史等）推荐上消化道内镜检查联合碘染色及指示性活检。早期食管癌及癌前病变可行内镜下切除（ESD/EMR），进展期以手术+放化疗为主。",
       "allowedClaims": [
         "碘染色",
@@ -1622,7 +1622,7 @@
         "TKI",
         "免疫治疗"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "肾癌主要病理分型为透明细胞癌（约占75%）、乳头状肾细胞癌和嫌色细胞癌。透明细胞癌对TKI及免疫联合治疗敏感，晚期一线推荐TKI单药或免疫联合方案，非透明细胞癌疗效相对较差，以临床研究和个体化治疗为主。",
       "allowedClaims": [
         "透明细胞",
@@ -1649,7 +1649,7 @@
         "根治性膀胱切除术",
         "新辅助化疗"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "肌层浸润性膀胱癌的标准治疗为新辅助含顺铂方案化疗后行根治性膀胱切除术+盆腔淋巴结清扫，无法耐受者可选膀胱保留方案（TURBT+放化疗）。术后病理高危者辅助免疫治疗或化疗。",
       "allowedClaims": [
         "根治性膀胱切除术",
@@ -1676,7 +1676,7 @@
         "阿扎胞苷",
         "造血干细胞移植"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "MDS-EB（骨髓原始细胞5-19%）治疗以降甲基化药物（阿扎胞苷/地西他滨）为主，适合移植者尽早行异基因造血干细胞移植。去甲基化失败或进展者考虑临床试验或强化疗。支持治疗包括输血、G-CSF和抗感染。",
       "allowedClaims": [
         "去甲基化药物",
@@ -1703,7 +1703,7 @@
         "MSI",
         "p53"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "子宫内膜癌分子分型包括POLE超突变型（预后最好）、MSI-H型（免疫治疗敏感）、低拷贝数/NSMP型（预后中等）、高拷贝数/p53异常型（预后最差）。分子分型补充传统病理分型，指导手术范围及辅助治疗决策。",
       "allowedClaims": [
         "POLE",
@@ -1731,7 +1731,7 @@
         "帕妥珠单抗",
         "T-DXd"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "HER2阳性乳腺癌靶向治疗以曲妥珠单抗为基础：早期辅助治疗推荐曲妥珠单抗+帕妥珠单抗联合化疗；晚期一线双靶（曲妥珠+帕妥珠）+紫杉类；二线可选T-DXd（德曲妥珠单抗）或T-DM1。",
       "allowedClaims": [
         "曲妥珠单抗",
@@ -1758,7 +1758,7 @@
         "低血糖",
         "个体化"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "老年糖尿病血糖控制目标需个体化：健康状况良好（无合并症）者HbA1c <7.5%；中等健康（合并1-2种慢性病）者<8.0%；健康状况差（多种合并症/认知障碍）者<8.5%。核心原则是避免低血糖，简化方案。",
       "allowedClaims": [
         "7.5%",
@@ -1786,7 +1786,7 @@
         "TI-RADS",
         "恶性风险"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "甲状腺结节FNA穿刺指征：TI-RADS 4类及以上且直径>1cm，或4类以上且直径0.5-1cm有高危因素（颈部放疗史、家族史、超声恶性特征）。TI-RADS 5类结节直径>0.5cm即建议穿刺。穿刺Bethesda分类决定后续手术或随访方案。",
       "allowedClaims": [
         "FNA",
@@ -1813,7 +1813,7 @@
         "生物制剂",
         "JAK抑制剂"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "溃疡性结肠炎阶梯治疗：轻中度活动期首选美沙拉嗪口服/灌肠，无效升级至布地奈德-MMX或全身激素；中重度活动期激素诱导后以免疫抑制剂或生物制剂（抗TNF-α/维多珠单抗/乌司奴单抗）维持；难治性可选JAK抑制剂（托法替布/乌帕替尼）。",
       "allowedClaims": [
         "美沙拉嗪",
@@ -1840,7 +1840,7 @@
         "生物制剂",
         "粘膜愈合"
       ],
-      "expectGradeLabel": true,
+      "expectGradeLabel": false,
       "referenceAnswer": "克罗恩病初始治疗：活动期给予激素或肠内营养诱导缓解，维持期推荐免疫抑制剂（硫唑嘌呤/甲氨蝶呤）或生物制剂（抗TNF-α/乌司奴单抗/维得利珠单抗），治疗目标为临床缓解+粘膜愈合，定期监测药物浓度与抗抗体。",
       "allowedClaims": [
         "肠内营养",

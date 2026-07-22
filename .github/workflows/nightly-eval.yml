@@ -43,7 +43,7 @@ jobs:
         env:
           CI: "true"
         run: |
-          node scripts/ops/smoke-real-link.mjs --json || {
+          node scripts/ci/smoke/smoke-real-link.mjs --json || {
             code=$?
             if [ "$code" -eq 2 ]; then
               echo "::notice::真实链路冒烟跳过（本 runner 无真库，属预期）"
@@ -57,7 +57,7 @@ jobs:
         env:
           CI: "true"
         run: |
-          node scripts/ops/clarification-real-link.mjs --json || {
+          node scripts/eval/pipeline/clarification-real-link.mjs --json || {
             code=$?
             if [ "$code" -eq 2 ]; then
               echo "::notice::真实多轮澄清跳过（本 runner 无外联/降级，属预期）"
@@ -71,11 +71,11 @@ jobs:
         env:
           CI: "true"
         run: |
-          if [ ! -f scripts/ops/eval-bench-multiturn.mjs ]; then
+          if [ ! -f scripts/eval/pipeline/eval-bench-multiturn.js ]; then
             echo "::notice::多轮评测跳过（脚本不存在，CI Runner 上非必须）"
             exit 0
           fi
-          node scripts/ops/eval-bench-multiturn.mjs --json || {
+          node scripts/eval/pipeline/eval-bench-multiturn.js --json || {
             code=$?
             if [ "$code" -eq 2 ]; then
               echo "::notice::多轮评测跳过（本 runner 无外联/降级，属预期）"
@@ -94,10 +94,10 @@ jobs:
 
       - name: 可观测性聚合（P2-③，零依赖，WARN 不阻断）
         continue-on-error: true
-        run: node scripts/ops/observability-report.mjs
+        run: node scripts/ci/metrics/observability-report.mjs
 
       - name: 反馈闭环消费·派生 gold 候选（P2-②，零依赖；PHI 高危硬失败报警）
-        run: node scripts/ops/consume-feedback.mjs --strict
+        run: node scripts/eval/pipeline/consume-feedback.mjs --strict
 
       - name: 上传观测与候选产物（供人工审阅回灌）
         if: always()

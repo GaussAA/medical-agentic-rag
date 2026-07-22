@@ -79,6 +79,13 @@ jobs:
             echo "::endgroup::"
           done
 
+      - name: 检索召回评测（路由 + KG 覆盖率，零外部依赖）
+        shell: bash
+        run: |
+          echo "::group::retrieval-eval"
+          node tests/eval/retrieval/eval-retrieval.mjs
+          echo "::endgroup::"
+
       - name: 结构与合规门禁（run-all-tests, CI 降级）
         env:
           CI: "true"

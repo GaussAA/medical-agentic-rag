@@ -8,6 +8,61 @@ const MIN_SCORE = 4;
 const W_SINGLE_CHAR = 0.25;
 const ROUTE_CONFIDENCE_MIN = Number(process.env.ROUTE_CONFIDENCE_MIN) || 12;
 
+// ── 疾病类别映射（用于跨领域降权）──
+// key: 疾病简称（必须出现在 query 或 guide 的 disease 字段中才会触发匹配）
+// value: 类别名。同类别不降权，不同类别大幅降权。
+const DZ_CATEGORIES = {
+  // 代谢
+  "糖尿病": "代谢", "糖尿": "代谢", "肥胖": "代谢", "高血糖": "代谢",
+  "高脂": "代谢", "血脂": "代谢", "痛风": "代谢", "高尿酸": "代谢",
+  // 骨骼
+  "骨质疏松": "骨骼", "骨松": "骨骼", "骨折": "骨骼", "骨关节": "骨骼",
+  "关节炎": "骨骼", "关节": "骨骼",
+  // 心血管
+  "高血压": "心血管", "冠心病": "心血管", "心梗": "心血管", "心衰": "心血管",
+  "心力衰竭": "心血管", "心肌梗死": "心血管", "房颤": "心血管", "心律": "心血管",
+  "心绞痛": "心血管", "冠脉": "心血管", "冠状动脉": "心血管",
+  // 脑血管/神经
+  "脑卒中": "神经", "中风": "神经", "卒中": "神经", "癫痫": "神经",
+  "帕金森": "神经", "痴呆": "神经", "脑梗": "神经", "阿兹海默": "神经",
+  // 呼吸
+  "肺炎": "呼吸", "哮喘": "呼吸", "慢阻肺": "呼吸", "COPD": "呼吸",
+  "肺": "呼吸", "肺结核": "呼吸", "结核": "呼吸",
+  // 消化
+  "幽门螺杆菌": "消化", "胃炎": "消化", "溃疡": "消化",
+  "胰腺炎": "消化", "肝硬化": "消化", "肝炎": "消化", "肝": "消化",
+  "胰腺": "消化", "肠": "消化",
+  // 肿瘤
+  "肝癌": "肿瘤", "肺癌": "肿瘤", "乳腺癌": "肿瘤", "胃癌": "肿瘤",
+  "肠癌": "肿瘤", "食管癌": "肿瘤", "甲状腺癌": "肿瘤", "宫颈癌": "肿瘤",
+  "卵巢癌": "肿瘤", "前列腺癌": "肿瘤", "黑色素瘤": "肿瘤", "淋巴瘤": "肿瘤",
+  "白血病": "肿瘤", "癌": "肿瘤", "肿瘤": "肿瘤",
+  // 肾脏
+  "肾病": "肾脏", "肾": "肾脏", "透析": "肾脏", "血透": "肾脏",
+  // 血液
+  "贫血": "血液", "血友病": "血液", "溶血": "血液",
+  // 感染
+  "艾滋病": "感染", "HIV": "感染", "乙肝": "感染", "乙型肝炎": "感染",
+  "新冠": "感染", "冠状病毒": "感染", "病毒": "感染",
+  // 妇产
+  "妊娠": "妇产", "孕妇": "妇产", "产后": "妇产", "胎盘": "妇产",
+  "哺乳": "妇产", "围产": "妇产", "宫颈": "妇产",
+  // 儿科
+  "儿童": "儿科", "小儿": "儿科", "新生儿": "儿科",
+  // 老年
+  "老年": "老年", "高龄": "老年",
+  // 口腔
+  "口腔": "口腔", "牙": "口腔", "颌": "口腔", "唇": "口腔", "腭": "口腔", "舌": "口腔",
+  // 精神
+  "抑郁": "精神", "焦虑": "精神", "失眠": "精神", "精神": "精神",
+  // 皮肤
+  "皮肤": "皮肤", "过敏": "皮肤", "皮炎": "皮肤", "皮疹": "皮肤",
+  // 内分泌
+  "甲状腺": "内分泌", "甲亢": "内分泌", "甲减": "内分泌",
+  // 耳鼻喉
+  "耳": "五官", "鼻": "五官", "喉": "五官", "咽": "五官",
+};
+
 export function routeGuides(query, opts = {}) {
   const { index, topK = 5, useSemantic = true, useCache = true, baseDir, confidenceMin = ROUTE_CONFIDENCE_MIN } = opts;
   const idx = index || loadIndex(baseDir);
@@ -73,6 +128,34 @@ export function routeGuides(query, opts = {}) {
     const isPregnancyWs = /^(ws|gbz)/i.test(title) && /妊娠|孕妇|围产|妇女/.test(title + (info.disease || ""));
     const qMentionsPregnancy = /妊娠|孕妇|围产/.test(qNorm);
     if (isPregnancyWs && !qMentionsPregnancy && matchedKw.length > 0) { score *= 0.6; reasons.push("WS妊娠亚人群非语境降权"); }
+
+    // ── EuropePMCOA 英文指南降权 ──
+    // 该类指南为英文文献的中文结构化摘引，中文标题仅为检索锚点，
+    // 正文为英文原文。当同病种有中文原生指南时不应占 Top1。
+    if (/EuropePMCOA/i.test(title)) {
+      const ci = score;
+      score *= 0.5;
+      reasons.push(`EuropePMCOA英文指南降权(${ci.toFixed(1)}→${score.toFixed(1)})`);
+    }
+
+    // ── 跨疾病领域降权 ──
+    // 若 query 明确提到某疾病、但指南属于完全不同的疾病领域，大幅降权
+    const queryMatchedCats = new Set();
+    const guideMatchedCats = new Set();
+    for (const [dz, cat] of Object.entries(DZ_CATEGORIES)) {
+      if (qNorm.includes(dz)) queryMatchedCats.add(cat);
+      const guideText = (title + " " + (info.disease || "")).toLowerCase();
+      if (guideText.includes(dz)) guideMatchedCats.add(cat);
+    }
+    if (queryMatchedCats.size > 0 && guideMatchedCats.size > 0) {
+      const hasOverlap = [...queryMatchedCats].some((c) => guideMatchedCats.has(c));
+      if (!hasOverlap) {
+        score *= 0.25;
+        reasons.push(
+          `跨领域降权(查${[...queryMatchedCats].join("/")}/文${[...guideMatchedCats].join("/")})`,
+        );
+      }
+    }
 
     if (qYear != null && candYear != null && candYear !== qYear) continue;
     if (score > 0 && hasStrong) {

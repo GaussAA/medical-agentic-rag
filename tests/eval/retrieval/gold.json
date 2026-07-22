@@ -1,0 +1,122 @@
+[
+  {
+    "id": "R01",
+    "query": "糖尿病有哪些特征",
+    "expectedGuide": "中国糖尿病防治指南（2024版）",
+    "expectedKeywords": ["多饮", "多食", "多尿", "体重下降", "空腹血糖", "诊断标准"],
+    "expectedDisease": "糖尿病",
+    "expectedEntityTypes": ["symptom"]
+  },
+  {
+    "id": "R02",
+    "query": "高血压的诊断标准",
+    "expectedGuide": "中国高血压防治指南(2024年修订版)",
+    "expectedKeywords": ["血压", "收缩压", "舒张压", "诊断"],
+    "expectedDisease": "高血压",
+    "expectedEntityTypes": ["examination", "drug"]
+  },
+  {
+    "id": "R03",
+    "query": "肝癌的高危人群筛查",
+    "expectedGuide": "原发性肝癌诊疗指南（2026版）",
+    "expectedKeywords": ["高危人群", "筛查", "超声", "AFP"],
+    "expectedDisease": "原发性肝癌",
+    "expectedEntityTypes": ["examination"]
+  },
+  {
+    "id": "R04",
+    "query": "儿童支原体肺炎的治疗方案",
+    "expectedGuide": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
+    "expectedKeywords": ["阿奇霉素", "大环内酯", "红霉素"],
+    "expectedDisease": "儿童肺炎支原体肺炎",
+    "expectedEntityTypes": ["drug", "treatment"]
+  },
+  {
+    "id": "R05",
+    "query": "脑卒中的临床表现",
+    "expectedGuide": "脑血管病防治指南（2024年版）",
+    "expectedKeywords": ["偏瘫", "言语障碍", "面瘫", "CT"],
+    "expectedDisease": "脑卒中",
+    "expectedEntityTypes": ["symptom"]
+  },
+  {
+    "id": "R06",
+    "query": "慢阻肺的肺功能检查",
+    "expectedGuide": "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
+    "expectedKeywords": ["肺功能", "FEV1", "FVC"],
+    "expectedDisease": "慢性阻塞性肺疾病",
+    "expectedEntityTypes": ["examination"]
+  },
+  {
+    "id": "R07",
+    "query": "骨质疏松的药物治疗",
+    "expectedGuide": "中国人群骨质疏松症风险管理公众指南（2024）",
+    "expectedKeywords": ["双膦酸盐", "钙剂", "维生素D", "骨密度"],
+    "expectedDisease": "骨质疏松症",
+    "expectedEntityTypes": ["drug"]
+  },
+  {
+    "id": "R08",
+    "query": "乳腺癌的筛查方法",
+    "expectedGuide": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
+    "expectedKeywords": ["钼靶", "超声", "乳腺", "筛查"],
+    "expectedDisease": "乳腺癌",
+    "expectedEntityTypes": ["examination"]
+  },
+  {
+    "id": "R09",
+    "query": "心力衰竭的治疗药物",
+    "expectedGuide": "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+    "expectedKeywords": ["ACEI", "ARB", "利尿剂", "β受体阻滞剂"],
+    "expectedDisease": "心力衰竭",
+    "expectedEntityTypes": ["drug"]
+  },
+  {
+    "id": "R10",
+    "query": "慢性乙型肝炎的诊断检查",
+    "expectedGuide": "慢性乙型肝炎防治指南（2022年版）",
+    "expectedKeywords": ["HBsAg", "HBV DNA", "肝功能"],
+    "expectedDisease": "慢性乙型肝炎",
+    "expectedEntityTypes": ["examination"]
+  },
+  {
+    "id": "R11",
+    "query": "肺结核的临床表现",
+    "expectedGuide": "肺结核诊疗规范2020",
+    "expectedKeywords": ["咳嗽", "咳血", "低热", "盗汗"],
+    "expectedDisease": "肺结核",
+    "expectedEntityTypes": ["symptom"]
+  },
+  {
+    "id": "R12",
+    "query": "癫痫的脑电图检查",
+    "expectedGuide": "临床诊疗指南·癫痫病分册",
+    "expectedKeywords": ["脑电图", "EEG", "癫痫"],
+    "expectedDisease": "癫痫",
+    "expectedEntityTypes": ["examination"]
+  },
+  {
+    "id": "R13",
+    "query": "妊娠期高血糖的诊断标准",
+    "expectedGuide": "妊娠期高血糖诊治指南2022_第二部分",
+    "expectedKeywords": ["空腹血糖", "OGTT", "妊娠"],
+    "expectedDisease": "妊娠期高血糖",
+    "expectedEntityTypes": ["examination"]
+  },
+  {
+    "id": "R14",
+    "query": "严重过敏反应的抢救流程",
+    "expectedGuide": "严重过敏反应诊断和临床管理专家共识2025",
+    "expectedKeywords": ["肾上腺素", "过敏", "抢救"],
+    "expectedDisease": "严重过敏反应",
+    "expectedEntityTypes": ["treatment", "drug"]
+  },
+  {
+    "id": "R15",
+    "query": "老年人多重用药注意事项",
+    "expectedGuide": "老年人多重用药安全管理专家共识",
+    "expectedKeywords": ["多重用药", "老年人", "药物相互作用"],
+    "expectedDisease": "老年人多重用药",
+    "expectedEntityTypes": ["riskFactor"]
+  }
+]

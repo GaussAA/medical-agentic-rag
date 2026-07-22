@@ -180,6 +180,147 @@ async function main() {
     const key = `${e.disease}|${e.entityType}|${e.entityName}|${e.relation}`;
     if (!unique.has(key)) unique.set(key, e);
   }
+  // ── 规则增强：注入已知临床实体，补 LLM 抽取盲区 ──
+  const KNOWN_ENTITIES = [
+    // 糖尿病
+    { disease: "糖尿病", entityType: "symptom", entityName: "多饮（烦渴）", relation: "has_symptom" },
+    { disease: "糖尿病", entityType: "symptom", entityName: "多食", relation: "has_symptom" },
+    { disease: "糖尿病", entityType: "symptom", entityName: "多尿", relation: "has_symptom" },
+    { disease: "糖尿病", entityType: "symptom", entityName: "体重下降", relation: "has_symptom" },
+    { disease: "糖尿病", entityType: "symptom", entityName: "视力模糊", relation: "has_symptom" },
+    { disease: "糖尿病", entityType: "symptom", entityName: "伤口愈合缓慢", relation: "has_symptom" },
+    { disease: "糖尿病", entityType: "examination", entityName: "空腹血糖", relation: "diagnosed_by" },
+    { disease: "糖尿病", entityType: "examination", entityName: "OGTT 2小时血糖", relation: "diagnosed_by" },
+    { disease: "糖尿病", entityType: "examination", entityName: "糖化血红蛋白（HbA1c）", relation: "diagnosed_by" },
+    { disease: "糖尿病", entityType: "drug", entityName: "二甲双胍", relation: "treated_with" },
+    { disease: "糖尿病", entityType: "drug", entityName: "胰岛素", relation: "treated_with" },
+    { disease: "糖尿病", entityType: "drug", entityName: "SGLT2抑制剂", relation: "treated_with" },
+    { disease: "糖尿病", entityType: "drug", entityName: "GLP-1受体激动剂", relation: "treated_with" },
+    { disease: "糖尿病", entityType: "drug", entityName: "DPP-4抑制剂", relation: "treated_with" },
+    { disease: "糖尿病", entityType: "riskFactor", entityName: "超重/肥胖", relation: "has_risk" },
+    { disease: "糖尿病", entityType: "riskFactor", entityName: "家族史", relation: "has_risk" },
+    { disease: "糖尿病", entityType: "riskFactor", entityName: "缺乏运动", relation: "has_risk" },
+    { disease: "糖尿病", entityType: "riskFactor", entityName: "高龄", relation: "has_risk" },
+    { disease: "糖尿病", entityType: "treatment", entityName: "医学营养治疗", relation: "treated_by" },
+    { disease: "糖尿病", entityType: "treatment", entityName: "运动治疗", relation: "treated_by" },
+    // 高血压
+    { disease: "高血压", entityType: "symptom", entityName: "头痛", relation: "has_symptom" },
+    { disease: "高血压", entityType: "symptom", entityName: "头晕", relation: "has_symptom" },
+    { disease: "高血压", entityType: "symptom", entityName: "心悸", relation: "has_symptom" },
+    { disease: "高血压", entityType: "symptom", entityName: "颈项僵硬", relation: "has_symptom" },
+    { disease: "高血压", entityType: "examination", entityName: "诊室血压测量", relation: "diagnosed_by" },
+    { disease: "高血压", entityType: "examination", entityName: "动态血压监测", relation: "diagnosed_by" },
+    { disease: "高血压", entityType: "examination", entityName: "家庭自测血压", relation: "diagnosed_by" },
+    { disease: "高血压", entityType: "drug", entityName: "ACEI", relation: "treated_with" },
+    { disease: "高血压", entityType: "drug", entityName: "ARB", relation: "treated_with" },
+    { disease: "高血压", entityType: "drug", entityName: "钙通道阻滞剂（CCB）", relation: "treated_with" },
+    { disease: "高血压", entityType: "drug", entityName: "噻嗪类利尿剂", relation: "treated_with" },
+    { disease: "高血压", entityType: "riskFactor", entityName: "高盐饮食", relation: "has_risk" },
+    { disease: "高血压", entityType: "riskFactor", entityName: "肥胖", relation: "has_risk" },
+    { disease: "高血压", entityType: "riskFactor", entityName: "饮酒", relation: "has_risk" },
+    // 冠心病
+    { disease: "冠心病", entityType: "symptom", entityName: "胸痛（心绞痛）", relation: "has_symptom" },
+    { disease: "冠心病", entityType: "symptom", entityName: "胸闷", relation: "has_symptom" },
+    { disease: "冠心病", entityType: "symptom", entityName: "气促", relation: "has_symptom" },
+    { disease: "冠心病", entityType: "examination", entityName: "心电图（ECG）", relation: "diagnosed_by" },
+    { disease: "冠心病", entityType: "examination", entityName: "冠状动脉造影", relation: "diagnosed_by" },
+    { disease: "冠心病", entityType: "examination", entityName: "心肌酶谱", relation: "diagnosed_by" },
+    { disease: "冠心病", entityType: "drug", entityName: "阿司匹林", relation: "treated_with" },
+    { disease: "冠心病", entityType: "drug", entityName: "他汀类", relation: "treated_with" },
+    { disease: "冠心病", entityType: "drug", entityName: "硝酸酯类", relation: "treated_with" },
+    { disease: "冠心病", entityType: "riskFactor", entityName: "高血压", relation: "has_risk" },
+    { disease: "冠心病", entityType: "riskFactor", entityName: "高脂血症", relation: "has_risk" },
+    { disease: "冠心病", entityType: "riskFactor", entityName: "吸烟", relation: "has_risk" },
+    { disease: "冠心病", entityType: "riskFactor", entityName: "糖尿病", relation: "has_risk" },
+    // 慢阻肺（COPD）
+    { disease: "慢性阻塞性肺疾病", entityType: "symptom", entityName: "慢性咳嗽", relation: "has_symptom" },
+    { disease: "慢性阻塞性肺疾病", entityType: "symptom", entityName: "咳痰", relation: "has_symptom" },
+    { disease: "慢性阻塞性肺疾病", entityType: "symptom", entityName: "气短/呼吸困难", relation: "has_symptom" },
+    { disease: "慢性阻塞性肺疾病", entityType: "examination", entityName: "肺功能检查", relation: "diagnosed_by" },
+    { disease: "慢性阻塞性肺疾病", entityType: "examination", entityName: "胸部X线", relation: "diagnosed_by" },
+    { disease: "慢性阻塞性肺疾病", entityType: "riskFactor", entityName: "吸烟", relation: "has_risk" },
+    { disease: "慢性阻塞性肺疾病", entityType: "riskFactor", entityName: "空气污染", relation: "has_risk" },
+    // 脑卒中
+    { disease: "脑卒中", entityType: "symptom", entityName: "偏瘫", relation: "has_symptom" },
+    { disease: "脑卒中", entityType: "symptom", entityName: "言语障碍", relation: "has_symptom" },
+    { disease: "脑卒中", entityType: "symptom", entityName: "面部歪斜", relation: "has_symptom" },
+    { disease: "脑卒中", entityType: "symptom", entityName: "意识障碍", relation: "has_symptom" },
+    { disease: "脑卒中", entityType: "examination", entityName: "头颅CT", relation: "diagnosed_by" },
+    { disease: "脑卒中", entityType: "examination", entityName: "头颅MRI", relation: "diagnosed_by" },
+    { disease: "脑卒中", entityType: "drug", entityName: "rt-PA溶栓", relation: "treated_with" },
+    { disease: "脑卒中", entityType: "drug", entityName: "抗血小板药", relation: "treated_with" },
+    { disease: "脑卒中", entityType: "riskFactor", entityName: "高血压", relation: "has_risk" },
+    { disease: "脑卒中", entityType: "riskFactor", entityName: "房颤", relation: "has_risk" },
+    // 肺炎
+    { disease: "肺炎", entityType: "symptom", entityName: "发热", relation: "has_symptom" },
+    { disease: "肺炎", entityType: "symptom", entityName: "咳嗽", relation: "has_symptom" },
+    { disease: "肺炎", entityType: "symptom", entityName: "咳痰", relation: "has_symptom" },
+    { disease: "肺炎", entityType: "symptom", entityName: "胸痛", relation: "has_symptom" },
+    { disease: "肺炎", entityType: "examination", entityName: "胸部X线", relation: "diagnosed_by" },
+    { disease: "肺炎", entityType: "examination", entityName: "血常规", relation: "diagnosed_by" },
+    { disease: "肺炎", entityType: "examination", entityName: "降钙素原（PCT）", relation: "diagnosed_by" },
+    // 骨质疏松
+    { disease: "骨质疏松症", entityType: "symptom", entityName: "骨痛", relation: "has_symptom" },
+    { disease: "骨质疏松症", entityType: "symptom", entityName: "身材变矮", relation: "has_symptom" },
+    { disease: "骨质疏松症", entityType: "symptom", entityName: "驼背", relation: "has_symptom" },
+    { disease: "骨质疏松症", entityType: "examination", entityName: "骨密度测定（DXA）", relation: "diagnosed_by" },
+    { disease: "骨质疏松症", entityType: "drug", entityName: "双膦酸盐", relation: "treated_with" },
+    { disease: "骨质疏松症", entityType: "drug", entityName: "钙剂", relation: "treated_with" },
+    { disease: "骨质疏松症", entityType: "drug", entityName: "维生素D", relation: "treated_with" },
+    { disease: "骨质疏松症", entityType: "riskFactor", entityName: "绝经", relation: "has_risk" },
+    { disease: "骨质疏松症", entityType: "riskFactor", entityName: "高龄", relation: "has_risk" },
+    { disease: "骨质疏松症", entityType: "riskFactor", entityName: "低体重", relation: "has_risk" },
+    // 心衰
+    { disease: "心力衰竭", entityType: "symptom", entityName: "呼吸困难", relation: "has_symptom" },
+    { disease: "心力衰竭", entityType: "symptom", entityName: "水肿", relation: "has_symptom" },
+    { disease: "心力衰竭", entityType: "symptom", entityName: "乏力", relation: "has_symptom" },
+    { disease: "心力衰竭", entityType: "examination", entityName: "超声心动图", relation: "diagnosed_by" },
+    { disease: "心力衰竭", entityType: "examination", entityName: "BNP/NT-proBNP", relation: "diagnosed_by" },
+    { disease: "心力衰竭", entityType: "drug", entityName: "ACEI/ARB", relation: "treated_with" },
+    { disease: "心力衰竭", entityType: "drug", entityName: "β受体阻滞剂", relation: "treated_with" },
+    { disease: "心力衰竭", entityType: "drug", entityName: "利尿剂", relation: "treated_with" },
+    // 乙肝
+    { disease: "慢性乙型肝炎", entityType: "symptom", entityName: "乏力", relation: "has_symptom" },
+    { disease: "慢性乙型肝炎", entityType: "symptom", entityName: "食欲减退", relation: "has_symptom" },
+    { disease: "慢性乙型肝炎", entityType: "symptom", entityName: "黄疸", relation: "has_symptom" },
+    { disease: "慢性乙型肝炎", entityType: "examination", entityName: "HBsAg检测", relation: "diagnosed_by" },
+    { disease: "慢性乙型肝炎", entityType: "examination", entityName: "HBV DNA检测", relation: "diagnosed_by" },
+    { disease: "慢性乙型肝炎", entityType: "examination", entityName: "肝功能检测", relation: "diagnosed_by" },
+    { disease: "慢性乙型肝炎", entityType: "drug", entityName: "恩替卡韦", relation: "treated_with" },
+    { disease: "慢性乙型肝炎", entityType: "drug", entityName: "替诺福韦", relation: "treated_with" },
+    { disease: "慢性乙型肝炎", entityType: "riskFactor", entityName: "母婴传播", relation: "has_risk" },
+    { disease: "慢性乙型肝炎", entityType: "riskFactor", entityName: "血液传播", relation: "has_risk" },
+  ];
+
+  // 合并已知实体（去重）
+  const entityDiseaseNames = new Map();
+  for (const e of allEntities) {
+    const key = e.disease.toLowerCase();
+    entityDiseaseNames.set(key, e.disease); // 保留原始大小写
+  }
+
+  for (const ke of KNOWN_ENTITIES) {
+    // 将已知实体映射到 KG 中实际使用的疾病名称
+    const diseaseNorm = ke.disease.toLowerCase();
+    // 找精确匹配
+    let matchedDisease = null;
+    for (const [normKey, origName] of entityDiseaseNames) {
+      if (normKey === diseaseNorm || normKey.includes(diseaseNorm) || diseaseNorm.includes(normKey)) {
+        matchedDisease = origName;
+        break;
+      }
+    }
+    const entry = {
+      disease: matchedDisease || ke.disease,
+      entityType: ke.entityType,
+      entityName: ke.entityName,
+      relation: ke.relation,
+      source: "临床知识增强",
+    };
+    const key = `${entry.disease}|${entry.entityType}|${entry.entityName}|${entry.relation}`;
+    if (!unique.has(key)) unique.set(key, entry);
+  }
+
   const uniqueEntities = Array.from(unique.values());
 
   const graph = {

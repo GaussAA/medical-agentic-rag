@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-21T10:45:03.252Z",
+  "generatedAt": "2026-07-22T13:33:07.138Z",
   "totalGuides": 182,
-  "totalKeywords": 930,
+  "totalKeywords": 929,
   "guideMap": {
     "1.2026年国家医疗质量安全改进目标": {
       "id": "1.2026年国家医疗质量安全改进目标",
@@ -1464,16 +1464,16 @@
     },
     "临床诊疗指南·癫痫病分册": {
       "id": "临床诊疗指南·癫痫病分册",
-      "disease": "临床",
+      "disease": "癫痫",
       "version": null,
-      "normalizedDisease": "临床",
+      "normalizedDisease": "癫痫",
       "audience": null,
       "org": null,
       "deprecated": false,
       "supersededBy": null,
       "keywords": [
         "临床诊疗指南·癫痫病分册",
-        "临床"
+        "癫痫"
       ],
       "sectionCount": 536,
       "keyParagraphCount": 0
@@ -4247,7 +4247,8 @@
       "癫痫诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
     ],
     "癫痫": [
-      "癫痫诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
+      "癫痫诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
+      "临床诊疗指南·癫痫病分册"
     ],
     "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": [
       "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）"
@@ -4702,9 +4703,6 @@
       "临床检验专业医疗质量控制指标（2025年版）"
     ],
     "临床诊疗指南·癫痫病分册": [
-      "临床诊疗指南·癫痫病分册"
-    ],
-    "临床": [
       "临床诊疗指南·癫痫病分册"
     ],
     "乙烯醇均聚物等2种食品相关产品新品种": [

@@ -1,5 +1,5 @@
 {
-  "date": "2026-07-22T13:34:39.417Z",
+  "date": "2026-07-22T16:15:05.824Z",
   "total": 15,
   "routeTop1Accuracy": 0.9333333333333333,
   "routeTop3Accuracy": 1,
@@ -9,7 +9,7 @@
     "kgCoverageMin": 0.85
   },
   "passed": true,
-  "averageMs": 685.6666666666666,
+  "averageMs": 39,
   "results": [
     {
       "id": "R01",
@@ -22,7 +22,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 727
+      "ms": 67
     },
     {
       "id": "R02",
@@ -35,7 +35,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 748
+      "ms": 39
     },
     {
       "id": "R03",
@@ -48,7 +48,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 685
+      "ms": 40
     },
     {
       "id": "R04",
@@ -61,7 +61,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 664
+      "ms": 40
     },
     {
       "id": "R05",
@@ -74,7 +74,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 657
+      "ms": 36
     },
     {
       "id": "R06",
@@ -87,7 +87,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 713
+      "ms": 42
     },
     {
       "id": "R07",
@@ -100,7 +100,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 729
+      "ms": 36
     },
     {
       "id": "R08",
@@ -113,7 +113,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 672
+      "ms": 37
     },
     {
       "id": "R09",
@@ -126,7 +126,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 694
+      "ms": 34
     },
     {
       "id": "R10",
@@ -139,7 +139,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 660
+      "ms": 39
     },
     {
       "id": "R11",
@@ -152,7 +152,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 651
+      "ms": 34
     },
     {
       "id": "R12",
@@ -165,7 +165,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 686
+      "ms": 39
     },
     {
       "id": "R13",
@@ -178,7 +178,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 666
+      "ms": 36
     },
     {
       "id": "R14",
@@ -191,7 +191,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 663
+      "ms": 33
     },
     {
       "id": "R15",
@@ -204,7 +204,7 @@
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 670
+      "ms": 33
     }
   ]
 }

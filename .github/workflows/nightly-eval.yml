@@ -129,7 +129,7 @@ jobs:
         id: gate
         if: ${{ steps.evalcheck.outputs.skip == '0' }}
         run: |
-          node tests/eval-ci-gate.mjs --report=tests/reports/answer-quality-report.json --baseline=tests/reports/baseline.json --compare; code=$?; if [ $code -eq 0 ] || [ $code -eq 2 ]; then echo "PASS=true" >> $GITHUB_OUTPUT; else echo "PASS=false" >> $GITHUB_OUTPUT; exit 1; fi
+          node tests/eval-ci-gate.mjs --report=tests/reports/answer-quality-report.json --baseline=tests/reports/baseline.json --compare && rc=0 || rc=$?; if [ "$rc" -eq 0 ] || [ "$rc" -eq 2 ]; then echo "PASS=true" >> $GITHUB_OUTPUT; else echo "PASS=false" >> $GITHUB_OUTPUT; exit 1; fi
 
       - name: 更新基线 JSON
         if: steps.gate.outputs.PASS == 'true'

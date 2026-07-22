@@ -316,6 +316,41 @@ export default function factory(pi: ExtensionAPI) {
   pi.on("context", async (event) => {
     try {
       const state = await loadState();
+
+      // ── 对话状态陈旧门控 ──
+      // 若状态超过 30 分钟未更新，且当前问题未引用前序主诉，
+      // 视为"新话题"，重置为默认状态（不清除已问列表，保留对话连贯性）
+      const now = Date.now();
+      const stateAge = state.updatedAt ? now - new Date(state.updatedAt).getTime() : 0;
+      if (stateAge > 30 * 60 * 1000 && state.chiefComplaint) {
+        // 检查当前用户问题是否引用前序主诉
+        const msgs: any[] = (event && event.messages) || [];
+        const lastUserMsg = msgs.slice().reverse().find((m) => m.role === "user");
+        const userText = lastUserMsg
+          ? (typeof lastUserMsg.content === "string"
+              ? lastUserMsg.content
+              : Array.isArray(lastUserMsg.content)
+                ? lastUserMsg.content.filter((c: any) => c.type === "text").map((c: any) => c.text).join(" ")
+                : "")
+          : "";
+
+        // 用户问题未显式提到前序主诉关键词 → 视为新话题
+        const prevComplaint = state.chiefComplaint;
+        const stillRelevant = prevComplaint.length > 0 && userText.includes(prevComplaint.slice(0, 6));
+        if (!stillRelevant) {
+          // 重置但保留 askedQuestions（部分跨话题仍相关）
+          state.chiefComplaint = undefined;
+          state.bodyPart = undefined;
+          state.population = undefined;
+          state.diseaseStage = undefined;
+          state.yearVersion = undefined;
+          state.currentGuide = undefined;
+          state.audience = undefined;
+          // 持久化重置
+          try { await saveState(state); } catch { /* 静默 */ }
+        }
+      }
+
       const injected = formatState(state);
       if (!injected) return; // 无状态不注入
 

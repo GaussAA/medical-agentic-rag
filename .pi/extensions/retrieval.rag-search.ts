@@ -13,6 +13,9 @@ import { rrfFusion } from "./lib/retrieval-router.mjs";
 import { generateQueryVariants } from "./lib/query-transform.mjs";
 // 检索动作落入防篡改审计哈希链（仅记字段名，不记查询原文——合规红线）
 import { auditChainLog } from "./lib/audit-chain.mjs";
+// P5：检索缓存（内存 + 文件，跨进程 LRU，10 分钟 TTL）
+// @ts-ignore
+import { cacheGet, cacheSet } from "./lib/retrieval-cache.mjs";
 import { logRetrieval, logEngineFallback } from "./lib/observability.mjs";
 // @ts-ignore —— 诊断统一出口，例程诊断落 logs/ 不污染终端
 import { diag } from "./lib/diagnostic-log.mjs";
@@ -39,7 +42,7 @@ import { normalizeParams } from "./lib/parse-params.mjs";
  */
 
 // 防止 LLM 反复重搜的调用计数硬上限（代码层禁止，不依赖 LLM 自觉）
-const MAX_RAG_SEARCH_CALLS = 2;
+const MAX_RAG_SEARCH_CALLS = 3;
 let _callCount = 0;
 let _callKey = "";
 
@@ -62,14 +65,14 @@ export default function (pi: ExtensionAPI) {
         }
       }
     } catch { /* 不影响主流程 */ }
-    // 注入工具禁令：knowledge_search / knowledge_symbol_search 已停用（仅保留 rag_search / guide_finder）
-    // 因 Pi 不允许同名工具覆盖，无法从工具注册层面禁掉 pi-knowledge 的 knowledge_search，
+    // 注入工具禁令：旧版检索工具已由 retrieve 替代
+    // 因 Pi 不允许同名工具覆盖，无法从工具注册层面禁掉旧工具，
     // 故在 context 层注入系统指令，确保 LLM 每轮调用前都看到禁令。
     return {
       messages: [
         {
           role: "system",
-          content: "⚠️ 工具使用禁令：knowledge_search、knowledge_symbol_search 等旧版检索工具已停用，**严禁调用**。所有检索请使用 rag_search 或 guide_finder。",
+          content: "⚠️ 工具使用禁令：knowledge_search、knowledge_symbol_search、guide_finder、rag_search、kg_search 等旧版检索工具已停用，**严禁调用**。所有检索请统一使用 **retrieve** 工具（一次调用返回完整结果）。",
         },
         ...(event.messages || []),
       ],
@@ -150,8 +153,21 @@ export default function (pi: ExtensionAPI) {
       } catch {
         /* 审计写入失败绝不阻断检索 */
       }
-      // P0 性能优化：默认 fast（BM25+路由，<1s），dense 模式由 LLM 按需指定
-      const mode = typeof p.mode === "string" ? p.mode : "fast";
+      // 自动选择最佳模式：LLM 未指定时根据查询类型智能切换
+      // fast（BM25+路由，<1s）—— 通用查询
+      // hybrid（e5 稠密+交叉编码重排，2-5s）—— 诊断标准/治疗路径等结构化信息
+      const AUTO_DENSE_PATTERNS = [
+        /诊断标准|诊断|实验室|检查|分级|分型|分期|分类/,
+        /治疗路径|治疗流程|治疗方案|用药方案|阶梯|首选|一线|二线/,
+        /剂量|用量|mg|每日|bid|tid|qd/,
+        /禁忌|不良反应|副作用|警告|注意/,
+      ];
+      let mode = typeof p.mode === "string" ? p.mode : "fast";
+      if (typeof p.mode !== "string") {
+        // LLM 未指定模式 → 自动判断
+        const needsDense = AUTO_DENSE_PATTERNS.some((re) => re.test(query));
+        if (needsDense) { mode = "hybrid"; }
+      }
       const telemetry: Record<string, any> = {
         query: query.slice(0, 60),
         mode,
@@ -159,6 +175,15 @@ export default function (pi: ExtensionAPI) {
         limit,
         t0,
       };
+
+      // ── P5 缓存检查 ──
+      const cacheKey = `rag:${mode}:${limit}:${query}`;
+      const cachedOut = cacheGet(cacheKey);
+      if (cachedOut) {
+        telemetry.cacheHit = true;
+        diag.info("rag_search", `缓存命中: "${query.slice(0, 40)}"`);
+        return cachedOut;
+      }
 
       // 查询改写优化：先快速单路 BM25 试水温，仅低置信时升级为多路 RRF 融合
       // 避免每次检索都等 8s 变体生成（大多数正常查询单路 BM25 <1s 即可出结果）
@@ -172,20 +197,57 @@ export default function (pi: ExtensionAPI) {
         // dense 模式不变：引擎端仅用原始 query（避免 3×引擎开销）
         out = searchKnowledge(query, { limit, kbId });
       } else {
-        // Fast path：单路 BM25 试水温（<1s）
+        // Fast path：单路 BM25 试水温 + 自动 MultiQuery 提升单次检索召回
+        // 主动生成查询变体并 RRF 融合，让 1 次调用覆盖多角度，减少 LLM 反复重搜
         out = searchKnowledge(query, { limit, kbId });
         telemetry.bm25Ms = +(performance.now() - t1).toFixed(1);
 
-        // 仅当低置信且结果不足时升级为多路变体 + RRF 融合
-        if (out && out.lowConfidence && (!out.results || out.results.length < 3)) {
+        const fastResults = out?.results || [];
+        let didMultiQuery = false;
+
+        // 始终尝试快速 MultiQuery 提升召回广度（短超时 4s，不阻塞主流程）
+        try {
+          const variants = await generateQueryVariants(query, { timeoutMs: 4000 });
+          if (variants.length > 1) {
+            searchQueries = variants;
+            telemetry.queryVariants = variants.length;
+            telemetry.queriesUsed = variants.map((v: string) => v.slice(0, 30));
+
+            // 多路 BM25 + RRF 融合
+            const t1b = performance.now();
+            const bm25Results = [fastResults];
+            for (const q of variants.slice(1)) {
+              const r = searchKnowledge(q, { limit, kbId });
+              if (r && r.results && r.results.length) bm25Results.push(r.results);
+            }
+            if (bm25Results.length > 1) {
+              const fused = rrfFusion(bm25Results, 60, limit);
+              const base = out; // 保留原始元数据
+              out = {
+                results: fused,
+                routedTitles: base?.routedTitles || [],
+                kbFiles: base?.kbFiles || [],
+                constrained: base?.constrained || false,
+                lowConfidence: base?.lowConfidence || false,
+                topScore: base?.topScore || 0,
+                totalFiles: base?.totalFiles || 0,
+              };
+              out.lowConfidence = base?.lowConfidence || false;
+              telemetry.bm25Ms = +(performance.now() - t1b).toFixed(1);
+              didMultiQuery = true;
+            }
+          }
+        } catch (e: any) {
+          diag.info("rag_search", "MultiQuery 降级: " + (e?.message || e));
+        }
+
+        // 若 MultiQuery 未生效且低置信，尝试二次改写（老逻辑兜底）
+        if (!didMultiQuery && out && out.lowConfidence && fastResults.length < 3) {
           try {
             const variants = await generateQueryVariants(query, { timeoutMs: 8000 });
             if (variants.length > 1) {
               searchQueries = variants;
-              telemetry.queryVariants = variants.length;
-              telemetry.queriesUsed = variants.map((v: string) => v.slice(0, 30));
-              // 多路 BM25 + RRF 融合
-              const t1b = performance.now();
+              const t1c = performance.now();
               const bm25Results = [];
               for (const q of searchQueries) {
                 const r = searchKnowledge(q, { limit, kbId });
@@ -193,7 +255,7 @@ export default function (pi: ExtensionAPI) {
               }
               if (bm25Results.length > 1) {
                 const fused = rrfFusion(bm25Results, 60, limit);
-                const base = searchKnowledge(searchQueries[0], { limit: 1, kbId });
+                const base = out;
                 out = {
                   results: fused,
                   routedTitles: base?.routedTitles || [],
@@ -203,13 +265,13 @@ export default function (pi: ExtensionAPI) {
                   topScore: base?.topScore || 0,
                   totalFiles: base?.totalFiles || 0,
                 };
-                telemetry.bm25Ms = +(performance.now() - t1b).toFixed(1);
+                telemetry.bm25Ms = +(performance.now() - t1c).toFixed(1);
               }
             }
-          } catch (e: any) {
-            diag.info("rag_search", "查询改写降级: " + (e?.message || e));
+          } catch {
+            /* 兜底失败，保持原始结果 */
           }
-        } else {
+        } else if (!didMultiQuery) {
           telemetry.bm25Ms = +(performance.now() - t1).toFixed(1);
         }
       }
@@ -310,27 +372,20 @@ export default function (pi: ExtensionAPI) {
       headerLines.push("");
       const header = headerLines.join("\n");
 
-      if (src.results.length === 0) {
-        return {
-          content: [
-            {
-              type: "text",
-              text:
-                header +
-                `未检索到与"${query}"相关的指南内容。可能该主题尚未收录，或请换用更具体的查询词。`,
-            },
-          ],
-        };
-      }
+      const resultContent = header + (src.results.length === 0
+        ? `未检索到与"${query}"相关的指南内容。可能该主题尚未收录，或请换用更具体的查询词。`
+        : src.results
+            .map((r: any, i: number) => {
+              const cid = r.chunk_id ? ` chunk=${r.chunk_id}` : "";
+              return `[${i + 1}] ${r.file_path} (score: ${r.score}${r.hitCount ? `, hits:${r.hitCount}` : ""}${cid})\n${r.snippet}`;
+            })
+            .join("\n\n"));
 
-      const body = src.results
-        .map((r: any, i: number) => {
-          const cid = r.chunk_id ? ` chunk=${r.chunk_id}` : "";
-          return `[${i + 1}] ${r.file_path} (score: ${r.score}${r.hitCount ? `, hits:${r.hitCount}` : ""}${cid})\n${r.snippet}`;
-        })
-        .join("\n\n");
+      // P5 缓存写入（含 header 的完整结果，5 分钟 TTL）
+      const result = { content: [{ type: "text", text: resultContent }] };
+      try { cacheSet(cacheKey, result, 300_000); } catch { /* 缓存写入失败不阻断 */ }
 
-      return { content: [{ type: "text", text: header + body }] };
+      return result;
     },
   });
 }

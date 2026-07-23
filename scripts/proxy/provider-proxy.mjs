@@ -29,21 +29,52 @@ const PORT = parseInt(process.argv.find((a) => a.startsWith("--port="))?.split("
 const PI_DIR = join(process.cwd(), ".pi");
 const FAILOVER_FILE = join(PI_DIR, "failover-selection.json");
 
-// Provider 注册表（复用 provider-health.mjs 定义，独立副本防循环依赖）
-// ⚠️ 优先级 = 本地优先 → 成本优先：P0 本地 LLM → P1 免费 → P2 免费深搜 → P3 agnes-2.0 → P4 付费 deepseek
-// 烟雾实测(2026-07-15)：agnes-2.5-flash 不可达(503)，不纳入
-const PROVIDERS = [
-  // P0: 本地私有 LLM（LM Studio / Ollama / llama.cpp），最高优先级
-  { provider: "local", model: "google/gemma-4-e2b", baseUrl: "http://localhost:1234/v1", authEnv: null, priority: 0, label: "Local Gemma-4-E2B (私有)" },
-  // P1: sensenova 免费主力
-  { provider: "sensenova", model: "sensenova-6.7-flash-lite", baseUrl: "https://token.sensenova.cn/v1", authEnv: "SENSENOVA_API_KEY", priority: 1, label: "SenseNova 6.7 Flash Lite" },
-  // P2: sensenova deepseek 免费通道
-  { provider: "sensenova", model: "deepseek-v4-flash", baseUrl: "https://token.sensenova.cn/v1", authEnv: "SENSENOVA_API_KEY", priority: 2, label: "DeepSeek V4 Flash (免费通道)" },
-  // P3: Agnes 2.0 Flash（免费，1M 上下文）
-  { provider: "agnes", model: "agnes-2.0-flash", baseUrl: "https://apihub.agnes-ai.com/v1", authEnv: "AGNES_API_KEY", priority: 3, label: "Agnes 2.0 Flash (免费)" },
-  // P4: deepseek 付费（末位兜底）
-  { provider: "deepseek", model: "deepseek-v4-flash", baseUrl: "https://api.deepseek.com", authEnv: "DEEPSEEK_API_KEY", priority: 4, label: "⚠️ DeepSeek V4 Flash (付费)" },
+// Provider 注册表（Pool → Chain 分层模型）
+//
+// Pool: 同类型 providers（如同为 sensenova 免费通道的不同 Key），
+//       内部 round-robin 轮换，均不可用时标记 Pool 耗尽。
+// Chain: 有序 Pool 列表，上一级 Pool 耗尽时自动落入下一级。
+//
+// ⚠️ 优先级 = 免费优先 → 成本优先
+// Chain 1: 本地私有 LLM（免费，最高优先级）
+// Chain 2: sensenova 免费通道（多 Key 轮询 + deepseek 代理）
+// Chain 3: Agnes 免费 Flash
+// Chain 4: DeepSeek 付费（末位兜底）
+const POOLS = [
+  {
+    name: "local-free",
+    chain: 1,
+    members: [
+      { provider: "local", model: "google/gemma-4-e2b", baseUrl: "http://localhost:1234/v1", authEnv: null, label: "Local Gemma-4-E2B (私有)" },
+    ],
+  },
+  {
+    name: "sensenova-free",
+    chain: 2,
+    multiKey: true, // 支持多 Key round-robin
+    members: [
+      { provider: "sensenova", model: "sensenova-6.7-flash-lite", baseUrl: "https://token.sensenova.cn/v1", authEnv: "SENSENOVA_API_KEY", label: "SenseNova 6.7 Flash Lite" },
+      { provider: "sensenova", model: "deepseek-v4-flash", baseUrl: "https://token.sensenova.cn/v1", authEnv: "SENSENOVA_API_KEY", label: "DeepSeek V4 Flash (免费通道)" },
+    ],
+  },
+  {
+    name: "agnes-free",
+    chain: 3,
+    members: [
+      { provider: "agnes", model: "agnes-2.0-flash", baseUrl: "https://apihub.agnes-ai.com/v1", authEnv: "AGNES_API_KEY", label: "Agnes 2.0 Flash (免费)" },
+    ],
+  },
+  {
+    name: "deepseek-paid",
+    chain: 4,
+    members: [
+      { provider: "deepseek", model: "deepseek-v4-flash", baseUrl: "https://api.deepseek.com", authEnv: "DEEPSEEK_API_KEY", label: "⚠️ DeepSeek V4 Flash (付费)" },
+    ],
+  },
 ];
+
+// 展平成员列表（保持向后兼容）
+const PROVIDERS = POOLS.flatMap((p) => p.members.map((m) => ({ ...m, pool: p.name, chain: p.chain, multiKey: !!p.multiKey })));
 
 const PROBE_TIMEOUT = 3000; // 运行时健康探针超时：决定 Provider 切换灵敏度（短，避免瞬时抖动误切）；与 smoke-providers 的 8000ms（上线冷加载冒烟）用途不同，非一致性 bug
 const REQUEST_TIMEOUT = 60000;
@@ -122,18 +153,19 @@ async function probeProvider(p) {
   }
 }
 
-/** 探测全部 Provider，返回按优先级排序的健康列表。 */
+/** 探测全部 Provider，返回按链+池排序的健康列表。 */
 async function probeAll() {
   const results = await Promise.all(PROVIDERS.map(probeProvider));
-  return results.filter((r) => r.healthy).sort((a, b) => a.priority - b.priority);
+  return results.filter((r) => r.healthy).sort((a, b) => a.chain - b.chain || (a.pool || "").localeCompare(b.pool || ""));
 }
 
-/** 选择最优 Provider。优先使用当前（未降级），否则选第一个健康的。 */
+/** 选择最优 Provider。池内 round-robin，池耗尽后跨链回退。 */
 async function selectProvider(forceRefresh = false) {
   // 先从 failover 文件读取当前选择
   if (!forceRefresh && existsSync(FAILOVER_FILE)) {
     try {
       const cached = JSON.parse(readFileSync(FAILOVER_FILE, "utf-8"));
+      // 在 PROVIDERS 中查找匹配的（忽略 pool 字段）
       const p = PROVIDERS.find((p) => p.provider === cached.provider && p.model === cached.model);
       if (p && !cached.degraded) {
         currentProvider = p;
@@ -143,13 +175,15 @@ async function selectProvider(forceRefresh = false) {
     } catch { /* ignore */ }
   }
 
+  // 按链分组探测，池内 round-robin
   const healthy = await probeAll();
   if (healthy.length > 0) {
+    // 取最优链的第一个健康成员
     currentProvider = healthy[0];
     currentModelName = healthy[0].model;
   } else {
-    // 全不健康：回退 priority 最小者（降级）
-    const fallback = [...PROVIDERS].sort((a, b) => a.priority - b.priority)[0];
+    // 全不健康：按链序回退第一顺位
+    const fallback = PROVIDERS.sort((a, b) => a.chain - b.chain)[0];
     currentProvider = fallback;
     currentModelName = fallback.model;
   }
@@ -159,6 +193,8 @@ async function selectProvider(forceRefresh = false) {
   writeFileSync(FAILOVER_FILE, JSON.stringify({
     provider: currentProvider.provider,
     model: currentModelName,
+    pool: currentProvider.pool || null,
+    chain: currentProvider.chain || null,
     degraded: !healthy.length,
     label: currentProvider.label,
     ts: new Date().toISOString(),
@@ -296,7 +332,7 @@ const server = createServer(async (req, res) => {
       });
       const statuses = PROVIDERS.map(async (p) => {
         const h = await probeProvider(p);
-        return { ...h, active: currentProvider?.provider === p.provider && currentProvider?.model === p.model };
+        return { ...h, pool: p.pool, chain: p.chain, active: currentProvider?.provider === p.provider && currentProvider?.model === p.model };
       });
       const results = await Promise.all(statuses);
       res.writeHead(200, { "Content-Type": "application/json" });

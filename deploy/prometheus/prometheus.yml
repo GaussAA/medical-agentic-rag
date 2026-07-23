@@ -1,42 +1,15 @@
-# Prometheus 抓取配置 —— 医疗 Agentic RAG 监控
-#
-# 用法（docker-compose）：
-#   docker compose 已集成 prometheus 服务，自动加载本配置。
-#   访问 http://localhost:9090/ 查看控制台
-#
-# 指标端点说明：
-#   medical-api:8080      — API 服务自带指标（审计事件、护栏命中、导出器存活）
-#   medical-api:18880     — provider-proxy LLM 代理网关指标（请求量、错误率、降级/切换次数）
-#   medical-rag:31415     — WebUI 无独立 /metrics（可通过 Grafana 面板查看页面指标）
-
-rule_files:
-  - /etc/prometheus/rules.yml
-
-alerting:
-  alertmanagers:
-    - static_configs:
-        - targets: ["alertmanager:9093"]
-
+# Prometheus 配置
+# 抓取 provider-proxy（指标端点）和 self（Prometheus 自身健康）
 global:
-  scrape_interval: 15s
+  scrape_interval:     15s
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: "medical-rag-api"
-    metrics_path: /metrics
+  - job_name: 'medical-rag'
     static_configs:
-      - targets: ["medical-api:8080"]
+      - targets: ['host.docker.internal:19100']
         labels:
-          service: "api-server"
-  - job_name: "medical-rag-proxy"
-    metrics_path: /metrics
+          app: 'medical-rag'
+  - job_name: 'prometheus'
     static_configs:
-      - targets: ["medical-api:18880"]
-        labels:
-          service: "llm-provider-proxy"
-  - job_name: "medical-rag-metrics"
-    metrics_path: /metrics
-    static_configs:
-      - targets: ["metrics-exporter:19100"]
-        labels:
-          service: "metrics-exporter"
+      - targets: ['localhost:9090']

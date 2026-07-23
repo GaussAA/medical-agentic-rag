@@ -1,26 +1,28 @@
-# 告警规则 —— 医疗 Agentic RAG
-#
-# 仅基于 Prometheus 内置 up 指标 + 本仓库 prometheus.yml 中定义的 service label，
-# 避免引用尚不存在的业务指标导致规则文件加载失败。
-# 生效需 docker-compose 将本文件挂载至 /etc/prometheus/rules.yml（已在 compose 配置）。
-
 groups:
   - name: medical-rag-alerts
+    interval: 30s
     rules:
-      - alert: MetricsExporterDown
-        expr: up{service="metrics-exporter"} == 0
+      - alert: ProxyHighErrorRate
+        expr: rate(medical_rag_proxy_errors_total[5m]) > 0.5
         for: 2m
-        labels:
-          severity: critical
+        labels: { severity: warning }
         annotations:
-          summary: "指标导出器失联"
-          description: "metrics-exporter:19100 连续 2 分钟不可达，监控盲区，请检查 medical-rag 服务是否存活。"
-
-      - alert: ApiServerDown
-        expr: up{service="api-server"} == 0
-        for: 2m
-        labels:
-          severity: critical
+          summary: "LLM proxy error rate > 0.5/s over 5m"
+      - alert: ProxyUnhealthy
+        expr: medical_rag_proxy_consecutive_failures > 5
+        for: 1m
+        labels: { severity: critical }
         annotations:
-          summary: "API 服务失联"
-          description: "medical-api:8080 连续 2 分钟不可达，请检查 medical-api 服务是否存活。"
+          summary: "Proxy has {{ $value }} consecutive failures"
+      - alert: KbRecallDrop
+        expr: medical_rag_kb_recall_rate < 0.85
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "KB recall rate dropped to {{ $value | humanizePercentage }}"
+      - alert: NoChunks
+        expr: medical_rag_kb_chunks_total == 0
+        for: 1m
+        labels: { severity: critical }
+        annotations:
+          summary: "Knowledge base has zero chunks"

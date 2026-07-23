@@ -1,201 +1,291 @@
 {
-  "__inputs": [],
-  "__requires": [],
-  "annotations": { "list": [] },
-  "editable": true,
-  "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
-  "id": null,
-  "links": [],
+  "title": "医疗 Agentic RAG · 监控仪表盘",
+  "tags": ["medical-rag", "rag", "health"],
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "timezone": "browser",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": { "selected": true, "text": "Prometheus", "value": "Prometheus" }
+      }
+    ]
+  },
   "panels": [
     {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "description": "审计事件累计计数，按事件类型区分",
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": { "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 20, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "lineInterpolation": "smooth", "lineWidth": 2, "pointSize": 4, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } },
-          "mappings": [],
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
-      "id": 1,
-      "options": {
-        "legend": {
-          "calcs": ["mean", "last", "max"],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": { "mode": "multi", "sort": "desc" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "rate(medical_rag_proxy_requests_total[5m])",
-          "legendFormat": "LLM 请求",
-          "refId": "A"
-        }
-      ],
-      "title": "LLM 请求速率（5m 滑动）",
-      "type": "timeseries"
+      "title": "LLM 网关总览",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }
     },
     {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "description": "安全护栏累计命中次数",
+      "title": "请求速率",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "rate(medical_rag_proxy_requests_total[5m])",
+        "legendFormat": "请求/秒"
+      }],
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": { "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 20, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "lineInterpolation": "smooth", "lineWidth": 2, "pointSize": 4, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } },
-          "mappings": [],
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
-      "id": 2,
-      "options": {
-        "legend": {
-          "calcs": ["mean", "last", "max"],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": { "mode": "multi", "sort": "desc" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "medical_rag_safety_guard_hits_total",
-          "legendFormat": "护栏命中",
-          "refId": "A"
+          "unit": "rps",
+          "color": { "mode": "thresholds" },
+          "thresholds": { "steps": [{ "value": 0, "color": "green" }] }
         }
-      ],
-      "title": "安全护栏命中",
-      "type": "timeseries"
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 }
     },
     {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "description": "当前活跃 LLM Provider 及其健康状态",
+      "title": "错误率",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "rate(medical_rag_proxy_errors_total[5m])",
+        "legendFormat": "错误/秒"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "rps",
+          "color": { "mode": "thresholds" },
+          "thresholds": { "steps": [
+            { "value": 0, "color": "green" },
+            { "value": 0.1, "color": "orange" },
+            { "value": 0.5, "color": "red" }
+          ]}
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 }
+    },
+    {
+      "title": "Failover 次数",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "increase(medical_rag_proxy_failovers_total[24h])",
+        "legendFormat": "24h 内"
+      }],
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
-          "custom": { "hideFrom": { "legend": false, "tooltip": false, "viz": false } },
-          "mappings": [
-            { "type": "value", "value": "1", "text": "", "options": { "1": { "text": "活跃" } } }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "green", "value": null }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 8 },
-      "id": 3,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "textMode": "auto"
-      },
-      "pluginVersion": "",
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "medical_rag_proxy_current_provider",
-          "legendFormat": "当前 Provider",
-          "refId": "A"
-        },
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "medical_rag_proxy_consecutive_failures",
-          "legendFormat": "连续失败次数",
-          "refId": "B"
+          "thresholds": { "steps": [
+            { "value": 0, "color": "green" },
+            { "value": 3, "color": "orange" },
+            { "value": 10, "color": "red" }
+          ]}
         }
-      ],
-      "title": "Provider 状态",
-      "type": "stat"
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 }
     },
     {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "description": "审计事件类型分布（堆叠面积图），按服务分",
+      "title": "当前 Provider",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "medical_rag_proxy_current_provider",
+        "legendFormat": "provider={{provider}}"
+      }],
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "stacked_bar",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 4,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "normal" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
-          "unit": "short"
+          "color": { "mode": "fixed" },
+          "custom": { "displayMode": "list" }
         },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 12, "x": 6, "y": 8 },
-      "id": 4,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": { "mode": "multi", "sort": "none" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "rate(medical_rag_proxy_errors_total[5m])",
-          "legendFormat": "错误率",
-          "refId": "A"
-        },
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "rate(medical_rag_proxy_failovers_total[5m])",
-          "legendFormat": "Provider 切换",
-          "refId": "B"
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 }
+    },
+    {
+      "title": "请求趋势",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "rate(medical_rag_proxy_requests_total[1m])",
+        "legendFormat": "请求"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "rps",
+          "color": { "mode": "palette-classic" }
         }
-      ],
-      "title": "错误 & 切换（5m 率，堆叠柱状图）",
-      "type": "timeseries"
+      },
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 5 }
+    },
+    {
+      "title": "错误趋势",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "rate(medical_rag_proxy_errors_total[1m])",
+        "legendFormat": "错误"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "rps",
+          "color": { "mode": "palette-classic" }
+        }
+      },
+      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 5 }
+    },
+    {
+      "title": "知识库健康",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 11 }
+    },
+    {
+      "title": "分片总数",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "medical_rag_kb_chunks_total",
+        "legendFormat": "chunks"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "thresholds" },
+          "thresholds": { "steps": [
+            { "value": 0, "color": "red" },
+            { "value": 1, "color": "green" }
+          ]}
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 12 }
+    },
+    {
+      "title": "源文件数",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "medical_rag_kb_files_total",
+        "legendFormat": "files"
+      }],
+      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "thresholds" }, "thresholds": { "steps": [{"value": 0,"color": "red"},{"value": 1,"color": "green"}] } } },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 12 }
+    },
+    {
+      "title": "引用召回率",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "medical_rag_kb_recall_rate",
+        "legendFormat": "recall"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "color": { "mode": "thresholds" },
+          "thresholds": { "steps": [
+            { "value": 0, "color": "red" },
+            { "value": 0.85, "color": "orange" },
+            { "value": 0.92, "color": "green" }
+          ]}
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 12 }
+    },
+    {
+      "title": "内容总量",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "medical_rag_kb_content_bytes",
+        "legendFormat": "bytes"
+      }],
+      "fieldConfig": { "defaults": { "unit": "bytes", "color": { "mode": "thresholds" }, "thresholds": { "steps": [{"value": 0,"color": "red"},{"value": 1,"color": "green"}] } } },
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 12 }
+    },
+    {
+      "title": "按 Provider 分布",
+      "type": "bargauge",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "sum by(provider) (medical_rag_proxy_provider_requests_total)",
+        "legendFormat": "{{provider}}"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "palette-classic" }
+        }
+      },
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 16 }
+    },
+    {
+      "title": "Provider 错误分布",
+      "type": "bargauge",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "sum by(provider) (medical_rag_proxy_provider_errors_total)",
+        "legendFormat": "{{provider}}"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "palette-classic" }
+        }
+      },
+      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 16 }
+    },
+    {
+      "title": "系统",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 22 }
+    },
+    {
+      "title": "Uptime",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "medical_rag_proxy_uptime_seconds",
+        "legendFormat": "uptime"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "duration(seconds)",
+          "color": { "mode": "fixed", "fixedColor": "green" }
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 23 }
+    },
+    {
+      "title": "连续失败数",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "medical_rag_proxy_consecutive_failures",
+        "legendFormat": "failures"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "steps": [
+            { "value": 0, "color": "green" },
+            { "value": 1, "color": "orange" },
+            { "value": 3, "color": "red" }
+          ]}
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 23 }
+    },
+    {
+      "title": "chunk-meta 缓存大小",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{
+        "expr": "medical_rag_cache_chunk_meta_bytes",
+        "legendFormat": "size"
+      }],
+      "fieldConfig": { "defaults": { "unit": "bytes", "color": { "mode": "thresholds" }, "thresholds": { "steps": [{"value": 0,"color": "green"}] } } },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 23 }
     }
-  ],
-  "refresh": "15s",
-  "schemaVersion": 39,
-  "tags": ["medical-rag", "llm-proxy", "monitoring"],
-  "templating": { "list": [] },
-  "time": { "from": "now-1h", "to": "now" },
-  "timepicker": {},
-  "timezone": "browser",
-  "title": "医疗 Agentic RAG — 系统监控",
-  "version": 0,
-  "weekStart": ""
+  ]
 }

@@ -17,6 +17,8 @@
 // 纯 node 运行，零外部依赖。
 
 import { createServer } from "node:http";
+import { readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
@@ -333,6 +335,57 @@ const server = createServer(async (req, res) => {
         lines.push(`# HELP medical_rag_proxy_provider_errors_total Errors by provider`);
         lines.push(`# TYPE medical_rag_proxy_provider_errors_total counter`);
         lines.push(`medical_rag_proxy_provider_errors_total{provider="${name}"} ${stats.errors || 0}`);
+      }
+
+      // —— KB 健康指标 ——
+      try {
+        const home = process.env.USERPROFILE || process.env.HOME || "";
+        const ROOT = join(import.meta.dirname, "..", "..");
+
+        // recall 基线
+        const recallPath = join(ROOT, "tests", "reports", "recall-baseline.json");
+        if (existsSync(recallPath)) {
+          const bl = JSON.parse(readFileSync(recallPath, "utf-8"));
+          lines.push(`# HELP medical_rag_kb_recall_rate Citation recall rate (router top-3)`);
+          lines.push(`# TYPE medical_rag_kb_recall_rate gauge`);
+          lines.push(`medical_rag_kb_recall_rate ${bl.recall || 0}`);
+        }
+
+        // chunk 统计
+        const kbDb = join(home, ".pi", "knowledge", "knowledge.db");
+        if (existsSync(kbDb)) {
+          const { createRequire } = await import("node:module");
+          const require = createRequire(import.meta.url);
+          const Database = require("better-sqlite3");
+          const db = new Database(kbDb, { readonly: true });
+          const total = db.prepare("SELECT COUNT(*) as c FROM chunks").get().c;
+          const files = db.prepare("SELECT COUNT(DISTINCT file_path) as c FROM chunks").get().c;
+          const totalChars = db.prepare("SELECT SUM(LENGTH(content)) as s FROM chunks").get().s || 0;
+          db.close();
+
+          lines.push(`# HELP medical_rag_kb_chunks_total Total chunks in knowledge base`);
+          lines.push(`# TYPE medical_rag_kb_chunks_total gauge`);
+          lines.push(`medical_rag_kb_chunks_total ${total}`);
+
+          lines.push(`# HELP medical_rag_kb_files_total Total source files`);
+          lines.push(`# TYPE medical_rag_kb_files_total gauge`);
+          lines.push(`medical_rag_kb_files_total ${files}`);
+
+          lines.push(`# HELP medical_rag_kb_content_bytes Total content bytes`);
+          lines.push(`# TYPE medical_rag_kb_content_bytes gauge`);
+          lines.push(`medical_rag_kb_content_bytes ${totalChars}`);
+        }
+
+        // cache 大小
+        const cacheDb = join(ROOT, ".pi", "cache", "chunk-meta.db");
+        if (existsSync(cacheDb)) {
+          const sz = readFileSync(cacheDb).length;
+          lines.push(`# HELP medical_rag_cache_chunk_meta_bytes Sidecar chunk-meta DB size`);
+          lines.push(`# TYPE medical_rag_cache_chunk_meta_bytes gauge`);
+          lines.push(`medical_rag_cache_chunk_meta_bytes ${sz}`);
+        }
+      } catch {
+        /* KB 指标读取失败不阻断 */
       }
       res.writeHead(200, { "Content-Type": "text/plain; version=0.0.4" });
       res.end(lines.join("\n") + "\n");

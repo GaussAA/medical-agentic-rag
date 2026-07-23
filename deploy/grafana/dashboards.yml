@@ -1,14 +1,11 @@
-# Grafana Dashboard Provisioner（自动加载免手动导入）
-# 部署到容器 /etc/grafana/provisioning/dashboards/ 目录
 apiVersion: 1
 
 providers:
-  - name: default
+  - name: Medical RAG
     orgId: 1
+    folder: ''
     type: file
     disableDeletion: false
     updateIntervalSeconds: 30
-    allowUiUpdates: false
     options:
       path: /var/lib/grafana/dashboards
-      foldersFromFilesStructure: true

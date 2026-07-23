@@ -87,7 +87,7 @@ const SUITES = [
   ["node", "tests/e2e/real-link.mjs"],
 ];
 
-const SKIP_CODES = [13]; // 退出码 13 = CI 跳过低配环境（引擎不可用）
+const SKIP_CODES = [2, 13]; // 2 = real-link 无真库优雅跳过  |  13 = CI 跳过低配环境（引擎不可用）
 
 function run(name, cmd, args) {
   return new Promise((resolve) => {

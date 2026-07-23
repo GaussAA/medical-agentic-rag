@@ -224,6 +224,52 @@ export default function (pi: ExtensionAPI) {
           log.push(`渐进式重排序: ${before} → ${out.results.length} 条`);
         }
 
+        // ── 3d: 语义重排序（pi-knowledge bge-reranker，互补增强）──
+        // 手写 progressive-rerank 做第一道快速过滤（~10ms），
+        // pi-knowledge bge-reranker 做第二道语义精排（~200-500ms）。
+        // 超时 5s 降级，不阻塞主流程。
+        if (out?.results?.length > 1) {
+          try {
+            const { createRequire } = await import("node:module");
+            const require = createRequire(import.meta.url);
+            const rerankerPath = require.resolve("pi-knowledge/dist/src/search/reranker.js", {
+              paths: [
+                process.cwd(),
+                ...(process.env.USERPROFILE || process.env.HOME ? [require("node:path").join(process.env.USERPROFILE || process.env.HOME!, ".pi", "agent", "npm", "node_modules")] : []),
+              ],
+            });
+            const { rerank } = require(rerankerPath);
+            if (typeof rerank === "function") {
+              const candidates = (out.results || []).slice(0, 20).map((r: any) => ({
+                chunkId: r.chunk_id || r.chunkId || "",
+                content: r.snippet || r.content || "",
+              })).filter((c: any) => c.content && c.content.length > 10);
+
+              if (candidates.length >= 2) {
+                const signal = AbortSignal.timeout(5000);
+                const reranked = await rerank(query, candidates, finalLimit, signal);
+                if (reranked && reranked.length > 0) {
+                  // 用 reranker 得分替换 refinedScore
+                  const rerankMap = new Map(reranked.map((r: any) => [r.chunkId, r.score]));
+                  for (const r of out.results) {
+                    const id = (r as any).chunk_id || (r as any).chunkId || "";
+                    const rScore = rerankMap.get(id);
+                    if (rScore != null) {
+                      (r as any).refinedScore = rScore;
+                      (r as any).rerankScore = rScore;
+                    }
+                  }
+                  // 按 reranker 得分降序重排
+                  out.results.sort((a: any, b: any) => (b.rerankScore ?? b.refinedScore ?? b.score ?? 0) - (a.rerankScore ?? a.refinedScore ?? a.score ?? 0));
+                  log.push(`语义重排序: bge-reranker 精排 ${candidates.length} 候选`);
+                }
+              }
+            }
+          } catch {
+            // bge-reranker 不可用时静默降级
+          }
+        }
+
         // 版本冲突标注 & 废止过滤
         try {
           const gm = defaultLoadGuideIndex();

@@ -11,4 +11,4 @@ export { Database, resolveKbDbPath, setKbDb, getDb } from "./retrieval-router/db
 export { loadKbFilenames, resolveKbFiles, makeSnippet } from "./retrieval-router/matcher.mjs";
 export { ftsDbPath, setFtsDbPath, resetFtsDb, ftsQueryTokens, ftsCandidateIds, buildFtsIndex, sourceSig, ensureFtsIndex, getFtsDb } from "./retrieval-router/fts.mjs";
 export { lexicalSearch, searchKnowledge } from "./retrieval-router/bm25.mjs";
-export { rrfFusion } from "./retrieval-router/fusion.mjs";
+export { rrfFusion, weightedFusion } from "./retrieval-router/fusion.mjs";

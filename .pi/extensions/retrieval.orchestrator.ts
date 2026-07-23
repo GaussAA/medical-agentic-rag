@@ -19,7 +19,11 @@ import { searchKG } from "./lib/kg-search.mjs";
 // @ts-ignore
 import { generateQueryVariants } from "./lib/query-transform.mjs";
 // @ts-ignore
+import { hydeRetrieve } from "./lib/query-transform/hyde.mjs";
+// @ts-ignore
 import { rrfFusion } from "./lib/retrieval-router.mjs";
+// @ts-ignore
+import { progressivePipeline } from "./lib/retrieval-router/progressive-rerank.mjs";
 // @ts-ignore
 import { sanitizeSearchQuery, correctMedicalQuery } from "./lib/query-sanitize.mjs";
 // @ts-ignore
@@ -110,7 +114,8 @@ export default function (pi: ExtensionAPI) {
       }
 
       // ── 阶段2：策略选型 ──
-      const limit = 10;
+      const finalLimit = 10;
+      const fetchLimit = 100; // BM25 取更多候选供渐进式重排序
       const autoDense = needsDenseMode(query);
       const mode = autoDense ? "hybrid" : "fast";
       log.push(`模式: ${mode}（${autoDense ? "自动hybrid" : "fast"}）`);
@@ -121,7 +126,7 @@ export default function (pi: ExtensionAPI) {
       let engineMode = "bm25";
 
       try {
-        let out = searchKnowledge(query, { limit });
+        let out = searchKnowledge(query, { limit: fetchLimit });
         lowConfidence = out?.lowConfidence || false;
         engineMode = out?.kbFiles?.length > 0 ? "bm25_routed" : "bm25";
 
@@ -132,13 +137,13 @@ export default function (pi: ExtensionAPI) {
           if (variants.length > 1) {
             const bm25Results = [out.results || []];
             for (const v of variants.slice(1)) {
-              const r = searchKnowledge(v, { limit });
+              const r = searchKnowledge(v, { limit: fetchLimit });
               if (r?.results?.length) bm25Results.push(r.results);
             }
             if (bm25Results.length > 1) {
               out = {
                 ...out,
-                results: rrfFusion(bm25Results, 60, limit),
+                results: rrfFusion(bm25Results, 60, fetchLimit),
               };
               engineMode = "bm25_multi";
               fused = true;
@@ -151,13 +156,39 @@ export default function (pi: ExtensionAPI) {
 
         // 低置信时升级 hybrid
         if (lowConfidence && !fused && autoDense) {
-          // 首次 BM25 已低置信，再次搜索用原有路径
-          const retry = searchKnowledge(query, { limit });
+          const retry = searchKnowledge(query, { limit: fetchLimit });
           if (retry?.results?.length > (out?.results?.length || 0)) {
             out = retry;
             engineMode = "bm25_retry";
             log.push("低置信重试");
           }
+        }
+
+        // HyDE 假设文档扩展：LLM 生成假设答案后再次检索 + RRF 融合
+        let hydeApplied = false;
+        try {
+          const hydeResult = await hydeRetrieve(query, (q: string, o: any) => searchKnowledge(q, o), {
+            limit: fetchLimit,
+            hydeTimeoutMs: 5000,
+          });
+          if (hydeResult.hydeApplied && hydeResult.results.length > 0) {
+            out = { ...out, results: hydeResult.results };
+            hydeApplied = true;
+            engineMode = engineMode.includes("hyde") ? engineMode : engineMode + "_hyde";
+            log.push("HyDE: 假设答案检索融合完成");
+          }
+        } catch {
+          /* HyDE 降级 */
+        }
+
+        // 渐进式重排序：轻量二次评分 + 精排
+        if (out?.results?.length > 0) {
+          const before = out.results.length;
+          out.results = progressivePipeline(out.results, query, {
+            initialTopK: fetchLimit,
+            finalTopK: finalLimit,
+          });
+          log.push(`渐进式重排序: ${before} → ${out.results.length} 条`);
         }
 
         // 版本冲突标注 & 废止过滤
@@ -168,7 +199,7 @@ export default function (pi: ExtensionAPI) {
           /* 过滤失败不阻断 */
         }
 
-        results = (out?.results || []).slice(0, limit).map((r: any) => ({
+        results = (out?.results || []).slice(0, finalLimit).map((r: any) => ({
           text: (r.snippet || "").slice(0, 300),
           file: r.file_path || "",
           score: +(r.score || 0).toFixed(1),

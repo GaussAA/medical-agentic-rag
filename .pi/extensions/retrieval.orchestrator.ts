@@ -23,13 +23,15 @@ import { hydeRetrieve } from "./lib/query-transform/hyde.mjs";
 // @ts-ignore
 import { rrfFusion } from "./lib/retrieval-router.mjs";
 // @ts-ignore
+import { engineHybridSearch } from "./lib/knowledge-engine-search.mjs";
+// @ts-ignore
 import { progressivePipeline } from "./lib/retrieval-router/progressive-rerank.mjs";
 // @ts-ignore
 import { sanitizeSearchQuery, correctMedicalQuery } from "./lib/query-sanitize.mjs";
 // @ts-ignore
 import { buildVersionConflictHint, defaultLoadGuideIndex, filterDeprecatedResults } from "./lib/conflict-detector.mjs";
 // @ts-ignore
-import { cacheGet, cacheSet } from "./lib/retrieval-cache.mjs";
+import { cacheGet, cacheSet, cacheGetAsync } from "./lib/retrieval-cache.mjs";
 // @ts-ignore
 import { diag } from "./lib/diagnostic-log.mjs";
 
@@ -83,9 +85,9 @@ export default function (pi: ExtensionAPI) {
         query = corrected;
       }
 
-      // ── 缓存检查 ──
+      // ── 缓存检查（异步三级：内存→Redis→文件）──
       const cacheKey = `retrieve:${query}`;
-      const cached = cacheGet(cacheKey);
+      const cached = await cacheGetAsync(cacheKey);
       if (cached) {
         diag.info("retrieve", `缓存命中: "${query.slice(0, 40)}"`);
         return cached;
@@ -97,16 +99,19 @@ export default function (pi: ExtensionAPI) {
       // ── 阶段1：指南路由 ──
       let guides: any[] = [];
       let topDisease = "";
+      let detectedDept: string | null = null;
       try {
         const index = loadIndex();
         const routeResult = routeGuides(query, { index, topK: 5 });
+        detectedDept = (routeResult as any).detectedDept || null;
         guides = (routeResult.top || []).map((g: any) => ({
           title: g.title,
           disease: g.disease,
           score: +(g.score || 0).toFixed(1),
           version: g.version || null,
+          department: g.department || null,
         }));
-        log.push(`路由: ${guides.length} 份指南命中，Top="${guides[0]?.title || "无"}"`);
+        log.push(`路由: ${guides.length} 份指南命中，Top="${guides[0]?.title || "无"}"${detectedDept ? `，科室=${detectedDept}` : ""}`);
         // 取 Top-1 疾病作为 KG 查询目标
         topDisease = guides[0]?.disease || "";
       } catch (e: any) {
@@ -116,16 +121,18 @@ export default function (pi: ExtensionAPI) {
       // ── 阶段2：策略选型 ──
       const finalLimit = 10;
       const fetchLimit = 100; // BM25 取更多候选供渐进式重排序
+      const denseLimit = 20;  // Dense 引擎代价较高，取更少候选
       const autoDense = needsDenseMode(query);
       const mode = autoDense ? "hybrid" : "fast";
       log.push(`模式: ${mode}（${autoDense ? "自动hybrid" : "fast"}）`);
 
-      // ── 阶段3：检索（自动 MultiQuery 升级） ──
+      // ── 阶段3：检索（双通道 + 多路融合） ──
       let results: any[] = [];
       let lowConfidence = false;
       let engineMode = "bm25";
 
       try {
+        // ── 3a: SPARSE 通道（BM25 + MultiQuery + HyDE）──
         let out = searchKnowledge(query, { limit: fetchLimit });
         lowConfidence = out?.lowConfidence || false;
         engineMode = out?.kbFiles?.length > 0 ? "bm25_routed" : "bm25";
@@ -154,7 +161,7 @@ export default function (pi: ExtensionAPI) {
           /* MultiQuery 降级 */
         }
 
-        // 低置信时升级 hybrid
+        // 低置信时重试
         if (lowConfidence && !fused && autoDense) {
           const retry = searchKnowledge(query, { limit: fetchLimit });
           if (retry?.results?.length > (out?.results?.length || 0)) {
@@ -164,7 +171,7 @@ export default function (pi: ExtensionAPI) {
           }
         }
 
-        // HyDE 假设文档扩展：LLM 生成假设答案后再次检索 + RRF 融合
+        // HyDE 假设文档扩展
         let hydeApplied = false;
         try {
           const hydeResult = await hydeRetrieve(query, (q: string, o: any) => searchKnowledge(q, o), {
@@ -181,7 +188,33 @@ export default function (pi: ExtensionAPI) {
           /* HyDE 降级 */
         }
 
-        // 渐进式重排序：轻量二次评分 + 精排
+        // ── 3b: DENSE 通道（e5 向量 + bge-reranker），仅 autoDense 模式 ──
+        // 与 SPARSE 并行执行，超时 8s 降级，不阻塞主流程
+        if (autoDense) {
+          try {
+            const denseResult = await engineHybridSearch(query, {
+              mode: "hybrid",
+              limit: denseLimit,
+              signal: AbortSignal.timeout(8000),
+            });
+            if (denseResult.ok && denseResult.results.length > 0) {
+              const sparseResults = out.results || [];
+              const beforeCount = sparseResults.length;
+              out = {
+                ...out,
+                results: rrfFusion([sparseResults, denseResult.results], 60, fetchLimit),
+              };
+              engineMode = "hybrid_dense";
+              log.push(`Dense 融合: ${beforeCount}sparse + ${denseResult.results.length}dense → ${(out.results || []).length} 条 (${denseResult.latencyMs}ms)`);
+            } else {
+              log.push(`Dense 通道未返回结果: ${denseResult.error || "空结果"}`);
+            }
+          } catch (e: any) {
+            log.push(`Dense 通道降级: ${e?.message || e}`);
+          }
+        }
+
+        // ── 3c: 渐进式重排序 ──
         if (out?.results?.length > 0) {
           const before = out.results.length;
           out.results = progressivePipeline(out.results, query, {
@@ -197,6 +230,55 @@ export default function (pi: ExtensionAPI) {
           out.results = filterDeprecatedResults(out.results || [], gm);
         } catch {
           /* 过滤失败不阻断 */
+        }
+
+        // ── 源内去重 + MMR 多样性重排序 ──
+        // 避免同一指南独占 Top-N；引入后确保 Top-3 覆盖至少 2 个不同指南
+        try {
+          if (out?.results?.length > 1) {
+            const perFileLimit = 3;
+            const fileCount = new Map<string, number>();
+            const deduped: any[] = [];
+            for (const r of out.results) {
+              const key = (r.file_path || r.file || "") as string;
+              const cnt = (fileCount.get(key) || 0) + 1;
+              if (cnt > perFileLimit) continue;
+              fileCount.set(key, cnt);
+              deduped.push(r);
+            }
+            const dedupLog = `${out.results.length} → ${deduped.length} 条(去重)`;
+            out.results = deduped;
+
+            // MMR 贪心重排序
+            const topK = Math.min(deduped.length, finalLimit);
+            const mmrResults: any[] = [];
+            const selectedSources = new Set<string>();
+            const candidates = [...deduped];
+            while (mmrResults.length < topK && candidates.length > 0) {
+              let bestIdx = 0;
+              let bestScore = -Infinity;
+              for (let i = 0; i < candidates.length; i++) {
+                const c = candidates[i];
+                const source = (c.file_path || c.file || "") as string;
+                const simToSelected = selectedSources.size > 0
+                  ? (selectedSources.has(source) ? 1 : 0)
+                  : 0;
+                const lambda = 0.7;
+                const relevance = (c as any).refinedScore ?? (c.score || 0);
+                const mmrScore = lambda * relevance - (1 - lambda) * simToSelected;
+                if (mmrScore > bestScore) { bestScore = mmrScore; bestIdx = i; }
+              }
+              const s = candidates.splice(bestIdx, 1)[0];
+              const src = (s.file_path || s.file || "") as string;
+              selectedSources.add(src);
+              mmrResults.push(s);
+            }
+            const mmrLog = `MMR: ${candidates.length}候选→${mmrResults.length}条(${selectedSources.size}来源)`;
+            out.results = mmrResults;
+            log.push(`${dedupLog}, ${mmrLog}`);
+          }
+        } catch (e: any) {
+          log.push(`去重/多样性跳过: ${e?.message || e}`);
         }
 
         results = (out?.results || []).slice(0, finalLimit).map((r: any) => ({
@@ -247,12 +329,12 @@ export default function (pi: ExtensionAPI) {
       const header = [
         "━━━ 检索报告 ━━━",
         `查询: "${rawQuery}"`,
-        `策略: ${mode} | 引擎: ${engineMode} | 耗时: ${((performance.now() - t0) / 1000).toFixed(1)}s`,
+        `策略: ${mode} | 引擎: ${engineMode}${detectedDept ? ` | 科室: ${detectedDept}` : ""} | 耗时: ${((performance.now() - t0) / 1000).toFixed(1)}s`,
         ...(lowConfidence ? ["⚠️ 低置信: 路由未锁定高相关指南，检索结果相关性存疑"] : []),
         ...(errors.map((e) => `⚠️ ${e}`)),
         "",
         "─ 相关指南 ─",
-        ...(guides.length ? guides.map((g, i) => `  ${i + 1}. ${g.title} (score=${g.score})`) : ["  （无匹配指南）"]),
+        ...(guides.length ? guides.map((g, i) => `  ${i + 1}. ${g.title} (score=${g.score}${g.department ? `, ${g.department}` : ""})`) : ["  （无匹配指南）"]),
         "",
         "─ 证据切片（Top-10） ─",
         ...(results.length
@@ -292,6 +374,7 @@ export default function (pi: ExtensionAPI) {
         query: query.slice(0, 40),
         mode,
         engineMode,
+        detectedDept,
         guides: guides.length,
         results: results.length,
         kgSymptoms: kgSymptoms.length,

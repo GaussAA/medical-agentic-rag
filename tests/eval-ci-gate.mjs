@@ -25,7 +25,7 @@
  *
  * 退出码: 0 = 通过; 1 = HARD 失败或 strict 下 WARN/回归退步; 2 = 仅 WARN(非 strict)
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { compareRegression } from "../.pi/extensions/lib/eval-compare.mjs";
@@ -198,6 +198,116 @@ function main() {
     want: `≥${TH.gradeLabelRateMin}%`,
     hint: "偏低提示答案引用指南缺证据等级(GRADE/推荐强度)标注，不利临床溯源与可信度判定",
   });
+
+  // ---------- 检索层元指标（WARN，仅当 retrieval-metrics.json 存在时激活）----------
+  const RETRIEVAL_METRICS_PATH = join(__dirname, "reports", "retrieval-metrics.json");
+  if (existsSync(RETRIEVAL_METRICS_PATH)) {
+    try {
+      const rm = JSON.parse(readFileSync(RETRIEVAL_METRICS_PATH, "utf8"));
+      const rt = rm.thresholds || {};
+      const mode = rm.mode || "light";
+      warn.push({
+        name: "检索 Recall@5 ≥ 阈值（检索层元指标）",
+        ok: (rm.recallAt5 ?? 1) >= (rt.recallAt5Min ?? 0.75),
+        got: rm.recallAt5 != null ? `${(rm.recallAt5 * 100).toFixed(1)}%` : "N/A",
+        want: `≥${((rt.recallAt5Min ?? 0.75) * 100).toFixed(0)}%`,
+        hint: mode === "light" ? "轻量模式未执行 chunk 检索，仅做路由级评测" : "检索 Top-5 中应包含期望指南，偏低说明检索漂移",
+      });
+      warn.push({
+        name: "检索 Recall@10 ≥ 阈值（检索层元指标）",
+        ok: (rm.recallAt10 ?? 1) >= (rt.recallAt10Min ?? 0.85),
+        got: rm.recallAt10 != null ? `${(rm.recallAt10 * 100).toFixed(1)}%` : "N/A",
+        want: `≥${((rt.recallAt10Min ?? 0.85) * 100).toFixed(0)}%`,
+        hint: mode === "light" ? "轻量模式未执行 chunk 检索，仅做路由级评测" : "Top-10 应更稳定覆盖期望指南",
+      });
+      warn.push({
+        name: "检索 MRR ≥ 阈值（检索层元指标）",
+        ok: (rm.mrr ?? 1) >= (rt.mrrMin ?? 0.80),
+        got: rm.mrr != null ? rm.mrr.toFixed(3) : "N/A",
+        want: `≥${rt.mrrMin ?? 0.80}`,
+        hint: "MRR 衡量首个相关文档的排名位置；偏低说明相关文档排名靠后",
+      });
+      warn.push({
+        name: "空结果率 ≤ 阈值（检索层元指标）",
+        ok: (rm.zeroResultRate ?? 0) <= (rt.zeroResultRateMax ?? 0.05),
+        got: rm.zeroResultRate != null ? `${(rm.zeroResultRate * 100).toFixed(1)}%` : "N/A",
+        want: `≤${((rt.zeroResultRateMax ?? 0.05) * 100).toFixed(0)}%`,
+      });
+    } catch (e) {
+      warn.push({
+        name: "检索层元指标报告解析",
+        ok: false,
+        got: e.message,
+        want: "正确解析",
+        hint: "retrieval-metrics.json 损坏或格式不兼容",
+      });
+    }
+  } else {
+    warn.push({
+      name: "检索层元指标（retrieval-metrics.json）",
+      ok: true,
+      got: "未生成",
+      want: "存在即检",
+      hint: "运行 retrieval-metrics.mjs（推荐 --full 模式）生成报告后门禁生效",
+    });
+  }
+
+  // ---------- Judge Calibration（HARD：judge 分辨力验证）----------
+  const CALIBRATE_PATH = join(__dirname, "reports", "calibrate-ci-report.json");
+  if (existsSync(CALIBRATE_PATH)) {
+    try {
+      const cal = JSON.parse(readFileSync(CALIBRATE_PATH, "utf8"));
+      if (cal.skipped) {
+        warn.push({
+          name: "Judge Calibration（无 API Key 跳过）",
+          ok: true,
+          got: "已跳过",
+          want: "—",
+          hint: "未配置 LLM API Key 时跳过校准，建议在 CI 环境中配置 SENSENOVA_API_KEY",
+        });
+      } else {
+        const missed = Math.max(0, (cal.missed ?? 0));
+        const passRate = cal.passRate ?? 1;
+        // HARD：若 judge 完全失效（detected=0 且 evaluated>=3），阻断发布
+        // 若仅部分漏识别（1个），WARN 提示但不阻断（容错边界情况）
+        const zeroDetected = cal.detected === 0 && cal.evaluated >= 3;
+        hard.push({
+          name: "Judge Calibration · 坏答案分辨力",
+          ok: !zeroDetected,
+          got: zeroDetected ? `0/${cal.evaluated} 识别` : `${cal.detected}/${cal.evaluated} 识别`,
+          want: "至少识别 1 个（完全失效则阻断）",
+          hint: zeroDetected
+            ? "Judge 对所有已知坏答案均判定为高忠实度（模型降级/配置异常），必须修复"
+            : undefined,
+        });
+        warn.push({
+          name: "Judge Calibration · 漏识别率（坏答案判为高分）",
+          ok: missed <= 1,
+          got: `${missed} 个漏识别（passRate=${(passRate * 100).toFixed(0)}%）`,
+          want: "≤1 个漏识别",
+          hint: missed > 1
+            ? `漏识别: ${(cal.results || []).filter((r) => !r.passed && !r.skipped).map((r) => r.id).join(", ")}`
+            : "说明 Judge 对明显错误有一定分辨力",
+        });
+      }
+    } catch (e) {
+      warn.push({
+        name: "Judge Calibration 报告解析",
+        ok: false,
+        got: e.message,
+        want: "正确解析",
+        hint: "calibrate-ci-report.json 损坏或格式不兼容",
+      });
+    }
+  } else {
+    warn.push({
+      name: "Judge Calibration（calibrate-ci-report.json）",
+      ok: true,
+      got: "未生成",
+      want: "存在即检",
+      hint: "运行 calibrate-ci.mjs 生成校准报告后门禁生效",
+    });
+  }
 
   // ---------- 回归对比（--compare，供 nightly）----------
   if (COMPARE) {

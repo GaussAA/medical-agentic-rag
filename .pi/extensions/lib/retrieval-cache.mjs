@@ -1,14 +1,22 @@
 // retrieval-cache.mjs
-// 文件化（JSON）检索缓存 —— 供 guide_finder / kg_search / query-cache 共用同一存储。
+// 多层检索缓存：内存(L1) + 本地文件(L2) + Redis(L3) 三级架构。
 //
 // 设计要点：
-// 1. 内存 Map 为热路径（同进程重复查询近乎零开销），文件为权威持久层（跨会话/跨扩展实例一致）。
-// 2. cacheGet：先查内存，未命中再回退读盘；cacheSet：写内存 + 合并写盘（避免多实例互相覆盖）。
-// 3. TTL 过期自动失效；cacheStats / cacheClear 供 /cache 命令使用。
-// 4. 原始 key 经哈希后落盘，敏感查询文本不写入缓存文件。
+// 1. 内存 Map 为热路径（同进程重复查询近乎零开销），文件为权威持久层。
+// 2. Redis 为可选共享层（多 K8s Pod 共享），通过环境变量启用。
+// 3. cacheGet：同步模式仅查内存+文件；cacheGetAsync：加查 Redis。
+// 4. cacheSet：同步写内存+文件；异步 fire-and-forget 写 Redis。
+// 5. TTL 过期自动失效；cacheStats / cacheClear 供 /cache 命令使用。
+// 6. 原始 key 经哈希后落盘，敏感查询文本不写入缓存。
 //
-// 纯 JavaScript（.mjs），无 TS 语法，故既能被 Pi 的 jiti 加载（扩展内 import），
-// 也能被原生 node 直接 import（评测脚本 tests/unit/eval-bench.mjs）。
+// 环境变量:
+//   REDIS_URL                   — Redis 连接串（如 redis://localhost:6379），配置后自动启用
+//   CACHE_BACKEND               — "auto"(默认,文件+可选Redis) | "redis"(强制Redis优先) | "file"(仅文件)
+//   RETRIEVAL_CACHE_MAX_ENTRIES — 内存/文件条目上限（默认 500）
+//   RETRIEVAL_CACHE_DIR         — 缓存文件目录（默认 .pi/cache）
+//   RETRIEVAL_CACHE_TTL         — 缓存 TTL 秒数（默认 600=10分钟）
+//
+// 纯 JavaScript（.mjs），双可测。
 
 import {
   existsSync,
@@ -21,10 +29,16 @@ import {
 } from "node:fs";
 import { join } from "node:path";
 
-const DEFAULT_TTL_MS = 10 * 60 * 1000; // 10 分钟
-const MAX_ENTRIES = parseInt(process.env.RETRIEVAL_CACHE_MAX_ENTRIES || "500", 10); // 条目容量上限（LRU 近似：超容按写入时间裁剪最旧）
-const CACHE_DIR = process.env.RETRIEVAL_CACHE_DIR || join(process.cwd(), ".pi", "cache"); // 支持测试/自定义目录覆盖
+const DEFAULT_TTL_MS = (parseInt(process.env.RETRIEVAL_CACHE_TTL || "600", 10)) * 1000; // 默认 10 分钟，env 可调秒数
+const MAX_ENTRIES = parseInt(process.env.RETRIEVAL_CACHE_MAX_ENTRIES || "500", 10);
+const CACHE_DIR = process.env.RETRIEVAL_CACHE_DIR || join(process.cwd(), ".pi", "cache");
 const CACHE_FILE = join(CACHE_DIR, "retrieval-cache.json");
+
+// ── Redis 后端 ──
+const REDIS_URL = process.env.REDIS_URL || "";
+const CACHE_BACKEND = (process.env.CACHE_BACKEND || "auto").toLowerCase();
+const REDIS_ENABLED = REDIS_URL && (CACHE_BACKEND === "redis" || CACHE_BACKEND === "auto");
+const REDIS_KEY_PREFIX = "rag:cache:";
 
 // ---------- 跨进程文件锁（防多实例并发 writeAll 互相覆盖） ----------
 // 单进程下零开销（一次 wx 创建 + 一次 unlink）；多进程下保证 read-modify-write 原子性。
@@ -94,6 +108,25 @@ function mutateAll(mutator) {
 /** 进程内热缓存（同一加载实例内重复查询免读盘）。 */
 const memory = new Map();
 
+// ── Redis 客户端（惰性初始化，与 conversation-state 同模式）──
+let _redisClient = null;
+
+async function getRedis() {
+  if (_redisClient !== null) return _redisClient;
+  if (!REDIS_ENABLED) { _redisClient = null; return null; }
+  try {
+    const { createClient } = await import("redis");
+    const client = createClient({ url: REDIS_URL });
+    client.on("error", () => { _redisClient = null; });
+    await client.connect();
+    _redisClient = client;
+    return client;
+  } catch {
+    _redisClient = null;
+    return null;
+  }
+}
+
 /**
  * 确定性字符串哈希（djb2 变体），用于把任意 query/参数压缩为短键。
  */
@@ -142,27 +175,76 @@ function fresh(e, ttlMs) {
 }
 
 /**
- * 读取缓存。命中且未过期返回缓存值，否则返回 undefined。
- * @param {string} key 原始键（如归一化后的 query 或序列化参数）
+ * 读取缓存（同步模式）。仅查内存 + 文件，不查 Redis。
+ * 命中且未过期返回缓存值，否则返回 undefined。
+ *
+ * @param {string} key 原始键
  * @param {number} [ttlMs] 过期阈值，默认 DEFAULT_TTL_MS
+ * @returns {any|undefined}
  */
 export function cacheGet(key, ttlMs = DEFAULT_TTL_MS) {
   const h = cacheHash(key);
   const m = memory.get(h);
   if (fresh(m, ttlMs)) return m.value;
-  if (m) memory.delete(h); // 内存命中但已过期：丢弃，避免陈旧值滞留热路径
+  if (m) memory.delete(h);
   const entries = readAll();
   const e = entries[h];
   if (fresh(e, ttlMs)) {
-    memory.set(h, e); // 回填内存，加速后续命中
+    memory.set(h, e);
     return e.value;
   }
-  // 磁盘命中但已过期：仅清内存标记，磁盘过期项由 cacheSet/gcExpired 统一回收（读路径不写盘）
   return undefined;
 }
 
 /**
- * 写入缓存。合并已有磁盘条目，避免多扩展实例互相覆盖。
+ * 读取缓存（异步模式）。查内存 → Redis → 文件三级，返回最快可靠结果。
+ * Redis 命中时回填内存，加速后续调用。
+ *
+ * @param {string} key 原始键
+ * @param {number} [ttlMs] 过期阈值
+ * @returns {Promise<any|undefined>}
+ */
+export async function cacheGetAsync(key, ttlMs = DEFAULT_TTL_MS) {
+  const h = cacheHash(key);
+
+  // 1. 内存（同步热路径）
+  const m = memory.get(h);
+  if (fresh(m, ttlMs)) return m.value;
+  if (m) memory.delete(h);
+
+  // 2. Redis（异步，多 Pod 共享层）
+  if (REDIS_ENABLED) {
+    try {
+      const r = await getRedis();
+      if (r) {
+        const raw = await r.get(`${REDIS_KEY_PREFIX}${h}`);
+        if (raw) {
+          const e = JSON.parse(raw);
+          if (fresh(e, ttlMs)) {
+            memory.set(h, e);
+            return e.value;
+          }
+        }
+      }
+    } catch {
+      /* Redis 不可用 → 降级文件 */
+    }
+  }
+
+  // 3. 文件（同步兜底）
+  const entries = readAll();
+  const e = entries[h];
+  if (fresh(e, ttlMs)) {
+    memory.set(h, e);
+    return e.value;
+  }
+  return undefined;
+}
+
+/**
+ * 写入缓存（同步写内存+文件，异步 fire-and-forget 写 Redis）。
+ * 合并已有磁盘条目，避免多扩展实例互相覆盖。
+ *
  * @param {string} key 原始键
  * @param {any} value 缓存值（须可 JSON 序列化）
  * @param {number} [ttlMs] 过期阈值，默认 DEFAULT_TTL_MS
@@ -171,31 +253,47 @@ export function cacheSet(key, value, ttlMs = DEFAULT_TTL_MS) {
   const h = cacheHash(key);
   const entry = { value, ts: Date.now(), ttl: ttlMs };
   memory.set(h, entry);
-  // read-modify-write 整体在锁内，杜绝多进程并发丢更新；
-  // 顺带回收过期条目 + 超容按写入时间 LRU 近似裁剪，抑制缓存文件/内存单调膨胀。
+  // 同步：文件写（read-modify-write + LRU 裁剪）
   mutateAll((entries) => {
     const now = Date.now();
     for (const k of Object.keys(entries)) {
       const e = entries[k];
-      if (!e || now - e.ts >= (e.ttl || ttlMs)) delete entries[k]; // 回收过期
+      if (!e || now - e.ts >= (e.ttl || ttlMs)) delete entries[k];
     }
     entries[h] = entry;
     const keys = Object.keys(entries);
     if (keys.length > MAX_ENTRIES) {
-      // 按写入时间升序，裁掉最旧 (keys.length - MAX_ENTRIES) 个
       keys.sort((a, b) => entries[a].ts - entries[b].ts);
       for (const k of keys.slice(0, keys.length - MAX_ENTRIES)) delete entries[k];
     }
     return entries;
   });
-  // 内存热缓存同步裁剪，避免与磁盘容量漂移
+  // 内存热缓存同步裁剪
   if (memory.size > MAX_ENTRIES) {
     const sorted = [...memory.entries()].sort((a, b) => a[1].ts - b[1].ts);
     for (const [k] of sorted.slice(0, memory.size - MAX_ENTRIES)) memory.delete(k);
   }
+  // 异步：Redis 写（fire-and-forget，失败不影响主流程）
+  if (REDIS_ENABLED) {
+    _setRedisEntryAsync(h, entry, ttlMs);
+  }
 }
 
-/** 缓存统计（有效/过期条目数 + 文件位置）。 */
+/** Redis 异步写 helper（fire-and-forget）。 */
+function _setRedisEntryAsync(h, entry, ttlMs) {
+  (async () => {
+    try {
+      const r = await getRedis();
+      if (r) {
+        await r.setEx(`${REDIS_KEY_PREFIX}${h}`, Math.ceil(ttlMs / 1000), JSON.stringify(entry));
+      }
+    } catch {
+      /* Redis 写失败静默降级 */
+    }
+  })();
+}
+
+/** 缓存统计（有效/过期条目数 + 文件位置 + Redis 状态）。 */
 export function cacheStats() {
   const entries = readAll();
   const now = Date.now();
@@ -210,13 +308,35 @@ export function cacheStats() {
     valid,
     expired,
     file: CACHE_FILE,
+    fileBackend: true,
+    redisEnabled: REDIS_ENABLED,
+    redisConnected: _redisClient !== null,
+    backend: REDIS_ENABLED ? (CACHE_BACKEND === "redis" ? "redis_primary" : "auto") : "file",
   };
 }
 
-/** 清空缓存（内存 + 磁盘）。 */
+/** 清空缓存（内存 + 文件 + Redis）。 */
 export function cacheClear() {
   memory.clear();
   mutateAll(() => ({}));
+  if (REDIS_ENABLED) {
+    (async () => {
+      try {
+        const r = await getRedis();
+        if (r) {
+          // 扫描所有 rag:cache: 开头的 key 并删除
+          let cursor = "0";
+          do {
+            const scanResult = await r.scan(cursor, { match: `${REDIS_KEY_PREFIX}*`, count: 100 });
+            cursor = scanResult.cursor;
+            if (scanResult.keys.length > 0) await r.del(scanResult.keys);
+          } while (cursor !== "0");
+        }
+      } catch {
+        /* Redis 清理失败不阻断 */
+      }
+    })();
+  }
 }
 
 /**

@@ -63,6 +63,27 @@ const DZ_CATEGORIES = {
   "耳": "五官", "鼻": "五官", "喉": "五官", "咽": "五官",
 };
 
+// ── 查询→科室模式（用于指南预过滤）──
+// 当查询内容明确指向某个科室时，只对该科室的指南算分，提升准确率+性能。
+const QUERY_DEPT_PATTERNS = [
+  { dept: "心血管内科", patterns: [/高血压|冠心病|心衰|房颤|心律|心绞痛|冠脉|心肌|心梗/] },
+  { dept: "神经内科", patterns: [/脑卒中|中风|卒中|脑梗|癫痫|帕金森|痴呆|阿兹海默/] },
+  { dept: "呼吸内科", patterns: [/肺炎|哮喘|慢阻肺|COPD|肺部感染|呼吸衰竭/] },
+  { dept: "消化内科", patterns: [/胃炎|溃疡|幽门螺杆菌|胰腺炎|肝硬化|肠炎|腹泻/] },
+  { dept: "肿瘤科", patterns: [/肝癌|肺癌|胃癌|肠癌|食管癌|乳腺癌|甲状腺癌|宫颈癌|卵巢癌|前列腺癌|癌|肿瘤/] },
+  { dept: "内分泌代谢科", patterns: [/糖尿病|糖尿|肥胖|高血糖|高脂|血脂|甲状腺|甲亢|甲减/] },
+  { dept: "肾内科", patterns: [/肾病|透析|血透|肾炎|肾衰/] },
+  { dept: "妇产科", patterns: [/妊娠|孕妇|产后|围产|哺乳|宫颈|妇科|剖宫产/] },
+  { dept: "儿科", patterns: [/儿童|小儿|新生儿|婴幼儿/] },
+  { dept: "骨科", patterns: [/骨折|关节|脊柱|骨松|骨质疏松/] },
+  { dept: "感染科", patterns: [/感染|结核|乙肝|艾滋|新冠|病毒性肝炎/] },
+  { dept: "血液科", patterns: [/贫血|血友病|溶血|白血病/] },
+  { dept: "精神科", patterns: [/抑郁|焦虑|失眠|精神/] },
+  { dept: "皮肤科", patterns: [/皮肤|皮炎|皮疹/] },
+  { dept: "风湿免疫科", patterns: [/风湿|痛风|类风湿|红斑狼疮/] },
+  { dept: "眼科", patterns: [/眼|视力|白内障|青光眼/] },
+];
+
 export function routeGuides(query, opts = {}) {
   const { index, topK = 5, useSemantic = true, useCache = true, baseDir, confidenceMin = ROUTE_CONFIDENCE_MIN } = opts;
   const idx = index || loadIndex(baseDir);
@@ -78,7 +99,30 @@ export function routeGuides(query, opts = {}) {
 
   const qTokens = tokenize(qAliased);
   const kwIndex = idx.keywordIndex || {};
-  const guideMap = idx.guideMap || {};
+  let guideMap = idx.guideMap || {};
+
+  // ── 科室预过滤（提升准确率+性能）──
+  // 当查询明确指向某科室时，只对该科室的指南算分
+  let detectedDept = null;
+  const matchedDepts = [];
+  for (const { dept, patterns } of QUERY_DEPT_PATTERNS) {
+    if (patterns.some((re) => re.test(qNorm))) {
+      matchedDepts.push(dept);
+    }
+  }
+  if (matchedDepts.length === 1) {
+    detectedDept = matchedDepts[0];
+    const filtered = {};
+    for (const [title, info] of Object.entries(guideMap)) {
+      if (info.department === detectedDept || !info.department) {
+        // 无 department 的指南也保留（兼容旧索引）
+        filtered[title] = info;
+      }
+    }
+    if (Object.keys(filtered).length >= 3) {
+      guideMap = filtered; // 至少保留 3 篇，避免过滤后空集
+    }
+  }
   const scored = [];
 
   for (const [title, info] of Object.entries(guideMap)) {
@@ -159,7 +203,7 @@ export function routeGuides(query, opts = {}) {
 
     if (qYear != null && candYear != null && candYear !== qYear) continue;
     if (score > 0 && hasStrong) {
-      scored.push({ title, id: info.id || title, disease: info.disease || "", version: candYear, normalizedDisease: candNorm, audience: info.audience || null, deprecated: info.deprecated === true, sectionCount: info.sectionCount ?? null, keyParagraphCount: info.keyParagraphCount ?? null, score, reasons, matchedKeywords: matchedKw });
+      scored.push({ title, id: info.id || title, disease: info.disease || "", version: candYear, normalizedDisease: candNorm, audience: info.audience || null, department: info.department || null, deprecated: info.deprecated === true, sectionCount: info.sectionCount ?? null, keyParagraphCount: info.keyParagraphCount ?? null, score, reasons, matchedKeywords: matchedKw });
     }
   }
 
@@ -178,7 +222,7 @@ export function routeGuides(query, opts = {}) {
   const top = scored.slice(0, topK);
   const topScore = top.length ? top[0].score : 0;
   const lowConfidence = top.length === 0 || topScore < confidenceMin;
-  const result = { query, top, totalMatched: scored.length, semantic: useSemantic, cached: false, topScore, lowConfidence };
+  const result = { query, top, totalMatched: scored.length, semantic: useSemantic, cached: false, topScore, lowConfidence, detectedDept };
   if (useCache) cacheSet(cacheKey, result);
   return result;
 }

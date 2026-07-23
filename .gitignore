@@ -116,6 +116,9 @@ data/kb/.knowledge-graph.db-shm
 data/embed-cache*
 data/*-report.json
 
+# 图片提取产物（可重建，不入仓）
+data/kb/figures/
+
 # ========== 收拢 WIP 时补充的忽略项（2026-07-19） ==========
 # 前端 UI 由协作同僚维护，源码不入库（其 node_modules 已受全局规则忽略）
 frontend/

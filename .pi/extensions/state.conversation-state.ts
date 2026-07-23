@@ -23,6 +23,8 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
+// @ts-ignore
+import { compressConversation, estimateTokens } from "./lib/context-compressor.mjs";
 
 const STATE_FILE = join(process.cwd(), ".pi", "conversation-state.json");
 
@@ -351,19 +353,54 @@ export default function factory(pi: ExtensionAPI) {
         }
       }
 
-      const injected = formatState(state);
-      if (!injected) return; // 无状态不注入
+      // ── 上下文压缩（长对话时自动触发）──
+      // 当消息历史 token 估算超过预算时，对前序轮次做摘要压缩，
+      // L1保留最新2轮完整内容，L2为旧轮摘要，L3为当前槽位状态
+      let compressedMessages: any[] | undefined;
+      let compressionStats: any = null;
+      try {
+        const stateText = formatState(state);
+        const result = await compressConversation(event.messages || [], {
+          totalBudget: parseInt(process.env.CONTEXT_BUDGET_TOKENS || "12000"),
+          stateContext: stateText,
+          fullTurns: 2,
+        });
+        if (result.compressed && result.messages.length > 0) {
+          compressedMessages = result.messages;
+          compressionStats = result.stats;
+        }
+      } catch {
+        // 压缩失败不影响主流程
+      }
 
-      return {
-        messages: [
-          {
-            role: "user" as const,
-            content: injected,
-            timestamp: Date.now(),
-          },
-          ...event.messages,
-        ],
-      };
+      const injected = formatState(state);
+      // 当无状态且未压缩时跳过注入
+      if (!injected && !compressedMessages) return;
+
+      // ── 构造注入消息 ──
+      // 若有压缩，使用压缩后的历史
+      const baseMessages = compressedMessages || event.messages;
+
+      // 若注入状态不为空，拼接状态 + 历史
+      if (injected) {
+        return {
+          messages: [
+            {
+              role: "user" as const,
+              content: injected,
+              timestamp: Date.now(),
+            },
+            ...baseMessages,
+          ],
+        };
+      }
+
+      // 仅有压缩（无状态注入）：也返回压缩后的历史
+      if (compressedMessages) {
+        return { messages: compressedMessages };
+      }
+
+      return;
     } catch {
       // 注入失败不影响主流程
       return;

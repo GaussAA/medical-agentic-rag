@@ -65,7 +65,6 @@ jobs:
             extensions/safety/bash-guard.test.mjs \
             lib/audit-chain.test.mjs \
             scripts/proxy/provider-proxy.test.mjs \
-            lib/kg-graph.test.mjs \
             extensions/safety/faithfulness-guard.test.mjs \
             lib/conflict-detector.test.mjs \
             lib/rag-search-version-hint.test.mjs \

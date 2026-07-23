@@ -25,11 +25,12 @@
 
 | 文件 | 职责 | 注册工具 |
 |------|------|---------|
-| `retrieval.guide-finder.ts` | 医疗指南语义路由（IDF 加权 + 同义词归一） | `guide_finder` |
-| `retrieval.rag-search.ts` | 定向召回 + 版本冲突标注 + 引擎容错 | `rag_search` |
-| `retrieval.kg-search-tool.ts` | 知识图谱多跳推理 | `kg_search` |
-| `retrieval.query-decomposer.ts` | 复杂问题分解为子查询 | `decompose_query` |
+| ~~`retrieval.guide-finder.ts`~~ | 已废弃，被 orchestrator 取代 | ~~`guide_finder`~~ |
+| ~~`retrieval.rag-search.ts`~~ | 已废弃，被 orchestrator 取代 | ~~`rag_search`~~ |
+| ~~`retrieval.kg-search-tool.ts`~~ | 已废弃，被 orchestrator 取代 | ~~`kg_search`~~ |
+| `retrieval.query-decomposer.ts` | 复杂问题分解为子查询（即将合并到 query-transform） | `decompose_query` |
 | `retrieval.medical-infographic.ts` | 医疗信息图生成（sensenova u1-fast） | `generate_infographic` |
+| `retrieval.orchestrator.ts` | **统一检索入口**（retrieve，替代上述三个已废弃工具） | `retrieve` |
 
 ### `safety`（安全合规）
 

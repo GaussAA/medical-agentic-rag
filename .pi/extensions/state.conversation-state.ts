@@ -354,20 +354,30 @@ export default function factory(pi: ExtensionAPI) {
       }
 
       // ── 上下文压缩（长对话时自动触发）──
-      // 当消息历史 token 估算超过预算时，对前序轮次做摘要压缩，
-      // L1保留最新2轮完整内容，L2为旧轮摘要，L3为当前槽位状态
+      // Pi 框架内置了 compaction 系统（enabled=true 默认开启），在 session 层做结构化摘要。
+      // 我们的自定义压缩器作为补充：当 Pi compaction 未产生摘要（或预算仍超限）时触发。
+      // 检测方式：查找历史消息中是否已有 Pi 生成的 compaction 摘要标记
       let compressedMessages: any[] | undefined;
       let compressionStats: any = null;
       try {
-        const stateText = formatState(state);
-        const result = await compressConversation(event.messages || [], {
-          totalBudget: parseInt(process.env.CONTEXT_BUDGET_TOKENS || "12000"),
-          stateContext: stateText,
-          fullTurns: 2,
-        });
-        if (result.compressed && result.messages.length > 0) {
-          compressedMessages = result.messages;
-          compressionStats = result.stats;
+        const msgs = event.messages || [];
+        // 检查 Pi 是否已经做了 compaction（通过查找 session entry 中的 compaction 标记）
+        // 由于扩展层无法直接访问 SessionManager，间接判断：如果历史消息中包含
+        // "Context checkpoint" 或 "Previous conversation" 等 compaction 特有标记，则跳过
+        const historyText = msgs.map((m: any) => (typeof m.content === "string" ? m.content : "")).join(" ");
+        const hasPiCompaction = /context checkpoint|previous summar|compaction|【前序对话摘要\]/.test(historyText);
+
+        if (!hasPiCompaction) {
+          const stateText = formatState(state);
+          const result = await compressConversation(msgs, {
+            totalBudget: parseInt(process.env.CONTEXT_BUDGET_TOKENS || "12000"),
+            stateContext: stateText,
+            fullTurns: 2,
+          });
+          if (result.compressed && result.messages.length > 0) {
+            compressedMessages = result.messages;
+            compressionStats = result.stats;
+          }
         }
       } catch {
         // 压缩失败不影响主流程

@@ -101,3 +101,60 @@ export function filterVariants(variants) {
     return true;
   });
 }
+
+// ══════════════════════════════════════════════════════════
+// 查询分解（原 retrieval.query-decomposer 的启发式逻辑，迁移至此
+// 消除概念重叠。query-decomposer.ts 只需薄封装调用本函数。）
+// ══════════════════════════════════════════════════════════
+
+const MEDICAL_ASPECTS_RE = /(病因|发病机制|危险因素|症状|体征|诊断|筛查|检查|分期|治疗|用药|药物|手术|放疗|化疗|预后|预防|随访|康复)/g;
+const STANDARD_ASPECTS = [
+  { label: "定义与病因", keywords: "定义 病因 危险因素" },
+  { label: "诊断方法", keywords: "诊断 筛查 检查 分期" },
+  { label: "治疗方案", keywords: "治疗 药物 手术 放疗 化疗" },
+  { label: "预后与预防", keywords: "预后 预防 随访 康复" },
+];
+
+/**
+ * 将复杂医学问题拆解为子查询序列。
+ * 纯启发式（无 LLM 依赖），支持对比类和综合类问题。
+ *
+ * @param {string} question 用户的原始复杂问题
+ * @returns {{ type: string, subQueries: Array<{step:number, subQuery:string, targetGuide:string, searchMode:string, keywords?:string}>, lines: string[] }}
+ */
+export function decomposeQuery(question) {
+  const subQueries = [];
+  const lines = [`原始问题: ${question}\n`];
+  const hasCompare = /比较|对比|差异|区别|不同|哪个更好|vs|versus/i.test(question);
+  const aspectCount = (question.match(MEDICAL_ASPECTS_RE) || []).length;
+  const hasMultiAspect = /以及|包括|同时|综合|全面|概览|概述|各方面|相关情况/.test(question) || aspectCount >= 2;
+
+  if (hasCompare) {
+    lines.push("问题类型: 对比类\n分解策略: 分别查询各对象后对比\n");
+    const subjects = question.replace(/比较|对比|差异|区别|vs|versus/g, " ").split(/和|与|、|及/).map((s) => s.trim()).filter((s) => s.length > 1);
+    if (subjects.length >= 2) {
+      for (let i = 0; i < Math.min(subjects.length, 3); i++) {
+        subQueries.push({ step: i + 1, subQuery: `${subjects[i]}的治疗方案和诊断方法`, targetGuide: `搜索: "${subjects[i]}"`, searchMode: "deep" });
+      }
+      subQueries.push({ step: subQueries.length + 1, subQuery: `对比${subjects[0]}和${subjects[1]}的异同`, targetGuide: "融合多份指南结果", searchMode: "adaptive" });
+    } else {
+      for (const a of ["治疗方案", "诊断方法", "预后情况"]) {
+        subQueries.push({ step: subQueries.length + 1, subQuery: `${question} - ${a}`, targetGuide: "待定位", searchMode: "hybrid" });
+      }
+    }
+  } else {
+    lines.push("问题类型: 综合类\n分解策略: 按维度拆解\n");
+    for (const a of STANDARD_ASPECTS) {
+      subQueries.push({ step: subQueries.length + 1, subQuery: `${question} 的${a.label}`, targetGuide: "待定位", searchMode: "hybrid", keywords: a.keywords });
+    }
+  }
+
+  lines.push(`分解为 ${subQueries.length} 个子查询:\n`);
+  for (const sq of subQueries) {
+    lines.push(`  [步骤${sq.step}] ${sq.subQuery}\n          目标: ${sq.targetGuide}\n          模式: ${sq.searchMode}\n`);
+  }
+  lines.push("执行建议:\n1. 对每个子查询调 retrieve 工具搜索\n2. 汇总结果给出综合性回答");
+  if (hasCompare) lines.push("3. 最后对比分析异同，用表格呈现差异");
+
+  return { type: hasCompare ? "compare" : "comprehensive", subQueries, lines };
+}

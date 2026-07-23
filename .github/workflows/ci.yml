@@ -95,6 +95,13 @@ jobs:
           node tests/eval/retrieval/eval-retrieval.mjs
           echo "::endgroup::"
 
+      - name: 检索层元指标评测（light 模式，零外部依赖）
+        shell: bash
+        run: |
+          echo "::group::retrieval-metrics"
+          node tests/eval/retrieval/retrieval-metrics.mjs
+          echo "::endgroup::"
+
       - name: 结构与合规门禁（run-all-tests, CI 降级）
         env:
           CI: "true"
@@ -121,6 +128,11 @@ jobs:
           SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY || '' }}
           CI: "true"
         run: node tests/integration/answer-quality-judge.mjs
+      - name: Judge Calibration 评测（需 Key；轻量 5 次调用，验证坏答案分辨力）
+        env:
+          SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY || '' }}
+          CI: "true"
+        run: node tests/eval/calibrate-ci.mjs || echo "::warning::Judge Calibration 未通过（坏答案漏识别），可检查校准报告"
       - name: 评测可用性判定（决定门禁是否执行 / 失败）
         id: evalcheck
         run: |

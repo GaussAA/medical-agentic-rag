@@ -95,6 +95,16 @@ jobs:
           CI: "true"
         run: node tests/integration/answer-quality-judge.mjs
 
+      - name: 检索层元指标评测（light 模式，零外部依赖）
+        continue-on-error: true
+        run: node tests/eval/retrieval/retrieval-metrics.mjs
+
+      - name: Judge Calibration 评测（需 Key；验证坏答案分辨力）
+        continue-on-error: true
+        env:
+          SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY || '' }}
+        run: node tests/eval/calibrate-ci.mjs || echo "::warning::Judge Calibration 未通过"
+
       - name: 可观测性聚合（P2-③，零依赖，WARN 不阻断）
         continue-on-error: true
         run: node scripts/ci/metrics/observability-report.mjs

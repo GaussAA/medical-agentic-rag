@@ -14,6 +14,11 @@
     "kb:entities": "node scripts/kb/index/extract-entities.mjs",
     "kb:ingest": "node scripts/kb/ingest/ingest-raw.mjs",
     "kb:deprecate": "node scripts/kb/lifecycle/deprecate-versions.mjs",
+    "kb:remove": "node scripts/kb/lifecycle/kb-remove.mjs",
+    "kb:classify": "node scripts/kb/classify/classify-source.mjs",
+    "kb:enrich": "node scripts/kb/enrich/pdf-enrich.mjs",
+    "kb:chunks": "node scripts/kb/inspect/chunk-explorer.mjs",
+    "kb:meta": "node scripts/kb/enrich/inject-chunk-meta.mjs",
     "kb:lifecycle": "node scripts/compliance/privacy/data-lifecycle.mjs",
     "kb:reranker": "node scripts/kb/index/apply-reranker-patch.mjs",
     "kb:abdiff": "node scripts/eval/ab/ab-extract-diff.mjs",
@@ -52,6 +57,7 @@
     "feedback:consume:ci": "node scripts/eval/pipeline/consume-feedback.mjs --strict",
     "compliance:audit": "node scripts/compliance/audit/compliance-audit.mjs",
     "feedback:merge": "node scripts/eval/pipeline/consume-feedback.mjs --merge",
+    "feedback:user": "node scripts/eval/pipeline/consume-user-feedback.mjs",
     "test": "node scripts/ci/test-aggregate.mjs",
     "test:legacy": "node tests/run-all-tests.mjs && node --experimental-strip-types tests/unit/extensions/state/conversation-state.test.mjs && node --experimental-strip-types tests/unit/extensions/safety/patient-profile.test.mjs && node --experimental-strip-types tests/unit/extensions/state/clarification-loop.test.mjs && node tests/unit/extensions/safety/grounding-rule.test.mjs && node tests/unit/extensions/eval/llm-judge.test.mjs && node tests/unit/lib/kg-graph.test.mjs && node tests/unit/lib/retrieval-router.test.mjs && node tests/unit/lib/retrieval-fts.test.mjs && node tests/unit/extensions/safety/faithfulness-guard.test.mjs && node tests/unit/lib/conflict-detector.test.mjs && node tests/unit/lib/rag-search-version-hint.test.mjs && node tests/unit/extensions/safety/scope-guard.test.mjs && node tests/unit/lib/query-sanitize.test.mjs && node tests/unit/extensions/eval/gate.test.mjs && node tests/unit/lib/audit-logger.test.mjs && node tests/unit/lib/engine-version.test.mjs && node tests/unit/lib/observability.test.mjs && node tests/unit/lib/diagnostic-log.test.mjs && node tests/unit/scripts/service/provider-health.test.mjs && node tests/unit/lib/alert-log.test.mjs && node tests/unit/scripts/kb/multisource/quality-gate.test.mjs && node tests/unit/scripts/kb/multisource/normalize.test.mjs && node tests/unit/scripts/eval/pipeline/merge-into-gold.test.mjs && node tests/unit/extensions/safety/guard-replacement.test.mjs && node --experimental-strip-types tests/unit/extensions/safety/patient-forget.test.mjs && node tests/unit/scripts/eval/quality/chunk-quality.test.mjs && node tests/unit/lib/chinese-heading.test.mjs && node tests/unit/scripts/eval/ab/prompt-eval.test.mjs && node tests/unit/scripts/eval/ab/generate-input.test.mjs && node tests/unit/scripts/eval/quality/content-need-alignment.test.mjs && node --test tests/unit/scripts/service/api-server.test.mjs && node --test tests/unit/scripts/service/session-pool.test.mjs",
     "test:kg": "node tests/unit/lib/kg-graph.test.mjs",
@@ -67,7 +73,13 @@
     "test:clarify-real": "node scripts/eval/pipeline/clarification-real-link.mjs",
     "test:eval-multiturn": "node scripts/eval/pipeline/eval-bench-multiturn.js",
     "hooks:install": "node scripts/ci/install-hooks.mjs",
-    "coverage:check": "node scripts/ci/check-coverage.mjs"
+    "coverage:check": "node scripts/ci/check-coverage.mjs",
+    "recall:check": "node scripts/ci/check-recall-regression.mjs",
+    "recall:baseline": "node scripts/ci/check-recall-regression.mjs --update-baseline",
+    "ops:rotate": "node scripts/ci/rotate-logs.mjs",
+    "ops:rotate:dry": "node scripts/ci/rotate-logs.mjs --dry-run",
+    "ops:disk": "node scripts/ci/rotate-logs.mjs --status",
+    "admin:kb": "node scripts/admin/kb-admin-server.mjs"
   },
   "engines": {
     "node": ">=22"

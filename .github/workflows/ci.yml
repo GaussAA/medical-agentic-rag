@@ -52,6 +52,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: "npm"
+
+      - name: 安装构建依赖（编译原生模块）
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y --no-install-recommends python3 make g++
+          npm ci
 
       - name: 纯逻辑单测（零外部依赖）
         shell: bash

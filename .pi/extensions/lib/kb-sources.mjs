@@ -67,6 +67,76 @@ export function saveRegistry(registry, file = REGISTRY_FILE) {
   renameSync(tmp, file);
 }
 
+// ============================================================
+// 标签系统（用户自定义 tags）
+// ============================================================
+
+/**
+ * 为指定来源添加一个或多个标签（去重）。
+ * @param {string} sourceId
+ * @param {...string} tags
+ * @returns {{ ok: boolean, entry?: object, error?: string }}
+ */
+export function addTags(sourceId, ...tags) {
+  const registry = loadRegistry();
+  const entry = registry.sources.find((s) => s.id === sourceId);
+  if (!entry) return { ok: false, error: `来源未找到: "${sourceId}"` };
+  if (!Array.isArray(entry.tags)) entry.tags = [];
+  for (const t of tags) {
+    const norm = t.trim();
+    if (norm && !entry.tags.includes(norm)) entry.tags.push(norm);
+  }
+  saveRegistry(registry);
+  return { ok: true, entry: { id: entry.id, name: entry.name, tags: entry.tags } };
+}
+
+/**
+ * 移除指定来源的一个标签。
+ * @param {string} sourceId
+ * @param {string} tag
+ * @returns {{ ok: boolean, entry?: object, error?: string }}
+ */
+export function removeTag(sourceId, tag) {
+  const registry = loadRegistry();
+  const entry = registry.sources.find((s) => s.id === sourceId);
+  if (!entry) return { ok: false, error: `来源未找到: "${sourceId}"` };
+  if (!Array.isArray(entry.tags)) entry.tags = [];
+  const idx = entry.tags.indexOf(tag);
+  if (idx === -1) return { ok: false, error: `标签 "${tag}" 不存在于 [${sourceId}]` };
+  entry.tags.splice(idx, 1);
+  saveRegistry(registry);
+  return { ok: true, entry: { id: entry.id, name: entry.name, tags: entry.tags } };
+}
+
+/**
+ * 列出全库所有标签及其出现次数。
+ * @returns {Array<{tag: string, count: number}>}
+ */
+export function listAllTags() {
+  const registry = loadRegistry();
+  const counter = new Map();
+  for (const s of registry.sources) {
+    if (Array.isArray(s.tags)) {
+      for (const t of s.tags) counter.set(t, (counter.get(t) || 0) + 1);
+    }
+  }
+  return [...counter.entries()]
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+}
+
+/**
+ * 按标签查询来源。
+ * @param {string} tag
+ * @returns {Array<{id: string, name: string, department: string, tags: string[]}>}
+ */
+export function queryByTag(tag) {
+  const registry = loadRegistry();
+  return registry.sources
+    .filter((s) => Array.isArray(s.tags) && s.tags.includes(tag))
+    .map((s) => ({ id: s.id, name: s.name, department: s.department || "", tags: s.tags || [] }));
+}
+
 /**
  * 快照当前 registry 到 .pi/kb-snapshots/，返回快照路径。供回滚使用。
  */

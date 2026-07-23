@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识库管理面板</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0f1117; color: #e1e4e8;
+  min-height: 100vh;
+}
+header {
+  background: #161b22; border-bottom: 1px solid #30363d;
+  padding: 14px 24px; display: flex; align-items: center; gap: 16px;
+}
+header h1 { font-size: 16px; font-weight: 600; }
+header .sub { font-size: 12px; color: #8b949e; margin-left: auto; }
+nav { display: flex; gap: 4px; background: #161b22; padding: 0 24px; border-bottom: 1px solid #21262d; }
+nav a {
+  padding: 10px 16px; font-size: 13px; color: #8b949e; text-decoration: none;
+  border-bottom: 2px solid transparent; cursor: pointer; transition: .15s;
+}
+nav a:hover { color: #e1e4e8; }
+nav a.active { color: #58a6ff; border-bottom-color: #58a6ff; }
+main { padding: 20px 24px; display: none; }
+main.active { display: block; }
+
+/* Cards skeleton */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.card {
+  background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+  padding: 16px; position: relative; overflow: hidden;
+}
+.card .num { font-size: 28px; font-weight: 600; color: #f0f6fc; }
+.card .label { font-size: 12px; color: #8b949e; margin-top: 4px; }
+.card .recall { position: absolute; right: 16px; top: 16px; font-size: 13px; padding: 2px 8px; border-radius: 10px; }
+.card .recall.good { background: #1b3624; color: #7ee787; }
+.card .recall.warn { background: #3d2e00; color: #d29922; }
+
+/* Skeleton animation */
+@keyframes shimmer { 0%{background-position:-200px 0} 100%{background-position:calc(200px + 100%) 0} }
+.skeleton {
+  background: linear-gradient(90deg, #21262d 25%, #30363d 50%, #21262d 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 6px;
+}
+.skel-card { height: 80px; }
+.skel-row { height: 28px; margin: 4px 0; width: 100%; }
+.skel-table { height: 240px; margin-top: 12px; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 8px 12px; font-weight: 600; color: #8b949e; border-bottom: 1px solid #30363d; white-space: nowrap; }
+td { padding: 8px 12px; border-bottom: 1px solid #21262d; }
+tr:hover td { background: #161b22; }
+tr.clickable { cursor: pointer; }
+.badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+.badge-blue { background: #1f3a5f; color: #58a6ff; }
+.badge-green { background: #1b3624; color: #7ee787; }
+.badge-red { background: #3d1c1c; color: #f85149; }
+.badge-gray { background: #21262d; color: #8b949e; }
+.file-cell { max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Toolbar */
+.toolbar { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+.toolbar input, .toolbar select {
+  background: #0f1117; border: 1px solid #30363d; border-radius: 6px;
+  padding: 6px 12px; font-size: 13px; color: #e1e4e8; outline: none;
+}
+.toolbar input:focus, .toolbar select:focus { border-color: #58a6ff; }
+.toolbar input[type="text"] { width: 240px; }
+.toolbar .count { font-size: 12px; color: #8b949e; margin-left: auto; }
+
+/* Pagination */
+.pagination { display: flex; gap: 4px; justify-content: center; margin-top: 12px; align-items: center; }
+.pagination button {
+  background: #21262d; border: 1px solid #30363d; border-radius: 4px;
+  padding: 4px 10px; font-size: 12px; color: #e1e4e8; cursor: pointer;
+}
+.pagination button:hover { background: #30363d; }
+.pagination button:disabled { opacity: .4; cursor: default; }
+.pagination .page-info { font-size: 12px; color: #8b949e; padding: 0 8px; }
+
+/* Dist bar */
+.dist-bar { display: flex; height: 32px; gap: 4px; margin: 12px 0; }
+.dist-bar .seg { border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #fff; min-width: 40px; }
+.dist-labels { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: #8b949e; margin-bottom: 20px; }
+
+/* Modal */
+.modal-bg {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,.6); z-index: 100; align-items: center; justify-content: center;
+}
+.modal-bg.open { display: flex; }
+.modal {
+  background: #161b22; border: 1px solid #30363d; border-radius: 12px;
+  width: 90%; max-width: 800px; max-height: 85vh; overflow-y: auto;
+  padding: 24px; position: relative;
+}
+.modal .close {
+  position: absolute; top: 12px; right: 16px; font-size: 20px; color: #8b949e;
+  cursor: pointer; background: none; border: none;
+}
+.modal .close:hover { color: #f0f6fc; }
+.modal h2 { font-size: 15px; margin-bottom: 12px; }
+.modal .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; margin-bottom: 16px; }
+.modal .meta-item { font-size: 12px; color: #8b949e; }
+.modal .meta-item strong { color: #e1e4e8; }
+.modal .content-box {
+  background: #0f1117; border: 1px solid #30363d; border-radius: 8px;
+  padding: 16px; font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 13px; line-height: 1.7; white-space: pre-wrap; max-height: 400px; overflow-y: auto;
+}
+
+/* Loading / Error / Empty */
+.loader { text-align: center; padding: 40px; color: #8b949e; }
+.loader .spinner { display: inline-block; width: 24px; height: 24px; border: 2px solid #30363d; border-top-color: #58a6ff; border-radius: 50%; animation: spin .6s linear infinite; margin-bottom: 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.error-msg { color: #f85149; padding: 12px; background: #3d1c1c; border-radius: 6px; margin: 8px 0; }
+.empty-msg { color: #8b949e; padding: 20px; text-align: center; }
+
+/* Files view */
+.file-row { display: flex; align-items: center; padding: 6px 0; }
+.file-row .bar-bg { flex: 1; height: 8px; background: #21262d; border-radius: 4px; margin: 0 12px; overflow: hidden; }
+.file-row .bar-fill { height: 100%; border-radius: 4px; background: #58a6ff; }
+
+/* — 自定义滚动条 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0f1117; }
+::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #484f58; }
+* { scrollbar-width: thin; scrollbar-color: #30363d #0f1117; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 知识库管理面板</h1>
+  <span class="sub" id="headerInfo">加载中...</span>
+</header>
+
+<nav>
+  <a class="active" onclick="switchTab('overview')">总览</a>
+  <a onclick="switchTab('chunks')">分片</a>
+  <a onclick="switchTab('files')">文件</a>
+  <a onclick="switchTab('diseases')">病种</a>
+</nav>
+
+<!-- Tab: Overview -->
+<main id="tab-overview" class="active">
+  <div class="loader" id="overviewLoader"><div class="spinner"></div><div>加载知识库统计...</div></div>
+  <div id="overviewContent" style="display:none">
+    <div class="cards" id="statsCards"></div>
+    <div id="distSection"></div>
+    <h3 style="font-size:14px;margin:16px 0 8px;color:#8b949e;">文件分片排行</h3>
+    <div id="topFilesTable"></div>
+  </div>
+</main>
+
+<!-- Tab: Chunks -->
+<main id="tab-chunks">
+  <div class="toolbar">
+    <select id="chunkFileFilter" onchange="loadChunks(1)"><option value="">所有文件</option></select>
+    <select id="chunkDiseaseFilter" onchange="loadChunks(1)"><option value="">所有病种</option></select>
+    <input type="text" id="chunkSearch" placeholder="搜索内容..." oninput="debounceSearch()">
+    <button onclick="loadChunks(1)" style="background:#238636;border:none;border-radius:6px;padding:6px 14px;color:#fff;cursor:pointer;font-size:13px;">搜索</button>
+    <span class="count" id="chunkCount"></span>
+  </div>
+  <div class="loader" id="chunksLoader" style="display:none"><div class="spinner"></div><div>加载分片列表...</div></div>
+  <div id="chunksError" class="error-msg" style="display:none"></div>
+  <div id="chunksTable"><div class="loader"><div class="spinner"></div><div>加载中...</div></div></div>
+  <div class="pagination" id="chunkPagination"></div>
+</main>
+
+<!-- Tab: Files -->
+<main id="tab-files">
+  <div class="loader" id="filesLoader"><div class="spinner"></div><div>加载文件列表...</div></div>
+  <div id="filesContent" style="display:none"><div id="filesList"></div></div>
+</main>
+
+<!-- Tab: Diseases -->
+<main id="tab-diseases">
+  <div class="loader" id="diseasesLoader"><div class="spinner"></div><div>加载病种分布...</div></div>
+  <div id="diseasesContent" style="display:none"><div id="diseasesList"></div></div>
+</main>
+
+<!-- Modal -->
+<div class="modal-bg" id="chunkModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="close" onclick="closeModal()">✕</button>
+    <h2 id="modalTitle">分片详情</h2>
+    <div class="loader" id="detailLoader" style="display:block"><div class="spinner"></div></div>
+    <div id="detailContent" style="display:none">
+      <div class="meta-grid" id="modalMeta"></div>
+      <div id="modalTags"></div>
+      <div style="margin-top:12px;font-size:12px;color:#8b949e;">内容</div>
+      <div class="content-box" id="modalContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let state = { page: 1, perPage: 50, search: '', file: '', disease: '', total: 0, totalPages: 0 };
+let debounceTimer;
+
+function debounceSearch() { clearTimeout(debounceTimer); debounceTimer = setTimeout(() => loadChunks(1), 400); }
+
+function switchTab(name) {
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('main').forEach(m => m.classList.remove('active'));
+  document.querySelector(`nav a[onclick*="'${name}'"]`).classList.add('active');
+  document.getElementById(`tab-${name}`).classList.add('active');
+  if (name === 'overview') loadOverview();
+  if (name === 'chunks') { loadChunks(1); loadFilters(); }
+  if (name === 'files') loadFiles();
+  if (name === 'diseases') loadDiseases();
+}
+
+async function api(path) {
+  const url = (window.location.origin || 'http://localhost:3001') + path;
+  const r = await fetch(url);
+  if (!r.ok) { const txt = await r.text(); throw new Error(txt.slice(0, 200) || `HTTP ${r.status}`); }
+  return r.json();
+}
+
+// ── 总览 ──
+async function loadOverview() {
+  const loader = document.getElementById('overviewLoader');
+  const cont = document.getElementById('overviewContent');
+  loader.style.display = 'block'; cont.style.display = 'none';
+  try {
+    const d = await api('/api/stats');
+    document.getElementById('headerInfo').textContent = `${d.totalChunks.toLocaleString()} 分片 · ${d.totalFiles} 文件`;
+
+    const recallPct = d.recallRate != null ? (d.recallRate * 100).toFixed(1) + '%' : 'N/A';
+    const cards = document.getElementById('statsCards');
+    cards.innerHTML = `
+      <div class="card"><div class="num">${d.totalChunks.toLocaleString()}</div><div class="label">总分片</div></div>
+      <div class="card"><div class="num">${d.totalFiles}</div><div class="label">源文件</div></div>
+      <div class="card"><div class="num">${(d.totalBytes / 1024 / 1024).toFixed(1)} MB</div><div class="label">内容总量</div></div>
+      <div class="card"><div class="num">${d.avgLength}</div><div class="label">平均长度</div></div>
+      <div class="card"><div class="num">${d.totalGuides ?? '?'}</div><div class="label">指南数</div></div>
+      <div class="card"><div class="num">${recallPct} <span class="recall ${d.recallRate >= 0.9 ? 'good' : 'warn'}">路由召回</span></div><div class="label">引用召回率</div></div>
+    `;
+    const dist = d.lengthDist || [];
+    const max = Math.max(...dist.map(x => x.cnt), 1);
+    const colors = ['#58a6ff','#7ee787','#d29922','#f85149','#bc8cff'];
+    document.getElementById('distSection').innerHTML = `
+      <div class="dist-bar">${dist.map((b,i) => `<div class="seg" style="flex:${b.cnt/max};background:${colors[i%colors.length]}">${b.cnt}</div>`).join('')}</div>
+      <div class="dist-labels">${dist.map((b,i) => `<span><span style="color:${colors[i%colors.length]}">●</span> ${b.bucket}: ${b.cnt.toLocaleString()}</span>`).join('')}</div>
+    `;
+    const tf = d.topFiles || [];
+    const maxCnt = Math.max(...tf.map(x => x.cnt), 1);
+    document.getElementById('topFilesTable').innerHTML = `
+      <table><tr><th>#</th><th>文件</th><th>分片</th><th>占比</th><th>均长</th></tr>
+      ${tf.map((f,i) => {
+        const pct = (f.cnt / d.totalChunks * 100).toFixed(1);
+        const name = f.file_path.split(/[/\\]/).pop();
+        return `<tr><td>${i+1}</td><td class="file-cell">${name}</td><td>${f.cnt}</td><td>${pct}%<div style="height:4px;background:#21262d;border-radius:2px;margin-top:3px"><div style="width:${pct}%;height:100%;background:#58a6ff;border-radius:2px"></div></div></td><td>${f.avgLen}B</td></tr>`;
+      }).join('')}</table>`;
+    cont.style.display = 'block';
+  } catch(e) {
+    const isConn = e.message.includes('Failed to fetch') || e.message.includes('NetworkError');
+    const tip = isConn
+      ? '<br><br><b>服务未启动</b><br>请先在终端运行:<br><code style="background:#21262d;padding:4px 8px;border-radius:4px;font-size:13px;">npm run admin:kb</code><br><br>然后刷新本页面'
+      : '';
+    document.getElementById('statsCards').innerHTML = `<div class="error-msg">${e.message}${tip}</div>`;
+    document.getElementById('headerInfo').textContent = '⚠ 连接失败';
+    cont.style.display = 'block';
+  }
+  loader.style.display = 'none';
+}
+
+// ── 分片 ──
+async function loadChunks(page) {
+  if (page) state.page = page;
+  state.search = (document.getElementById('chunkSearch')?.value || '').trim();
+  state.file = document.getElementById('chunkFileFilter')?.value || '';
+  state.disease = document.getElementById('chunkDiseaseFilter')?.value || '';
+
+  const p = new URLSearchParams({ page: state.page, perPage: state.perPage, search: state.search, file: state.file, disease: state.disease });
+  const table = document.getElementById('chunksTable');
+  const pag = document.getElementById('chunkPagination');
+  const err = document.getElementById('chunksError');
+  err.style.display = 'none';
+  table.innerHTML = '<div class="loader"><div class="spinner"></div><div>加载中...</div></div>';
+  pag.innerHTML = '';
+
+  try {
+    const d = await api(`/api/chunks?${p}`);
+    state.total = d.total; state.totalPages = d.totalPages;
+    document.getElementById('chunkCount').textContent = `共 ${d.total} 条`;
+
+    if (d.chunks.length === 0) {
+      table.innerHTML = '<div class="empty-msg">无匹配分片</div>';
+      return;
+    }
+    table.innerHTML = `<table><tr><th>文件</th><th>行</th><th>长度</th><th>病种</th><th>科室</th><th>标签</th><th>预览</th></tr>
+      ${d.chunks.map(c => {
+        const f = c.file_path.split(/[/\\]/).pop();
+        const pv = (c.preview || '').replace(/</g,'&lt;').slice(0, 120);
+        return `<tr class="clickable" onclick="showChunk('${c.id}')">
+          <td class="file-cell" title="${c.file_path}">${f}</td>
+          <td>${c.start_line}-${c.end_line}</td>
+          <td>${c.clen}B</td>
+          <td>${c.disease ? `<span class="badge badge-blue">${c.disease}</span>` : '-'}</td>
+          <td>${c.department ? `<span class="badge badge-gray">${c.department}</span>` : ''}</td>
+          <td>${(c.tags||[]).map(t => `<span class="badge badge-green">${t}</span>`).join(' ')}${c.is_deprecated ? ' <span class="badge badge-red">已废止</span>' : ''}</td>
+          <td style="font-size:12px;color:#8b949e;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pv}</td>
+        </tr>`;
+      }).join('')}</table>`;
+
+    pag.innerHTML = `
+      <button onclick="loadChunks(1)" ${state.page<=1?'disabled':''}>首页</button>
+      <button onclick="loadChunks(${state.page-1})" ${state.page<=1?'disabled':''}>‹</button>
+      <span class="page-info">${state.page} / ${state.totalPages}</span>
+      <button onclick="loadChunks(${state.page+1})" ${state.page>=state.totalPages?'disabled':''}>›</button>
+      <button onclick="loadChunks(${state.totalPages})" ${state.page>=state.totalPages?'disabled':''}>末页</button>
+      <span class="page-info">每页
+        <select onchange="state.perPage=Number(this.value);loadChunks(1)">
+          ${[20,50,100,200].map(n => `<option ${state.perPage===n?'selected':''}>${n}</option>`).join('')}
+        </select>
+      </span>`;
+  } catch(e) {
+    err.textContent = '加载分片失败: ' + e.message;
+    err.style.display = 'block';
+    table.innerHTML = '';
+  }
+}
+
+async function loadFilters() {
+  try {
+    const [files, diseases] = await Promise.all([api('/api/files'), api('/api/diseases')]);
+    document.getElementById('chunkFileFilter').innerHTML = '<option value="">所有文件</option>' +
+      files.files.map(f => `<option value="${f.file_path}">${f.file_path.split(/[/\\]/).pop()} (${f.chunkCount})</option>`).join('');
+    document.getElementById('chunkDiseaseFilter').innerHTML = '<option value="">所有病种</option>' +
+      (diseases.diseases||[]).map(d => `<option value="${d.disease}">${d.disease} (${d.chunkCount})</option>`).join('');
+  } catch(e) { console.error('筛选器加载失败:', e); }
+}
+
+async function showChunk(id) {
+  document.getElementById('chunkModal').classList.add('open');
+  document.getElementById('detailLoader').style.display = 'block';
+  document.getElementById('detailContent').style.display = 'none';
+  try {
+    const d = await api(`/api/chunks/${id}`);
+    document.getElementById('modalTitle').textContent = `分片详情 · ${d.id.slice(0,16)}...`;
+    document.getElementById('modalMeta').innerHTML = `
+      <div class="meta-item"><strong>文件</strong><br>${d.file_path}</div>
+      <div class="meta-item"><strong>行号</strong><br>${d.start_line} - ${d.end_line}</div>
+      <div class="meta-item"><strong>长度</strong><br>${(d.content||'').length} 字符</div>
+      <div class="meta-item"><strong>病种</strong><br>${d.disease||'-'}</div>
+      <div class="meta-item"><strong>科室</strong><br>${d.department||'-'}</div>
+      <div class="meta-item"><strong>索引时间</strong><br>${(d.indexedAt||'').slice(0,16)}</div>
+      ${d.isDeprecated ? '<div class="meta-item"><strong>状态</strong><br><span style="color:#f85149;">已废止</span></div>' : ''}`;
+    const tags = (d.tags||[]).map(t => `<span class="badge badge-green">${t}</span>`).join(' ');
+    document.getElementById('modalTags').innerHTML = tags ? `<div style="margin-bottom:8px;">${tags}</div>` : '';
+    const meta = d.metadata || {};
+    let metaStr = Object.keys(meta).length > 0
+      ? '<div style="margin:8px 0;padding:8px;background:#0f1117;border-radius:6px;font-size:12px;color:#8b949e;">'
+        + Object.entries(meta).map(([k,v]) => `<strong>${k}:</strong> ${JSON.stringify(v)}`).join('  ') + '</div>'
+      : '';
+    document.getElementById('modalContent').innerHTML = metaStr + (d.content||'').replace(/</g,'&lt;');
+    document.getElementById('detailLoader').style.display = 'none';
+    document.getElementById('detailContent').style.display = 'block';
+  } catch(e) {
+    document.getElementById('modalMeta').innerHTML = `<div class="error-msg">加载失败: ${e.message}</div>`;
+    document.getElementById('detailLoader').style.display = 'none';
+    document.getElementById('detailContent').style.display = 'block';
+  }
+}
+function closeModal() { document.getElementById('chunkModal').classList.remove('open'); }
+
+// ── 文件 ──
+async function loadFiles() {
+  document.getElementById('filesLoader').style.display = 'block';
+  document.getElementById('filesContent').style.display = 'none';
+  try {
+    const d = await api('/api/files');
+    const max = Math.max(...d.files.map(f => f.chunkCount), 1);
+    document.getElementById('filesList').innerHTML = `
+      <table><tr><th>文件</th><th>分片</th><th>大小</th><th>均长</th><th>行范围</th><th>占比</th></tr>
+      ${d.files.map(f => {
+        const name = f.file_path.split(/[/\\]/).pop();
+        return `<tr><td class="file-cell" title="${f.file_path}">${name}</td>
+          <td>${f.chunkCount}</td><td>${(f.totalBytes/1024).toFixed(0)}KB</td>
+          <td>${f.avgLen}B</td><td>${f.firstLine}-${f.lastLine}</td>
+          <td><div style="width:100px;height:8px;background:#21262d;border-radius:4px;overflow:hidden">
+            <div style="width:${(f.chunkCount/max*100).toFixed(0)}%;height:100%;background:#58a6ff;border-radius:4px"></div></div></td></tr>`;
+      }).join('')}</table>`;
+    document.getElementById('filesLoader').style.display = 'none';
+    document.getElementById('filesContent').style.display = 'block';
+  } catch(e) {
+    document.getElementById('filesList').innerHTML = `<div class="error-msg">加载失败: ${e.message}</div>`;
+    document.getElementById('filesLoader').style.display = 'none';
+    document.getElementById('filesContent').style.display = 'block';
+  }
+}
+
+// ── 病种 ──
+async function loadDiseases() {
+  document.getElementById('diseasesLoader').style.display = 'block';
+  document.getElementById('diseasesContent').style.display = 'none';
+  try {
+    const d = await api('/api/diseases');
+    const rows = d.diseases || [];
+    if (rows.length === 0) {
+      document.getElementById('diseasesList').innerHTML = '<div class="empty-msg">元数据未注入，请运行 npm run kb:meta</div>';
+    } else {
+      const max = Math.max(...rows.map(x => x.chunkCount), 1);
+      const totalAll = rows.reduce((a,x) => a + x.chunkCount, 0);
+      document.getElementById('diseasesList').innerHTML = `
+        <table><tr><th>病种</th><th>分片数</th><th>文件数</th><th>占比</th></tr>
+        ${rows.map(dz => `<tr>
+          <td><strong>${dz.disease}</strong></td>
+          <td>${dz.chunkCount}</td>
+          <td>${dz.fileCount}</td>
+          <td>${(dz.chunkCount/totalAll*100).toFixed(1)}%<div style="width:150px;height:8px;background:#21262d;border-radius:4px;margin-top:3px;overflow:hidden"><div style="width:${(dz.chunkCount/max*100).toFixed(0)}%;height:100%;background:#bc8cff;border-radius:4px"></div></div></td>
+        </tr>`).join('')}</table>`;
+    }
+    document.getElementById('diseasesLoader').style.display = 'none';
+    document.getElementById('diseasesContent').style.display = 'block';
+  } catch(e) {
+    document.getElementById('diseasesList').innerHTML = `<div class="error-msg">加载失败: ${e.message}</div>`;
+    document.getElementById('diseasesLoader').style.display = 'none';
+    document.getElementById('diseasesContent').style.display = 'block';
+  }
+}
+
+// ── 启动 ──
+loadOverview();
+</script>
+</body>
+</html>

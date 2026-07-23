@@ -5,7 +5,7 @@
 //   POST /api/v1/ask      {question, sessionId?, patientProfile?, timeoutMs?}
 //   POST /api/v1/model    零重启热切换模型 {provider, model}
 //   GET  /api/v1/models   可用模型列表
-//   GET  /api/v1/sessions 活跃会话
+//   POST /api/v1/feedback {query, rating, comment?}  用户反馈
 //   GET  /healthz         存活探针
 //   GET  /metrics         Prometheus 指标（复用 metrics-format）
 //
@@ -279,6 +279,35 @@ export function createApiHandler({
       // ---- 会话列表 ----
       if (req.method === "GET" && path === "/api/v1/sessions") {
         return sendJson(res, 200, { ok: true, ...pool.listSessions() });
+      }
+
+      // ---- 用户反馈 ----
+      if (req.method === "POST" && path === "/api/v1/feedback") {
+        if (!authenticate(req)) return sendJson(res, 401, { ok: false, error: "unauthorized" });
+        const body = typeof req.body === "object" ? req.body : {};
+        if (!body.query || body.rating === undefined) {
+          return sendJson(res, 400, { ok: false, error: "query and rating required" });
+        }
+        const entry = {
+          t: new Date().toISOString(),
+          query: (body.query || "").slice(0, 500),
+          response: (body.response || "").slice(0, 500),
+          rating: Number(body.rating),
+          comment: (body.comment || "").slice(0, 500),
+          sessionId: body.sessionId || "",
+          source: "api",
+        };
+        // 写入反馈日志
+        const { mkdirSync, appendFileSync } = await import("node:fs");
+        const { join } = await import("node:path");
+        const { dirname } = await import("node:path");
+        const { fileURLToPath } = await import("node:url");
+        const serverRoot = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+        const logDir = join(serverRoot, ".pi", "logs");
+        mkdirSync(logDir, { recursive: true });
+        const date = new Date().toISOString().slice(0, 10);
+        appendFileSync(join(logDir, `feedback-${date}.ndjson`), JSON.stringify(entry) + "\n", "utf-8");
+        return sendJson(res, 201, { ok: true, id: entry.t });
       }
 
       return sendJson(res, 404, { ok: false, error: "not found", path });

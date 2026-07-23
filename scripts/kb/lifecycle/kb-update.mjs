@@ -118,6 +118,64 @@ async function main() {
       process.exit(0);
       break;
     }
+    case "tag": {
+      const sub = arg || "list";
+      const third = process.argv[4];
+      const fourth = process.argv[5];
+      switch (sub) {
+        case "add": {
+          if (!third || !fourth) {
+            console.error("用法: node kb-update.mjs tag add <sourceId> <tag>");
+            process.exit(1);
+          }
+          const result = kb.addTags(third, fourth);
+          if (!result.ok) { console.error(`✗ ${result.error}`); process.exit(1); }
+          console.log(`✓ 已添加标签 "${fourth}" → [${result.entry.id}]`);
+          break;
+        }
+        case "remove": {
+          if (!third || !fourth) {
+            console.error("用法: node kb-update.mjs tag remove <sourceId> <tag>");
+            process.exit(1);
+          }
+          const result = kb.removeTag(third, fourth);
+          if (!result.ok) { console.error(`✗ ${result.error}`); process.exit(1); }
+          console.log(`✓ 已移除标签 "${fourth}" ← [${result.entry.id}]`);
+          break;
+        }
+        case "list": {
+          if (third) {
+            // tag list <tag> → 按标签查来源
+            const sources = kb.queryByTag(third);
+            if (sources.length === 0) {
+              console.log(`无来源标记标签 "${third}"`);
+              break;
+            }
+            console.log(`标签 "${third}" 覆盖 ${sources.length} 个来源:\n`);
+            for (const s of sources) {
+              console.log(`  [${s.id}] ${s.name} (${s.department})`);
+            }
+          } else {
+            // tag list → 全库标签列表
+            const tags = kb.listAllTags();
+            if (tags.length === 0) {
+              console.log("（空）尚无自定义标签，请使用 tag add 添加");
+              break;
+            }
+            console.log(`全库共 ${tags.length} 个标签:\n`);
+            for (const t of tags) {
+              console.log(`  ${t.tag} (${t.count} 个来源)`);
+            }
+          }
+          break;
+        }
+        default:
+          console.error(`未知子命令: "${sub}"`);
+          console.log("可用子命令: add <sourceId> <tag>, remove <sourceId> <tag>, list [tag]");
+          process.exit(1);
+      }
+      break;
+    }
     default:
       console.log(`知识库更新 CLI
 
@@ -130,7 +188,15 @@ async function main() {
   snapshot          快照 registry
   rollback [path]   回滚（省略 path 用最新快照）
   refresh           刷新流程（摄取+回写，异常回滚）
-  coverage          专科覆盖度报表（偏科感知/缺口清单）`);
+  coverage          专科覆盖度报表（偏科感知/缺口清单）
+  tag add <id> <t>  为来源添加标签
+  tag remove <id> <t>  移除来源标签
+  tag list [tag]    列出全库标签（或指定标签下的来源）
+
+删除与回收站:
+  kb-remove.mjs remove <id>   安全删除（移入回收站）
+  kb-remove.mjs recycle list  查看回收站
+  kb-remove.mjs recycle restore <id>  恢复已删条目`);
       process.exit(cmd ? 1 : 0);
   }
 }

@@ -77,7 +77,12 @@ jobs:
             lib/query-sanitize.test.mjs \
             extensions/eval/gate.test.mjs \
             lib/audit-logger.test.mjs \
-            lib/engine-version.test.mjs; do
+            lib/engine-version.test.mjs \
+            lib/kb-recycle.test.mjs \
+            lib/kb-tags.test.mjs \
+            lib/progressive-rerank.test.mjs \
+            lib/hyde.test.mjs \
+            lib/check-recall-regression.test.mjs; do
             echo "::group::unit/$t"
             node "tests/unit/$t"
             echo "::endgroup::"

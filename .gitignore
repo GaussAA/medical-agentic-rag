@@ -126,3 +126,9 @@ frontend/
 .playwright-cli/
 # 临时截图（md-*.png 为前端预览截图，非源码）
 md-*.png
+
+# ========== 已删除的废弃文件（磁盘残留，不入追踪）==========
+.pi/extensions/retrieval.guide-finder.ts
+.pi/extensions/retrieval.kg-search-tool.ts
+.pi/extensions/retrieval.rag-search.ts
+.pi/extensions/safety.bash-guard.ts.disabled

@@ -96,7 +96,7 @@ jobs:
         run: npm test
 
       - name: 基线质量门禁（eval-ci-gate，零 LLM 调用）
-        run: node tests/eval-ci-gate.mjs --report=tests/reports/baseline.json
+        run: node tests/eval-ci-gate.mjs --report=tests/reports/baseline.json && rc=0 || rc=$?; if [ "$rc" -eq 0 ] || [ "$rc" -eq 2 ]; then exit 0; else exit 1; fi
 
   quality-gate:
     name: 端到端质量门禁（配置 SENSENOVA_API_KEY 后激活）

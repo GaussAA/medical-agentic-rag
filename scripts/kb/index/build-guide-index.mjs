@@ -1,4 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
+import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { cacheClear } from "../../../.pi/extensions/lib/retrieval-cache.mjs";
@@ -18,6 +19,23 @@ async function main() {
       await readFile(join(KB_DIR, ".knowledge-graph.json"), "utf-8")
     );
   } catch { /* optional */ }
+
+  // 从 kb-sources.json 读取标签信息（tags 字段，用户自定义）
+  const sourceTags = {};
+  const sourcesPath = join(KB_DIR, "kb-sources.json");
+  if (existsSync(sourcesPath)) {
+    try {
+      const reg = JSON.parse(readFileSync(sourcesPath, "utf-8"));
+      for (const s of (reg.sources || [])) {
+        if (Array.isArray(s.tags) && s.tags.length > 0) {
+          sourceTags[s.id] = s.tags;
+        }
+      }
+      console.log(`  从 kb-sources 加载 ${Object.keys(sourceTags).length} 个来源的标签`);
+    } catch (e) {
+      console.warn("  加载 kb-sources 标签失败（非致命）:", e?.message || e);
+    }
+  }
 
   const guideMap = {};
 
@@ -152,6 +170,7 @@ async function main() {
       org,
       deprecated,
       supersededBy,
+      tags: sourceTags[guide.id] || [],
       keywords: Array.from(keywords).filter((k) => k.length > 1).slice(0, 50),
       sectionCount: guide.sectionCount,
       keyParagraphCount: guide.keyParagraphCount,

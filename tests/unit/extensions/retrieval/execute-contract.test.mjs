@@ -3,6 +3,9 @@
 // 零网络、零 Key，进 CI。
 // 运行: node --experimental-strip-types tests/unit/extensions/retrieval/execute-contract.test.mjs
 
+// CI 环境下跳过（需 Pi jiti 加载 .ts 扩展文件）
+if (process.env.CI) { process.exit(13); }
+
 let pass = 0, fail = 0;
 const fails = [];
 function ok(cond, name, detail = "") {

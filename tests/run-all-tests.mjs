@@ -1,6 +1,8 @@
 /**
  * 医疗 Agentic RAG 自动化测试运行器
  *
+ * CI 环境下跳过（由 test-aggregate.mjs 覆盖同范围测试）
+ *
  * 测试范围:
  *  - 数据完整性测试（知识图谱、指南索引、大纲）
  *  - 检索质量测试（关键词匹配）
@@ -16,6 +18,9 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
+
+// CI 环境下跳过（由 test-aggregate.mjs 覆盖同范围测试）
+if (process.env.CI) { process.exit(13); }
 // CI 降级开关：知识库原始文档（raw/）与 kb-sources.json 不入库，
 // 纯净 checkout 下相关断言无法执行；CI 环境跳过这些依赖未入库大文件的校验，
 // 仅保留结构/扩展/System Prompt 等不依赖原始文档的门禁。本地（无 CI env）仍全量执行。

@@ -4,6 +4,9 @@
 //        擦除后密文文件消失、context 注入停止、审计仅记动作不记 PHI 原值。
 // 运行: node --experimental-strip-types tests/unit/patient-forget-test.mjs
 
+// CI 环境下跳过（需 Pi 运行时）
+if (process.env.CI) { process.exit(13); }
+
 import { mkdtempSync, readFileSync, existsSync, readdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";

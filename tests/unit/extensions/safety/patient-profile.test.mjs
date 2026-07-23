@@ -3,6 +3,9 @@
 // 验证 PHI AES-256-GCM 静态加密落盘 + 明文绝不驻留磁盘 + 审计仅记字段名 + 过敏禁令渲染。
 // 运行: node --experimental-strip-types tests/unit/patient-profile-test.mjs
 
+// CI 环境下跳过（需 Pi 运行时）
+if (process.env.CI) { process.exit(13); }
+
 import { mkdtempSync, readFileSync, existsSync, readdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";

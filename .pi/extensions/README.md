@@ -27,10 +27,10 @@
 
 | 文件 | 职责 | 注册工具 |
 |------|------|---------|
-| ~~`retrieval.guide-finder.ts`~~ | 已废弃，被 orchestrator 取代 | ~~`guide_finder`~~ |
-| ~~`retrieval.rag-search.ts`~~ | 已废弃，被 orchestrator 取代 | ~~`rag_search`~~ |
-| ~~`retrieval.kg-search-tool.ts`~~ | 已废弃，被 orchestrator 取代 | ~~`kg_search`~~ |
-| `retrieval.query-decomposer.ts` | 复杂问题分解为子查询（即将合并到 query-transform） | `decompose_query` |
+| ~~`retrieval.guide-finder.ts`~~ | ❌ 已删除，被 orchestrator 取代 |
+| ~~`retrieval.rag-search.ts`~~ | ❌ 已删除，被 orchestrator 取代 |
+| ~~`retrieval.kg-search-tool.ts`~~ | ❌ 已删除，被 orchestrator 取代 |
+| `retrieval.query-decomposer.ts` | 复杂问题分解（调用 query-transform） | `decompose_query` |
 | `retrieval.medical-infographic.ts` | 医疗信息图生成（sensenova u1-fast） | `generate_infographic` |
 | `retrieval.orchestrator.ts` | **统一检索入口**（retrieve，替代上述三个已废弃工具） | `retrieve` |
 
@@ -40,7 +40,7 @@
 |------|------|
 | `safety.scope-guard.ts` | 越界拦截（医疗领域边界，占卜/法律等拒答） |
 | `safety.faithfulness-guard.ts` | 忠实度护栏（LLM-Judge fail-closed，HARD 默认开） |
-| `safety.bash-guard.ts` | 危险 shell 命令拦截 |
+| ~~`safety.bash-guard.ts`~~ | ❌ 已删除，由 @aliou/pi-guardrails 替代 |
 | `safety.patient-profile.ts` | 患者画像（AES-256-GCM 加密 + 审计 + 被遗忘权） |
 | `safety.audit-logger.ts` | 运行时审计日志埋点 |
 | `safety.conflict-detector.ts` | 多指南冲突检测（检索期版本比较标注） |

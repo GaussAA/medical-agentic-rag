@@ -20,6 +20,8 @@
 | `provider.local.ts` | LM Studio 本地模型（localhost:1234，可选切换） |
 | `provider.failover.ts` | 运行时故障转移 + `/failover` `/kb` 命令 |
 | `provider.query-cache.ts` | 查询缓存管理 `/cache` 命令 |
+| `provider.web-access.ts` | Web 搜索桥接（加载 pi-web-access 社区插件） |
+| `provider.deepseek-native.ts` | Pi 原生 DeepSeek 直连（替代 sensenova 代理通道） |
 
 ### `retrieval`（检索 / 知识库）
 

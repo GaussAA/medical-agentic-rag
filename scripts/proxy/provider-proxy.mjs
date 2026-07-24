@@ -79,7 +79,11 @@ const PROVIDERS = POOLS.flatMap((p) => p.members.map((m) => ({ ...m, pool: p.nam
 const PROBE_TIMEOUT = 3000; // 运行时健康探针超时：决定 Provider 切换灵敏度（短，避免瞬时抖动误切）；与 smoke-providers 的 8000ms（上线冷加载冒烟）用途不同，非一致性 bug
 const REQUEST_TIMEOUT = 60000;
 const RETRY_DELAY = 1000;
-const MAX_RETRIES = 2;
+// 重试次数：Pi v0.82.0 底层已有 DNS 自动重试（getaddrinfo/ENOTFOUND/EAI_AGAIN），
+// proxy 层减为 1 次，专注于 429 换 Key 和 provider HTTP 错误的恢复。
+// 总调用上限 = 1(原) + 1(proxy重试) + 1(Pi底层DNS重试) = 最多 3 次，
+// 兼顾韧性（429换Key）与免费额度保护。
+const MAX_RETRIES = 1;
 const CIRCUIT_BREAKER_THRESHOLD = 3; // 连续失败 N 次后切换
 const DEBOUNCE_MS = 5000; // 切换后冷却期，不重复切换
 

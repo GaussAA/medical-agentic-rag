@@ -67,6 +67,15 @@ async function main() {
   // 2. 加载已登记来源
   const { kb, reg } = await loadRegistry();
   const existing = new Set(reg.sources.map((s) => s.id));
+  // 补充检查：data/raw-txt/ 中已有对应 txt 的不算新增
+  const rawTxtDir = join(ROOT, "data", "raw-txt");
+  const txtExists = new Map();
+  if (existsSync(rawTxtDir)) {
+    const txtFiles = readdirSync(rawTxtDir).filter(f => f.endsWith(".txt"));
+    for (const f of txtFiles) {
+      txtExists.set(fileBaseline(f), true);
+    }
+  }
 
   // 对比：按文件名称的基准名匹配
   const newFiles = [];
@@ -75,6 +84,10 @@ async function main() {
     const baseline = fileBaseline(f.name);
     if (existing.has(baseline) || existing.has(f.name.replace(/\.\w+$/, ""))) {
       continue; // 已登记
+    }
+    // 二次确认：data/raw-txt/ 中已有对应 txt 的不算新增（已走 prepare 管线）
+    if (txtExists.has(baseline) || txtExists.has(fileBaseline(f.name.replace(/\.\w+$/, "")))) {
+      continue;
     }
     // 检查是否是某现有指南的新版本
     const isUpdate = [...existing].some((eid) => {
@@ -109,7 +122,7 @@ async function main() {
       execFileSync(
         process.execPath,
         [
-          join(ROOT, "scripts/kb/ingest-raw.mjs"),
+          join(ROOT, "scripts/kb/ingest/ingest-raw.mjs"),
           f.path,
           "--name", basename(f.name).replace(/\.\w+$/, ""),
         ],

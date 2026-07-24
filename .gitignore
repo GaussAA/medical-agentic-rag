@@ -57,6 +57,12 @@ backups/
 # 但保留自定义扩展文件
 !.pi/extensions/
 
+# pi-llm-wiki 安装包依赖（19MB，可重建，不入仓）
+.pi/npm/node_modules/
+
+# LLM Wiki 知识库（11MB/759页，可从 data/raw-txt/ 重建，不入仓）
+.llm-wiki/
+
 # ========== 忽略测试会话导出 ==========
 pi-session-*.html
 

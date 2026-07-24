@@ -27,10 +27,10 @@ import { readFileSync, writeFileSync, renameSync, existsSync, mkdirSync, readdir
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
-import { runPi, stripAnsi } from '../lib/pi-runner.mjs'; // P0-5/P1#4 修复：抽离公共 Pi 驱动（跨平台树杀、统一 runPi 内核）
+import { runPi, stripAnsi } from '../../lib/pi-runner.mjs'; // P0-5/P1#4 修复：抽离公共 Pi 驱动（跨平台树杀、统一 runPi 内核）
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..', '..');
+const ROOT = join(__dirname, '..', '..', '..');
 const GOLD_PATH = join(ROOT, 'tests', 'gold-answers.json');
 const SP_PATH = join(ROOT, '.pi', 'prompts', 'medical-agent.md');
 const LOG_DIR = join(ROOT, '.pi', 'logs');

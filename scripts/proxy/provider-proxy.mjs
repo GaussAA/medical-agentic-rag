@@ -17,8 +17,6 @@
 // 纯 node 运行，零外部依赖。
 
 import { createServer } from "node:http";
-import { readFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 

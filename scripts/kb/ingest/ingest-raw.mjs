@@ -1,4 +1,4 @@
-// scripts/kb/ingest-raw.mjs
+// scripts/kb/ingest/ingest-raw.mjs
 // 知识库偏科缓解 · 官方文件直供管线（B 方案，最合规）
 //
 // 用途：大帅在已登录浏览器下载卫健委/权威机构指南（PDF/HTML/MD），
@@ -22,7 +22,7 @@ import { execFileSync } from "node:child_process";
 import { join, dirname, extname, basename } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const KB_DIR = join(ROOT, "data", "kb");
 const REG_FILE = join(ROOT, "data/kb/kb-sources.json");
 const MOD = pathToFileURL(join(ROOT, ".pi/extensions/lib/kb-sources.mjs")).href;

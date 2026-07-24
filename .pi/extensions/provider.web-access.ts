@@ -34,7 +34,7 @@ export default function (pi: ExtensionAPI) {
       throw new Error("not found");
     })();
     // 工具注册由全局 pi-web-access Pi 包自行完成，本桥接仅验证可抵达
-    console.log("[web-access] pi-web-access 包可用 (工具由全局 Pi 包注册)");
+    console.log("[web-access] pi-web-access 包可用 (工具由项目 Pi 包注册)");
   } catch (e: any) {
     // 静默降级：pi-web-access 不可用时不影响主流程
     console.log("[web-access] pi-web-access 未安装或加载失败，Web 搜索不可用");

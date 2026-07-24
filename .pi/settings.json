@@ -1,6 +1,10 @@
 {
   "packages": [
-    "npm:@zosmaai/pi-llm-wiki"
+    "npm:@zosmaai/pi-llm-wiki",
+    "npm:pi-knowledge",
+    "npm:pi-web-access",
+    "npm:pi-subagents",
+    "npm:@firstpick/pi-package-webui"
   ],
   "llm-wiki": {
     "notices": false,

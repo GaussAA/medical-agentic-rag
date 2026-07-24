@@ -2,6 +2,7 @@
 // npm test 聚合运行器 —— 不短路、fail-closed
 // 新增单测在此 SUITES 登记（顺序无关）
 import { spawn } from "node:child_process";
+import { join } from "node:path";
 
 const SUITES = [
   // ── 数据完整性套件 ──
@@ -101,6 +102,10 @@ function run(name, cmd, args) {
 }
 
 async function main() {
+  // 确保���识库路径指向项目本地（测试环境无 start.sh 的 env 注入）
+  if (!process.env.PI_KNOWLEDGE_DIR) {
+    process.env.PI_KNOWLEDGE_DIR = join(process.cwd(), ".pi", "knowledge");
+  }
   console.log("=".repeat(60));
   console.log(`  聚合测试运行器 — 共 ${SUITES.length} 个套件（全跑不短路）`);
   console.log("=".repeat(60));

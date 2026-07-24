@@ -1,5 +1,12 @@
 {
   "packages": [
     "npm:@zosmaai/pi-llm-wiki"
-  ]
+  ],
+  "llm-wiki": {
+    "notices": false,
+    "taskModel": {
+      "provider": "sensenova",
+      "id": "sensenova-6.7-flash-lite"
+    }
+  }
 }

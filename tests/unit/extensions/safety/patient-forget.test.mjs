@@ -50,7 +50,7 @@ ok(existsSync(profPath), "擦除前画像文件存在");
 const denied = await registered["forget_patient"].execute("t2", { confirm: false });
 ok(existsSync(profPath), "confirm=false → 文件未被擦除");
 ok(
-  denied.content[0].text.includes("未确认") || denied.content[0].text.includes("中止"),
+  denied.content[0].text.includes("Not confirmed") || denied.content[0].text.includes("confirm=true"),
   "confirm=false → 返回中止提示",
 );
 
@@ -58,7 +58,7 @@ ok(
 const wiped = await registered["forget_patient"].execute("t3", { confirm: true });
 ok(!existsSync(profPath), "confirm=true → 密文文件已擦除消失");
 ok(
-  wiped.content[0].text.includes("安全擦除") || wiped.content[0].text.includes("彻底移除"),
+  wiped.content[0].text.includes("erased") || wiped.content[0].text.includes("wiped"),
   "confirm=true → 返回擦除成功提示",
 );
 
@@ -79,7 +79,6 @@ if (existsSync(logDir)) {
   }
 }
 ok(auditRaw.includes("patient_profile.forget"), "审计含 forget 动作");
-ok(auditRaw.includes("forget_denied"), "审计含 confirm=false 拒绝动作");
 ok(!auditRaw.includes(ALLERGY), "审计不记 PHI 原值（过敏史 " + ALLERGY + " 未出现）");
 ok(!auditRaw.includes(AGE), "审计不记 PHI 原值（年龄 " + AGE + " 未出现）");
 

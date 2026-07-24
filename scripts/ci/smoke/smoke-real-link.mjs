@@ -36,6 +36,11 @@ import { engineHybridSearch, isEngineAvailable } from "../../../.pi/extensions/l
 const FORCE_JSON = process.argv.includes("--json");
 const REPORT_DIR = join(process.cwd(), "tests", "reports");
 
+// 确保知识库路径指向项目本地（pre-push/env 无 PI_KNOWLEDGE_DIR 时自动设置）
+if (!process.env.PI_KNOWLEDGE_DIR) {
+  process.env.PI_KNOWLEDGE_DIR = join(process.cwd(), ".pi", "knowledge");
+}
+
 let pass = 0;
 let fail = 0;
 const fails = [];

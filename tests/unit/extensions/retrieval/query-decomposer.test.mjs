@@ -21,11 +21,11 @@ function ok(cond, name, detail = "") {
 console.log("\n=== query-decomposer 单测 ===\n");
 
 // 检查工具已注册
-ok(typeof registered.query_decomposer === "object", "query_decomposer 已注册");
-ok(typeof registered.query_decomposer.execute === "function", "execute 是函数");
-ok(typeof registered.query_decomposer.parameters === "object", "parameters 存在");
+ok(typeof registered.decompose_query === "object", "decompose_query 已注册");
+ok(typeof registered.decompose_query.execute === "function", "execute 是函数");
+ok(typeof registered.decompose_query.parameters === "object", "parameters 存在");
 
-const exec = (params) => registered.query_decomposer.execute("t1", params);
+const exec = (params) => registered.decompose_query.execute("t1", params);
 const getText = (r) => r.content[0].text;
 
 // ─────────────────────────────────────────────
@@ -80,7 +80,7 @@ console.log("\n[5] 对比类：单主体退化为维度分解");
   const t = getText(r);
   // subjects after split: ["肺癌的治疗"] — single element < 2 → aspect fallback
   ok(t.includes("对比类"), "类型仍为对比类");
-  ok(t.includes("待 guide_finder 定位"), "单主体退化为维度分解 → 目标含 guide_finder");
+  ok(t.includes("待定位"), "单主体退化为维度分解 → 目标待定位");
   ok(t.length > 80, "有足够输出");
 }
 

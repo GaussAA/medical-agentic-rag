@@ -51,7 +51,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "22.22.2"
           cache: "npm"
 
       - name: 安装构建依赖（编译原生模块）
@@ -122,7 +122,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "22.22.2"
       - name: 端到端答案质量评测（需 Key；失败即阻断，不静默跳过）
         env:
           SENSENOVA_API_KEY: ${{ secrets.SENSENOVA_API_KEY || '' }}

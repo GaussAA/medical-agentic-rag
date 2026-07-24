@@ -5,6 +5,7 @@
   "type": "module",
   "description": "医疗 Agentic RAG 系统 —— Pi Agent + pi-knowledge 驱动的卫健委诊疗指南检索增强",
   "scripts": {
+    "preinstall": "node scripts/ci/check-node-abi.mjs",
     "kb:rebuild": "node scripts/kb/ingest/rebuild-kb.mjs",
     "kb:update": "node scripts/kb/lifecycle/kb-update.mjs",
     "kb:registry": "node scripts/kb/ingest/_rebuild-registry.mjs",
@@ -82,8 +83,12 @@
     "admin:kb": "node scripts/admin/kb-admin-server.mjs"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.19.0"
   },
+  "volta": {
+    "node": "22.22.2"
+  },
+  "packageManager": "npm@10.8.1",
   "main": "index.js",
   "directories": {
     "doc": "docs",

@@ -4,7 +4,8 @@
 # 拉起 Web 服务 + Pi RPC 会话，自动加载本项目 .pi/extensions 全部医疗扩展。
 # 无需手写 HTTP 层，无需 Redis/Qdrant/Kafka 等外部组件。
 # ============================================================
-FROM node:22-bookworm-slim
+# 锁定到特定 Node 22.22.2，避免 node:22 浮动标签意外升级导致 ABI 不兼容
+FROM node:22.22.2-bookworm-slim
 
 # better-sqlite3 等原生模块构建依赖
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -26,11 +27,12 @@ RUN npm install
 #    改为直接 npm install -g 安装所需包。
 #    ⚠️ 版本硬性锁定（P0-1 修复）：此前 `npm install -g pi` 无版本约束，
 #    构建时拉取 npm latest，镜像在不同时间构建结果不可复现、存在供应链风险。
-#    下方版本为 2026-07-21 实查 v0.81.0 tag，须与 package.json 的 'piRuntime' 字段保持一致；
+#    下方版本为 2026-07-24 实查，须与 package.json 的 'piRuntime' 字段保持一致；
 #    升级任一包须同步更新两处并重新验证。
+#    注意: pi-knowledge 0.5.6 依赖 better-sqlite3@12.11.1（ABI 127，兼容 Node 22.22.2）
 RUN npm install -g pi@2.0.5 \
     @earendil-works/pi-coding-agent@0.81.0 \
-    pi-knowledge@0.5.1 \
+    pi-knowledge@0.5.6 \
     pi-web-access@0.13.0 \
     pi-subagents@0.34.0 \
     @firstpick/pi-package-webui@0.6.8 \

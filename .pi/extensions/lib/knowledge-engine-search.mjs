@@ -87,12 +87,18 @@ function loadEngineModule() {
     if (sto) {
       try {
         const stoMod = await import(pathToFileURL(sto).href);
-        dir = stoMod.getDefaultKnowledgeDir();
+        if (typeof stoMod.getDefaultKnowledgeDir === "function") {
+          dir = stoMod.getDefaultKnowledgeDir();
+        }
       } catch {
-        dir = join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "knowledge");
+        dir = null;
       }
-    } else {
-      dir = join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "knowledge");
+    }
+    // 多级 fallback：PI_KNOWLEDGE_DIR → 项目 .pi/knowledge/ → 用户 HOME .pi/knowledge
+    if (!dir) {
+      dir = process.env.PI_KNOWLEDGE_DIR?.trim()
+        || join(process.cwd(), ".pi", "knowledge")
+        || join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "knowledge");
     }
     return { engineMod, dir };
   })();

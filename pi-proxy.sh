@@ -73,6 +73,7 @@ if [ -f .pi/failover-selection.json ]; then
 fi
 
 export NODE_PATH="$WIN_ROOT/pi/node_modules"
+export PI_KNOWLEDGE_DIR="$WIN_ROOT/.pi/knowledge"
 
 echo "[pi-proxy] LLM: $PROVIDER/$MODEL (via local proxy 127.0.0.1:$PROXY_PORT)"
 

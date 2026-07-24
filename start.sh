@@ -140,6 +140,7 @@ cmd_tui() {
   done
 
   export NODE_PATH="$WIN_ROOT/pi/node_modules"
+  export PI_KNOWLEDGE_DIR="$WIN_ROOT/.pi/knowledge"
 
   echo ""
   echo "[Medical Agentic RAG]  LLM: $PROVIDER/$MODEL (via local proxy)"

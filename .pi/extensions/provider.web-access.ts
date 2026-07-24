@@ -15,22 +15,15 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
  */
 export default function (pi: ExtensionAPI) {
   try {
-    // 验证 pi-web-access 包可加载（全局 Pi 包系统会自行注册工具）
+    // 验证 pi-web-access 包在项目 .pi/npm/node_modules/ 中可加载
     (() => {
-      // 1. 优先从当前进程的模块路径查找
+      // 1. 从项目 .pi/npm/node_modules/ 查找（项目级隔离安装，优先）
+      const projectPath = require("node:path").join(
+        process.cwd(), ".pi", "npm", "node_modules", "pi-web-access", "index.ts"
+      );
+      if (require("node:fs").existsSync(projectPath)) return projectPath;
+      // 2. 从当前进程的模块路径查找（全局包残留兼容）
       try { return require.resolve("pi-web-access"); } catch {}
-      // 2. 从受管 Node 的 node_modules 查找
-      const managedPath = require("node:path").join(
-        process.execPath, "..", "..", "node_modules", "pi-web-access"
-      );
-      try { return require.resolve(managedPath); } catch {}
-      // 3. 从 USERPROFILE 的 .workbuddy 路径查找
-      const homePath = require("node:path").join(
-        process.env.USERPROFILE || process.env.HOME || "~",
-        ".workbuddy", "binaries", "node", "versions", "22.22.2",
-        "node_modules", "pi-web-access"
-      );
-      try { return require.resolve(homePath); } catch {}
       throw new Error("not found");
     })();
     // 工具注册由全局 pi-web-access Pi 包自行完成，本桥接仅验证可抵达

@@ -23,6 +23,9 @@ import { diag } from "./diagnostic-log.mjs";
 export function npmRoots() {
   const roots = [];
   if (process.env.PI_AGENT_NPM) roots.push(process.env.PI_AGENT_NPM);
+  // 优先从项目 .pi/npm/ 查找（项目级隔离安装）
+  const projectNpm = join(process.cwd(), ".pi", "npm");
+  if (existsSync(projectNpm)) roots.push(projectNpm);
   const home = process.env.USERPROFILE || process.env.HOME || "";
   if (home) roots.push(join(home, ".pi", "agent", "npm"));
   return roots.filter(Boolean);

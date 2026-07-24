@@ -35,6 +35,104 @@ import { cacheGet, cacheSet, cacheGetAsync } from "./lib/retrieval-cache.mjs";
 // @ts-ignore
 import { diag } from "./lib/diagnostic-log.mjs";
 
+// ── Wiki 知识库支持（pi-llm-wiki 注册表直读，零 LLM 成本）──
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+
+const PROJECT_WIKI_REGISTRY = join(process.cwd(), ".llm-wiki", "meta", "registry.json");
+const PERSONAL_WIKI_REGISTRY = join(
+  process.env.HOME || process.env.USERPROFILE || "~",
+  ".llm-wiki", "meta", "registry.json"
+);
+
+interface WikiPageEntry {
+  type: string;
+  title: string;
+  created: string;
+  updated: string;
+  sources?: string[];
+  slug?: string;
+  status?: string;
+  relevance?: string;
+}
+
+interface WikiRegistry {
+  version: string;
+  last_updated: string;
+  pages: Record<string, WikiPageEntry>;
+}
+
+function loadWikiRegistry(): WikiRegistry | null {
+  for (const p of [PROJECT_WIKI_REGISTRY, PERSONAL_WIKI_REGISTRY]) {
+    try {
+      if (existsSync(p)) {
+        return JSON.parse(readFileSync(p, "utf-8"));
+      }
+    } catch {
+      /* 忽略加载失败 */
+    }
+  }
+  return null;
+}
+
+function queryWikiRegistry(registry: WikiRegistry, query: string): string[] {
+  const matchedPages: string[] = [];
+  const queryLower = query.toLowerCase();
+
+  // 中文分词：将长查询拆分为有意义的子串（按常见中文动词/名词边界）
+  // 如 "幽门螺杆菌治疗方案" → ["幽门螺杆菌","治疗方案","根除","幽门","治疗"]
+  const tokenCandidates = new Set<string>();
+  tokenCandidates.add(queryLower);
+  // 用常见分隔符拆分
+  const tokens = queryLower.split(/[\s,，、；;。.：:！!?？（）()《》<>"']+/).filter(Boolean);
+  for (const t of tokens) {
+    tokenCandidates.add(t);
+    // 中文2-gram子串：取长度≥2的所有子串
+    for (let i = 0; i < t.length - 1; i++) {
+      for (let j = i + 2; j <= Math.min(i + 8, t.length); j++) {
+        tokenCandidates.add(t.slice(i, j));
+      }
+    }
+  }
+
+  for (const [slug, entry] of Object.entries(registry.pages)) {
+    // 只搜索 canonical 页面（entity/concept/synthesis/analysis），不搜 source 页
+    if (entry.type === "source") continue;
+
+    const title = (entry.title || "").toLowerCase();
+    const slugLower = slug.toLowerCase();
+
+    // 标题或 slug 包含任意查询候选
+    for (const tc of tokenCandidates) {
+      if (tc.length >= 2 && (title.includes(tc) || slugLower.includes(tc))) {
+        matchedPages.push(slug);
+        break; // 一个页面只匹配一次
+      }
+    }
+  }
+
+  return matchedPages;
+}
+
+function readWikiPageContent(slug: string): string | null {
+  // 尝试项目 wiki 和个人 wiki
+  const projectPath = join(process.cwd(), ".llm-wiki", "wiki", `${slug}.md`);
+  const personalPath = join(
+    process.env.HOME || process.env.USERPROFILE || "~",
+    ".llm-wiki", "wiki", `${slug}.md`
+  );
+  for (const p of [projectPath, personalPath]) {
+    try {
+      if (existsSync(p)) {
+        return readFileSync(p, "utf-8");
+      }
+    } catch {
+      /* 忽略 */
+    }
+  }
+  return null;
+}
+
 // ── 自动密集模式匹配（与 rag-search 同）──
 const AUTO_DENSE_PATTERNS = [
   /诊断标准|诊断|实验室|检查|分级|分型|分期|分类/,
@@ -116,6 +214,41 @@ export default function (pi: ExtensionAPI) {
         topDisease = guides[0]?.disease || "";
       } catch (e: any) {
         errors.push("路由失败: " + (e?.message || e));
+      }
+
+      // ── 阶段1.5：Wiki 知识库预检（零LLM成本 · 注册表直读）──
+      let wikiPages: string[] = [];
+      let wikiContent: string[] = [];
+      try {
+        const registry = loadWikiRegistry();
+        if (registry) {
+          // 先用 Top-1 疾病名查 wiki
+          const searchQueries = [topDisease, query].filter(Boolean);
+          for (const sq of searchQueries) {
+            if (!sq) continue;
+            const hits = queryWikiRegistry(registry, sq);
+            for (const slug of hits) {
+              if (!wikiPages.includes(slug)) {
+                wikiPages.push(slug);
+                const content = readWikiPageContent(slug);
+                if (content) {
+                  // 提取 frontmatter 后的正文（忽略 YAML 头）
+                  const body = content.replace(/^---[\s\S]*?---\n*/, "").trim();
+                  wikiContent.push(`【Wiki: ${slug}】\n${body}`);
+                }
+              }
+            }
+          }
+          if (wikiPages.length > 0) {
+            log.push(`Wiki 预检: ${wikiPages.length} 页命中（${wikiPages.join(", ")}）`);
+          } else {
+            log.push("Wiki 预检: 未命中");
+          }
+        } else {
+          log.push("Wiki 预检: 注册表不存在（wiki 未初始化或未安装 pi-llm-wiki）");
+        }
+      } catch (e: any) {
+        log.push(`Wiki 预检降级: ${e?.message || e}`);
       }
 
       // ── 阶段2：策略选型 ──
@@ -404,7 +537,16 @@ export default function (pi: ExtensionAPI) {
             ]
           : [];
 
-      const body = [...header, ...kgSection].join("\n");
+      // ── Wiki 知识库补充 ──
+      const wikiSection = wikiContent.length > 0
+        ? [
+            "",
+            "─ Wiki 结构化知识 ─",
+            ...wikiContent.map((wc, i) => `  [Wiki-${i + 1}] ${wc.slice(0, 500)}`),
+          ]
+        : [];
+
+      const body = [...header, ...wikiSection, ...kgSection].join("\n");
 
       const result = { content: [{ type: "text" as const, text: body }] };
 

@@ -14,7 +14,19 @@
 
 ## 检索规范
 
-- **使用 `retrieve(query)` 作为唯一检索工具**。它将自动完成指南定位→策略选型→定向检索→知识图谱补充，一次性返回完整结果。
+### Wiki 优先检索（新增 — 第一优先级）
+
+本系统配备 LLM Wiki 知识库（`.llm-wiki/`），相关诊疗知识会预先编译为结构化的 wiki 页面。
+
+- **优先使用 `wiki` 工具**：回答前应主动通过 `wiki_recall` 或 `wiki_search` 查询 wiki 中是否已有编译好的相关知识。如果 wiki 有直接相关的高质量内容，**优先基于 wiki 回答**。
+- **wiki 检索**：通过 `/wiki-query 问题` 或让系统执行 `wiki_search` 搜索注册表。命中时阅读相关 wiki 页面（entity/concept/synthesis/analysis 页），综合回答并引用来源。
+- **wiki 不够 → 走 `retrieve`**：若 wiki 未覆盖或内容不足，再调用 `retrieve(query)` 进行完整 RAG 检索。
+- **回填高质量答案**：当你的回答经过验证准确且具有长期参考价值时，使用 `wiki_retro` 将核心见解保存到 wiki 的 analyses 中，供未来复用。
+- **wiki 与 RAG 的关系**：wiki 是预编译的结构化知识（精度高、引用完整），RAG 是实时覆盖的广度层。二者互补，wiki 优先、RAG 兜底。
+
+### RAG 检索（第二优先级）
+
+- **使用 `retrieve(query)` 作为 RAG 检索工具**。它将自动完成指南定位→策略选型→定向检索→知识图谱补充，一次性返回完整结果。
 - **同一问题最多调用 `retrieve` 2 次**（第 1 次获取核心信息，第 2 次补充缺漏）。若结果仍不充分，据实告知用户知识库可能未收录该专项内容。
 - **严禁**用 `bash`/`write`/`edit`/`fetch_content` 翻文件系统或从外部网站获取知识库内容。`fetch_content` 仅限用于白名单域（`nhc.gov.cn`、`who.int`、`nice.org.uk`）。
 - **禁止**使用 `guide_finder`、`rag_search`、`kg_search`、`knowledge_search` 等旧版工具——已被 `retrieve` 替代。

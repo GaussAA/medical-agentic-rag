@@ -80,7 +80,14 @@
     "ops:rotate": "node scripts/ci/rotate-logs.mjs",
     "ops:rotate:dry": "node scripts/ci/rotate-logs.mjs --dry-run",
     "ops:disk": "node scripts/ci/rotate-logs.mjs --status",
-    "admin:kb": "node scripts/admin/kb-admin-server.mjs"
+    "admin:kb": "node scripts/admin/kb-admin-server.mjs",
+    "wiki:backfill": "node scripts/wiki/backfill-from-eval.mjs",
+    "wiki:backfill:dry": "node scripts/wiki/backfill-from-eval.mjs --dry-run",
+    "wiki:backfill:force": "node scripts/wiki/backfill-from-eval.mjs --force",
+    "wiki:capture": "node scripts/wiki/batch-capture.mjs",
+    "wiki:capture:dry": "node scripts/wiki/batch-capture.mjs --dry-run",
+    "wiki:capture:list": "node scripts/wiki/batch-capture.mjs --list",
+    "eval:full:backfill": "node tests/integration/answer-quality-judge.mjs && node scripts/wiki/backfill-from-eval.mjs && node tests/eval-ci-gate.mjs --report=tests/reports/answer-quality-report.json --baseline=tests/reports/baseline.json --compare --strict"
   },
   "engines": {
     "node": ">=22.19.0"

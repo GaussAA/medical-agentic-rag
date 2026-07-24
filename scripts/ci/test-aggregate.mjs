@@ -55,6 +55,7 @@ const SUITES = [
   ["node", "tests/unit/lib/knowledge-engine-search.test.mjs"],
   ["node", "tests/unit/lib/extract-entities.test.mjs"],
   ["node", "tests/unit/lib/citation-check.test.mjs"],
+  ["node", "--experimental-strip-types", "tests/unit/lib/wiki-registry.test.mjs"],
 
   // ── scripts/service ──
   ["node", "--test", "tests/unit/scripts/service/api-server.test.mjs"],
@@ -75,6 +76,9 @@ const SUITES = [
   ["node", "tests/unit/scripts/eval/ab/generate-input.test.mjs"],
   ["node", "tests/unit/scripts/eval/quality/chunk-quality.test.mjs"],
   ["node", "tests/unit/scripts/eval/quality/content-need-alignment.test.mjs"],
+
+  // ── scripts/wiki ──
+  ["node", "tests/unit/scripts/wiki/backfill.test.mjs"],
 
   // ── integration（文件级全链路）──
   ["node", "tests/integration/knowledge-pipeline.test.mjs"],

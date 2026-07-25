@@ -250,6 +250,10 @@ function switchTab(name) {
   if (name === 'chunks') { loadChunks(1); loadFilters(); }
   if (name === 'files') loadFiles();
   if (name === 'diseases') loadDiseases();
+  if (name === 'wiki') loadWiki(1);
+  // 切标签时清除连接错误遮罩（若后端已启动）
+  const connErr = document.getElementById('connectionError');
+  if (connErr) connErr.style.display = 'none';
 }
 
 async function api(path) {
@@ -297,10 +301,39 @@ async function loadOverview() {
     cont.style.display = 'block';
   } catch(e) {
     const isConn = e.message.includes('Failed to fetch') || e.message.includes('NetworkError');
-    const tip = isConn
-      ? '<br><br><b>服务未启动</b><br>请先在终端运行:<br><code style="background:#21262d;padding:4px 8px;border-radius:4px;font-size:13px;">npm run admin:kb</code><br><br>然后刷新本页面'
-      : '';
-    document.getElementById('statsCards').innerHTML = `<div class="error-msg">${e.message}${tip}</div>`;
+    if (isConn) {
+      // 全屏错误提示：跨标签页通用
+      document.querySelectorAll('main').forEach(m => { m.style.display = 'none'; });
+      document.getElementById('headerInfo').textContent = '⚠ 连接失败';
+      const connErr = document.getElementById('connectionError') || (() => {
+        const el = document.createElement('div');
+        el.id = 'connectionError';
+        el.style.cssText = 'display:flex;align-items:center;justify-content:center;min-height:60vh;padding:20px';
+        document.body.appendChild(el);
+        return el;
+      })();
+      connErr.style.display = 'flex';
+      connErr.innerHTML = `
+        <div style="background:#161b22;border:1px solid #30363d;border-radius:12px;padding:40px;max-width:480px;text-align:center">
+          <div style="font-size:48px;margin-bottom:16px">🔌</div>
+          <h2 style="font-size:18px;margin-bottom:8px;color:#f0f6fc">无法连接后台服务</h2>
+          <p style="color:#8b949e;font-size:14px;margin-bottom:20px;line-height:1.6">
+            知识库管理面板需要后台服务提供数据。<br>
+            请先在终端运行：
+          </p>
+          <code style="display:inline-block;background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:8px 16px;font-size:14px;color:#7ee787;margin-bottom:20px">
+            npm run admin:kb
+          </code>
+          <br>
+          <button onclick="location.reload()" style="background:#238636;border:none;border-radius:6px;padding:8px 20px;color:#fff;cursor:pointer;font-size:14px">
+            🔄 已启动，刷新重试
+          </button>
+          <p style="color:#8b949e;font-size:12px;margin-top:16px">⏳ 每 3 秒自动重试中...</p>
+        </div>`;
+      startAutoReconnect();
+      return;
+    }
+    document.getElementById('statsCards').innerHTML = `<div class="error-msg">${escHtml(e.message)}</div>`;
     document.getElementById('headerInfo').textContent = '⚠ 连接失败';
     cont.style.display = 'block';
   }
@@ -552,6 +585,28 @@ function escHtml(s) {
   const d = document.createElement('div');
   d.textContent = s;
   return d.innerHTML;
+}
+
+// ── 自动重连 ──
+let reconnectTimer = null;
+
+function startAutoReconnect() {
+  if (reconnectTimer) return;
+  console.log('[admin] 启动自动重连...');
+  reconnectTimer = setInterval(async () => {
+    try {
+      const r = await fetch((window.location.origin || 'http://localhost:3001') + '/api/stats', { signal: AbortSignal.timeout(3000) });
+      if (r.ok) {
+        console.log('[admin] 重连成功');
+        clearInterval(reconnectTimer);
+        reconnectTimer = null;
+        // 移除错误遮罩，重新加载
+        const connErr = document.getElementById('connectionError');
+        if (connErr) connErr.style.display = 'none';
+        loadOverview();
+      }
+    } catch {}
+  }, 3000);
 }
 
 // ── 启动 ──

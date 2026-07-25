@@ -19,9 +19,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", "..", "..");
 const KB_DIR = join(ROOT, "data", "kb");
 
-// ── 获知 knowledge.db 路径 ──
-const HOME = process.env.USERPROFILE || process.env.HOME || "";
-const KNOWLEDGE_DB = join(HOME, ".pi", "knowledge", "knowledge.db");
+// ── 获知 knowledge.db 路径（优先 PI_KNOWLEDGE_DIR）──
+const KNOWLEDGE_DB = (() => {
+  const dir = process.env.PI_KNOWLEDGE_DIR?.trim();
+  if (dir) return join(dir, "knowledge.db");
+  const home = process.env.USERPROFILE || process.env.HOME || "";
+  return home ? join(home, ".pi", "knowledge", "knowledge.db") : null;
+})();
 
 let db = null;
 function getDb() {

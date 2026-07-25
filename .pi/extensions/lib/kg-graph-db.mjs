@@ -29,7 +29,6 @@ function loadBetterSqlite3() {
   const candidates = [
     "better-sqlite3",
     process.env.PI_AGENT_NPM && join(process.env.PI_AGENT_NPM, "node_modules", "better-sqlite3"),
-    "C:/Users/JaNiy/.pi/agent/npm/node_modules/better-sqlite3",
     join(
       process.env.USERPROFILE || process.env.HOME || "",
       ".pi",

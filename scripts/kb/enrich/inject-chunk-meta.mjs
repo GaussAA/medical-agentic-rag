@@ -20,8 +20,14 @@ import { createRequire } from "node:module";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", "..", "..");
-const HOME = process.env.USERPROFILE || process.env.HOME || "";
-const KNOWLEDGE_DB = join(HOME, ".pi", "knowledge", "knowledge.db");
+
+// 知识库路径：优先 PI_KNOWLEDGE_DIR，回退用户 HOME
+const KNOWLEDGE_DB = (() => {
+  const dir = process.env.PI_KNOWLEDGE_DIR?.trim();
+  if (dir) return join(dir, "knowledge.db");
+  const home = process.env.USERPROFILE || process.env.HOME || "";
+  return home ? join(home, ".pi", "knowledge", "knowledge.db") : null;
+})();
 
 const CACHE_DIR = join(ROOT, ".pi", "cache");
 const META_DB = join(CACHE_DIR, "chunk-meta.db");

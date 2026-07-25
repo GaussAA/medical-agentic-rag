@@ -27,12 +27,12 @@ import { readFile, writeFile } from "node:fs/promises";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
+import { piAgentNpmRoot } from "../../lib/config.mjs";
+
+const agentNpm = piAgentNpmRoot();
 
 const MODEL_WORKER_PATH = join(
-  homedir(),
-  ".pi",
-  "agent",
-  "npm",
+  agentNpm,
   "node_modules",
   "pi-knowledge",
   "dist",
@@ -40,7 +40,7 @@ const MODEL_WORKER_PATH = join(
   "model-worker.js"
 );
 
-const PKG_PATH = join(homedir(), ".pi", "agent", "npm", "node_modules", "pi-knowledge", "package.json");
+const PKG_PATH = join(agentNpm, "node_modules", "pi-knowledge", "package.json");
 const LOCK_PATH = join(homedir(), ".pi", "reranker-patch.lock.json");
 
 function getPiKnowledgeVersion() {

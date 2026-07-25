@@ -13,12 +13,16 @@
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import { homedir } from "node:os";
+import { piAgentNpmRoot } from "../lib/config.mjs";
 
-const PI_NODE_MODULES = join(homedir(), ".pi", "agent", "npm", "node_modules");
+const agentNpm = piAgentNpmRoot();
+const PI_NODE_MODULES = join(agentNpm, "node_modules");
 const require = createRequire(join(PI_NODE_MODULES, "_"));
 const { AutoTokenizer, AutoModelForSequenceClassification, env } = require("@huggingface/transformers");
 
-env.cacheDir = join(homedir(), ".pi", "knowledge", "models");
+env.cacheDir = process.env.PI_KNOWLEDGE_DIR
+  ? join(process.env.PI_KNOWLEDGE_DIR, "models")
+  : join(homedir(), ".pi", "knowledge", "models");
 
 const MODEL = "Xenova/bge-reranker-base";
 

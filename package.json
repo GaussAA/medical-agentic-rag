@@ -80,7 +80,7 @@
     "ops:rotate": "node scripts/ci/rotate-logs.mjs",
     "ops:rotate:dry": "node scripts/ci/rotate-logs.mjs --dry-run",
     "ops:disk": "node scripts/ci/rotate-logs.mjs --status",
-    "admin:kb": "node scripts/admin/kb-admin-server.mjs",
+    "admin:kb": "node -e \"process.env.PI_KNOWLEDGE_DIR=require('path').join(process.cwd(),'.pi','knowledge');require('child_process').spawnSync('node',['scripts/admin/kb-admin-server.mjs'],{stdio:'inherit',env:process.env})\"",
     "wiki:backfill": "node scripts/wiki/backfill-from-eval.mjs",
     "wiki:backfill:dry": "node scripts/wiki/backfill-from-eval.mjs --dry-run",
     "wiki:backfill:force": "node scripts/wiki/backfill-from-eval.mjs --force",

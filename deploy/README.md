@@ -27,13 +27,13 @@
 
 ```bash
 # 前台（终端关闭即停）
-./start.sh webui
+scripts/start/start.sh webui
 
 # 后台（脱离终端，写 PID，可长期运行）
-./start.sh webui -d
+scripts/start/start.sh webui -d
 
 # 停止
-./start.sh stop webui
+scripts/start/start.sh stop webui
 
 # Windows cmd
 start.bat webui
@@ -58,10 +58,10 @@ start.bat webui
 ### 启动
 
 ```bash
-./start.sh api                    # 前台（终端关闭即停）
-./start.sh api -d                # 后台守护（写 .pi/api.pid，日志 .pi/logs/api.log）
-./start.sh stop api              # 停止
-API_PORT=9090 API_TOKEN=xxxx ./start.sh api -d   # 自定义端口 + 开启 Bearer 鉴权
+scripts/start/start.sh api                    # 前台（终端关闭即停）
+scripts/start/start.sh api -d                # 后台守护（写 .pi/api.pid，日志 .pi/logs/api.log）
+scripts/start/start.sh stop api              # 停止
+API_PORT=9090 API_TOKEN=xxxx scripts/start/start.sh api -d   # 自定义端口 + 开启 Bearer 鉴权
 ```
 
 > API 服务会**自行 spawn Pi RPC 子进程**（受控 managed Node 22 + `--require preload-fetch-proxy.mjs` 劫持 LLM 调用到本地代理网关），并**自举 `provider-proxy`**，无需手动起 proxy。这与 `start.sh` 的运行形态一致（与 WebUI 路径不同——WebUI 不走 proxy preload，因与 pi-webui 进程冲突）。

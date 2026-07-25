@@ -20,7 +20,7 @@ cd pi && npm install --ignore-scripts && npm run build && cd ..
 cp .env.example .env
 
 # 4. 启动（编排故障转移 + 代理网关 + Pi Agent）
-./start.sh
+npm start
 ```
 
 默认使用 **sensenova-6.7-flash-lite**（免费）。本地有 LM Studio 时，进入 Pi 后输入 `/model` 可切到 `local/google/gemma-4-e2b`。
@@ -76,7 +76,10 @@ medical-agentic-rag/
 │   ├── e2e/                     # 端到端冒烟
 │   ├── reports/                 # 测试报告输出
 │   └── data/                    # 测试数据（gold-answers.json 等）
-├── start.sh / start.bat / start.ps1  # 启动脚本（编排网关 + failover + Pi）
+├── scripts/
+│   ├── start/
+│   │   ├── start.sh / start.bat / start.ps1  # 启动脚本（已从根目录迁移）
+│   │   └── pi-proxy.sh                     # 非交互启动
 ├── Dockerfile / docker-compose.yml    # 容器化部署
 └── k8s/                         # K8s 多活部署（T15）
 ```
@@ -99,8 +102,9 @@ medical-agentic-rag/
 ### 方式一：一键启动（推荐）
 
 ```bash
-./start.sh                    # Linux/macOS/Git Bash
-start.bat                     # Windows 双击
+npm start                       # 推荐
+bash scripts/start/start.sh     # Linux/macOS/Git Bash
+scripts/start/start.bat         # Windows 双击
 ```
 
 启动编排：
@@ -112,7 +116,7 @@ start.bat                     # Windows 双击
 默认模型 `sensenova/sensenova-6.7-flash-lite`（免费），可通过环境变量覆写：
 
 ```bash
-LLM_PROVIDER=local LLM_MODEL=local/google/gemma-4-e2b ./start.sh
+LLM_PROVIDER=local LLM_MODEL=local/google/gemma-4-e2b npm start
 ```
 
 ### 方式二：Docker 部署

@@ -182,7 +182,7 @@ async function main() {
 
   // ── 提示下一步 ──
   console.log(`\n⏳ 源包就绪，接下来需要运行 wiki_ingest:`);
-  console.log(`   bash pi-proxy.sh -p "Run wiki_ingest to process ${captured} newly captured guideline sources into wiki pages"`);
+  console.log(`   npm run pi:chat -- -p "Run wiki_ingest to process ${captured} newly captured guideline sources into wiki pages"`);
 }
 
 main().catch((e) => {

@@ -30,6 +30,22 @@ const WIKI_META_DIR = join(ROOT, ".llm-wiki", "meta");
 const WIKI_REGISTRY_PATH = join(WIKI_META_DIR, "registry.json");
 const WIKI_PAGES_DIR = join(ROOT, ".llm-wiki", "wiki");
 
+// 知识图谱路径
+const KG_DB_PATH = join(KB_DIR, ".knowledge-graph.db");
+
+let kgDb = null;
+
+function getKgDb() {
+  if (kgDb) return kgDb;
+  if (!existsSync(KG_DB_PATH)) return null;
+  try {
+    const require = createRequire(import.meta.url);
+    const Database = require("better-sqlite3");
+    kgDb = new Database(KG_DB_PATH, { readonly: true });
+    return kgDb;
+  } catch { return null; }
+}
+
 const PORT = Number(process.argv.find((a) => a.startsWith("--port="))?.split("=")[1] || 3001);
 
 let db = null;
@@ -340,6 +356,56 @@ function handleApi(url, res) {
     });
   }
 
+  // ── 知识图谱 API ──
+
+  // GET /api/kg/stats — 图谱概览
+  if (url.pathname === "/api/kg/stats") {
+    const d = getKgDb();
+    if (!d) return sendJson(res, 200, { available: false });
+    const totalEdges = d.prepare("SELECT COUNT(*) as c FROM kg_edge").get().c;
+    const totalSubjects = d.prepare("SELECT COUNT(DISTINCT subject) as c FROM kg_edge").get().c;
+    const totalObjects = d.prepare("SELECT COUNT(DISTINCT object) as c FROM kg_edge").get().c;
+    const predDist = d.prepare("SELECT predicate, COUNT(*) as cnt FROM kg_edge GROUP BY predicate ORDER BY cnt DESC").all();
+    return sendJson(res, 200, {
+      available: true,
+      totalEdges, totalSubjects, totalObjects,
+      predicateDistribution: predDist,
+    });
+  }
+
+  // GET /api/kg/search?q=高血压 — 搜索实体
+  if (url.pathname === "/api/kg/search") {
+    const q = (url.searchParams.get("q") || "").trim();
+    if (!q) return sendJson(res, 200, { results: [] });
+    const d = getKgDb();
+    if (!d) return sendJson(res, 200, { results: [] });
+    const like = `%${q}%`;
+    const rows = d.prepare(`
+      SELECT DISTINCT subject as name FROM kg_edge WHERE subject LIKE ?
+      UNION
+      SELECT DISTINCT object as name FROM kg_edge WHERE object LIKE ?
+      ORDER BY name LIMIT 50
+    `).all(like, like);
+    return sendJson(res, 200, { results: rows.map(r => r.name) });
+  }
+
+  // GET /api/kg/entity/:name — 实体详情
+  const kgEntityMatch = url.pathname.match(/^\/api\/kg\/entity\/(.+)$/);
+  if (kgEntityMatch) {
+    let name;
+    try { name = decodeURIComponent(kgEntityMatch[1]); } catch { return sendJson(res, 400, { error: "invalid entity name" }); }
+    const d = getKgDb();
+    if (!d) return sendJson(res, 200, { available: false });
+    const outEdges = d.prepare("SELECT predicate, object, object_type, source FROM kg_edge WHERE subject = ?").all(name);
+    const inEdges = d.prepare("SELECT subject, predicate, source FROM kg_edge WHERE object = ?").all(name);
+    const relCount = outEdges.length + inEdges.length;
+    return sendJson(res, 200, {
+      name, relationCount: relCount,
+      outEdges: outEdges.map(e => ({ relation: e.predicate, target: e.object, type: e.object_type, source: e.source })),
+      inEdges: inEdges.map(e => ({ from: e.subject, relation: e.predicate, source: e.source })),
+    });
+  }
+
   return sendJson(res, 404, { error: "not found" });
 }
 
@@ -385,6 +451,7 @@ server.listen(PORT, () => {
   地址:  http://localhost:${PORT}/
   DB:    ${KNOWLEDGE_DB}
   Wiki:  ${wikiTotal > 0 ? `${wikiTotal} 页面` : "(未安装)"}
+  KG:   ${existsSync(KG_DB_PATH) ? `图谱 DB` : "(无)"}
   元数据: ${existsSync(META_DB) ? META_DB : "(无)"}
   分片数: ${getDb().prepare("SELECT COUNT(*) as c FROM chunks").get().c}
 

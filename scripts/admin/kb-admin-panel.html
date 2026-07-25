@@ -153,6 +153,7 @@ tr.clickable { cursor: pointer; }
   <a onclick="switchTab('files')">文件</a>
   <a onclick="switchTab('diseases')">病种</a>
   <a onclick="switchTab('wiki')">Wiki 知识</a>
+  <a onclick="switchTab('kg')">知识图谱</a>
 </nav>
 
 <!-- Tab: Overview -->
@@ -220,6 +221,26 @@ tr.clickable { cursor: pointer; }
   </div>
 </main>
 
+<!-- Tab: KG -->
+<main id="tab-kg">
+  <div class="cards" id="kgStatsCards">
+    <div class="card"><div class="num" id="kgEdges">—</div><div class="label">关系边数</div></div>
+    <div class="card"><div class="num" id="kgSubjects">—</div><div class="label">疾病/概念</div></div>
+    <div class="card"><div class="num" id="kgObjects">—</div><div class="label">关联实体</div></div>
+  </div>
+  <div id="kgRelDist" style="margin-bottom:16px"></div>
+  <div style="margin-bottom:12px;display:flex;gap:8px">
+    <input type="text" id="kgSearch" placeholder="搜索疾病/概念..." oninput="debounceKg()" style="flex:1;min-width:200px;background:#21262d;color:#e1e4e8;border:1px solid #30363d;border-radius:6px;padding:6px 10px;font-size:13px">
+    <button onclick="loadKgSearch()" style="background:#238636;border:none;border-radius:6px;padding:6px 14px;color:#fff;cursor:pointer;font-size:13px">搜索</button>
+  </div>
+  <div id="kgLoader" class="loader"><div class="spinner"></div><div>加载知识图谱...</div></div>
+  <div id="kgError" class="error-msg" style="display:none"></div>
+  <div id="kgContent" style="display:none">
+    <div id="kgSearchResults"></div>
+    <div id="kgEntityDetail" style="display:none"></div>
+  </div>
+</main>
+
 <!-- Modal -->
 <div class="modal-bg" id="chunkModal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
@@ -251,6 +272,7 @@ function switchTab(name) {
   if (name === 'files') loadFiles();
   if (name === 'diseases') loadDiseases();
   if (name === 'wiki') loadWiki(1);
+  if (name === 'kg') loadKgOverview();
   // 切标签时清除连接错误遮罩（若后端已启动）
   const connErr = document.getElementById('connectionError');
   if (connErr) connErr.style.display = 'none';
@@ -607,6 +629,112 @@ function startAutoReconnect() {
       }
     } catch {}
   }, 3000);
+}
+
+// ── 知识图谱 ──
+let kgDebounceTimer;
+function debounceKg() { clearTimeout(kgDebounceTimer); kgDebounceTimer = setTimeout(() => loadKgSearch(), 400); }
+
+async function loadKgOverview() {
+  const loader = document.getElementById('kgLoader');
+  const errEl = document.getElementById('kgError');
+  const cont = document.getElementById('kgContent');
+  loader.style.display = 'flex'; errEl.style.display = 'none'; cont.style.display = 'none';
+  try {
+    const st = await api('/api/kg/stats');
+    if (!st.available) { loader.textContent = '知识图谱数据库不存在'; return; }
+    document.getElementById('kgEdges').textContent = st.totalEdges || 0;
+    document.getElementById('kgSubjects').textContent = st.totalSubjects || 0;
+    document.getElementById('kgObjects').textContent = st.totalObjects || 0;
+    // 关系分布条
+    const dist = st.predicateDistribution || [];
+    const labels = { has_symptom: '症状', diagnosed_by: '诊断', treated_by: '治疗', treated_with: '用药', has_risk: '风险因素' };
+    const max = Math.max(...dist.map(d => d.cnt), 1);
+    let html = '<div style="font-size:12px;color:#8b949e;margin-bottom:6px">关系分布</div>';
+    for (const d of dist) {
+      const pct = (d.cnt / max * 100).toFixed(0);
+      html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:13px">
+        <span style="width:60px;flex-shrink:0;text-align:right;color:#e1e4e8">${labels[d.predicate]||d.predicate}</span>
+        <div style="flex:1;height:18px;background:#21262d;border-radius:4px;overflow:hidden">
+          <div style="width:${pct}%;height:100%;background:#58a6ff;border-radius:4px"></div>
+        </div>
+        <span style="width:40px;color:#8b949e;font-size:11px">${d.cnt}</span>
+      </div>`;
+    }
+    document.getElementById('kgRelDist').innerHTML = html;
+    loader.style.display = 'none';
+    cont.style.display = 'block';
+  } catch (e) {
+    loader.style.display = 'none';
+    errEl.textContent = '加载失败: ' + e.message;
+    errEl.style.display = 'block';
+  }
+}
+
+async function loadKgSearch() {
+  const q = document.getElementById('kgSearch').value.trim();
+  if (!q) return;
+  const errEl = document.getElementById('kgError');
+  const cont = document.getElementById('kgContent');
+  const resultsDiv = document.getElementById('kgSearchResults');
+  const detailDiv = document.getElementById('kgEntityDetail');
+  errEl.style.display = 'none'; detailDiv.style.display = 'none';
+  try {
+    const data = await api('/api/kg/search?q=' + encodeURIComponent(q));
+    if (data.results.length === 0) {
+      resultsDiv.innerHTML = '<div style="color:#8b949e;padding:20px;text-align:center">未找到匹配实体</div>';
+    } else {
+      let html = '<div style="font-size:12px;color:#8b949e;margin-bottom:8px">搜索结果</div>';
+      for (const name of data.results) {
+        html += `<div onclick="loadKgEntity('${escHtml(name)}')" style="cursor:pointer;padding:8px 12px;background:#161b22;border:1px solid #30363d;border-radius:6px;margin-bottom:4px;font-size:13px;color:#58a6ff">${escHtml(name)}</div>`;
+      }
+      resultsDiv.innerHTML = html;
+    }
+  } catch (e) {
+    errEl.textContent = '搜索失败: ' + e.message;
+    errEl.style.display = 'block';
+  }
+}
+
+async function loadKgEntity(name) {
+  const detailDiv = document.getElementById('kgEntityDetail');
+  const resultsDiv = document.getElementById('kgSearchResults');
+  detailDiv.style.display = 'none';
+  try {
+    const data = await api('/api/kg/entity/' + encodeURIComponent(name));
+    const labels = { has_symptom: '症状', diagnosed_by: '诊断依据', treated_by: '治疗手段', treated_with: '用药', has_risk: '风险因素' };
+    let html = `<div style="margin-bottom:12px">
+      <h3 style="display:inline;font-size:15px;color:#f0f6fc">${escHtml(data.name)}</h3>
+      <span style="font-size:12px;color:#8b949e;margin-left:8px">${data.relationCount} 条关系</span>
+      <button onclick="document.getElementById('kgEntityDetail').style.display='none';document.getElementById('kgSearchResults').style.display='block'" style="float:right;background:#21262d;border:1px solid #30363d;border-radius:6px;padding:4px 10px;color:#8b949e;cursor:pointer;font-size:12px">← 返回</button>
+    </div>`;
+    if (data.outEdges.length > 0) {
+      html += '<div style="font-size:12px;color:#8b949e;margin-bottom:6px">出边（该实体的关联）</div>';
+      for (const e of data.outEdges) {
+        html += `<div style="padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px;margin-bottom:3px;font-size:13px">
+          <span class="tag type-analysis">${labels[e.relation]||e.relation}</span>
+          <span style="color:#e1e4e8"> → </span>
+          <span style="color:#58a6ff;cursor:pointer" onclick="loadKgEntity('${escHtml(e.target)}')">${escHtml(e.target)}</span>
+        </div>`;
+      }
+    }
+    if (data.inEdges.length > 0) {
+      html += '<div style="font-size:12px;color:#8b949e;margin:8px 0 6px">入边（关联到该实体的疾病/概念）</div>';
+      for (const e of data.inEdges) {
+        html += `<div style="padding:6px 10px;background:#161b22;border:1px solid #30363d;border-radius:6px;margin-bottom:3px;font-size:13px">
+          <span style="color:#58a6ff;cursor:pointer" onclick="loadKgEntity('${escHtml(e.from)}')">${escHtml(e.from)}</span>
+          <span style="color:#8b949e"> → </span>
+          <span class="tag type-concept">${e.relation}</span>
+        </div>`;
+      }
+    }
+    detailDiv.innerHTML = html;
+    resultsDiv.style.display = 'none';
+    detailDiv.style.display = 'block';
+  } catch (e) {
+    document.getElementById('kgError').textContent = '加载实体失败: ' + e.message;
+    document.getElementById('kgError').style.display = 'block';
+  }
 }
 
 // ── 启动 ──

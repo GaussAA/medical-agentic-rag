@@ -99,12 +99,24 @@ medical-agentic-rag/
 
 ## 启动
 
-### 方式一：一键启动（推荐）
+### 交互式 TUI（推荐）
 
 ```bash
-npm start                       # 推荐
+npm start                       # 启动 Pi 交互终端
 bash scripts/start/start.sh     # Linux/macOS/Git Bash
 scripts/start/start.bat         # Windows 双击
+```
+
+### 非交互式问答
+
+```bash
+npm run pi:chat -- -p "高血压治疗目标是什么"  # 单次查询
+```
+
+### 知识库管理面板（Web）
+
+```bash
+npm run start:web               # 打开 http://localhost:3001/
 ```
 
 启动编排：

@@ -81,6 +81,7 @@
     "ops:rotate:dry": "node scripts/ci/rotate-logs.mjs --dry-run",
     "ops:disk": "node scripts/ci/rotate-logs.mjs --status",
     "start": "bash scripts/start/start.sh",
+    "start:web": "node scripts/admin/start-admin.mjs",
     "pi:chat": "bash scripts/start/pi-proxy.sh",
     "pi:chat:headless": "bash scripts/start/pi-proxy.sh -p",
     "admin:kb": "node scripts/admin/start-admin.mjs",

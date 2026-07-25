@@ -16,10 +16,19 @@ import { createRequire } from "node:module";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..", "..");
 const HOME = process.env.USERPROFILE || process.env.HOME || "";
-const KNOWLEDGE_DB = join(HOME, ".pi", "knowledge", "knowledge.db");
+// 支持 PI_KNOWLEDGE_DIR 环境变量（项目级隔离），回退到用户 HOME
+const KNOWLEDGE_DB = (() => {
+  const dir = process.env.PI_KNOWLEDGE_DIR?.trim();
+  if (dir) return join(dir, "knowledge.db");
+  return join(HOME, ".pi", "knowledge", "knowledge.db");
+})();
 const META_DB = join(ROOT, ".pi", "cache", "chunk-meta.db");
 const KB_DIR = join(ROOT, "data", "kb");
 const INDEX_PATH = join(KB_DIR, ".guide-index.json");
+// Wiki 知识库路径
+const WIKI_META_DIR = join(ROOT, ".llm-wiki", "meta");
+const WIKI_REGISTRY_PATH = join(WIKI_META_DIR, "registry.json");
+const WIKI_PAGES_DIR = join(ROOT, ".llm-wiki", "wiki");
 
 const PORT = Number(process.argv.find((a) => a.startsWith("--port="))?.split("=")[1] || 3001);
 
@@ -263,6 +272,74 @@ function handleApi(url, res) {
     });
   }
 
+  // ── Wiki 知识库 API ──
+
+  // GET /api/wiki/status — Wiki 概览
+  if (url.pathname === "/api/wiki/status") {
+    if (!existsSync(WIKI_REGISTRY_PATH)) return sendJson(res, 200, { available: false, total: 0 });
+    const reg = JSON.parse(readFileSync(WIKI_REGISTRY_PATH, "utf-8"));
+    const pages = Object.entries(reg.pages || {});
+    const counts = { entity: 0, concept: 0, source: 0, analysis: 0, synthesis: 0 };
+    for (const [, p] of pages) { if (counts[p.type] !== undefined) counts[p.type]++; }
+    return sendJson(res, 200, {
+      available: true,
+      total: pages.length,
+      version: reg.version || "N/A",
+      lastUpdated: reg.last_updated || "N/A",
+      ...counts,
+    });
+  }
+
+  // GET /api/wiki/pages?type=&search=&page=1&perPage=50 — Wiki 页面列表
+  if (url.pathname === "/api/wiki/pages") {
+    if (!existsSync(WIKI_REGISTRY_PATH)) return sendJson(res, 200, { pages: [], total: 0 });
+    const reg = JSON.parse(readFileSync(WIKI_REGISTRY_PATH, "utf-8"));
+    const typeFilter = (url.searchParams.get("type") || "").trim();
+    const searchQ = (url.searchParams.get("search") || "").trim().toLowerCase();
+    const page = Math.max(1, Number(url.searchParams.get("page")) || 1);
+    const perPage = Math.min(100, Math.max(10, Number(url.searchParams.get("perPage")) || 50));
+
+    let entries = Object.entries(reg.pages || {});
+    if (typeFilter) entries = entries.filter(([, p]) => p.type === typeFilter);
+    if (searchQ) {
+      entries = entries.filter(([slug, p]) =>
+        slug.toLowerCase().includes(searchQ) ||
+        (p.title || "").toLowerCase().includes(searchQ) ||
+        (p.type || "").toLowerCase().includes(searchQ)
+      );
+    }
+
+    const total = entries.length;
+    const totalPages = Math.ceil(total / perPage);
+    const slice = entries.slice((page - 1) * perPage, page * perPage);
+
+    return sendJson(res, 200, {
+      pages: slice.map(([slug, p]) => ({ slug, type: p.type, title: p.title || slug, created: p.created, updated: p.updated })),
+      page, perPage, total, totalPages,
+    });
+  }
+
+  // GET /api/wiki/page/:slug — 单个 Wiki 页面详情
+  const wikiPageMatch = url.pathname.match(/^\/api\/wiki\/page\/(.+)$/);
+  if (wikiPageMatch) {
+    const slug = decodeURIComponent(wikiPageMatch[1]);
+    let reg = null;
+    if (existsSync(WIKI_REGISTRY_PATH)) reg = JSON.parse(readFileSync(WIKI_REGISTRY_PATH, "utf-8"));
+    const meta = reg?.pages?.[slug] || null;
+
+    // 尝试读取页面内容（.md 文件）
+    let content = null;
+    const mdPath = join(WIKI_PAGES_DIR, `${slug}.md`);
+    if (existsSync(mdPath)) content = readFileSync(mdPath, "utf-8");
+
+    return sendJson(res, 200, {
+      slug,
+      meta,
+      content,
+      exists: content !== null,
+    });
+  }
+
   return sendJson(res, 404, { error: "not found" });
 }
 
@@ -297,11 +374,17 @@ if (!existsSync(KNOWLEDGE_DB)) {
   process.exit(1);
 }
 
+// Wiki 状态
+const wikiTotal = existsSync(WIKI_REGISTRY_PATH)
+  ? Object.keys(JSON.parse(readFileSync(WIKI_REGISTRY_PATH, "utf-8")).pages || {}).length
+  : 0;
+
 server.listen(PORT, () => {
   console.log(`
-━━━ 知识库管理面板 ━━━
+━━━ 医疗知识库管理面板 ━━━
   地址:  http://localhost:${PORT}/
   DB:    ${KNOWLEDGE_DB}
+  Wiki:  ${wikiTotal > 0 ? `${wikiTotal} 页面` : "(未安装)"}
   元数据: ${existsSync(META_DB) ? META_DB : "(无)"}
   分片数: ${getDb().prepare("SELECT COUNT(*) as c FROM chunks").get().c}
 

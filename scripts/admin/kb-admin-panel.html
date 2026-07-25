@@ -83,6 +83,11 @@ tr.clickable { cursor: pointer; }
 .pagination button:hover { background: #30363d; }
 .pagination button:disabled { opacity: .4; cursor: default; }
 .pagination .page-info { font-size: 12px; color: #8b949e; padding: 0 8px; }
+.tag { display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px; }
+.tag.type-entity { background:#1b3624;color:#7ee787; }
+.tag.type-concept { background:#1b2a36;color:#58a6ff; }
+.tag.type-analysis { background:#3d2e00;color:#d29922; }
+.tag.type-source { background:#2d1b2e;color:#bc8cff; }
 
 /* Dist bar */
 .dist-bar { display: flex; height: 32px; gap: 4px; margin: 12px 0; }
@@ -143,10 +148,11 @@ tr.clickable { cursor: pointer; }
 </header>
 
 <nav>
-  <a class="active" onclick="switchTab('overview')">总览</a>
+  <a onclick="switchTab('overview')">总览</a>
   <a onclick="switchTab('chunks')">分片</a>
   <a onclick="switchTab('files')">文件</a>
   <a onclick="switchTab('diseases')">病种</a>
+  <a onclick="switchTab('wiki')">Wiki 知识</a>
 </nav>
 
 <!-- Tab: Overview -->
@@ -185,6 +191,33 @@ tr.clickable { cursor: pointer; }
 <main id="tab-diseases">
   <div class="loader" id="diseasesLoader"><div class="spinner"></div><div>加载病种分布...</div></div>
   <div id="diseasesContent" style="display:none"><div id="diseasesList"></div></div>
+</main>
+
+<!-- Tab: Wiki -->
+<main id="tab-wiki">
+  <div class="cards" id="wikiStatsCards">
+    <div class="card"><div class="num" id="wikiTotal">—</div><div class="label">Wiki 页面总数</div></div>
+    <div class="card"><div class="num" id="wikiEntities">—</div><div class="label">实体 (entities)</div></div>
+    <div class="card"><div class="num" id="wikiConcepts">—</div><div class="label">概念 (concepts)</div></div>
+    <div class="card"><div class="num" id="wikiAnalyses">—</div><div class="label">分析页 (analyses)</div></div>
+  </div>
+  <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">
+    <select id="wikiTypeFilter" onchange="loadWiki(1)" style="background:#21262d;color:#e1e4e8;border:1px solid #30363d;border-radius:6px;padding:6px 10px;font-size:13px">
+      <option value="">全部类型</option>
+      <option value="entity">实体</option>
+      <option value="concept">概念</option>
+      <option value="analysis">分析页</option>
+      <option value="source">源页</option>
+    </select>
+    <input type="text" id="wikiSearch" placeholder="搜索页面标题/slug..." oninput="debounceWiki()" style="flex:1;min-width:200px;background:#21262d;color:#e1e4e8;border:1px solid #30363d;border-radius:6px;padding:6px 10px;font-size:13px">
+    <button onclick="loadWiki(1)" style="background:#238636;border:none;border-radius:6px;padding:6px 14px;color:#fff;cursor:pointer;font-size:13px">搜索</button>
+  </div>
+  <div id="wikiLoader" class="loader"><div class="spinner"></div><div>加载 Wiki 页面...</div></div>
+  <div id="wikiError" class="error-msg" style="display:none"></div>
+  <div id="wikiContent" style="display:none">
+    <div id="wikiList"></div>
+    <div class="pagination" id="wikiPagination"></div>
+  </div>
 </main>
 
 <!-- Modal -->
@@ -428,6 +461,97 @@ async function loadDiseases() {
     document.getElementById('diseasesLoader').style.display = 'none';
     document.getElementById('diseasesContent').style.display = 'block';
   }
+}
+
+// ── Wiki 知识库 ──
+let wikiDebounceTimer;
+function debounceWiki() { clearTimeout(wikiDebounceTimer); wikiDebounceTimer = setTimeout(() => loadWiki(1), 400); }
+
+async function loadWiki(page) {
+  const type = document.getElementById('wikiTypeFilter').value;
+  const search = document.getElementById('wikiSearch').value.trim();
+  const loader = document.getElementById('wikiLoader');
+  const errEl = document.getElementById('wikiError');
+  const cont = document.getElementById('wikiContent');
+  loader.style.display = 'flex'; errEl.style.display = 'none'; cont.style.display = 'none';
+
+  try {
+    // 状态卡片
+    const st = await api('/api/wiki/status');
+    if (!st.available) { loader.textContent = 'Wiki 知识库未安装'; return; }
+    document.getElementById('wikiTotal').textContent = st.total || 0;
+    document.getElementById('wikiEntities').textContent = st.entity || 0;
+    document.getElementById('wikiConcepts').textContent = st.concept || 0;
+    document.getElementById('wikiAnalyses').textContent = st.analysis || 0;
+
+    // 页面列表
+    const params = new URLSearchParams({ page, perPage: 50, type, search });
+    const data = await api('/api/wiki/pages?' + params.toString());
+    loader.style.display = 'none';
+
+    if (data.pages.length === 0) {
+      cont.style.display = 'block';
+      document.getElementById('wikiList').innerHTML = '<div style="text-align:center;color:#8b949e;padding:40px">无匹配页面</div>';
+      document.getElementById('wikiPagination').innerHTML = '';
+      return;
+    }
+
+    let html = '<table><thead><tr><th>Slug</th><th>标题</th><th>类型</th><th>创建</th><th>更新</th></tr></thead><tbody>';
+    for (const p of data.pages) {
+      const typeLabel = { entity: '实体', concept: '概念', analysis: '分析', source: '源页', synthesis: '综合' }[p.type] || p.type;
+      html += `<tr onclick="showWikiPage('${encodeURIComponent(p.slug)}')" style="cursor:pointer">
+        <td style="color:#58a6ff;font-family:monospace;font-size:12px">${p.slug}</td>
+        <td>${p.title || '—'}</td>
+        <td><span class="tag type-${p.type}">${typeLabel}</span></td>
+        <td style="font-size:12px;color:#8b949e">${p.created || '—'}</td>
+        <td style="font-size:12px;color:#8b949e">${p.updated || '—'}</td>
+      </tr>`;
+    }
+    html += '</tbody></table>';
+    document.getElementById('wikiList').innerHTML = html;
+    cont.style.display = 'block';
+
+    // 分页
+    const pp = data.totalPages;
+    let ph = '';
+    if (pp > 1) {
+      ph += `<button onclick="loadWiki(${page - 1})" ${page <= 1 ? 'disabled' : ''}>‹</button>`;
+      ph += `<span class="page-info">${page}/${pp}</span>`;
+      ph += `<button onclick="loadWiki(${page + 1})" ${page >= pp ? 'disabled' : ''}>›</button>`;
+    }
+    document.getElementById('wikiPagination').innerHTML = ph;
+  } catch (e) {
+    loader.style.display = 'none';
+    errEl.textContent = '加载失败: ' + e.message;
+    errEl.style.display = 'block';
+  }
+}
+
+async function showWikiPage(slugEncoded) {
+  const slug = decodeURIComponent(slugEncoded);
+  try {
+    const data = await api('/api/wiki/page/' + slugEncoded);
+    const typeLabel = { entity: '实体', concept: '概念', analysis: '分析', source: '源页', synthesis: '综合' }[data.meta?.type] || data.meta?.type || '未知';
+    const titleHtml = `<h3 style="margin-bottom:8px">${data.meta?.title || slug} <span class="tag" style="font-size:11px">${typeLabel}</span></h3>`;
+    const metaHtml = data.meta ? `
+      <div style="font-size:12px;color:#8b949e;margin-bottom:12px">
+        Slug: <code>${slug}</code> · 类型: ${typeLabel} · 创建: ${data.meta.created || '—'} · 更新: ${data.meta.updated || '—'}
+      </div>` : '';
+    const contentHtml = data.content
+      ? `<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;font-size:13px;overflow-x:auto;max-height:60vh;white-space:pre-wrap">${escHtml(data.content)}</pre>`
+      : '<div style="color:#8b949e;padding:20px;text-align:center">页面内容不存在（meta 数据有但 .md 文件缺失）</div>';
+
+    document.getElementById('wikiList').innerHTML = titleHtml + metaHtml + contentHtml;
+    document.getElementById('wikiPagination').innerHTML = '<button onclick="loadWiki(1)" style="background:#21262d;border:1px solid #30363d;border-radius:6px;padding:6px 14px;color:#58a6ff;cursor:pointer;font-size:13px">← 返回列表</button>';
+  } catch (e) {
+    document.getElementById('wikiList').innerHTML = `<div class="error-msg">加载失败: ${escHtml(e.message)}</div>`;
+  }
+}
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
 }
 
 // ── 启动 ──

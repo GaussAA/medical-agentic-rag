@@ -26,7 +26,7 @@ try {
   console.warn("[sqlite] 未能设置 WAL 模式（数据库可能尚未创建）:", e?.message || e);
 }
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const npmRoot =
   process.env.PI_AGENT_NPM ||
   join(process.env.USERPROFILE || process.env.HOME || "", ".pi", "agent", "npm");

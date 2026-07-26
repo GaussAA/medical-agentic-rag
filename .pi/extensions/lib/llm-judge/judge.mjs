@@ -14,7 +14,7 @@ export function buildJudgeMessages({ question, answer, referenceAnswer = "", gtS
 export async function judgeAnswer({ question, answer, referenceAnswer, gtSources }) {
   if (!isLLMAvailable()) return { skipped: true, reason: "no_api_key" };
   try {
-    const text = await callLLM(buildJudgeMessages({ question, answer, referenceAnswer, gtSources }), { temperature: 0, maxTokens: 2048 });
+    const text = await callLLM(buildJudgeMessages({ question, answer, referenceAnswer, gtSources }), { temperature: 0, maxTokens: 2048, judgeModel: true });
     const m = text.match(/\{[\s\S]*\}/);
     const o = m ? JSON.parse(m[0]) : {};
     const safe = (v) => (v !== undefined && v !== null && !isNaN(Number(v)) ? Number(v) : 0);

@@ -65,7 +65,8 @@ const CLINICAL_INTENT_TITLE = [
  * @param {string} query      用户原始查询
  * @param {object} [opts]
  * @param {number} [opts.densityWeight=0.3]    查询词密度权重
- * @param {number} [opts.titleMatchWeight=0.4]  标题匹配权重
+ * @param {number} [opts.titleMatchWeight=0.5]  标题匹配权重（提升，压制 BM25 原始分偏差）
+ * @param {number} [opts.diseaseMatchWeight=0.3]  疾病匹配权重
  * @param {number} [opts.positionDecay=0.95]    位置衰减系数
  * @returns {Array} 重排序后的候选集（每项增加 refinedScore）
  */
@@ -74,7 +75,7 @@ export function progressiveRerank(candidates, query, opts = {}) {
 
   const {
     densityWeight = 0.3,
-    titleMatchWeight = 0.4,
+    titleMatchWeight = 0.5,
     diseaseMatchWeight = 0.3,
     positionDecay = 0.95,
   } = opts;
@@ -145,16 +146,35 @@ export function progressiveRerank(candidates, query, opts = {}) {
       }
     }
 
-    // —— 信号5：位置衰减 ——
+    // —— 信号5：文件名疾病匹配（关键增强） ——
+    // 当查询包含明确的疾病名（如"糖尿病"），而文件路径也包含该词时，
+    // 给予大幅加分，压制 BM25 将肥胖症指南误排到糖尿病查询前列的问题。
+    let fileDiseaseScore = 0;
+    if (filePath) {
+      const fileNorm = normalize(filePath);
+      for (const t of qTokens) {
+        // 只对长度 >=2 的 token 做文件名匹配，避免单字误匹配
+        if (t.length >= 2 && fileNorm.includes(t)) {
+          fileDiseaseScore = Math.max(fileDiseaseScore, 0.6);
+        }
+      }
+      // 如果 query 的 normalize 完整字串出现在文件名中，给最高分
+      if (qNorm.length >= 4 && fileNorm.includes(qNorm)) {
+        fileDiseaseScore = 1.0;
+      }
+    }
+
+    // —— 信号6：位置衰减 ——
     const positionScore = Math.pow(positionDecay, idx);
 
-    // —— 综合评分 ——
+    // —— 综合评分（降低 BM25 原始分权重，提升语义匹配信号） ——
     const refinedScore =
-      bm25Norm * 0.5 +
-      density * densityWeight +
-      titleScore * titleMatchWeight +
-      diseaseScore * diseaseMatchWeight +
-      positionScore * 0.1;
+      bm25Norm * 0.3 +            // BM25 原始分：从 0.5 降到 0.3，防止肥胖症高分压制
+      density * densityWeight +    // 查询词密度：0.3
+      titleScore * titleMatchWeight + // 标题匹配：0.5（提升）
+      diseaseScore * diseaseMatchWeight + // 疾病匹配：0.3
+      fileDiseaseScore * 0.4 +     // 文件名疾病匹配：新增信号 0.4
+      positionScore * 0.1;         // 位置衰减：0.1
 
     return {
       ...c,
@@ -164,6 +184,7 @@ export function progressiveRerank(candidates, query, opts = {}) {
         density: Number(density.toFixed(4)),
         titleScore: Number(titleScore.toFixed(4)),
         diseaseScore: Number(diseaseScore.toFixed(4)),
+        fileDiseaseScore: Number(fileDiseaseScore.toFixed(4)),
         positionScore: Number(positionScore.toFixed(4)),
       },
     };

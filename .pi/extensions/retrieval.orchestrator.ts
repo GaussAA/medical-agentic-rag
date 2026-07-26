@@ -265,12 +265,30 @@ export default function (pi: ExtensionAPI) {
       let engineMode = "bm25";
 
       try {
-        // ── 3a: SPARSE 通道（BM25 + MultiQuery + HyDE）──
+        // ── 3a: SPARSE 通道（BM25）──
         let out = searchKnowledge(query, { limit: fetchLimit });
         lowConfidence = out?.lowConfidence || false;
         engineMode = out?.kbFiles?.length > 0 ? "bm25_routed" : "bm25";
 
-        // 始终尝试 MultiQuery 提升召回（短超时 3s）
+        // ── 3b: DENSE 通道（提前启动，与 MultiQuery/HyDE 并行）──
+        // 原代码串行等待 SPARSE 完成才启动 DENSE，导致 SPARSE(8s) + DENSE(8~20s) 累积。
+        // 改为提前创建 Promise，让 DENSE 与 SPARSE 的异步子步骤同时运行。
+        let densePromise: Promise<any> | null = null;
+        if (autoDense) {
+          densePromise = (async () => {
+            try {
+              return await engineHybridSearch(query, {
+                mode: "hybrid",
+                limit: denseLimit,
+                signal: AbortSignal.timeout(8000),
+              });
+            } catch (e: any) {
+              return { ok: false, error: e?.message || String(e) };
+            }
+          })();
+        }
+
+        // SPARSE 异步子步骤（MultiQuery + HyDE），与上方的 DENSE 并行执行
         let fused = false;
         try {
           const variants = await generateQueryVariants(query, { timeoutMs: 3000 });
@@ -321,16 +339,11 @@ export default function (pi: ExtensionAPI) {
           /* HyDE 降级 */
         }
 
-        // ── 3b: DENSE 通道（e5 向量 + bge-reranker），仅 autoDense 模式 ──
-        // 与 SPARSE 并行执行，超时 8s 降级，不阻塞主流程
-        if (autoDense) {
+        // ── 融合 DENSE 结果（此时 dense 已与 MultiQuery/HyDE 并行完成）──
+        if (densePromise) {
           try {
-            const denseResult = await engineHybridSearch(query, {
-              mode: "hybrid",
-              limit: denseLimit,
-              signal: AbortSignal.timeout(8000),
-            });
-            if (denseResult.ok && denseResult.results.length > 0) {
+            const denseResult = await densePromise;
+            if (denseResult && denseResult.ok && denseResult.results.length > 0) {
               const sparseResults = out.results || [];
               const beforeCount = sparseResults.length;
               out = {
@@ -340,7 +353,7 @@ export default function (pi: ExtensionAPI) {
               engineMode = "hybrid_dense";
               log.push(`Dense 融合: ${beforeCount}sparse + ${denseResult.results.length}dense → ${(out.results || []).length} 条 (${denseResult.latencyMs}ms)`);
             } else {
-              log.push(`Dense 通道未返回结果: ${denseResult.error || "空结果"}`);
+              log.push(`Dense 通道未返回结果: ${denseResult?.error || "空结果"}`);
             }
           } catch (e: any) {
             log.push(`Dense 通道降级: ${e?.message || e}`);
@@ -573,4 +586,21 @@ export default function (pi: ExtensionAPI) {
       return result;
     },
   });
+
+  // ── 会话启动时注销旧版 pi-knowledge 工具（代码层锁死）──
+  // 已注销工具列表：knowledge_search（2026-07-26）、knowledge_symbol_search（2026-07-26）
+  // 利用 setActiveTools 从活跃列表中移除，LLM ��再可见
+  pi.on("session_start", () => {
+    try {
+      const BANNED_TOOLS = new Set(["knowledge_search", "knowledge_symbol_search", "find"]);
+      const allTools = pi.getAllTools();
+      const filteredNames = allTools.map((t: any) => t.name).filter((n: string) => !BANNED_TOOLS.has(n));
+      if (filteredNames.length > 0 && filteredNames.length !== allTools.length) {
+        pi.setActiveTools(filteredNames);
+        diag.info("retrieve", `tools: 已注销 ${[...BANNED_TOOLS].filter(b => allTools.some((t: any) => t.name === b)).join(", ")}`);
+      }
+    } catch { /* 降级：不影响主流程 */ }
+  });
 }
+
+export { needsDenseMode, AUTO_DENSE_PATTERNS };

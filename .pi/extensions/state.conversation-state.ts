@@ -383,6 +383,35 @@ export default function factory(pi: ExtensionAPI) {
         // 压缩失败不影响主流程
       }
 
+      // ── 自动上下文提取（兜底：即使 LLM 未调 update_conversation_state）──
+      // 当显式状态为空时，从末轮助手回答中自动提取当前讨论主题
+      if (!state.chiefComplaint && !state.currentGuide) {
+        try {
+          const msgs = event.messages || [];
+          // 取前一条助手回答（最后一条 role=assistant 的消息）
+          const lastAssistant = [...msgs].reverse().find((m: any) => m.role === "assistant");
+          if (lastAssistant) {
+            const text = typeof lastAssistant.content === "string"
+              ? lastAssistant.content
+              : Array.isArray(lastAssistant.content)
+                ? lastAssistant.content.filter((c: any) => c.type === "text").map((c: any) => c.text).join(" ")
+                : "";
+            // 提取可能的疾病名/指南名：匹配「《XXX指南（XXXX版）》」或「## XXX」标题
+            const guideMatch = text.match(/《(.{2,30}?指南（\d{4}版）》)/);
+            const titleMatch = text.match(/##\s+(.{2,30})/);
+            if (guideMatch) state.currentGuide = guideMatch[1];
+            // 自动填充 chiefComplaint：取第一个 ## 标题或「关于 XXX」的表述
+            if (!state.chiefComplaint) {
+              if (titleMatch && !titleMatch[1].startsWith("免责")) {
+                state.chiefComplaint = titleMatch[1];
+              }
+            }
+          }
+        } catch {
+          // 自动提取失败不影响主流程
+        }
+      }
+
       const injected = formatState(state);
       // 当无状态且未压缩时跳过注入
       if (!injected && !compressedMessages) return;

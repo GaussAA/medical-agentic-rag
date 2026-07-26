@@ -34,6 +34,15 @@ const SENSENOVA_URL = process.env.SENSENOVA_PROXY_URL || "https://token.sensenov
 const SENSENOVA_MODEL = "sensenova-6.7-flash-lite";
 const DEEPSEEK_URL = "https://api.deepseek.com/chat/completions";
 const DEEPSEEK_MODEL = "deepseek-v4-flash";
+// ── 评测用模型（独立于生成模型，零成本升级方案）──
+// LLM_JUDGE_MODEL 可选值：
+//   "sensenova-6.7-flash-lite"       — sensenova 自有模型（默认，免费）
+//   "sensenova/deepseek-v4-flash"    — deepseek 经 sensenova 通道（免费，限流）
+//   "agnes/agnes-2.0-flash"          — Agnes 2.0 Flash（免费）
+// 详见 provider-proxy.mjs 的 Chain 配置。
+const JUDGE_MODEL = process.env.LLM_JUDGE_MODEL || "sensenova-6.7-flash-lite";
+const AGNES_URL = "https://apihub.agnes-ai.com/v1/chat/completions";
+const AGNES_MODEL = "agnes-2.0-flash";
 const MAX_CONCURRENCY = 20;
 
 function parseKeys(raw) {
@@ -48,6 +57,21 @@ if (process.env.SENSENOVA_API_KEY && !SENSENOVA_KEYS.includes(process.env.SENSEN
 
 function sensenovaEndpoints() {
   return SENSENOVA_KEYS.map((key) => ({ name: "SenseNova 6.7 Flash Lite", url: SENSENOVA_URL, model: SENSENOVA_MODEL, key }));
+}
+
+// 评测专用端点（根据 JUDGE_MODEL 自动选择）
+// 返回端点数组或空数组（使用默认模型）
+function judgeEndpoints() {
+  // Agnes 2.0 Flash（免费）
+  if (JUDGE_MODEL === "agnes/agnes-2.0-flash" && process.env.AGNES_API_KEY) {
+    return [{ name: "Agnes 2.0 Flash", url: AGNES_URL, model: AGNES_MODEL, key: process.env.AGNES_API_KEY }];
+  }
+  // DeepSeek V4 Flash 经 sensenova 免费通道（免费，限流）
+  if (JUDGE_MODEL === "sensenova/deepseek-v4-flash" && SENSENOVA_KEYS.length > 0) {
+    return SENSENOVA_KEYS.map((key) => ({ name: "DeepSeek V4 Flash(免费通道)", url: SENSENOVA_URL, model: "deepseek-v4-flash", key }));
+  }
+  // 默认：使用 sensenova-6.7-flash-lite
+  return [];
 }
 
 function deepseekEndpoint() {
@@ -98,6 +122,30 @@ const RETRY_CAP_MS = 15000;
 
 export async function callLLM(messagesOrString, opts = {}) {
   const messages = typeof messagesOrString === "string" ? [{ role: "user", content: messagesOrString }] : messagesOrString;
+  // 评测模式：优先走 JUDGE_MODEL 指定的模型（免费/付费均可，自动降级）
+  if (opts.judgeModel) {
+    const jeps = judgeEndpoints();
+    if (jeps.length) {
+      let lastErr;
+      let backoff = 0;
+      for (let i = 0; i < 5; i++) {  // 最多 5 次，含退避
+        const ep = jeps[0];
+        try { return await callOne(ep, messages, opts); }
+        catch (e) {
+          lastErr = e;
+          if (e.httpStatus === 429) {
+            const wait = Math.min(2000 * Math.pow(2, backoff) + Math.random() * 1000, 30000);
+            backoff++;
+            console.warn(`[llm-judge] ${JUDGE_MODEL} 429 退避 ${Math.round(wait)}ms (第${i+1}次)`);
+            await new Promise((r) => setTimeout(r, wait));
+            continue;
+          }
+          break;
+        }
+      }
+      console.warn(`[llm-judge] ${JUDGE_MODEL} 不可用，退回 sensenova-6.7-flash-lite:`, lastErr?.message?.slice(0, 60));
+    }
+  }
   const sens = sensenovaEndpoints();
   let lastErr;
   if (sens.length) {

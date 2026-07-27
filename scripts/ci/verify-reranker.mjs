@@ -8,7 +8,7 @@
  * 本脚本用 AutoModelForSequenceClassification + AutoTokenizer 直接取 logits，
  * 验证中文医疗场景下相关/无关 passage 的 logits 区分度。
  *
- * 用法: node scripts/ops/verify-reranker.mjs
+ * 用法: node scripts/ci/verify-reranker.mjs
  */
 
 // ── 全局代理注入（让 @huggingface/transformers 的 fetch 走代理）──

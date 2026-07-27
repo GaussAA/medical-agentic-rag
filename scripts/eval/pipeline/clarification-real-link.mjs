@@ -1,4 +1,4 @@
-// scripts/ops/clarification-real-link.mjs
+// scripts/eval/pipeline/clarification-real-link.mjs
 // B0-b · 真实 LLM 多轮澄清空转复现（07-13「脑溢血和心梗」）
 //
 // 与确定性护栏 tests/unit/clarification-loop-test.mjs 互补：

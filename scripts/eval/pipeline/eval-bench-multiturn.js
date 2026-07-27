@@ -1,4 +1,4 @@
-// scripts/ops/eval-bench-multiturn.js
+// scripts/eval/pipeline/eval-bench-multiturn.js
 // B3 · 多轮评测 harness（真实 LLM 运行期）
 //
 // 复 B0-b 真链路多轮驱动，扩为多场景评测：每个场景均验证
@@ -11,7 +11,7 @@
 //   ③ 肝癌靶向 vs 胰腺癌对比 —— 多指南综合
 //   ④ 糖尿病合并 CKD 用药 —— 剂量/人群敏感
 //
-// 与 scripts/ops/clarification-real-link.mjs 共用 lib/agent-driver.mjs 内核。
+// 与 scripts/eval/pipeline/clarification-real-link.mjs 共用 lib/agent-driver.mjs 内核。
 // 归属（与 smoke-real-link 一致）：本地开发机 / 自托管 nightly runner。
 //   本环境若 provider 降级（无外联），网关 exit 2 优雅跳过，不阻塞。
 //

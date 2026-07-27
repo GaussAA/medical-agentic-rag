@@ -6,7 +6,9 @@
 import os, sys
 from pypdf import PdfReader, PdfWriter
 
-BASE = "C:/WorkSpace/AgentProject/medical-agentic-rag/raw"
+# 由调用方传入项目根路径，或自动推导
+ROOT = os.environ.get("PROJECT_ROOT") or os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+BASE = os.path.join(ROOT, "data", "raw")
 OUT = os.path.join(BASE, "_oversized_split")
 PER = 10  # 每 10 页一份；单份约 <1MB，远低于 ~11MB 阈值
 

@@ -10,15 +10,35 @@
  *
  * 用法: node scripts/ops/verify-reranker.mjs
  */
+
+// ── 全局代理注入（让 @huggingface/transformers 的 fetch 走代理）──
+import { setGlobalDispatcher, ProxyAgent } from "undici";
+const PROXY = process.env.HTTPS_PROXY || process.env.HTTP_PROXY || "http://127.0.0.1:7897";
+if (PROXY) {
+  try {
+    setGlobalDispatcher(new ProxyAgent({ uri: PROXY }));
+  } catch {
+    // 代理注入失败不影响主流程
+  }
+}
+
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import { homedir } from "node:os";
+import { existsSync } from "node:fs";
 import { piAgentNpmRoot } from "../lib/config.mjs";
 
+// 用 createRequire 搜索多个 node_modules 路径（仓内 .pi/npm 优先）
 const agentNpm = piAgentNpmRoot();
-const PI_NODE_MODULES = join(agentNpm, "node_modules");
-const require = createRequire(join(PI_NODE_MODULES, "_"));
-const { AutoTokenizer, AutoModelForSequenceClassification, env } = require("@huggingface/transformers");
+const cwd = process.cwd();
+const CANDIDATE_ROOTS = [
+  join(cwd, ".pi", "npm", "node_modules"),           // 仓内 .pi/npm（project-level, 0.6.0+）
+  join(agentNpm, "node_modules"),                      // ~/.pi/agent/npm（user-level）
+].filter((p) => existsSync(join(p, "@huggingface", "transformers")));
+
+const resolveRoot = CANDIDATE_ROOTS[0] || (() => { throw new Error("未找到 @huggingface/transformers 安装路径"); })();
+const _require = createRequire(join(resolveRoot, "_"));
+const { AutoTokenizer, AutoModelForSequenceClassification, env } = _require("@huggingface/transformers");
 
 env.cacheDir = process.env.PI_KNOWLEDGE_DIR
   ? join(process.env.PI_KNOWLEDGE_DIR, "models")

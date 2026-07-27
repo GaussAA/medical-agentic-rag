@@ -96,8 +96,8 @@ function queryWikiRegistry(registry: WikiRegistry, query: string): string[] {
   }
 
   for (const [slug, entry] of Object.entries(registry.pages)) {
-    // 只搜索 canonical 页面（entity/concept/synthesis/analysis），不搜 source 页
-    if (entry.type === "source") continue;
+    // 只搜索 canonical 页面（entity/concept/synthesis），不搜 source/analysis 页
+    if (entry.type === "source" || entry.type === "analysis") continue;
 
     const title = (entry.title || "").toLowerCase();
     const slugLower = slug.toLowerCase();

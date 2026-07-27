@@ -142,6 +142,8 @@ cmd_tui() {
 
   export NODE_PATH="$WIN_ROOT/pi/node_modules;$WIN_ROOT/.pi/npm/node_modules"
   export PI_KNOWLEDGE_DIR="$WIN_ROOT/.pi/knowledge"
+  export PI_KNOWLEDGE_RERANKER="hf:Xenova/bge-reranker-base"
+  export PI_KNOWLEDGE_RERANKER_RAW_LOGITS="true"  # 原生 raw logits 支持（v0.7.0+，无需补丁）
 
   echo ""
   echo "[Medical Agentic RAG]  LLM: $PROVIDER/$MODEL (via local proxy)"

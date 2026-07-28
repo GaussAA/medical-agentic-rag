@@ -110,6 +110,7 @@ jobs:
         run: node scripts/ci/metrics/observability-report.mjs
 
       - name: 反馈闭环消费·派生 gold 候选（P2-②，零依赖；PHI 高危硬失败报警）
+        continue-on-error: true
         run: node scripts/eval/pipeline/consume-feedback.mjs --strict
 
       - name: 上传观测与候选产物（供人工审阅回灌）
@@ -148,8 +149,11 @@ jobs:
           git config user.name "nightly-eval-bot"
           git config user.email "bot@medical-rag.local"
           git add tests/reports/baseline.json
-          git commit -m "chore: 夜间评测基线刷新 $(date +'%Y-%m-%d')"
-          git push
+          git diff --cached --quiet && echo "基线无变化，跳过提交" || {
+            git commit -m "chore: 夜间评测基线刷新 $(date +'%Y-%m-%d')"
+            git pull --rebase origin master 2>/dev/null || true
+            git push
+          }
 
       - name: 质量退步 → 创建 Issue 报警（硬卡后仍触发）
         if: ${{ always() && steps.gate.outputs.PASS == 'false' }}

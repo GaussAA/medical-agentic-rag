@@ -61,3 +61,4 @@ if (fail > 0) {
   for (const f of fails) console.log("  - " + f);
   process.exit(1);
 }
+process.exit(0);

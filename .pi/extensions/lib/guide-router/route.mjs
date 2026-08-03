@@ -15,13 +15,14 @@ const DZ_CATEGORIES = {
   // 代谢
   "糖尿病": "代谢", "糖尿": "代谢", "肥胖": "代谢", "高血糖": "代谢",
   "高脂": "代谢", "血脂": "代谢", "痛风": "代谢", "高尿酸": "代谢",
-  // 骨骼
-  "骨质疏松": "骨骼", "骨松": "骨骼", "骨折": "骨骼", "骨关节": "骨骼",
-  "关节炎": "骨骼", "关节": "骨骼",
+  // 骨骼（骨质疏松与骨折分域：查询骨质疏松时骨折类不应同权竞争，反之亦然）
+  "骨质疏松": "骨质疏松", "骨松": "骨质疏松",
+  "骨折": "骨折",
+  "骨关节": "骨骼", "关节炎": "骨骼", "关节": "骨骼",
   // 心血管
   "高血压": "心血管", "冠心病": "心血管", "心梗": "心血管", "心衰": "心血管",
   "心力衰竭": "心血管", "心肌梗死": "心血管", "房颤": "心血管", "心律": "心血管",
-  "心绞痛": "心血管", "冠脉": "心血管", "冠状动脉": "心血管",
+  "心绞痛": "心血管", "冠脉": "心血管", "冠状动脉": "心血管", "地高辛": "心血管",
   "动脉粥样硬化": "心血管", "ascvd": "心血管",
   // 脑血管/神经
   "脑卒中": "神经", "中风": "神经", "卒中": "神经", "癫痫": "神经",
@@ -165,7 +166,9 @@ export function routeGuides(query, opts = {}) {
     }
 
     const hasStrong = matchedKw.length > 0 || titleL.includes(qNorm) || disease.includes(qNorm) || score >= 4;
-    const isNonDiseaseGuide = /^(ws|gbz)|质量控制/.test(title) || (info.disease && info.disease.length > 12);
+    // 指导原则类豁免非疾病降权：disease 字段为「指导原则名」而非病种（长度 >12 误触发），
+    // 此类为权威用药/诊疗规范（如新型抗肿瘤药物临床应用指导原则），须保持正常权重。
+    const isNonDiseaseGuide = (/^(ws|gbz)|质量控制/.test(title) || (info.disease && info.disease.length > 12)) && !/指导原则/.test(title);
     if (isNonDiseaseGuide && matchedKw.length === 0) { score *= 0.4; reasons.push("非疾病类降权"); }
     const isSummaryGuide = /各专业|质控工作改进目标|工作改进目标|改进目标|年度目标|总览|综述|汇总/.test(title) || /各专业|质控工作改进目标|改进目标/.test(info.id || "");
     if (isSummaryGuide) { score *= 0.4; reasons.push("汇总类指南降权"); }

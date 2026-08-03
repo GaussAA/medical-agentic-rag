@@ -11,6 +11,10 @@
     "taskModel": {
       "provider": "sensenova",
       "id": "sensenova-6.7-flash-lite"
-    }
+    },
+    "embeddingProvider": "openai-compatible",
+    "embeddingModel": "Xenova/multilingual-e5-small",
+    "embeddingBaseUrl": "http://127.0.0.1:18881/v1",
+    "embeddingApiKey": "local-no-auth"
   }
 }

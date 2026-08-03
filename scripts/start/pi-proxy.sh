@@ -29,11 +29,44 @@ done
 [ -z "$NODE_BIN" ] && NODE_BIN="node"
 
 PROXY_PORT="${PROXY_PORT:-18880}"
+EMBED_PORT="${EMBED_PORT:-18881}"
 
 # ── 检查 Provider Proxy 是否运行 ──
 proxy_healthy() {
   curl -sf "http://127.0.0.1:$PROXY_PORT/health" >/dev/null 2>&1
 }
+
+# ── 检查本地嵌入服务是否运行（llm-wiki 混合语义召回用，可选） ──
+embed_healthy() {
+  curl -sf "http://127.0.0.1:$EMBED_PORT/health" >/dev/null 2>&1
+}
+
+# ── 加载 .env（provider-proxy / embed-server 均需 API Key 环境） ──
+if [ -f .env ]; then
+  set -a
+  # shellcheck disable=SC1091
+  . ./.env
+  set +a
+fi
+
+# ── 如果嵌入服务未运行，启动它（本地 e5-small，零成本；失败不阻断主流程） ──
+if ! embed_healthy; then
+  echo "[pi-proxy] 本地嵌入服务未运行，正在启动 (127.0.0.1:$EMBED_PORT)..."
+  mkdir -p .pi/logs
+  "$NODE_BIN" --import "file://$WIN_ROOT/.pi/embed-proxy-init.mjs" \
+    scripts/local-embed-server.mjs --port="$EMBED_PORT" >> ".pi/logs/embed-server.log" 2>&1 &
+  EMBED_PID=$!
+  for i in $(seq 1 30); do
+    if embed_healthy; then
+      echo "[pi-proxy]   → 嵌入服务就绪 (PID $EMBED_PID)"
+      break
+    fi
+    sleep 1
+  done
+  if ! embed_healthy; then
+    echo "[pi-proxy] ⚠️ 嵌入服务启动失败（不影响主流程，混合语义召回降级为纯词法）"
+  fi
+fi
 
 # ── 如果 proxy 未运行，启动它 ──
 if ! proxy_healthy; then

@@ -124,6 +124,23 @@ cmd_tui() {
     sleep 1
   fi
 
+  # 启动本地嵌入服务（llm-wiki 混合语义召回用，可选；失败不阻断主流程）
+  local EMBED_PORT="${EMBED_PORT:-18881}"
+  local EMBED_PID
+  EMBED_PID=$(netstat -ano 2>/dev/null | grep ":${EMBED_PORT} " | grep "LISTENING" | awk '{print $NF}' | head -1) || true
+  if [ -z "$EMBED_PID" ] || [ "$EMBED_PID" = "0" ]; then
+    echo "[orchestration] 启动本地嵌入服务 (127.0.0.1:$EMBED_PORT)..."
+    "$NODE_BIN" --import "file://$WIN_ROOT/.pi/embed-proxy-init.mjs" \
+      scripts/local-embed-server.mjs --port="$EMBED_PORT" >> ".pi/logs/embed-server.log" 2>&1 &
+    for i in $(seq 1 30); do
+      if curl -sf "http://127.0.0.1:$EMBED_PORT/health" >/dev/null 2>&1; then
+        echo "[orchestration]   → 嵌入服务就绪 (127.0.0.1:$EMBED_PORT)"
+        break
+      fi
+      sleep 1
+    done
+  fi
+
   # 启动 proxy
   echo "[orchestration] 启动本地 LLM Provider 代理网关..."
   mkdir -p .pi/logs

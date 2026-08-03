@@ -36,15 +36,14 @@ const HEALTHY_STREAK_TO_RECOVER = 2;
  *
  * 成本控制优先级（2026-07-15 遵大帅指令重排）：
  *   P1 免费主力(sensenova-6.7-flash-lite) > P2 免费深搜通道(sensenova/deepseek-v4-flash)
- *   > P3 agnes-2.0-flash(免费) > P4 原生 deepseek(付费，末位兜底)
+ *   > P3 agnes-2.5-flash(免费) > P4 原生 deepseek(付费，末位兜底)
  * selectProvider 取首个 healthy；全不健康回退 priority 最小者并标 degraded。
  * 若最终选中付费深搜(P4)，启动日志必有醒目告警。
  *
  * 2026-07-15 烟雾实测结果：
  * - sensenova-6.7-flash-lite: ✅ 可达(/v1/models 200, chat 200)
  * - sensenova/deepseek-v4-flash: ✅ 可达(/v1/models 200, chat 200)
- * - agnes-2.0-flash: ✅ 可达(/v1/models 200, chat 200 返回正常文本)
- * - agnes-2.5-flash: ❌ chat 503(No available channel)，当前 Key 未开放
+ * - agnes-2.5-flash: ✅ 已开放（2026-07-30 升级）
  * - sensenova-u1-fast: ✅ 可达(/v1/models 200, 图像非聊天端点跳过)
  */
 export const PROVIDERS = [
@@ -75,8 +74,8 @@ export const PROVIDERS = [
   },
   {
     provider: "agnes",
-    model: "agnes-2.0-flash",
-    label: "Agnes 2.0 Flash (免费)",
+    model: "agnes-2.5-flash",
+    label: "Agnes 2.5 Flash (免费)",
     baseUrl: "https://apihub.agnes-ai.com/v1",
     authEnv: "AGNES_API_KEY",
     priority: 3,

@@ -127,12 +127,25 @@ function checkAssertions(item, answer) {
 }
 
 // ---------- LLM-Judge 四维（委托 lib/llm-judge.mjs 单一真相源） ----------
+// 证据摘录：从应引指南原文提取前 N 字符摘要注入 judge，让模型能核对引用来源真实性，
+// 避免因训练知识截止误判「某版本指南不存在」为捏造（如 2024 版糖尿病指南 2025-01 才发布）。
+const JUDGE_EVIDENCE_CHARS = 4000;
+function buildEvidence(item) {
+  const parts = [];
+  for (const gt of item.gtSources || []) {
+    const { text, missing } = readGuideText(gt);
+    if (text) parts.push(`【${gt}】\n${text.slice(0, JUDGE_EVIDENCE_CHARS)}`);
+    else if (missing) parts.push(`【${gt}】<KB 未收录:${missing}>`);
+  }
+  return parts.join("\n\n").slice(0, JUDGE_EVIDENCE_CHARS * 3);
+}
 async function llmJudge(item, answer) {
   return judgeAnswer({
     question: item.q,
     answer,
     referenceAnswer: item.referenceAnswer,
     gtSources: item.gtSources,
+    evidence: buildEvidence(item),
   });
 }
 

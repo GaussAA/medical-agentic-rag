@@ -36,7 +36,7 @@ const FAILOVER_FILE = join(PI_DIR, "failover-selection.json");
 // ⚠️ 优先级 = 免费优先 → 成本优先
 // Chain 1: 本地私有 LLM（免费，最高优先级）
 // Chain 2: sensenova 免费通道（多 Key 轮询 + deepseek 代理）
-// Chain 3: Agnes 免费 Flash
+// Chain 3: Agnes 免费 Flash（2026-07-30 升级至 2.5）
 // Chain 4: DeepSeek 付费（末位兜底）
 const POOLS = [
   {
@@ -59,7 +59,7 @@ const POOLS = [
     name: "agnes-free",
     chain: 3,
     members: [
-      { provider: "agnes", model: "agnes-2.0-flash", baseUrl: "https://apihub.agnes-ai.com/v1", authEnv: "AGNES_API_KEY", label: "Agnes 2.0 Flash (免费)" },
+      { provider: "agnes", model: "agnes-2.5-flash", baseUrl: "https://apihub.agnes-ai.com/v1", authEnv: "AGNES_API_KEY", label: "Agnes 2.5 Flash (免费)" },
     ],
   },
   {
@@ -482,7 +482,7 @@ async function start() {
     console.warn("=".repeat(70));
     console.warn("⚠  ⚠  ⚠  ⚠  注  意  ⚠  ⚠  ⚠  ⚠");
     console.warn("当前选中了  DeepSeek V4 Flash（付费模型）！");
-    console.warn("所有免费通道（sensenova-6.7-flash-lite / sensenova 深搜免费通道 / agnes）均不可用。");
+    console.warn("所有免费通道（sensenova-6.7-flash-lite / sensenova 深搜免费通道 / agnes-2.5-flash）均不可用。");
     console.warn("每次请求将消耗 DEEPSEEK_API_KEY 的付费配额。");
     console.warn("如需关闭付费，请停止服务、检查免费通道可用性，或设置 ALLOW_PAID_FALLBACK=false。");
     console.warn("=".repeat(70));

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-22T13:33:07.138Z",
+  "generatedAt": "2026-07-30T14:08:39.267Z",
   "totalGuides": 182,
   "totalKeywords": 929,
   "guideMap": {
@@ -12,13 +12,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "1.2026年国家医疗质量安全改进目标",
         "1.年国家医疗质量安全改进目标"
       ],
       "sectionCount": 76,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "1.健康体检自测问卷（2025年版）": {
       "id": "1.健康体检自测问卷（2025年版）",
@@ -29,13 +29,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "1.健康体检自测问卷（2025年版）",
         "1.健康体检自测问卷"
       ],
       "sectionCount": 17,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "1.全国生育友好城市评审标准（2026年版）": {
       "id": "1.全国生育友好城市评审标准（2026年版）",
@@ -46,13 +46,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "1.全国生育友好城市评审标准（2026年版）",
         "1.全国生育友好城市评审标准"
       ],
       "sectionCount": 31,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "1.全国防盲技术指导组成员名单": {
       "id": "1.全国防盲技术指导组成员名单",
@@ -63,12 +63,12 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "1.全国防盲技术指导组成员名单"
       ],
       "sectionCount": 0,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "1.生物医学新技术临床转化应用申请书": {
       "id": "1.生物医学新技术临床转化应用申请书",
@@ -79,12 +79,12 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "1.生物医学新技术临床转化应用申请书"
       ],
       "sectionCount": 27,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "1.紧密型县域医共体医学影像中心建设与服务指南（试行）": {
       "id": "1.紧密型县域医共体医学影像中心建设与服务指南（试行）",
@@ -95,13 +95,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "1.紧密型县域医共体医学影像中心建设与服务指南（试行）",
         "1.紧密型县域医共体医学影像中心建设与服务"
       ],
       "sectionCount": 51,
-      "keyParagraphCount": 0,
-      "department": "医学影像科"
+      "keyParagraphCount": 0
     },
     "2.2026年各专业质控工作改进目标": {
       "id": "2.2026年各专业质控工作改进目标",
@@ -112,13 +112,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "2.2026年各专业质控工作改进目标",
         "2.年各专业质控工作改进目标"
       ],
       "sectionCount": 60,
-      "keyParagraphCount": 6,
-      "department": "待分类"
+      "keyParagraphCount": 6
     },
     "2.全国生育友好单位评审标准（2026年版）": {
       "id": "2.全国生育友好单位评审标准（2026年版）",
@@ -129,13 +129,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "2.全国生育友好单位评审标准（2026年版）",
         "2.全国生育友好单位评审标准"
       ],
       "sectionCount": 21,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "2.全国防盲技术指导组章程": {
       "id": "2.全国防盲技术指导组章程",
@@ -146,12 +146,12 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "2.全国防盲技术指导组章程"
       ],
       "sectionCount": 37,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "2.基本体检项目（2025年版）": {
       "id": "2.基本体检项目（2025年版）",
@@ -162,13 +162,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "2.基本体检项目（2025年版）",
         "2.基本体检项目"
       ],
       "sectionCount": 0,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "2.生物医学新技术临床转化应用申请形式审查条件要求": {
       "id": "2.生物医学新技术临床转化应用申请形式审查条件要求",
@@ -179,12 +179,12 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "2.生物医学新技术临床转化应用申请形式审查条件要求"
       ],
       "sectionCount": 26,
-      "keyParagraphCount": 1,
-      "department": "待分类"
+      "keyParagraphCount": 1
     },
     "2.紧密型县域医共体医学检验中心建设与服务指南（试行）": {
       "id": "2.紧密型县域医共体医学检验中心建设与服务指南（试行）",
@@ -195,13 +195,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "2.紧密型县域医共体医学检验中心建设与服务指南（试行）",
         "2.紧密型县域医共体医学检验中心建设与服务"
       ],
       "sectionCount": 74,
-      "keyParagraphCount": 0,
-      "department": "检验科"
+      "keyParagraphCount": 0
     },
     "3.生物医学新技术临床转化应用优先审查审批申请表": {
       "id": "3.生物医学新技术临床转化应用优先审查审批申请表",
@@ -212,12 +212,12 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "3.生物医学新技术临床转化应用优先审查审批申请表"
       ],
       "sectionCount": 0,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）": {
       "id": "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）",
@@ -228,13 +228,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "3.紧密型县域医共体心电诊断中心建设与服务指南（试行）",
         "3.紧密型县域医共体心电诊断中心建设与服务"
       ],
       "sectionCount": 52,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "4.成人健康体检工作流程图（2025年版）": {
       "id": "4.成人健康体检工作流程图（2025年版）",
@@ -245,13 +245,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "4.成人健康体检工作流程图（2025年版）",
         "4.成人健康体检工作流程图"
       ],
       "sectionCount": 0,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）": {
       "id": "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）",
@@ -262,13 +262,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "4.紧密型县域医共体消毒供应中心建设与服务指南（试行）",
         "4.紧密型县域医共体消毒供应中心建设与服务"
       ],
       "sectionCount": 30,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "86个罕见病病种诊疗指南（2025年版）": {
       "id": "86个罕见病病种诊疗指南（2025年版）",
@@ -279,13 +279,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "86个罕见病病种诊疗指南（2025年版）",
         "86个罕见病病种"
       ],
       "sectionCount": 1388,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "GBZ 104—2026 职业性外照射急性放射病诊断标准": {
       "id": "GBZ 104—2026 职业性外照射急性放射病诊断标准",
@@ -296,6 +296,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "GBZ 104—2026 职业性外照射急性放射病诊断标准",
         "GBZ104职业性外照射急性放射病诊断标准",
@@ -307,8 +308,7 @@
         "对症支持治疗"
       ],
       "sectionCount": 34,
-      "keyParagraphCount": 0,
-      "department": "医学影像科"
+      "keyParagraphCount": 0
     },
     "GBZ 105—2026 职业性外照射慢性放射病诊断标准": {
       "id": "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
@@ -319,6 +319,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "GBZ 105—2026 职业性外照射慢性放射病诊断标准",
         "GBZ105职业性外照射慢性放射病诊断标准",
@@ -337,8 +338,7 @@
         "维生素类药"
       ],
       "sectionCount": 10,
-      "keyParagraphCount": 0,
-      "department": "医学影像科"
+      "keyParagraphCount": 0
     },
     "GBZ 97—2026 职业性放射性肿瘤病因判断标准": {
       "id": "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
@@ -349,6 +349,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "GBZ 97—2026 职业性放射性肿瘤病因判断标准",
         "GBZ97职业性放射性肿瘤病因判断标准",
@@ -363,8 +364,7 @@
         "化学治疗"
       ],
       "sectionCount": 680,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准": {
       "id": "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
@@ -375,13 +375,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "GBZ-T 244—2026 电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准",
         "GBZT244电离辐射所致局部皮肤吸收剂量和眼晶状体吸收剂量估算方法标准"
       ],
       "sectionCount": 517,
-      "keyParagraphCount": 0,
-      "department": "皮肤科"
+      "keyParagraphCount": 0
     },
     "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准": {
       "id": "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
@@ -392,6 +392,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "GBZ-T 344—2026 放射工作人员甲状腺中131I的直接测量方法标准",
         "GBZT344放射工作人员甲状腺中131I的直接测量方法标准",
@@ -400,8 +401,7 @@
         "放射工作"
       ],
       "sectionCount": 45,
-      "keyParagraphCount": 0,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 0
     },
     "Pilon骨折切开复位内固定术加速康复临床路径（2023年版）": {
       "id": "Pilon骨折切开复位内固定术加速康复临床路径（2023年版）",
@@ -412,13 +412,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "Pilon骨折切开复位内固定术加速康复临床路径（2023年版）",
         "Pilon骨折切开复位内固定术加速康复临床路径"
       ],
       "sectionCount": 45,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "WS 890—2026 浅层X射线治疗机质量控制检测标准": {
       "id": "WS 890—2026 浅层X射线治疗机质量控制检测标准",
@@ -429,13 +429,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS 890—2026 浅层X射线治疗机质量控制检测标准",
         "WS890浅层X射线治疗机质量控制检测标准"
       ],
       "sectionCount": 37,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分": {
       "id": "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
@@ -446,13 +446,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 404.9—2026 临床常用生化检验项目参考区间第9部分",
         "WST404.9临床常用生化检验项目参考区间第9部分"
       ],
       "sectionCount": 6,
-      "keyParagraphCount": 0,
-      "department": "检验科"
+      "keyParagraphCount": 0
     },
     "WS-T 477—2026 D-二聚体定量检测标准": {
       "id": "WS-T 477—2026 D-二聚体定量检测标准",
@@ -463,13 +463,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 477—2026 D-二聚体定量检测标准",
         "WST477D二聚体定量检测标准"
       ],
       "sectionCount": 59,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "WS-T 497—2026 侵袭性真菌病实验诊断标准": {
       "id": "WS-T 497—2026 侵袭性真菌病实验诊断标准",
@@ -480,13 +480,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 497—2026 侵袭性真菌病实验诊断标准",
         "WST497侵袭性真菌病实验诊断标准"
       ],
       "sectionCount": 121,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "WS-T 498—2026 感染性腹泻实验诊断标准": {
       "id": "WS-T 498—2026 感染性腹泻实验诊断标准",
@@ -497,6 +497,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 498—2026 感染性腹泻实验诊断标准",
         "WST498感染性腹泻实验诊断标准",
@@ -515,8 +516,7 @@
         "抗感染治疗"
       ],
       "sectionCount": 49,
-      "keyParagraphCount": 0,
-      "department": "感染科"
+      "keyParagraphCount": 0
     },
     "WS-T 503—2026 临床微生物实验室血培养操作标准": {
       "id": "WS-T 503—2026 临床微生物实验室血培养操作标准",
@@ -527,13 +527,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 503—2026 临床微生物实验室血培养操作标准",
         "WST503临床微生物实验室血培养操作标准"
       ],
       "sectionCount": 104,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "WS-T 601—2018 妊娠期糖尿病患者膳食指导": {
       "id": "WS-T 601—2018 妊娠期糖尿病患者膳食指导",
@@ -544,6 +544,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 601—2018 妊娠期糖尿病患者膳食指导",
         "WST601妊娠期糖尿病患者膳食指导",
@@ -551,8 +552,7 @@
         "二甲双胍"
       ],
       "sectionCount": 17,
-      "keyParagraphCount": 0,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 0
     },
     "WS-T 640—2026 临床微生物学检验标本的采集和转运标准": {
       "id": "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
@@ -563,13 +563,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 640—2026 临床微生物学检验标本的采集和转运标准",
         "WST640临床微生物学检验标本的采集和转运标准"
       ],
       "sectionCount": 137,
-      "keyParagraphCount": 0,
-      "department": "检验科"
+      "keyParagraphCount": 0
     },
     "WS-T 641—2026 临床检验定量测定室内质量控制标准": {
       "id": "WS-T 641—2026 临床检验定量测定室内质量控制标准",
@@ -580,13 +580,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 641—2026 临床检验定量测定室内质量控制标准",
         "WST641临床检验定量测定室内质量控制标准"
       ],
       "sectionCount": 47,
-      "keyParagraphCount": 0,
-      "department": "检验科"
+      "keyParagraphCount": 0
     },
     "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分": {
       "id": "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
@@ -597,13 +597,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 645.1—2026 临床常用免疫学检验项目参考区间第1部分",
         "WST645.1临床常用免疫学检验项目参考区间第1部分"
       ],
       "sectionCount": 6,
-      "keyParagraphCount": 0,
-      "department": "检验科"
+      "keyParagraphCount": 0
     },
     "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分": {
       "id": "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
@@ -614,13 +614,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 645.2—2026 临床常用免疫学检验项目参考区间第2部分",
         "WST645.2临床常用免疫学检验项目参考区间第2部分"
       ],
       "sectionCount": 6,
-      "keyParagraphCount": 0,
-      "department": "检验科"
+      "keyParagraphCount": 0
     },
     "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准": {
       "id": "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准",
@@ -631,6 +631,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 828—2023 妊娠期糖尿病妇女体重增长推荐值标准",
         "WST828妊娠期糖尿病妇女体重增长推荐值标准",
@@ -638,8 +639,7 @@
         "二甲双胍"
       ],
       "sectionCount": 4,
-      "keyParagraphCount": 0,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 0
     },
     "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准": {
       "id": "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
@@ -650,13 +650,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 883—2026 中枢神经系统感染性疾病实验诊断标准",
         "WST883中枢神经系统感染性疾病实验诊断标准"
       ],
       "sectionCount": 64,
-      "keyParagraphCount": 0,
-      "department": "神经内科"
+      "keyParagraphCount": 0
     },
     "WS-T 884—2026 分枝杆菌感染实验诊断标准": {
       "id": "WS-T 884—2026 分枝杆菌感染实验诊断标准",
@@ -667,13 +667,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 884—2026 分枝杆菌感染实验诊断标准",
         "WST884分枝杆菌感染实验诊断标准"
       ],
       "sectionCount": 380,
-      "keyParagraphCount": 0,
-      "department": "感染科"
+      "keyParagraphCount": 0
     },
     "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标": {
       "id": "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
@@ -684,13 +684,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 885—2026 临床检验结果互认的基本技术条件及质量指标",
         "WST885临床检验结果互认的基本技术条件及质量指标"
       ],
       "sectionCount": 17,
-      "keyParagraphCount": 0,
-      "department": "检验科"
+      "keyParagraphCount": 0
     },
     "WS-T 886—2026 临床检验常用项目名称及代码": {
       "id": "WS-T 886—2026 临床检验常用项目名称及代码",
@@ -701,13 +701,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 886—2026 临床检验常用项目名称及代码",
         "WST886临床检验常用项目名称及代码"
       ],
       "sectionCount": 4,
-      "keyParagraphCount": 0,
-      "department": "检验科"
+      "keyParagraphCount": 0
     },
     "WS-T 894—2026 成分血制备标准": {
       "id": "WS-T 894—2026 成分血制备标准",
@@ -718,13 +718,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 894—2026 成分血制备标准",
         "WST894成分血制备标准"
       ],
       "sectionCount": 192,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "WS-T 895—2026 脐带血造血干细胞制备与冻存标准": {
       "id": "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
@@ -735,13 +735,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 895—2026 脐带血造血干细胞制备与冻存标准",
         "WST895脐带血造血干细胞制备与冻存标准"
       ],
       "sectionCount": 85,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准": {
       "id": "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准",
@@ -752,13 +752,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 900—2026 病原微生物菌（毒）种保藏质量控制通用标准",
         "WST900病原微生物菌种保藏质量控制通用标准"
       ],
       "sectionCount": 67,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则": {
       "id": "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
@@ -769,13 +769,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "WS-T 901—2026 医疗机构临床医学研究质量管理体系建设规范总则",
         "WST901医疗机构临床医学研究质量管理体系建设"
       ],
       "sectionCount": 29,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "cardio-af__EuropePMCOA__PMC12985568",
@@ -786,13 +786,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "心房颤动诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "心房颤动"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "心血管内科"
+      "keyParagraphCount": 0
     },
     "脓毒症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "crit-sepsis__EuropePMCOA__PMC12979551",
@@ -803,13 +803,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "脓毒症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "脓毒症"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "cvd-ami__EuropePMCOA__PMC12948573",
@@ -820,13 +820,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "急性心梗诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "急性心梗"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "心血管内科"
+      "keyParagraphCount": 0
     },
     "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "cvd-hf__EuropePMCOA__PMC13094103",
@@ -837,13 +837,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "心力衰竭"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "心血管内科"
+      "keyParagraphCount": 0
     },
     "脑卒中诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "cvd-stroke__EuropePMCOA__PMC12985467",
@@ -854,13 +854,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "脑卒中诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "脑卒中"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "神经内科"
+      "keyParagraphCount": 0
     },
     "糖尿病酮症酸中毒诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "endo-dka__EuropePMCOA__PMC11455157",
@@ -871,6 +871,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "糖尿病酮症酸中毒诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "糖尿病酮症酸中毒",
@@ -878,8 +879,7 @@
         "二甲双胍"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 0
     },
     "甲状腺功能亢进症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "endo-hyperthyroid__EuropePMCOA__PMC10553761",
@@ -890,13 +890,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "甲状腺功能亢进症诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "甲状腺功能亢进症"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 0
     },
     "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "endo-t2dm__EuropePMCOA__PMC13232412",
@@ -907,14 +907,14 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "2型糖尿病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "糖尿病",
         "二甲双胍"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 0
     },
     "肝硬化诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "gi-cirrhosis__EuropePMCOA__PMC12986046",
@@ -925,13 +925,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "肝硬化诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "肝硬化"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "消化内科"
+      "keyParagraphCount": 0
     },
     "胰腺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "gi-pancreatitis__EuropePMCOA__PMC13293749",
@@ -942,13 +942,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "胰腺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "胰腺炎"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "消化内科"
+      "keyParagraphCount": 0
     },
     "贫血诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "hemo-anemia__EuropePMCOA__PMC12940362",
@@ -959,13 +959,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "贫血诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "贫血"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "血液科"
+      "keyParagraphCount": 0
     },
     "高血压诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "htn-hypertension__EuropePMCOA__PMC13299701",
@@ -976,13 +976,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "高血压诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "高血压"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "心血管内科"
+      "keyParagraphCount": 0
     },
     "慢性乙型肝炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "infect-chb__EuropePMCOA__PMC12986096",
@@ -993,13 +993,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "慢性乙型肝炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "慢性乙型肝炎"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "感染科"
+      "keyParagraphCount": 0
     },
     "结核病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "infect-tb__EuropePMCOA__PMC12942670",
@@ -1010,13 +1010,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "结核病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "结核病"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "感染科"
+      "keyParagraphCount": 0
     },
     "血脂异常诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "meta-dyslipid__EuropePMCOA__PMC12984414",
@@ -1027,13 +1027,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "血脂异常诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "血脂异常"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 0
     },
     "慢性肾脏病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "nephro-ckd__EuropePMCOA__PMC12941503",
@@ -1044,13 +1044,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "慢性肾脏病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "慢性肾脏病"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "肾内科"
+      "keyParagraphCount": 0
     },
     "癫痫诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "neuro-epilepsy__EuropePMCOA__PMC11815099",
@@ -1061,13 +1061,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "癫痫诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "癫痫"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "神经内科"
+      "keyParagraphCount": 0
     },
     "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "resp-asthma__EuropePMCOA__PMC12941637",
@@ -1078,13 +1078,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "哮喘诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "哮喘"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "社区获得性肺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "resp-cap__EuropePMCOA__PMC12791840",
@@ -1095,13 +1095,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "社区获得性肺炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "社区获得性肺炎"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "resp-copd__EuropePMCOA__PMC12986395",
@@ -1112,13 +1112,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "慢性阻塞性肺疾病诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "慢性阻塞性肺疾病"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "痛风诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "rheum-gout__EuropePMCOA__PMC11842343",
@@ -1129,13 +1129,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "痛风诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "痛风"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "风湿免疫科"
+      "keyParagraphCount": 0
     },
     "骨质疏松诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "rheum-osteop__EuropePMCOA__PMC12413664",
@@ -1146,13 +1146,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "骨质疏松诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "骨质疏松"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "类风湿关节炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）": {
       "id": "rheum-rheumatoid__EuropePMCOA__PMC12607838",
@@ -1163,13 +1163,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "类风湿关节炎诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
         "类风湿关节炎"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "风湿免疫科"
+      "keyParagraphCount": 0
     },
     "三踝骨折切开复位内固定术加速康复临床路径（2023年版）": {
       "id": "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
@@ -1180,6 +1180,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "三踝骨折切开复位内固定术加速康复临床路径（2023年版）",
         "三踝骨折切开复位内固定术加速康复临床路径",
@@ -1201,8 +1202,7 @@
         "加速康复方案"
       ],
       "sectionCount": 44,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "上颌骨骨折诊疗指南（2022年版）": {
       "id": "上颌骨骨折诊疗指南（2022年版）",
@@ -1213,13 +1213,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "上颌骨骨折诊疗指南（2022年版）",
         "上颌骨骨折"
       ],
       "sectionCount": 16,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "下颌骨骨折诊疗指南（2022年版）": {
       "id": "下颌骨骨折诊疗指南（2022年版）",
@@ -1230,13 +1230,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "下颌骨骨折诊疗指南（2022年版）",
         "下颌骨骨折"
       ],
       "sectionCount": 40,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "严重过敏反应诊断和临床管理专家共识2025": {
       "id": "严重过敏反应诊断和临床管理专家共识2025",
@@ -1247,13 +1247,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "严重过敏反应诊断和临床管理专家共识2025",
         "严重过敏反应"
       ],
       "sectionCount": 73,
-      "keyParagraphCount": 0,
-      "department": "变态反应科"
+      "keyParagraphCount": 0
     },
     "中华医学会肺癌临床诊疗指南（2024版）": {
       "id": "中华医学会肺癌临床诊疗指南（2024版）",
@@ -1264,13 +1264,13 @@
       "org": "中华医学会",
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "中华医学会肺癌临床诊疗指南（2024版）",
         "肺癌临床"
       ],
       "sectionCount": 104,
-      "keyParagraphCount": 1,
-      "department": "肿瘤科"
+      "keyParagraphCount": 1
     },
     "中国人群骨质疏松症风险管理公众指南（2024）": {
       "id": "中国人群骨质疏松症风险管理公众指南（2024）",
@@ -1281,6 +1281,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "中国人群骨质疏松症风险管理公众指南（2024）",
         "中国人群骨质疏松症风险管理公众",
@@ -1313,8 +1314,7 @@
         "骨折管理"
       ],
       "sectionCount": 48,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "中国克罗恩病诊治指南（2023年·广州）": {
       "id": "中国克罗恩病诊治指南（2023年·广州）",
@@ -1325,13 +1325,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "中国克罗恩病诊治指南（2023年·广州）",
         "中国克罗恩病"
       ],
       "sectionCount": 63,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "中国慢性冠脉综合征患者诊断及管理指南": {
       "id": "中国慢性冠脉综合征患者诊断及管理指南",
@@ -1342,13 +1342,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "中国慢性冠脉综合征患者诊断及管理指南",
         "中国慢性冠脉综合征患者诊断及管理"
       ],
       "sectionCount": 66,
-      "keyParagraphCount": 0,
-      "department": "心血管内科"
+      "keyParagraphCount": 0
     },
     "中国抗癌协会乳腺癌诊治指南与规范（2025年版）": {
       "id": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
@@ -1359,6 +1359,7 @@
       "org": "中国抗癌协会",
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
         "乳腺癌",
@@ -1379,8 +1380,7 @@
         "内分泌治疗"
       ],
       "sectionCount": 186,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "中国溃疡性结肠炎诊治指南（2023年·西安）": {
       "id": "中国溃疡性结肠炎诊治指南（2023年·西安）",
@@ -1391,13 +1391,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "中国溃疡性结肠炎诊治指南（2023年·西安）",
         "中国溃疡性结肠炎"
       ],
       "sectionCount": 49,
-      "keyParagraphCount": 0,
-      "department": "消化内科"
+      "keyParagraphCount": 0
     },
     "中国糖尿病防治指南（2024版）": {
       "id": "中国糖尿病防治指南（2024版）",
@@ -1408,6 +1408,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "中国糖尿病防治指南（2024版）",
         "糖尿病",
@@ -1424,8 +1425,7 @@
         "烂苹果味"
       ],
       "sectionCount": 593,
-      "keyParagraphCount": 15,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 15
     },
     "中国老年糖尿病诊疗指南（2024版）": {
       "id": "中国老年糖尿病诊疗指南（2024版）",
@@ -1436,6 +1436,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "中国老年糖尿病诊疗指南（2024版）",
         "中国老年糖尿病",
@@ -1453,8 +1454,7 @@
         "二甲双胍"
       ],
       "sectionCount": 139,
-      "keyParagraphCount": 6,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 6
     },
     "中国脑卒中防治指导规范(2021年版)": {
       "id": "中国脑卒中防治指导规范(2021年版)",
@@ -1465,6 +1465,7 @@
       "org": null,
       "deprecated": true,
       "supersededBy": "脑血管病防治指南（2024年版）",
+      "tags": [],
       "keywords": [
         "中国脑卒中防治指导规范(2021年版)",
         "脑血管病",
@@ -1473,8 +1474,7 @@
         "脑出血"
       ],
       "sectionCount": 1836,
-      "keyParagraphCount": 0,
-      "department": "神经内科"
+      "keyParagraphCount": 0
     },
     "中国艾滋病诊疗指南（2024版）": {
       "id": "中国艾滋病诊疗指南（2024版）",
@@ -1485,6 +1485,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "中国艾滋病诊疗指南（2024版）",
         "中国艾滋病",
@@ -1505,8 +1506,7 @@
         "预防机会性感染"
       ],
       "sectionCount": 107,
-      "keyParagraphCount": 0,
-      "department": "感染科"
+      "keyParagraphCount": 0
     },
     "中国高血压防治指南(2024年修订版)": {
       "id": "中国高血压防治指南(2024年修订版)",
@@ -1517,6 +1517,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "中国高血压防治指南(2024年修订版)",
         "中国高血压",
@@ -1524,8 +1525,7 @@
         "起始小剂量降压治疗"
       ],
       "sectionCount": 213,
-      "keyParagraphCount": 2,
-      "department": "心血管内科"
+      "keyParagraphCount": 2
     },
     "临床检验专业医疗质量控制指标（2025年版）": {
       "id": "临床检验专业医疗质量控制指标（2025年版）",
@@ -1536,13 +1536,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "临床检验专业医疗质量控制指标（2025年版）",
         "临床检验专业医疗质量控制指标"
       ],
       "sectionCount": 0,
-      "keyParagraphCount": 0,
-      "department": "检验科"
+      "keyParagraphCount": 0
     },
     "临床诊疗指南·癫痫病分册": {
       "id": "临床诊疗指南·癫痫病分册",
@@ -1553,13 +1553,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "临床诊疗指南·癫痫病分册",
         "癫痫"
       ],
       "sectionCount": 536,
-      "keyParagraphCount": 0,
-      "department": "神经内科"
+      "keyParagraphCount": 0
     },
     "乙烯醇均聚物等2种食品相关产品新品种": {
       "id": "乙烯醇均聚物等2种食品相关产品新品种",
@@ -1570,12 +1570,12 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "乙烯醇均聚物等2种食品相关产品新品种"
       ],
       "sectionCount": 2,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "乳腺癌诊疗指南（2022年版）": {
       "id": "乳腺癌诊疗指南（2022年版）",
@@ -1586,6 +1586,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "乳腺癌诊疗指南（2022年版）",
         "乳腺癌",
@@ -1604,8 +1605,7 @@
         "靶向治疗"
       ],
       "sectionCount": 136,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "产后出血预防与处理指南2023": {
       "id": "产后出血预防与处理指南2023",
@@ -1616,13 +1616,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "产后出血预防与处理指南2023",
         "产后出血"
       ],
       "sectionCount": 34,
-      "keyParagraphCount": 0,
-      "department": "妇产科"
+      "keyParagraphCount": 0
     },
     "儿童肺炎支原体肺炎诊疗指南（2023年版）": {
       "id": "儿童肺炎支原体肺炎诊疗指南（2023年版）",
@@ -1633,6 +1633,7 @@
       "org": null,
       "deprecated": true,
       "supersededBy": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
+      "tags": [],
       "keywords": [
         "儿童肺炎支原体肺炎诊疗指南（2023年版）",
         "儿童肺炎支原体肺炎",
@@ -1647,8 +1648,7 @@
         "大环内酯类抗菌药物治疗"
       ],
       "sectionCount": 79,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "儿童肺炎支原体肺炎诊疗指南（2025年版）": {
       "id": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
@@ -1659,6 +1659,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "儿童肺炎支原体肺炎诊疗指南（2025年版）",
         "儿童肺炎支原体肺炎",
@@ -1671,8 +1672,7 @@
         "对症治疗"
       ],
       "sectionCount": 89,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "儿童脑胶质瘤诊疗规范(2021年版)": {
       "id": "儿童脑胶质瘤诊疗规范(2021年版)",
@@ -1683,13 +1683,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "儿童脑胶质瘤诊疗规范(2021年版)",
         "儿童脑胶质瘤"
       ],
       "sectionCount": 51,
-      "keyParagraphCount": 0,
-      "department": "儿科"
+      "keyParagraphCount": 0
     },
     "儿童腺病毒肺炎诊疗规范": {
       "id": "儿童腺病毒肺炎诊疗规范",
@@ -1700,13 +1700,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "儿童腺病毒肺炎诊疗规范",
         "儿童腺病毒肺炎"
       ],
       "sectionCount": 55,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "全膝关节置换术加速康复临床路径（2023年版）": {
       "id": "全膝关节置换术加速康复临床路径（2023年版）",
@@ -1717,13 +1717,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "全膝关节置换术加速康复临床路径（2023年版）",
         "全膝关节置换术加速康复临床路径"
       ],
       "sectionCount": 41,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "全踝关节置换术加速康复临床路径（2023年版）": {
       "id": "全踝关节置换术加速康复临床路径（2023年版）",
@@ -1734,13 +1734,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "全踝关节置换术加速康复临床路径（2023年版）",
         "全踝关节置换术加速康复临床路径"
       ],
       "sectionCount": 43,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "全髋关节置换术加速康复临床路径（2023年版）": {
       "id": "全髋关节置换术加速康复临床路径（2023年版）",
@@ -1751,13 +1751,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "全髋关节置换术加速康复临床路径（2023年版）",
         "全髋关节置换术加速康复临床路径"
       ],
       "sectionCount": 38,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "养老服务机构中营养指导员工作流程示例": {
       "id": "养老服务机构中营养指导员工作流程示例",
@@ -1768,12 +1768,12 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "养老服务机构中营养指导员工作流程示例"
       ],
       "sectionCount": 60,
-      "keyParagraphCount": 0,
-      "department": "营养科"
+      "keyParagraphCount": 0
     },
     "冠状动脉微血管疾病诊断和治疗中国专家共识(2023版)": {
       "id": "冠状动脉微血管疾病诊断和治疗中国专家共识(2023版)",
@@ -1784,13 +1784,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "冠状动脉微血管疾病诊断和治疗中国专家共识(2023版)",
         "冠状动脉微血管疾病诊断和治疗中国"
       ],
       "sectionCount": 90,
-      "keyParagraphCount": 0,
-      "department": "心血管内科"
+      "keyParagraphCount": 0
     },
     "前列腺癌诊疗指南（2022年版）": {
       "id": "前列腺癌诊疗指南（2022年版）",
@@ -1801,13 +1801,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "前列腺癌诊疗指南（2022年版）",
         "前列腺癌"
       ],
       "sectionCount": 64,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "化脓性颌骨骨髓炎诊疗指南（2022年版）": {
       "id": "化脓性颌骨骨髓炎诊疗指南（2022年版）",
@@ -1818,13 +1818,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "化脓性颌骨骨髓炎诊疗指南（2022年版）",
         "化脓性颌骨骨髓炎"
       ],
       "sectionCount": 24,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "卵巢癌诊疗指南（2022年版）": {
       "id": "卵巢癌诊疗指南（2022年版）",
@@ -1835,13 +1835,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "卵巢癌诊疗指南（2022年版）",
         "卵巢癌"
       ],
       "sectionCount": 45,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "原发性肝癌诊疗指南（2024年版）": {
       "id": "原发性肝癌诊疗指南（2024年版）",
@@ -1852,6 +1852,7 @@
       "org": null,
       "deprecated": true,
       "supersededBy": "原发性肝癌诊疗指南（2026版）",
+      "tags": [],
       "keywords": [
         "原发性肝癌诊疗指南（2024年版）",
         "原发性肝癌",
@@ -1876,8 +1877,7 @@
         "放射治疗"
       ],
       "sectionCount": 195,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "原发性肝癌诊疗指南（2026版）": {
       "id": "原发性肝癌诊疗指南（2026版）",
@@ -1888,13 +1888,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "原发性肝癌诊疗指南（2026版）",
         "原发性肝癌"
       ],
       "sectionCount": 116,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "原发性肺癌诊疗指南（2022年版）": {
       "id": "原发性肺癌诊疗指南（2022年版）",
@@ -1905,6 +1905,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "原发性肺癌诊疗指南（2022年版）",
         "原发性肺癌",
@@ -1933,8 +1934,7 @@
         "免疫治疗"
       ],
       "sectionCount": 79,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "口腔念珠菌病诊疗指南（2022年版）": {
       "id": "口腔念珠菌病诊疗指南（2022年版）",
@@ -1945,6 +1945,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "口腔念珠菌病诊疗指南（2022年版）",
         "口腔念珠菌病",
@@ -1965,8 +1966,7 @@
         "全身抗真菌药物治疗"
       ],
       "sectionCount": 38,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "口腔扁平苔藓诊疗指南（2022年版）": {
       "id": "口腔扁平苔藓诊疗指南（2022年版）",
@@ -1977,6 +1977,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "口腔扁平苔藓诊疗指南（2022年版）",
         "口腔扁平苔藓",
@@ -1995,8 +1996,7 @@
         "激光治疗"
       ],
       "sectionCount": 45,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "口腔颌面部间隙感染诊疗指南（2022年版）": {
       "id": "口腔颌面部间隙感染诊疗指南（2022年版）",
@@ -2007,6 +2007,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "口腔颌面部间隙感染诊疗指南（2022年版）",
         "口腔颌面部间隙感染",
@@ -2027,8 +2028,7 @@
         "支持治疗"
       ],
       "sectionCount": 22,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "唇裂诊疗指南（2022年版）": {
       "id": "唇裂诊疗指南（2022年版）",
@@ -2039,6 +2039,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "唇裂诊疗指南（2022年版）",
         "唇裂",
@@ -2049,8 +2050,7 @@
         "唇裂修复术"
       ],
       "sectionCount": 31,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）": {
       "id": "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）",
@@ -2061,13 +2061,13 @@
       "org": "国家卫生健康委",
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "国家卫生健康委关于修改和废止部分部门规章的决定（第15号）",
         "关于修改和废止部分部门规章的决定"
       ],
       "sectionCount": 40,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "国家基本药物目录（2026年版）": {
       "id": "国家基本药物目录（2026年版）",
@@ -2078,13 +2078,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "国家基本药物目录（2026年版）",
         "国家基本药物目录"
       ],
       "sectionCount": 403,
-      "keyParagraphCount": 0,
-      "department": "药剂科"
+      "keyParagraphCount": 0
     },
     "基层医疗卫生机构医疗质量改善三年行动（2026—2028年）自查整改表": {
       "id": "基层医疗卫生机构医疗质量改善三年行动（2026—2028年）自查整改表",
@@ -2095,13 +2095,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "基层医疗卫生机构医疗质量改善三年行动（2026—2028年）自查整改表",
         "基层医疗卫生机构医疗质量改善三年行动自查整改表"
       ],
       "sectionCount": 8,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "基层血液透析室（中心）建设与服务指南（试行）": {
       "id": "基层血液透析室（中心）建设与服务指南（试行）",
@@ -2112,6 +2112,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "基层血液透析室（中心）建设与服务指南（试行）",
         "基层血液透析室建设与服务",
@@ -2131,8 +2132,7 @@
         "肾移植"
       ],
       "sectionCount": 0,
-      "keyParagraphCount": 0,
-      "department": "肾内科"
+      "keyParagraphCount": 0
     },
     "妊娠期高血糖诊治指南2022_第二部分": {
       "id": "妊娠期高血糖诊治指南2022_第二部分",
@@ -2143,6 +2143,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "妊娠期高血糖诊治指南2022_第二部分",
         "妊娠合并糖尿病",
@@ -2150,8 +2151,7 @@
         "二甲双胍"
       ],
       "sectionCount": 35,
-      "keyParagraphCount": 0,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 0
     },
     "子宫内膜癌诊疗指南（2022年版）": {
       "id": "子宫内膜癌诊疗指南（2022年版）",
@@ -2162,13 +2162,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "子宫内膜癌诊疗指南（2022年版）",
         "子宫内膜癌"
       ],
       "sectionCount": 53,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "安宁疗护实践指南（2025年版）": {
       "id": "安宁疗护实践指南（2025年版）",
@@ -2179,13 +2179,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "安宁疗护实践指南（2025年版）",
         "安宁疗护实践"
       ],
       "sectionCount": 132,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "宫颈癌诊疗指南（2022年版）": {
       "id": "宫颈癌诊疗指南（2022年版）",
@@ -2196,6 +2196,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "宫颈癌诊疗指南（2022年版）",
         "宫颈癌",
@@ -2206,8 +2207,7 @@
         "子宫切除术"
       ],
       "sectionCount": 54,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "尼帕病毒病诊疗方案（2026年版）": {
       "id": "尼帕病毒病诊疗方案（2026年版）",
@@ -2218,13 +2218,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "尼帕病毒病诊疗方案（2026年版）",
         "尼帕病毒病"
       ],
       "sectionCount": 48,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "常见慢性病风险评估指标（2025年版）": {
       "id": "常见慢性病风险评估指标（2025年版）",
@@ -2235,13 +2235,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "常见慢性病风险评估指标（2025年版）",
         "常见慢性病"
       ],
       "sectionCount": 108,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）": {
       "id": "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
@@ -2252,6 +2252,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "弥漫性大B细胞淋巴瘤诊疗指南（2022年版）",
         "弥漫性大B细胞淋巴瘤",
@@ -2279,8 +2280,7 @@
         "造血干细胞移植"
       ],
       "sectionCount": 59,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "急诊成人社区获得性肺炎临床实践指南（2024年版）": {
       "id": "急诊成人社区获得性肺炎临床实践指南（2024年版）",
@@ -2291,13 +2291,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "急诊成人社区获得性肺炎临床实践指南（2024年版）",
         "急诊成人社区获得性肺炎临床实践"
       ],
       "sectionCount": 38,
-      "keyParagraphCount": 1,
-      "department": "呼吸内科"
+      "keyParagraphCount": 1
     },
     "慢性乙型肝炎防治指南（2022年版）": {
       "id": "慢性乙型肝炎防治指南（2022年版）",
@@ -2308,6 +2308,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "慢性乙型肝炎防治指南（2022年版）",
         "慢性乙型肝炎",
@@ -2317,8 +2318,7 @@
         "抗病毒治疗"
       ],
       "sectionCount": 33,
-      "keyParagraphCount": 2,
-      "department": "感染科"
+      "keyParagraphCount": 2
     },
     "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）": {
       "id": "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
@@ -2329,6 +2329,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "慢性淋巴细胞白血病-小淋巴细胞淋巴瘤诊疗指南（2022年版）",
         "慢性淋巴细胞白血病小淋巴细胞淋巴瘤",
@@ -2357,8 +2358,7 @@
         "支持治疗"
       ],
       "sectionCount": 41,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "慢性病风险筛查项目（2025年版）": {
       "id": "慢性病风险筛查项目（2025年版）",
@@ -2369,13 +2369,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "慢性病风险筛查项目（2025年版）",
         "慢性病"
       ],
       "sectionCount": 3,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）": {
       "id": "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
@@ -2386,6 +2386,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
         "慢性阻塞性肺疾病基层",
@@ -2413,8 +2414,7 @@
         "肺减容手术"
       ],
       "sectionCount": 119,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "慢性阻塞性肺疾病患者健康服务规范（试行）": {
       "id": "慢性阻塞性肺疾病患者健康服务规范（试行）",
@@ -2425,13 +2425,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "慢性阻塞性肺疾病患者健康服务规范（试行）",
         "慢性阻塞性肺疾病患者健康服务"
       ],
       "sectionCount": 33,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "慢性髓性白血病诊疗指南（2022年版）": {
       "id": "慢性髓性白血病诊疗指南（2022年版）",
@@ -2442,6 +2442,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "慢性髓性白血病诊疗指南（2022年版）",
         "慢性髓性白血病",
@@ -2460,8 +2461,7 @@
         "异基因造血干细胞移植"
       ],
       "sectionCount": 21,
-      "keyParagraphCount": 0,
-      "department": "血液科"
+      "keyParagraphCount": 0
     },
     "成人体外膜肺氧合技术操作规范(2024年版)": {
       "id": "成人体外膜肺氧合技术操作规范(2024年版)",
@@ -2472,13 +2472,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "成人体外膜肺氧合技术操作规范(2024年版)",
         "成人体外膜肺氧合技术操作"
       ],
       "sectionCount": 70,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "成釉细胞瘤诊疗指南（2022年版）": {
       "id": "成釉细胞瘤诊疗指南（2022年版）",
@@ -2489,13 +2489,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "成釉细胞瘤诊疗指南（2022年版）",
         "成釉细胞瘤"
       ],
       "sectionCount": 23,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "新型冠状病毒感染诊疗方案（试行第十版）": {
       "id": "新型冠状病毒感染诊疗方案（试行第十版）",
@@ -2506,13 +2506,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "新型冠状病毒感染诊疗方案（试行第十版）",
         "新型冠状病毒感染"
       ],
       "sectionCount": 110,
-      "keyParagraphCount": 0,
-      "department": "感染科"
+      "keyParagraphCount": 0
     },
     "新型冠状病毒感染重症病例诊疗方案(试行第四版)": {
       "id": "新型冠状病毒感染重症病例诊疗方案(试行第四版)",
@@ -2523,13 +2523,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "新型冠状病毒感染重症病例诊疗方案(试行第四版)",
         "新型冠状病毒感染重症病例"
       ],
       "sectionCount": 27,
-      "keyParagraphCount": 0,
-      "department": "感染科"
+      "keyParagraphCount": 0
     },
     "新型抗肿瘤药物临床应用指导原则(2022年版)": {
       "id": "新型抗肿瘤药物临床应用指导原则(2022年版)",
@@ -2540,6 +2540,7 @@
       "org": null,
       "deprecated": true,
       "supersededBy": "新型抗肿瘤药物临床应用指导原则（2025年版）",
+      "tags": [],
       "keywords": [
         "新型抗肿瘤药物临床应用指导原则(2022年版)",
         "新型抗肿瘤药物临床应用指导原则",
@@ -2555,8 +2556,7 @@
         "国家相关指南或规范"
       ],
       "sectionCount": 1381,
-      "keyParagraphCount": 423,
-      "department": "肿瘤科"
+      "keyParagraphCount": 423
     },
     "新型抗肿瘤药物临床应用指导原则（2025年版）": {
       "id": "新型抗肿瘤药物临床应用指导原则（2025年版）",
@@ -2567,13 +2567,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "新型抗肿瘤药物临床应用指导原则（2025年版）",
         "新型抗肿瘤药物临床应用指导原则"
       ],
       "sectionCount": 2634,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "易栓症诊断与防治中国指南2021": {
       "id": "易栓症诊断与防治中国指南2021",
@@ -2584,6 +2584,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "易栓症诊断与防治中国指南2021",
         "易栓症",
@@ -2595,8 +2596,7 @@
         "药物相互作用"
       ],
       "sectionCount": 21,
-      "keyParagraphCount": 0,
-      "department": "药剂科"
+      "keyParagraphCount": 0
     },
     "普通感冒规范诊治的专家共识(基层替代2018)": {
       "id": "普通感冒规范诊治的专家共识(基层替代2018)",
@@ -2607,13 +2607,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "普通感冒规范诊治的专家共识(基层替代2018)",
         "普通感冒"
       ],
       "sectionCount": 19,
-      "keyParagraphCount": 1,
-      "department": "待分类"
+      "keyParagraphCount": 1
     },
     "木聚糖酶等7种食品添加剂新品种": {
       "id": "木聚糖酶等7种食品添加剂新品种",
@@ -2624,12 +2624,12 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "木聚糖酶等7种食品添加剂新品种"
       ],
       "sectionCount": 8,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "核医学专业医疗质量控制指标（2025年版）": {
       "id": "核医学专业医疗质量控制指标（2025年版）",
@@ -2640,13 +2640,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "核医学专业医疗质量控制指标（2025年版）",
         "核医学专业医疗质量控制指标"
       ],
       "sectionCount": 0,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "流行性感冒诊疗方案2025": {
       "id": "流行性感冒诊疗方案2025",
@@ -2657,6 +2657,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "流行性感冒诊疗方案2025",
         "流行性感冒",
@@ -2664,8 +2665,7 @@
         "奥司他韦"
       ],
       "sectionCount": 82,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "淋巴瘤诊疗指南（2022年版）": {
       "id": "淋巴瘤诊疗指南（2022年版）",
@@ -2676,6 +2676,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "淋巴瘤诊疗指南（2022年版）",
         "淋巴瘤",
@@ -2696,8 +2697,7 @@
         "造血干细胞移植"
       ],
       "sectionCount": 99,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）": {
       "id": "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）",
@@ -2708,13 +2708,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "牙体缺损、牙列缺损与缺失修复诊疗规范（2022年版）",
         "牙体缺损、牙列缺损与缺失修复"
       ],
       "sectionCount": 183,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "牙源性颌骨囊肿诊疗指南（2022年版）": {
       "id": "牙源性颌骨囊肿诊疗指南（2022年版）",
@@ -2725,13 +2725,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "牙源性颌骨囊肿诊疗指南（2022年版）",
         "牙源性颌骨囊肿"
       ],
       "sectionCount": 19,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "牙颌面畸形诊疗指南（2022年版）": {
       "id": "牙颌面畸形诊疗指南（2022年版）",
@@ -2742,6 +2742,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "牙颌面畸形诊疗指南（2022年版）",
         "牙颌面畸形",
@@ -2761,8 +2762,7 @@
         "非甾体抗炎药"
       ],
       "sectionCount": 93,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "牡丹籽油等7种新食品原料": {
       "id": "牡丹籽油等7种新食品原料",
@@ -2773,12 +2773,12 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "牡丹籽油等7种新食品原料"
       ],
       "sectionCount": 26,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "生物医学新技术临床研究备案指导清单（第1版）": {
       "id": "生物医学新技术临床研究备案指导清单（第1版）",
@@ -2789,13 +2789,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "生物医学新技术临床研究备案指导清单（第1版）",
         "生物医学新技术临床研究备案指导清单"
       ],
       "sectionCount": 22,
-      "keyParagraphCount": 3,
-      "department": "待分类"
+      "keyParagraphCount": 3
     },
     "甲状腺癌诊疗指南（2022版）": {
       "id": "甲状腺癌诊疗指南（2022版）",
@@ -2806,6 +2806,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "甲状腺癌诊疗指南（2022版）",
         "甲状腺癌",
@@ -2823,8 +2824,7 @@
         "放射性碘治疗"
       ],
       "sectionCount": 117,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "甲状腺结节和分化型甲状腺癌诊治指南（第二版）": {
       "id": "甲状腺结节和分化型甲状腺癌诊治指南（第二版）",
@@ -2835,6 +2835,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "甲状腺结节和分化型甲状腺癌诊治指南（第二版）",
         "甲状腺结节和分化型甲状腺癌",
@@ -2855,8 +2856,7 @@
         "甲状腺激素抑制治疗"
       ],
       "sectionCount": 96,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "磨牙症诊疗指南（2022年版）": {
       "id": "磨牙症诊疗指南（2022年版）",
@@ -2867,13 +2867,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "磨牙症诊疗指南（2022年版）",
         "磨牙症"
       ],
       "sectionCount": 39,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "第五次全国幽门螺杆菌感染处理共识报告": {
       "id": "第五次全国幽门螺杆菌感染处理共识报告",
@@ -2884,13 +2884,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "第五次全国幽门螺杆菌感染处理共识报告",
         "幽门螺杆菌"
       ],
       "sectionCount": 6,
-      "keyParagraphCount": 2,
-      "department": "消化内科"
+      "keyParagraphCount": 2
     },
     "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）": {
       "id": "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
@@ -2901,6 +2901,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径（2023年版）",
         "经皮椎体成形术／经皮椎体后凸成形术加速康复临床路径",
@@ -2918,8 +2919,7 @@
         "经皮椎体后凸成形术"
       ],
       "sectionCount": 35,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "结核病分类 WS 196—2017": {
       "id": "结核病分类 WS 196—2017",
@@ -2930,13 +2930,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "结核病分类 WS 196—2017",
         "结核病分类WS196"
       ],
       "sectionCount": 26,
-      "keyParagraphCount": 0,
-      "department": "感染科"
+      "keyParagraphCount": 0
     },
     "综合医院中医药工作指南（2024 版）": {
       "id": "综合医院中医药工作指南（2024 版）",
@@ -2947,13 +2947,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "综合医院中医药工作指南（2024 版）",
         "综合医院中医药"
       ],
       "sectionCount": 165,
-      "keyParagraphCount": 0,
-      "department": "中医科"
+      "keyParagraphCount": 0
     },
     "罕见病诊疗指南（2019年版）": {
       "id": "罕见病诊疗指南（2019年版）",
@@ -2964,13 +2964,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "罕见病诊疗指南（2019年版）",
         "罕见病"
       ],
       "sectionCount": 1813,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "老年人多重用药安全管理专家共识": {
       "id": "老年人多重用药安全管理专家共识",
@@ -2981,13 +2981,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "老年人多重用药安全管理专家共识",
         "多重用药"
       ],
       "sectionCount": 10,
-      "keyParagraphCount": 0,
-      "department": "老年科"
+      "keyParagraphCount": 0
     },
     "老年合理用药核心信息": {
       "id": "老年合理用药核心信息",
@@ -2998,6 +2998,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "老年合理用药核心信息",
         "老年患者",
@@ -3006,8 +3007,7 @@
         "老年医学科"
       ],
       "sectionCount": 8,
-      "keyParagraphCount": 1,
-      "department": "老年科"
+      "keyParagraphCount": 1
     },
     "老年髋部骨折诊疗与管理指南（2022年版）": {
       "id": "老年髋部骨折诊疗与管理指南（2022年版）",
@@ -3018,6 +3018,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "老年髋部骨折诊疗与管理指南（2022年版）",
         "老年髋部骨折",
@@ -3032,8 +3033,7 @@
         "镇痛"
       ],
       "sectionCount": 39,
-      "keyParagraphCount": 34,
-      "department": "骨科"
+      "keyParagraphCount": 34
     },
     "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）": {
       "id": "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
@@ -3044,6 +3044,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
         "股骨转子间骨折闭合复位内固定术加速康复临床路径",
@@ -3064,8 +3065,7 @@
         "加速康复措施"
       ],
       "sectionCount": 37,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）": {
       "id": "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）",
@@ -3076,6 +3076,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "股骨颈骨折闭合复位内固定术加速康复临床路径（2023年版）",
         "股骨颈骨折闭合复位内固定术加速康复临床路径",
@@ -3083,8 +3084,7 @@
         "闭合复位内固定术"
       ],
       "sectionCount": 37,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "肥胖症诊疗指南（2024年版）": {
       "id": "肥胖症诊疗指南（2024年版）",
@@ -3095,6 +3095,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "肥胖症诊疗指南（2024年版）",
         "肥胖症",
@@ -3118,8 +3119,7 @@
         "减重手术"
       ],
       "sectionCount": 100,
-      "keyParagraphCount": 0,
-      "department": "内分泌代谢科"
+      "keyParagraphCount": 0
     },
     "肺结核诊疗规范2020": {
       "id": "肺结核诊疗规范2020",
@@ -3130,13 +3130,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "肺结核诊疗规范2020",
         "肺结核"
       ],
       "sectionCount": 1,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "肺结核门诊诊疗规范": {
       "id": "肺结核门诊诊疗规范",
@@ -3147,6 +3147,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "肺结核门诊诊疗规范",
         "肺结核门诊",
@@ -3177,8 +3178,7 @@
         "直接面视下督导服药"
       ],
       "sectionCount": 128,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "肺结核门诊诊疗规范等附件(2012版)": {
       "id": "肺结核门诊诊疗规范等附件(2012版)",
@@ -3189,13 +3189,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "肺结核门诊诊疗规范等附件(2012版)",
         "肺结核门诊"
       ],
       "sectionCount": 132,
-      "keyParagraphCount": 0,
-      "department": "呼吸内科"
+      "keyParagraphCount": 0
     },
     "肾癌诊疗指南（2022年版）": {
       "id": "肾癌诊疗指南（2022年版）",
@@ -3206,13 +3206,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "肾癌诊疗指南（2022年版）",
         "肾癌"
       ],
       "sectionCount": 67,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）": {
       "id": "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）",
@@ -3223,6 +3223,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "肿瘤半髋／全髋关节置换术加速康复临床路径（2023年版）",
         "肿瘤半髋／全髋关节置换术加速康复临床路径",
@@ -3234,8 +3235,7 @@
         "全髋关节置换术"
       ],
       "sectionCount": 35,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "肿瘤膝关节置换术加速康复临床路径（2023年版）": {
       "id": "肿瘤膝关节置换术加速康复临床路径（2023年版）",
@@ -3246,13 +3246,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "肿瘤膝关节置换术加速康复临床路径（2023年版）",
         "肿瘤膝关节置换术加速康复临床路径"
       ],
       "sectionCount": 34,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "胃癌诊疗指南（2022年版）": {
       "id": "胃癌诊疗指南（2022年版）",
@@ -3263,13 +3263,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "胃癌诊疗指南（2022年版）",
         "胃癌"
       ],
       "sectionCount": 138,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "胎盘植入性疾病诊断和处理指南（2023）": {
       "id": "胎盘植入性疾病诊断和处理指南（2023）",
@@ -3280,13 +3280,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "胎盘植入性疾病诊断和处理指南（2023）",
         "胎盘植入性疾病诊断和处理"
       ],
       "sectionCount": 29,
-      "keyParagraphCount": 0,
-      "department": "妇产科"
+      "keyParagraphCount": 0
     },
     "胰腺癌诊治指南（2022年版）": {
       "id": "胰腺癌诊治指南（2022年版）",
@@ -3297,6 +3297,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "胰腺癌诊治指南（2022年版）",
         "胰腺癌",
@@ -3323,8 +3324,7 @@
         "免疫治疗"
       ],
       "sectionCount": 104,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "脑胶质瘤诊疗指南（2022年版）": {
       "id": "脑胶质瘤诊疗指南（2022年版）",
@@ -3335,6 +3335,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "脑胶质瘤诊疗指南（2022年版）",
         "脑胶质瘤",
@@ -3360,8 +3361,7 @@
         "靶向治疗"
       ],
       "sectionCount": 59,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "脑血管病防治指南（2024年版）": {
       "id": "脑血管病防治指南（2024年版）",
@@ -3372,6 +3372,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "脑血管病防治指南（2024年版）",
         "脑血管病",
@@ -3397,8 +3398,7 @@
         "脑出血"
       ],
       "sectionCount": 129,
-      "keyParagraphCount": 0,
-      "department": "心血管内科"
+      "keyParagraphCount": 0
     },
     "腭裂诊疗指南（2022年版）": {
       "id": "腭裂诊疗指南（2022年版）",
@@ -3409,6 +3409,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "腭裂诊疗指南（2022年版）",
         "腭裂",
@@ -3428,8 +3429,7 @@
         "术后护理"
       ],
       "sectionCount": 35,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "腮腺浅叶良性肿瘤诊疗指南（2022年版）": {
       "id": "腮腺浅叶良性肿瘤诊疗指南（2022年版）",
@@ -3440,6 +3440,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "腮腺浅叶良性肿瘤诊疗指南（2022年版）",
         "腮腺浅叶良性肿瘤",
@@ -3450,8 +3451,7 @@
         "手术切除"
       ],
       "sectionCount": 25,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "腰椎后路短节段减压融合术加速康复临床路径（2023年版）": {
       "id": "腰椎后路短节段减压融合术加速康复临床路径（2023年版）",
@@ -3462,6 +3462,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "腰椎后路短节段减压融合术加速康复临床路径（2023年版）",
         "腰椎后路短节段减压融合术加速康复临床路径",
@@ -3474,8 +3475,7 @@
         "腰椎后路短节段减压融合术"
       ],
       "sectionCount": 46,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "膀胱癌诊疗指南（2022年版）": {
       "id": "膀胱癌诊疗指南（2022年版）",
@@ -3486,6 +3486,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "膀胱癌诊疗指南（2022年版）",
         "膀胱癌",
@@ -3508,8 +3509,7 @@
         "根治性膀胱切除术"
       ],
       "sectionCount": 124,
-      "keyParagraphCount": 0,
-      "department": "泌尿外科"
+      "keyParagraphCount": 0
     },
     "自身免疫性溶血性贫血诊疗指南（2022年版）": {
       "id": "自身免疫性溶血性贫血诊疗指南（2022年版）",
@@ -3520,6 +3520,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "自身免疫性溶血性贫血诊疗指南（2022年版）",
         "自身免疫性溶血性贫血",
@@ -3536,8 +3537,7 @@
         "脾切除术"
       ],
       "sectionCount": 63,
-      "keyParagraphCount": 0,
-      "department": "血液科"
+      "keyParagraphCount": 0
     },
     "舌下腺囊肿诊疗指南（2022年版）": {
       "id": "舌下腺囊肿诊疗指南（2022年版）",
@@ -3548,6 +3548,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "舌下腺囊肿诊疗指南（2022年版）",
         "舌下腺囊肿",
@@ -3567,8 +3568,7 @@
         "硬化剂注射治疗"
       ],
       "sectionCount": 33,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "舌癌诊疗指南（2022年版）": {
       "id": "舌癌诊疗指南（2022年版）",
@@ -3579,6 +3579,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "舌癌诊疗指南（2022年版）",
         "舌癌",
@@ -3616,8 +3617,7 @@
         "综合治疗"
       ],
       "sectionCount": 25,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "药事管理专业医疗质量控制指标（2025年版）": {
       "id": "药事管理专业医疗质量控制指标（2025年版）",
@@ -3628,13 +3628,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "药事管理专业医疗质量控制指标（2025年版）",
         "药事管理专业医疗质量控制指标"
       ],
       "sectionCount": 33,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "菌斑性龈炎诊疗指南（2022年版）": {
       "id": "菌斑性龈炎诊疗指南（2022年版）",
@@ -3645,6 +3645,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "菌斑性龈炎诊疗指南（2022年版）",
         "菌斑性龈炎",
@@ -3659,8 +3660,7 @@
         "口腔卫生指导"
       ],
       "sectionCount": 30,
-      "keyParagraphCount": 0,
-      "department": "口腔科"
+      "keyParagraphCount": 0
     },
     "血友病A诊疗指南（2022年版）": {
       "id": "血友病A诊疗指南（2022年版）",
@@ -3671,6 +3671,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "血友病A诊疗指南（2022年版）",
         "血友病A",
@@ -3687,8 +3688,7 @@
         "预防治疗"
       ],
       "sectionCount": 32,
-      "keyParagraphCount": 0,
-      "department": "血液科"
+      "keyParagraphCount": 0
     },
     "血站技术操作规程（2026版）": {
       "id": "血站技术操作规程（2026版）",
@@ -3699,13 +3699,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "血站技术操作规程（2026版）",
         "血站技术操作规程"
       ],
       "sectionCount": 960,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "近视防治指南（2024年版）": {
       "id": "近视防治指南（2024年版）",
@@ -3716,6 +3716,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "近视防治指南（2024年版）",
         "近视",
@@ -3735,8 +3736,7 @@
         "近视手术"
       ],
       "sectionCount": 45,
-      "keyParagraphCount": 0,
-      "department": "眼科"
+      "keyParagraphCount": 0
     },
     "颈椎前路椎间盘切除减压融合术加速康复临床路径（2023年版）": {
       "id": "颈椎前路椎间盘切除减压融合术加速康复临床路径（2023年版）",
@@ -3747,13 +3747,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "颈椎前路椎间盘切除减压融合术加速康复临床路径（2023年版）",
         "颈椎前路椎间盘切除减压融合术加速康复临床路径"
       ],
       "sectionCount": 46,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "食养指南与科普资源": {
       "id": "食养指南与科普资源",
@@ -3764,13 +3764,13 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "食养指南与科普资源",
         "食养"
       ],
       "sectionCount": 15,
-      "keyParagraphCount": 0,
-      "department": "待分类"
+      "keyParagraphCount": 0
     },
     "食管癌诊疗指南（2022年版）": {
       "id": "食管癌诊疗指南（2022年版）",
@@ -3781,6 +3781,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "食管癌诊疗指南（2022年版）",
         "食管癌",
@@ -3808,8 +3809,7 @@
         "免疫治疗"
       ],
       "sectionCount": 92,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     },
     "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）": {
       "id": "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）",
@@ -3820,6 +3820,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "骨髓增生异常综合征伴原始细胞增多（MDS-EB）诊疗指南（2022年版）",
         "骨髓增生异常综合征伴原始细胞增多",
@@ -3841,8 +3842,7 @@
         "支持治疗"
       ],
       "sectionCount": 38,
-      "keyParagraphCount": 0,
-      "department": "骨科"
+      "keyParagraphCount": 0
     },
     "黑色素瘤诊疗指南（2022年版）": {
       "id": "黑色素瘤诊疗指南（2022年版）",
@@ -3853,6 +3853,7 @@
       "org": null,
       "deprecated": false,
       "supersededBy": null,
+      "tags": [],
       "keywords": [
         "黑色素瘤诊疗指南（2022年版）",
         "黑色素瘤",
@@ -3882,8 +3883,7 @@
         "放疗"
       ],
       "sectionCount": 27,
-      "keyParagraphCount": 0,
-      "department": "肿瘤科"
+      "keyParagraphCount": 0
     }
   },
   "keywordIndex": {

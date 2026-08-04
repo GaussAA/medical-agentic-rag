@@ -38,7 +38,7 @@ function cleanHeading(s) {
 
 async function parseFile(filePath) {
   const text = await readFile(filePath, "utf-8");
-  const fileName = filePath.split(/[/\\]/).pop().replace(/\.txt$/i, "");
+  const fileName = filePath.split(/[/\\]/).pop().replace(/\.(txt|md)$/i, "");
 
   // Extract title from first h1
   const titleMatch = text.match(/^#\s+(.+)$/m);
@@ -97,8 +97,11 @@ async function parseFile(filePath) {
 }
 
 async function main() {
+  // 2026-08-04 修复：仅扫 .txt 会漏掉偏科指南 .md（肝硬化2025/帕金森第五版等 5 份，
+  // 大帅 07-30 投放为 .md 格式，从未进 outline → guide-index → 证据摘录/引用召回 全链路缺失）。
+  // 现同时纳入 .md（pi-knowledge 支持 markdown 摄取，guideMap 需与之一致）。
   const files = (await readdir(TXT_DIR))
-    .filter((f) => f.endsWith(".txt") && !f.startsWith("."))
+    .filter((f) => (f.endsWith(".txt") || f.endsWith(".md")) && !f.startsWith("."))
     .sort();
 
   console.log(`发现 ${files.length} 份指南文件\n`);

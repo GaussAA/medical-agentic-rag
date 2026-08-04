@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-30T14:08:32.129Z",
-  "totalFiles": 243,
-  "totalSections": 21324,
+  "generatedAt": "2026-08-04T04:56:15.649Z",
+  "totalFiles": 248,
+  "totalSections": 21550,
   "totalKeyParagraphs": 498,
   "guides": [
     {
@@ -1088,6 +1088,14 @@
       "keyParagraphs": []
     },
     {
+      "id": "中国帕金森病治疗指南（第五版）",
+      "title": "中国帕金森病治疗指南（第五版）",
+      "sectionCount": 48,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "中国慢性冠脉综合征患者诊断及管理指南",
       "title": "中国慢性冠脉综合征患者诊断及管理指南",
       "sectionCount": 66,
@@ -1157,6 +1165,14 @@
       "id": "中国艾滋病诊疗指南（2024版）",
       "title": "中国艾滋病诊疗指南（2024版）",
       "sectionCount": 107,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "中国视神经脊髓炎谱系疾病诊断与治疗指南（2025版）",
+      "title": "中国视神经脊髓炎谱系疾病诊断与治疗指南（2025版）",
+      "sectionCount": 43,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -1392,6 +1408,14 @@
       "id": "基层血液透析室（中心）建设与服务指南（试行）",
       "title": "基层血液透析室（中心）建设与服务指南（试行）",
       "sectionCount": 0,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "多发性硬化诊断与治疗中国指南（2023版）",
+      "title": "多发性硬化诊断与治疗中国指南（2023版）",
+      "sectionCount": 31,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []
@@ -1771,6 +1795,14 @@
       ]
     },
     {
+      "id": "肝硬化临床诊治管理指南（2025版）",
+      "title": "肝硬化临床诊治管理指南（2025版）",
+      "sectionCount": 64,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
       "id": "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
       "title": "股骨转子间骨折闭合复位内固定术加速康复临床路径（2023年版）",
       "sectionCount": 37,
@@ -1974,6 +2006,14 @@
       "id": "近视防治指南（2024年版）",
       "title": "近视防治指南（2024年版）",
       "sectionCount": 45,
+      "keyParagraphCount": 0,
+      "hierarchy": [],
+      "keyParagraphs": []
+    },
+    {
+      "id": "阿尔茨海默病疾病修饰治疗专家共识（2025）",
+      "title": "阿尔茨海默病疾病修饰治疗专家共识（2025）",
+      "sectionCount": 40,
       "keyParagraphCount": 0,
       "hierarchy": [],
       "keyParagraphs": []

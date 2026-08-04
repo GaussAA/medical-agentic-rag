@@ -60,13 +60,18 @@ const RUN_LLM = isLLMAvailable();
 function readGuideText(title) {
   const info = index.guideMap[title];
   if (!info) return { text: null, missing: "not_in_index" };
-  const p = join(TXT_DIR, `${info.id}.txt`);
-  if (!existsSync(p)) return { text: null, missing: "txt_not_found" };
-  try {
-    return { text: readFileSync(p, "utf-8"), missing: null };
-  } catch {
-    return { text: null, missing: "read_error" };
+  // 2026-08-04 修复：偏科指南以 .md 投放（肝硬化2025/帕金森第五版等），
+  // 仅拼 .txt 会 txt_not_found → 证据摘录缺失 → judge 误判捏造。现 .md 回退。
+  for (const ext of [".txt", ".md"]) {
+    const p = join(TXT_DIR, `${info.id}${ext}`);
+    if (!existsSync(p)) continue;
+    try {
+      return { text: readFileSync(p, "utf-8"), missing: null };
+    } catch {
+      return { text: null, missing: "read_error" };
+    }
   }
+  return { text: null, missing: "txt_not_found" };
 }
 
 // ---------- 结构化断言核对（不依赖 LLM） ----------
@@ -127,15 +132,37 @@ function checkAssertions(item, answer) {
 }
 
 // ---------- LLM-Judge 四维（委托 lib/llm-judge.mjs 单一真相源） ----------
-// 证据摘录：从应引指南原文提取前 N 字符摘要注入 judge，让模型能核对引用来源真实性，
+// 证据摘录：从应引指南原文提取证据注入 judge，让模型能核对引用来源真实性，
 // 避免因训练知识截止误判「某版本指南不存在」为捏造（如 2024 版糖尿病指南 2025-01 才发布）。
+// 原实现仅取原文前 JUDGE_EVIDENCE_CHARS 字符——长指南关键内容位于后部时被截断丢失
+// （实测：淋巴瘤指南「利妥昔单抗」在 14% 处、新型抗肿瘤指导原则「双膦酸盐」在 83% 处，
+//  导致 judge 误判「证据摘录未含对应内容→捏造」，Q73/Q81 等 0~0.3 分直接受害）。
+// 2026-08-04 修复：按 evidencePhrases 在原文中定位关键段（前后各扩 WINDOW 字符），
+// 与开头摘要合并后注入，覆盖「证据在后部」的指南。
 const JUDGE_EVIDENCE_CHARS = 4000;
+const JUDGE_EVIDENCE_WINDOW = 600; // 关键短语上下文窗口（前后各扩）
 function buildEvidence(item) {
   const parts = [];
   for (const gt of item.gtSources || []) {
     const { text, missing } = readGuideText(gt);
-    if (text) parts.push(`【${gt}】\n${text.slice(0, JUDGE_EVIDENCE_CHARS)}`);
-    else if (missing) parts.push(`【${gt}】<KB 未收录:${missing}>`);
+    if (!text) {
+      if (missing) parts.push(`【${gt}】<KB 未收录:${missing}>`);
+      continue;
+    }
+    // 1) 开头摘要（兜底，保留原行为）
+    let combined = text.slice(0, JUDGE_EVIDENCE_CHARS);
+    // 2) 按证据短语定位关键段（跳过已被开头覆盖的区间）
+    const seen = [0, JUDGE_EVIDENCE_CHARS]; // [start, end) 已覆盖
+    for (const ph of (item.evidencePhrases || []).filter(Boolean)) {
+      const i = text.indexOf(ph);
+      if (i < 0) continue;
+      if (i >= seen[0] && i < seen[1]) continue; // 已在开头摘要内
+      const s = Math.max(0, i - JUDGE_EVIDENCE_WINDOW);
+      const e = Math.min(text.length, i + ph.length + JUDGE_EVIDENCE_WINDOW);
+      combined += `\n\n……(关键段:${ph})……\n${text.slice(s, e)}`;
+      seen[1] = Math.max(seen[1], e);
+    }
+    parts.push(`【${gt}】\n${combined}`);
   }
   return parts.join("\n\n").slice(0, JUDGE_EVIDENCE_CHARS * 3);
 }

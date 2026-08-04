@@ -73,10 +73,10 @@ function mergeArray(existing: string[] | undefined, incoming: string[] | undefin
 
 // Auto-extraction patterns
 const AGE_PAT = /(\d{1,3})\s*岁/;
-const ALLERGY_PATS = [/对(.+?)过敏/g, /过敏药物[：:]\s*(.+?)[。；\n]/];
-const HISTORY_PATS = [/有(.+?)病史/g, /患(?:了)?(.+?)[。，；\n]/];
-const MED_PATS = [/在(?:吃|用|服用)(.+?)[。，；\n]/g, /口服(.+?)[。，；\n]/];
-const RELATION_PATS = [/我(父亲|母亲|妈妈|爸爸|儿子|女儿|孩子|爷爷|奶奶|外公|外婆)/, /我家(老人|小孩)/];
+const ALLERGY_PATS = [/对(.+?)过敏/g, /过敏药物[：:]\s*(.+?)[。；\n]/g];
+const HISTORY_PATS = [/有(.+?)病史/g, /患(?:了)?(.+?)[。，；\n]/g];
+const MED_PATS = [/在(?:吃|用|服用)(.+?)[。，；\n]/g, /口服(.+?)[。，；\n]/g];
+const RELATION_PATS = [/我(父亲|母亲|妈妈|爸爸|儿子|女儿|孩子|爷爷|奶奶|外公|外婆)/g, /我家(老人|小孩)/g];
 
 function extractProfileFromText(text: string): Partial<PatientProfile> & { relation?: string } {
   const result: any = {};

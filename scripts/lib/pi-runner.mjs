@@ -61,7 +61,15 @@ export function runPi(argsArray, opts = {}) {
     const spawnOpts = {
       env: {
         ...process.env,
-        ...(proxy ? { NODE_PATH: join(ROOT, "pi", "node_modules") } : {}),
+        ...(proxy
+          ? {
+              NODE_PATH: join(ROOT, "pi", "node_modules"),
+              // 2026-08-04 修复：采集/驱动子进程未注入项目级 KB 路径时，
+              // pi-knowledge 回退 home(~/.pi/knowledge) 空库 → 检索恒 0 命中，
+              // 采集答案无真实证据支撑（Q05/Q12/Q63 全中招，guides:5 results:0）。
+              PI_KNOWLEDGE_DIR: join(ROOT, ".pi", "knowledge"),
+            }
+          : {}),
         ...(nodeBin ? { NODE_BIN: nodeBin } : {}),
       },
       cwd,

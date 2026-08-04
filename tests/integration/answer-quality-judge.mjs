@@ -439,6 +439,52 @@ try {
   judges = partials.map(() => ({ skipped: true, reason: "watchdog_timeout" }));
 }
 
+// ---------- 低分二次复核（2026-08-04） ----------
+// 单次 judge（尤其免费通道 deepseek 代理）对同一答案判分波动可达 ±0.3~0.6
+// （实测 Q63 在 0.3/0.9 间跳、Q67/Q29 历史 PASS 本轮跌至 0.3/0）。
+// 对首轮 faith<0.7 的条目复评 1 次取均值，抑制单次噪声导致的虚假低分。
+const FAITH_RECHECK_THRESHOLD = 0.7;
+if (RUN_LLM && judges.some((j) => !j.skipped && j.faithfulness < FAITH_RECHECK_THRESHOLD)) {
+  const recheckIdx = [];
+  for (let i = 0; i < judges.length; i++) {
+    const j = judges[i];
+    if (j && !j.skipped && isFinite(j.faithfulness) && j.faithfulness < FAITH_RECHECK_THRESHOLD) {
+      recheckIdx.push(i);
+    }
+  }
+  if (recheckIdx.length) {
+    console.log(`[llm-judge] 低分复核：${recheckIdx.length} 条 faith<${FAITH_RECHECK_THRESHOLD}，二次评审取均值`);
+    try {
+      const second = await Promise.race([
+        runWithConcurrency(
+          recheckIdx.map((i) => () => llmJudge(partials[i].it, partials[i].answer)),
+          EVAL_LLM_CONCURRENCY,
+        ),
+        new Promise((_, rej) =>
+          setTimeout(() => rej(new Error("llm-judge 复核阶段超时")), EVAL_LLM_TIMEOUT_MS),
+        ),
+      ]);
+      for (let k = 0; k < recheckIdx.length; k++) {
+        const idx = recheckIdx[k];
+        const first = judges[idx];
+        const secondJ = second[k];
+        if (!first.skipped && secondJ && !secondJ.skipped) {
+          judges[idx] = {
+            skipped: false,
+            faithfulness: +((first.faithfulness + secondJ.faithfulness) / 2).toFixed(3),
+            answerRelevance: +((first.answerRelevance + secondJ.answerRelevance) / 2).toFixed(3),
+            clinicalCorrectness: +((first.clinicalCorrectness + secondJ.clinicalCorrectness) / 2).toFixed(3),
+            safety: +((first.safety + secondJ.safety) / 2).toFixed(3),
+            reasons: `[首评 faith=${first.faithfulness}] ${first.reasons || ""} | [复评 faith=${secondJ.faithfulness}] ${secondJ.reasons || ""}`.slice(0, 400),
+          };
+        }
+      }
+    } catch (e) {
+      console.warn(`⚠ 低分复核失败（保留首评结果）：${e.message}`);
+    }
+  }
+}
+
 const details = partials.map((p, i) => {
   const j = judges[i];
   if (!j.skipped) {

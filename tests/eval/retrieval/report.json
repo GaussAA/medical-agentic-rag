@@ -1,5 +1,5 @@
 {
-  "date": "2026-07-22T16:15:05.824Z",
+  "date": "2026-08-04T15:30:59.030Z",
   "total": 15,
   "routeTop1Accuracy": 0.9333333333333333,
   "routeTop3Accuracy": 1,
@@ -9,7 +9,7 @@
     "kgCoverageMin": 0.85
   },
   "passed": true,
-  "averageMs": 39,
+  "averageMs": 893.9333333333333,
   "results": [
     {
       "id": "R01",
@@ -17,12 +17,12 @@
       "expectedGuide": "中国糖尿病防治指南（2024版）",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 14.718078273950223,
+      "routeScore": 14.77858621417639,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 67
+      "ms": 717
     },
     {
       "id": "R02",
@@ -30,12 +30,12 @@
       "expectedGuide": "中国高血压防治指南(2024年修订版)",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 16.941856157099547,
+      "routeScore": 17.016386463988475,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 39
+      "ms": 616
     },
     {
       "id": "R03",
@@ -43,12 +43,12 @@
       "expectedGuide": "原发性肝癌诊疗指南（2026版）",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 6.127409715519504,
+      "routeScore": 6.144940008212103,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 40
+      "ms": 601
     },
     {
       "id": "R04",
@@ -56,12 +56,12 @@
       "expectedGuide": "儿童肺炎支原体肺炎诊疗指南（2025年版）",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 20.542679417996354,
+      "routeScore": 20.625582179261418,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 40
+      "ms": 657
     },
     {
       "id": "R05",
@@ -69,12 +69,12 @@
       "expectedGuide": "脑血管病防治指南（2024年版）",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 10.376984745333939,
+      "routeScore": 10.401946262442067,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 36
+      "ms": 696
     },
     {
       "id": "R06",
@@ -82,12 +82,12 @@
       "expectedGuide": "慢性阻塞性肺疾病基层诊疗与管理指南（2024年版）",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 56.328026166685355,
+      "routeScore": 56.342973644619036,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 42
+      "ms": 987
     },
     {
       "id": "R07",
@@ -95,12 +95,12 @@
       "expectedGuide": "中国人群骨质疏松症风险管理公众指南（2024）",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 26.469972514085406,
+      "routeScore": 31.57367532621269,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 36
+      "ms": 917
     },
     {
       "id": "R08",
@@ -108,12 +108,12 @@
       "expectedGuide": "中国抗癌协会乳腺癌诊治指南与规范（2025年版）",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 20.988857498620018,
+      "routeScore": 21.092861154142295,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 37
+      "ms": 928
     },
     {
       "id": "R09",
@@ -121,12 +121,12 @@
       "expectedGuide": "心力衰竭诊治指南（EuropePMCOA·开放获取英文指南·中文结构化摘引）",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 14.38328925985601,
+      "routeScore": 14.435780418221945,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 34
+      "ms": 1031
     },
     {
       "id": "R10",
@@ -134,12 +134,12 @@
       "expectedGuide": "慢性乙型肝炎防治指南（2022年版）",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 34.727907992771705,
+      "routeScore": 34.847947494030976,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 39
+      "ms": 1029
     },
     {
       "id": "R11",
@@ -147,12 +147,12 @@
       "expectedGuide": "肺结核诊疗规范2020",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 17.234501171689512,
+      "routeScore": 17.309031478578436,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 34
+      "ms": 1106
     },
     {
       "id": "R12",
@@ -160,12 +160,12 @@
       "expectedGuide": "临床诊疗指南·癫痫病分册",
       "routeHit": false,
       "routeTop3": true,
-      "routeScore": 14.24417126882576,
+      "routeScore": 14.291260871814671,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 39
+      "ms": 1020
     },
     {
       "id": "R13",
@@ -173,12 +173,12 @@
       "expectedGuide": "妊娠期高血糖诊治指南2022_第二部分",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 19.24663411169448,
+      "routeScore": 19.352131236996456,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 36
+      "ms": 973
     },
     {
       "id": "R14",
@@ -186,12 +186,12 @@
       "expectedGuide": "严重过敏反应诊断和临床管理专家共识2025",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 43.618865448088755,
+      "routeScore": 43.79502799164439,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 33
+      "ms": 1080
     },
     {
       "id": "R15",
@@ -199,12 +199,12 @@
       "expectedGuide": "老年人多重用药安全管理专家共识",
       "routeHit": true,
       "routeTop3": true,
-      "routeScore": 42.20812265034624,
+      "routeScore": 42.38963427943227,
       "kgAllHit": true,
       "kgSymptomHit": true,
       "kgDrugHit": true,
       "kgExamHit": true,
-      "ms": 33
+      "ms": 1051
     }
   ]
 }

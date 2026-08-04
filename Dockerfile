@@ -27,15 +27,15 @@ RUN npm install
 #    改为直接 npm install -g 安装所需包。
 #    ⚠️ 版本硬性锁定（P0-1 修复）：此前 `npm install -g pi` 无版本约束，
 #    构建时拉取 npm latest，镜像在不同时间构建结果不可复现、存在供应链风险。
-#    下方版本为 2026-07-24 实查，须与 package.json 的 'piRuntime' 字段保持一致；
+#    下方版本为 2026-08-04 实查，须与 package.json 的 'piRuntime' 字段保持一致；
 #    升级任一包须同步更新两处并重新验证。
-#    注意: pi-knowledge 0.5.6 依赖 better-sqlite3@12.11.1（ABI 127，兼容 Node 22.22.2）
+#    注意: pi-knowledge 0.8.0 依赖 better-sqlite3@12.11.1（ABI 127，兼容 Node 22.22.2）
 RUN npm install -g pi@2.0.5 \
-    @earendil-works/pi-coding-agent@0.81.0 \
-    pi-knowledge@0.5.6 \
-    pi-web-access@0.13.0 \
-    pi-subagents@0.34.0 \
-    @firstpick/pi-package-webui@0.6.8 \
+    @earendil-works/pi-coding-agent@0.83.0 \
+    pi-knowledge@0.8.0 \
+    pi-web-access@0.18.0 \
+    pi-subagents@0.40.0 \
+    @firstpick/pi-package-webui@0.8.3 \
  && mkdir -p /app/pi/packages \
  && ln -sfn /usr/local/lib/node_modules/@earendil-works/pi-coding-agent /app/pi/packages/coding-agent
 

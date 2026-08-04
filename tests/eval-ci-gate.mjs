@@ -38,6 +38,10 @@ const STRICT = args.includes("--strict");
 const reportArg = args.find((a) => a.startsWith("--report="));
 const baselineArg = args.find((a) => a.startsWith("--baseline="));
 const COMPARE = args.includes("--compare");
+// 2026-08-04: 基线健康度模式——只校验基线结构完整性（可解析/KPI 字段/n 合理），
+// 跳过「忠实度/低忠实」与「评测全覆盖」HARD 卡点：基线含 KB 缺口低分题是已知真实状态，
+// 不该让入仓基线本身在 CI gate 里红（语义：基线仅确认未被误改坏，非质量卡点）。
+const BASELINE_ONLY = args.includes("--baseline-only");
 const REPORT_PATH = reportArg
   ? reportArg.split("=")[1]
   : join(__dirname, "reports", "answer-quality-report.json");
@@ -153,24 +157,27 @@ function main() {
   });
 
   // 答案忠实度：任一条 judge faithfulness < 阈值或命中幻觉关键词即 HARD 失败（P0-4）
-  hard.push({
-    name: "答案忠实度 ≥ 阈值（无低忠实 / 幻觉）",
-    ok: halluc.length === 0,
-    got: halluc.length ? `${halluc.length} 条 <${TH.faithfulnessMin}` : "0",
-    want: `0（faithfulness≥${TH.faithfulnessMin}）`,
-    hint: halluc.length ? `风险项: ${halluc.map((h) => h.id).join(", ")}` : undefined,
-  });
+  // --baseline-only 模式跳过：基线含 KB 缺口低分题（Q83/Q66 等）是已知真实状态，非「基线被误改坏」
+  if (!BASELINE_ONLY) {
+    hard.push({
+      name: "答案忠实度 ≥ 阈值（无低忠实 / 幻觉）",
+      ok: halluc.length === 0,
+      got: halluc.length ? `${halluc.length} 条 <${TH.faithfulnessMin}` : "0",
+      want: `0（faithfulness≥${TH.faithfulnessMin}）`,
+      hint: halluc.length ? `风险项: ${halluc.map((h) => h.id).join(", ")}` : undefined,
+    });
 
-  // 评测全覆盖（fail-closed，P0-2 修复）：任一 judge 跳过 / 未评分 → 无法认证忠实度 → HARD 失败
-  hard.push({
-    name: "评测全覆盖（无 judge 跳过 / 未评分条目）",
-    ok: unverified.length === 0,
-    got: unverified.length ? `${unverified.length} 条未验证` : "0",
-    want: "0（每条答案均经 LLM-Judge 真实评分）",
-    hint: unverified.length
-      ? `未验证项: ${unverified.map((u) => u.id).join(", ")} —— 多因无 API Key / 超时 / 配额耗尽导致 judge 跳过；此时忠实度门禁不可信，须补齐评测后再发布`
-      : undefined,
-  });
+    // 评测全覆盖（fail-closed，P0-2 修复）：任一 judge 跳过 / 未评分 → 无法认证忠实度 → HARD 失败
+    hard.push({
+      name: "评测全覆盖（无 judge 跳过 / 未评分条目）",
+      ok: unverified.length === 0,
+      got: unverified.length ? `${unverified.length} 条未验证` : "0",
+      want: "0（每条答案均经 LLM-Judge 真实评分）",
+      hint: unverified.length
+        ? `未验证项: ${unverified.map((u) => u.id).join(", ")} —— 多因无 API Key / 超时 / 配额耗尽导致 judge 跳过；此时忠实度门禁不可信，须补齐评测后再发布`
+        : undefined,
+    });
+  }
 
   // ---------- WARN ----------
   warn.push({

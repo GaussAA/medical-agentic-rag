@@ -22,7 +22,10 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, "..");
+// 2026-08-04 修复：本文件位于 tests/eval/ 下，ROOT 须上溯两级到项目根；
+// 原 `join(__dirname, "..")` 只到 tests/，致 `.pi/extensions/lib/llm-judge.mjs`
+// 解析为 tests/.pi/...（不存在）→ CI 上 calibrate-ci 报 Cannot find module。
+const ROOT = join(__dirname, "..", "..");
 
 // ── 坏答案模板（5 个预设，覆盖不同错误类型）──
 const BAD_ANSWERS = [

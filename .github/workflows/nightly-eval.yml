@@ -129,6 +129,9 @@ jobs:
           if [ -z "${{ secrets.SENSENOVA_API_KEY }}" ]; then
             echo "skip=1" >> "$GITHUB_OUTPUT"
             echo "::notice::全量评测跳过（未配置 SENSENOVA_API_KEY Secret，属预期；本地 pre-push 钩子已覆盖真链路门禁）"
+          elif [ ! -d data/raw-txt ] || [ "$(ls data/raw-txt/*.txt data/raw-txt/*.md 2>/dev/null | wc -l)" -eq 0 ]; then
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            echo "::notice::data/raw-txt 缺失（不入仓，经 kb:prepare 重建），评测无证据文本将假红——跳过门禁与基线刷新"
           elif [ ! -f tests/reports/answer-quality-report.json ]; then
             echo "skip=1" >> "$GITHUB_OUTPUT"
             echo "::warning::评测步骤未产出报告（密钥可能配额耗尽或瞬时故障），跳过门禁与基线刷新"

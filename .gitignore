@@ -93,6 +93,10 @@ tests/gold-answers.json.bak-*
 # npm pack 核查残留
 tmp-pkgcheck/
 tmp/pkgcheck/
+# 临时健康/巡检报告（自动化生成，可重建）
+tmp/health-report-*.md
+# 报告输出目录（脚本生成，可再生）
+tests/reports/
 
 # ========== 忽略 WorkBuddy 元数据 ==========
 .workbuddy/

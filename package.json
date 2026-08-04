@@ -21,7 +21,6 @@
     "kb:chunks": "node scripts/kb/inspect/chunk-explorer.mjs",
     "kb:meta": "node scripts/kb/enrich/inject-chunk-meta.mjs",
     "kb:lifecycle": "node scripts/compliance/privacy/data-lifecycle.mjs",
-    "kb:reranker": "node scripts/kb/index/apply-reranker-patch.mjs",
     "kb:abdiff": "node scripts/eval/ab/ab-extract-diff.mjs",
     "kb:chunk-quality": "node scripts/eval/quality/chunk-quality.mjs",
     "eval:align": "node scripts/eval/quality/content-need-alignment.mjs",

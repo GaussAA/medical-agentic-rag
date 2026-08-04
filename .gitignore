@@ -80,6 +80,20 @@ Thumbs.db
 *.swp
 *.swo
 
+# ========== 忽略临时/备份/调试产物（2026-08-05 固化） ==========
+# 一次性核查/调试脚本（scan-gt、undici-proxy-init 等），不入仓
+# 注：tmp/ 不整目录忽略（项目有正规临时产出），仅忽略明确的一次性文件
+tmp/scan-*.mjs
+tmp/undici-*.mjs
+tmp/*.tar.gz
+# .pi 下临时快照（tmp-gold-head 等）
+.pi/tmp-*.json
+# 黄金数据集备份（改前快照，可重建）
+tests/gold-answers.json.bak-*
+# npm pack 核查残留
+tmp-pkgcheck/
+tmp/pkgcheck/
+
 # ========== 忽略 WorkBuddy 元数据 ==========
 .workbuddy/
 

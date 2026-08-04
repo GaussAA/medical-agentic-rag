@@ -28,10 +28,15 @@ const SKIP_KB = process.env.CI === "true" || process.env.SKIP_KB === "1";
 const KB_DIR = join(ROOT, "data", "kb");
 // 方案 B：源真相为 raw/ 下的原始 PDF/DOCX（非 MD）
 const RAW_DIR = join(ROOT, "data", "raw");
-/** 统计原始知识库可抽取文件数（PDF/DOCX，排除临时残留）。 */
+// 大纲/索引口径：extract-outline.mjs 以 data/raw-txt 下 txt+md 为准
+//（2026-08-04 起纳入偏科指南 .md 5 份，countRaw 需与之对齐，否则 totalFiles 断言 248≠243 失败）
+const TXT_DIR = join(ROOT, "data", "raw-txt");
+/** 统计知识库文档数（raw-txt 下 txt+md，与 extract-outline.mjs 同口径，排除隐藏文件）。 */
 async function countRaw() {
   try {
-    return (await readdir(RAW_DIR)).filter((f) => /\.(pdf|docx|txt)$/i.test(f) && !/\.nhc_tmp_/i.test(f)).length;
+    return (await readdir(TXT_DIR))
+      .filter((f) => (f.endsWith(".txt") || f.endsWith(".md")) && !f.startsWith("."))
+      .length;
   } catch {
     // 原始知识库未入库（如 CI 纯净 checkout）时返回 0，由 SKIP_KB 门禁跳过相关断言
     return 0;

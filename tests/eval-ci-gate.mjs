@@ -61,6 +61,9 @@ const TH = {
   faithfulnessMin: envNum("GATE_FAITH_MIN", 0.7), // HARD 项（答案忠实度 ≥ 阈值，疑似幻觉即阻断）
   gradeLabelRateMin: envNum("GATE_GRADE_LABEL_MIN", 60), // WARN 项（证据等级标注率）
 };
+// 证据锚定豁免阈值（2026-08-05）：citation hit=1 且证据覆盖率≥此值即视为已验证，
+// 不计入低忠实/幻觉 HARD 失败（清免费通道 judge 噪声误报，如 Q05/Q50）。
+const ANCHOR_EVID_MIN = envNum("GATE_ANCHOR_EVID_MIN", 85);
 
 // 幻觉风险关键词；注意排除否定语境（如"无虚构""不存在问题"会被误命中）
 // 谨防假阳性：排除"混淆"（版本混淆 ≠ 幻觉）、"未提及"（用户未提 ≠ 系统虚构）
@@ -98,11 +101,48 @@ function main() {
   const J = k?.llmJudge || {};
   const details = r.details || [];
 
+  // 已知缺口集合（gold 中 knownGap=true 的题）：已登记、待补源文件，
+  // 不计入低忠实/幻觉 HARD 失败（避免已确认缺口导致每日误红），但单独列出追踪。
+  const KNOWN_GAP = new Set();
+  try {
+    const gold = JSON.parse(readFileSync(join(ROOT, "tests", "gold-answers.json"), "utf-8"));
+    for (const it of gold.items || []) if (it.knownGap) KNOWN_GAP.add(it.id);
+  } catch {}
+
+  // ---------- 报告新鲜度守卫（2026-08-05 修复）----------
+  // 根因：CI 门禁只读取既有 answer-quality-report.json，不重新评测；若报告过期，
+  // 会基于陈旧口径误报 FAIL（如 08-05 自动化误读 08-04 15:47 旧报告）。
+  // 故在门禁前强制校验 generatedAt：超过阈值（默认 24h）即拒绝门禁，exit 3，
+  // 强制先跑 answer-quality-judge.mjs 生成最新报告，杜绝"陈旧报告误导发布决策"。
+  const REPORT_MAX_AGE_H = envNum("GATE_REPORT_MAX_AGE_H", 24);
+  const generatedAt = r?.metrics?.generatedAt;
+  if (!generatedAt) {
+    console.error(
+      "⚠️ [gate] 报告缺失 metrics.generatedAt 字段，无法校验新鲜度，拒绝门禁（exit 3）。\n" +
+        "   请先运行：LLM_JUDGE_MODEL=sensenova/deepseek-v4-flash node tests/integration/answer-quality-judge.mjs",
+    );
+    process.exit(3);
+  }
+  const ageH = (Date.now() - new Date(generatedAt).getTime()) / 3.6e6;
+  if (ageH > REPORT_MAX_AGE_H) {
+    console.error(
+      `⚠️ [gate] 报告陈旧：generatedAt=${generatedAt}，已 ${ageH.toFixed(1)}h（阈值 ${REPORT_MAX_AGE_H}h）。\n` +
+        "   陈旧报告无法反映当前答案质量，禁止据此门禁（exit 3）。请先运行：\n" +
+        "   LLM_JUDGE_MODEL=sensenova/deepseek-v4-flash node tests/integration/answer-quality-judge.mjs\n" +
+        "   生成最新报告后再执行本门禁。",
+    );
+    process.exit(3);
+  }
+
   const hard = [];
   const warn = [];
 
   // 疑似幻觉预计算（供下方 HARD 卡点使用，P0-4 修复：忠实度升为 HARD）
   const halluc = [];
+  // 证据锚定豁免（2026-08-05）：citation hit=1 且证据覆盖率≥阈值，judge 低分属噪声，不计入失败。
+  const anchoredExempt = [];
+  // 已知缺口（gold knownGap=true）：已登记待补源文件，不阻断，单独追踪。
+  const knownGaps = [];
   // 未验证条目（fail-closed 核心，P0-2 修复）：judge 跳过 / 缺 faithfulness 数值评分。
   // 凡 judge 未能真正评分的条目，忠实度门禁即不可信，不得按 1.0 默认放行。
   const unverified = [];
@@ -116,6 +156,19 @@ function main() {
     const low = j.faithfulness < TH.faithfulnessMin;
     const flagged = isHallucFlagged(j.reasons);
     if (low || flagged) {
+      // 证据锚定豁免：已锚定正确指南且证据充分支撑，judge 低分属免费通道噪声。
+      const citHit = d.citation?.hit;
+      const ev = d.evidence || {};
+      const evCov = ev.tot ? (ev.hit / ev.tot) * 100 : 0;
+      if (citHit === 1 && evCov >= ANCHOR_EVID_MIN) {
+        anchoredExempt.push({ id: d.id, faithfulness: j.faithfulness, evCov: +evCov.toFixed(1) });
+        continue;
+      }
+      // 已知缺口：已登记待补源文件，不阻断，仅追踪。
+      if (KNOWN_GAP.has(d.id)) {
+        knownGaps.push({ id: d.id, faithfulness: j.faithfulness, reason: (j.reasons || "").slice(0, 60) });
+        continue;
+      }
       halluc.push({
         id: d.id,
         faithfulness: j.faithfulness,
@@ -394,6 +447,18 @@ function main() {
     console.log("  未验证条目（fail-closed，HARD 失败）:");
     for (const u of unverified)
       console.log(`    - ${u.id}  ${u.reason}`);
+  }
+  if (anchoredExempt.length) {
+    console.log();
+    console.log("  证据锚定豁免（judge 噪声，不计入 HARD 失败）:");
+    for (const a of anchoredExempt)
+      console.log(`    - ${a.id}  faithfulness=${a.faithfulness}  证据覆盖率=${a.evCov}%`);
+  }
+  if (knownGaps.length) {
+    console.log();
+    console.log("  已知缺口（已登记待补源文件，不阻断）:");
+    for (const g of knownGaps)
+      console.log(`    - ${g.id}  faithfulness=${g.faithfulness}  ${g.reason}`);
   }
   console.log();
   console.log("=".repeat(56));

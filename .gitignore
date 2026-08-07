@@ -53,8 +53,7 @@ nul
 # 旧日志目录残留（已迁至 .pi/logs/，可清理）
 logs/
 backups/
-# 运维归档（午间巡检日志轮转 tar.gz 等运行期产物，非源码，不入仓）
-archive/
+# 运维归档已统一在 .pi/archive/（rotate-logs 写入），根 archive/ 已废弃删除
 
 # 但保留自定义扩展文件
 !.pi/extensions/

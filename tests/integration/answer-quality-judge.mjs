@@ -418,6 +418,23 @@ const EVAL_LLM_CONCURRENCY = Math.max(1, Math.min(Number(process.env.EVAL_LLM_CO
 const EVAL_LLM_TIMEOUT_MS =
   Number(process.env.EVAL_LLM_TIMEOUT_MS) ||
   Math.max(120000, Math.ceil(ITEMS.length / EVAL_LLM_CONCURRENCY) * 25000 + 60000);
+
+// ---------- 增量补评开关（ONLY_SKIPPED）----------
+// 仅对「旧报告中 judge 跳过」的题重跑 LLM-Judge，已 scored 题保留旧分数，
+// 避免全量重跑覆盖已认证的真实分数（默认关闭；用于清零限流导致的未验证条目）。
+const ONLY_SKIPPED = !!process.env.ONLY_SKIPPED;
+let oldJudgeById = {};
+if (ONLY_SKIPPED) {
+  try {
+    const oldRep = JSON.parse(readFileSync(join(REPO_ROOT, "tests", "reports", "answer-quality-report.json"), "utf-8"));
+    for (const d of oldRep.details || []) oldJudgeById[d.id] = d.judge;
+    const kept = Object.values(oldJudgeById).filter((j) => j && !j.skipped && isFinite(j.faithfulness)).length;
+    console.log(`[增量补评] 旧报告已评分题保留 ${kept} 条，仅重跑 skipped 题`);
+  } catch (e) {
+    console.warn(`⚠ 读旧报告失败，降级为全量重评：${e.message}`);
+  }
+}
+
 if (RUN_LLM) {
   console.log(
     `[llm-judge] 阶段二启动：并发=${EVAL_LLM_CONCURRENCY} · 看门狗=${(EVAL_LLM_TIMEOUT_MS / 1000).toFixed(0)}s · 样本=${partials.length}`,
@@ -427,7 +444,15 @@ let judges;
 try {
   judges = await Promise.race([
     runWithConcurrency(
-      partials.map((p) => () => llmJudge(p.it, p.answer)),
+      partials.map((p) => {
+        if (ONLY_SKIPPED) {
+          const oldJ = oldJudgeById[p.it.id];
+          if (oldJ && !oldJ.skipped && isFinite(oldJ.faithfulness)) {
+            return () => oldJ; // 保留已认证分数，不调 API
+          }
+        }
+        return () => llmJudge(p.it, p.answer);
+      }),
       EVAL_LLM_CONCURRENCY,
     ),
     new Promise((_, rej) =>

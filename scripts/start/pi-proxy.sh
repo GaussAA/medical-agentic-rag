@@ -49,6 +49,11 @@ if [ -f .env ]; then
   set +a
 fi
 
+# v0.84.1+ 修复：Pi 的 EnvHttpProxyAgent 自动走系统代理，sensenova 等国内端点经
+# mihomo 会被拒（Forbidden code 16）→ 流式断连 + 长超时。Provider 域名加入 NO_PROXY 直连。
+export NO_PROXY="token.sensenova.cn,api.deepseek.com,apihub.agnes-ai.com,${NO_PROXY:-}"
+export no_proxy="$NO_PROXY"
+
 # ── 如果嵌入服务未运行，启动它（本地 e5-small，零成本；失败不阻断主流程） ──
 if ! embed_healthy; then
   echo "[pi-proxy] 本地嵌入服务未运行，正在启动 (127.0.0.1:$EMBED_PORT)..."
@@ -113,10 +118,13 @@ export PI_KNOWLEDGE_RERANKER_RAW_LOGITS="true"  # 原生 raw logits 支持（v0.
 echo "[pi-proxy] LLM: $PROVIDER/$MODEL (via local proxy 127.0.0.1:$PROXY_PORT)"
 
 # ── 通过 proxy 启动 Pi（非交互模式或者交互模式）──
+# 轻量化工具集：排除管理/写入型重工具，降 input tokens（实测 -52%）
+EXCLUDE_TOOLS="${EXCLUDE_TOOLS:-wiki_bootstrap,wiki_capture_source,wiki_ingest,wiki_ensure_page,wiki_lint,wiki_rebuild_meta,wiki_reindex_embeddings,wiki_log_event,wiki_watch,wiki_retro,wiki_observe,knowledge_plan,knowledge_configure,knowledge_add,knowledge_update,knowledge_remove,knowledge_export,knowledge_import,knowledge_clear,subagent,subagent_wait,subagent_gate,subagent_supervisor,intercom,workspace_session_summaries,generate_medical_infographic,decompose_query}"
 exec "$NODE_BIN" \
   --require "$WIN_ROOT/scripts/proxy/preload-fetch-proxy.mjs" \
   "$WIN_ROOT/pi/packages/coding-agent/dist/cli.js" \
   --model "$PROVIDER/$MODEL" \
   --system-prompt "$WIN_ROOT/.pi/prompts/medical-agent.md" \
+  --exclude-tools "$EXCLUDE_TOOLS" \
   --session-dir "$WIN_ROOT/.pi/sessions" \
   "$@"

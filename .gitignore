@@ -102,6 +102,25 @@ tmp/health-report-*.md
 # 报告输出目录（脚本生成，可再生）
 tests/reports/
 
+# ========== 升级/调试残留防御（2026-08-07 固化） ==========
+# npm pack 核查产物（*.tgz + 解包目录），不入仓
+*.tgz
+package/
+# 请求捕获/调试代理脚本（诊断 sensenova 流式问题用，一次性）
+tmp/capture-*
+tmp/record-proxy.*
+tmp/preload-debug.*
+tmp/tool-audit.*
+# provider 配置备份（临时实验快照）
+.pi/extensions/provider.sensenova.ts.bak
+.pi/extensions/provider.sensenova.ts.clean
+.pi/extensions/provider.sensenova.ts.zai
+# 升级批次清单（upgrade-checkout-batch.mjs 的一次性输入）
+.pi/tmp-checkout-list.txt
+.pi/tmp-delete-list.txt
+# playwright 调试残留
+.playwright-cli/
+
 # ========== 忽略 WorkBuddy 元数据 ==========
 .workbuddy/
 

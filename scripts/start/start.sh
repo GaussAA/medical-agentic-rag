@@ -60,6 +60,14 @@ load_env() {
   fi
 }
 
+# v0.84.1+ 修复：Pi 的 http-dispatcher 用 EnvHttpProxyAgent 自动走 HTTP_PROXY(系统代理)，
+# 但 sensenova/deepseek/agnes 国内端点经 mihomo 代理会被拒（Forbidden code 16），
+# 导致流式断连 "Stream ended without finish_reason" + 长超时（300s bodyTimeout）。
+# 将这些 Provider 域名加入 NO_PROXY，让 Pi 直连（与 provider-proxy 直连行为一致）。
+# 保留系统代理用于其他出网请求（模型下载、web 工具等）。
+export NO_PROXY="token.sensenova.cn,api.deepseek.com,apihub.agnes-ai.com,${NO_PROXY:-}"
+export no_proxy="$NO_PROXY"
+
 parse_args() {
   CMD="${1:-tui}"
   CMD_ARGS=()
@@ -165,11 +173,18 @@ cmd_tui() {
   echo "                       Proxy 实际后端: ${BACKEND_LABEL:-（无 failover，默认 sensenova）}"
   echo ""
 
+  # 轻量化工具集（2026-08-07）：排除管理/写入型重工具，降低每轮 input tokens
+  # （实测 input 24266 → 11705，-52%）。保留检索核心：retrieve / rag_search /
+  # wiki_search / web_search / read / bash / edit / write 等。
+  # 如需管理 wiki/KB/subagent，临时去掉 --exclude-tools 或手动调用即可。
+  local EXCLUDE_TOOLS="${EXCLUDE_TOOLS:-wiki_bootstrap,wiki_capture_source,wiki_ingest,wiki_ensure_page,wiki_lint,wiki_rebuild_meta,wiki_reindex_embeddings,wiki_log_event,wiki_watch,wiki_retro,wiki_observe,knowledge_plan,knowledge_configure,knowledge_add,knowledge_update,knowledge_remove,knowledge_export,knowledge_import,knowledge_clear,subagent,subagent_wait,subagent_gate,subagent_supervisor,intercom,workspace_session_summaries,generate_medical_infographic,decompose_query}"
+
   exec "$NODE_BIN" \
     --require "$WIN_ROOT/scripts/proxy/preload-fetch-proxy.mjs" \
     "$WIN_ROOT/pi/packages/coding-agent/dist/cli.js" \
     --model "$PROVIDER/$MODEL" \
     --system-prompt "$WIN_ROOT/.pi/prompts/medical-agent.md" \
+    --exclude-tools "$EXCLUDE_TOOLS" \
     --session-dir "$WIN_ROOT/.pi/sessions"
 }
 
